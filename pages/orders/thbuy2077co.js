@@ -251,6 +251,11 @@ export default function Thbuy2077co() {
             headerStyle={{ width: "150px" }}
           ></Column>
           <Column
+            field="phone_number"
+            header="Contact Number"
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
             field="shipping_address_1"
             header="Shipping Address Line 1"
             headerStyle={{ width: "300px" }}

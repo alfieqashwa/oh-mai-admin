@@ -10,6 +10,7 @@ import { Column } from "primereact/column";
 
 export default function THDashboard() {
   const [totalThaiNum, setTotalThaiNum] = useState(0);
+  const [products, setProducts] = useState(null);
 
   React.useEffect(() => {
     (async function getTotal() {
@@ -21,6 +22,18 @@ export default function THDashboard() {
         })
         .then((data) => {
           setTotalThaiNum(data.total);
+        });
+    })();
+
+    (async function getData() {
+      await fetch("https://api.buy2077.co/listorders?page=0&items=9999", {
+        method: "GET",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setProducts(data);
         });
     })();
   }, []);
