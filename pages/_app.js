@@ -70,18 +70,23 @@ function MyApp({ Component, pageProps }) {
       icon: "pi pi-fw pi-home",
       to: "/",
     },
+    // {
+    //   label: "Products",
+    //   icon: "pi pi-fw pi-circle-off",
+    //   to: "/products",
+    // },
     {
-      label: "Products",
-      icon: "pi pi-fw pi-circle-off",
-      to: "/products",
-    },
-    {
-      label: "Orders",
+      label: "th.buy2077.co",
       icon: "pi pi-fw pi-list",
       items: [
         {
-          label: "th.Buy2077.co Orders",
-          icon: "pi pi-fw pi-circle-off",
+          label: "Dashboard",
+          icon: "pi pi-fw pi-chart-bar",
+          to: "/orders/dashboard",
+        },
+        {
+          label: "Order List",
+          icon: "pi pi-fw pi-file-excel",
           to: "/orders/thbuy2077co",
         },
       ],
