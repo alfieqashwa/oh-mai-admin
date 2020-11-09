@@ -6,8 +6,8 @@ export const AppProfile = () => {
   const [expanded, setExpanded] = useState(false);
 
   const onClick = (event) => {
-    setExpanded((prevState) => !prevState);
-    event.preventDefault();
+    // setExpanded((prevState) => !prevState);
+    // event.preventDefault();
   };
 
   return (
