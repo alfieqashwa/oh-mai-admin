@@ -20,14 +20,25 @@ import { fetcher } from "../lib/useSWR";
 export default function Products() {
   let emptyProduct = {
     id: null,
-    name: "",
-    image: null,
+    sku: "",
+    product_name: "",
+    images: null,
+    kol_id: "",
+    views: null,
+    sales: null,
+    current_price: null,
+    base_price: null,
+    sale_price: null,
+    slug: "",
+    permalink: "",
+    date_created: "",
+    date_modified: "",
     description: "",
-    category: null,
-    price: 0,
-    quantity: 0,
-    rating: 0,
-    inventoryStatus: "INSTOCK",
+    on_sale: false,
+    stock_quantity: null,
+    stock_status: "",
+    categories: null,
+    tags: null,
   };
 
   // const [products, setProducts] = useState(null);
@@ -42,10 +53,10 @@ export default function Products() {
   const toast = useRef(null);
   const dt = useRef(null);
 
-  const { data, error } = useSWR(products, fetcher);
-  if (error) console.log(error);
+  // const { data, error } = useSWR(products, fetcher);
+  // if (error) console.log(error);
 
-  if (!data) return <></>;
+  // if (!data) return <></>;
 
   const formatCurrency = (value) => {
     // return value.toLocaleString("en-US", {
@@ -361,32 +372,80 @@ export default function Products() {
               className="product-image"
             />
           )}
-          <div className="p-field">
-            <label htmlFor="name">Name</label>
-            <InputText
-              id="name"
-              value={product.name}
-              onChange={(e) => onInputChange(e, "name")}
-              required
-              autoFocus
-              className={classNames({
-                "p-invalid": submitted && !product.name,
-              })}
-            />
-            {submitted && !product.name && (
-              <small className="p-invalid">Name is required.</small>
-            )}
+          <div className="p-formgrid p-grid">
+            <div className="p-field p-col">
+              <label htmlFor="sku">SKU Number</label>
+              <InputText
+                id="sku"
+                value={product.sku}
+                onChange={(e) => onInputChange(e, "sku")}
+                required
+                autoFocus
+                className={classNames({
+                  "p-invalid": submitted && !product.sku,
+                })}
+              />
+              {submitted && !product.sku && (
+                <small className="p-invalid">SKU is required.</small>
+              )}
+            </div>
+
+            <div className="p-field p-col">
+              <label htmlFor="product_name">Product Name</label>
+              <InputText
+                id="product_name"
+                value={product.product_name}
+                onChange={(e) => onInputChange(e, "product_name")}
+                required
+                autoFocus
+                className={classNames({
+                  "p-invalid": submitted && !product.product_name,
+                })}
+              />
+              {submitted && !product.product_name && (
+                <small className="p-invalid">Product Name is required.</small>
+              )}
+            </div>
           </div>
+
           <div className="p-field">
             <label htmlFor="description">Description</label>
-            <InputTextarea
-              id="description"
-              value={product.description}
-              onChange={(e) => onInputChange(e, "description")}
-              required
-              rows={3}
-              cols={20}
-            />
+          </div>
+
+          <div className="p-formgrid p-grid">
+            <div className="p-field p-col">
+              <label htmlFor="base_price">Base Price</label>
+              <InputText
+                id="base_price"
+                value={product.base_price}
+                onChange={(e) => onInputNumberChange(e, "base_price")}
+                required
+                autoFocus
+                className={classNames({
+                  "p-invalid": submitted && !product.base_price,
+                })}
+              />
+              {submitted && !product.base_price && (
+                <small className="p-invalid">Base Price is required.</small>
+              )}
+            </div>
+
+            <div className="p-field p-col">
+              <label htmlFor="sale_price">Sale Price</label>
+              <InputText
+                id="sale_price"
+                value={product.sale_price}
+                onChange={(e) => onInputNumberChange(e, "sale_price")}
+                required
+                autoFocus
+                className={classNames({
+                  "p-invalid": submitted && !product.sale_price,
+                })}
+              />
+              {submitted && !product.sale_price && (
+                <small className="p-invalid">Sale Price is required.</small>
+              )}
+            </div>
           </div>
 
           <div className="p-field">

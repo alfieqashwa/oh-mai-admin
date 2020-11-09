@@ -75,6 +75,17 @@ function MyApp({ Component, pageProps }) {
       icon: "pi pi-fw pi-circle-off",
       to: "/products",
     },
+    {
+      label: "Orders",
+      icon: "pi pi-fw pi-list",
+      items: [
+        {
+          label: "th.Buy2077.co Orders",
+          icon: "pi pi-fw pi-circle-off",
+          to: "/orders/thbuy2077co",
+        },
+      ],
+    },
   ];
 
   const onMenuItemClick = (event) => {
@@ -140,7 +151,7 @@ function MyApp({ Component, pageProps }) {
           onClick={onSidebarClick}
         >
           <div className="layout-logo">
-            <img alt="Logo" src={"layout/images/titan-logo-white.png"} />
+            {/* <img alt="Logo" src={"/layout/images/logo-white.png"} /> */}
           </div>
           <AppProfile />
           <AppMenu model={menu} onMenuItemClick={onMenuItemClick} />

@@ -13,10 +13,10 @@ export const AppProfile = () => {
   return (
     <div className="layout-profile">
       <div>
-        <img src="layout/images/jacky1.webp" alt="Profile" />
+        <img src="/layout/images/avatar_2.png" alt="Profile" />
       </div>
       <button className="p-link layout-profile-link" onClick={onClick}>
-        <span className="username">Jacky Choo</span>
+        <span className="username">Admin</span>
         <i className="pi pi-fw pi-cog" />
       </button>
       <CSSTransition
