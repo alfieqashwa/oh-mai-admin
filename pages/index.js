@@ -107,6 +107,22 @@ export default function Dashboard() {
     },
   ]);
 
+  const [totalThaiNum, setTotalThaiNum] = useState(0);
+
+  React.useEffect(() => {
+    (async function getTotal() {
+      await fetch("https://api.buy2077.co/countorders", {
+        method: "GET",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setTotalThaiNum(data.total);
+        });
+    })();
+  }, []);
+
   const onTaskChange = (e) => {
     let selectedTasks = [...tasks];
     if (e.checked) selectedTasks.push(e.value);
@@ -119,339 +135,22 @@ export default function Dashboard() {
     setCity(e.value);
   };
 
-  useEffect(() => {
-    //carservice.getCarsSmall().then(data => setCars(data));
-  }, []);
-
   return (
     <div className="p-grid p-fluid dashboard">
-      {/* <div className="p-col-12 p-lg-4">
+      <div className="p-col-12 p-lg-6">
         <div className="card summary">
-          <span className="title">Users</span>
-          <span className="detail">Number of visitors</span>
-          <span className="count visitors">12</span>
-        </div>
-      </div>
-      <div className="p-col-12 p-lg-4">
-        <div className="card summary">
-          <span className="title">Sales</span>
+          <span className="title">th.buy2077.co Sales</span>
           <span className="detail">Number of purchases</span>
-          <span className="count purchases">534</span>
+          <span className="count purchases">{totalThaiNum}</span>
         </div>
       </div>
-      <div className="p-col-12 p-lg-4">
+      <div className="p-col-12 p-lg-6">
         <div className="card summary">
           <span className="title">Revenue</span>
           <span className="detail">Income for today</span>
-          <span className="count revenue">$3,200</span>
+          <span className="count revenue">$0</span>
         </div>
       </div>
-
-      <div className="p-col-12 p-md-6 p-xl-3">
-        <div className="highlight-box">
-          <div
-            className="initials"
-            style={{ backgroundColor: "#007be5", color: "#00448f" }}
-          >
-            <span>TV</span>
-          </div>
-          <div className="highlight-details ">
-            <i className="pi pi-search" />
-            <span>Total Queries</span>
-            <span className="count">523</span>
-          </div>
-        </div>
-      </div>
-      <div className="p-col-12 p-md-6 p-xl-3">
-        <div className="highlight-box">
-          <div
-            className="initials"
-            style={{ backgroundColor: "#ef6262", color: "#a83d3b" }}
-          >
-            <span>TI</span>
-          </div>
-          <div className="highlight-details ">
-            <i className="pi pi-question-circle" />
-            <span>Total Issues</span>
-            <span className="count">81</span>
-          </div>
-        </div>
-      </div>
-      <div className="p-col-12 p-md-6 p-xl-3">
-        <div className="highlight-box">
-          <div
-            className="initials"
-            style={{ backgroundColor: "#20d077", color: "#038d4a" }}
-          >
-            <span>OI</span>
-          </div>
-          <div className="highlight-details ">
-            <i className="pi pi-filter" />
-            <span>Open Issues</span>
-            <span className="count">21</span>
-          </div>
-        </div>
-      </div>
-      <div className="p-col-12 p-md-6 p-xl-3">
-        <div className="highlight-box">
-          <div
-            className="initials"
-            style={{ backgroundColor: "#f9c851", color: "#b58c2b" }}
-          >
-            <span>CI</span>
-          </div>
-          <div className="highlight-details ">
-            <i className="pi pi-check" />
-            <span>Closed Issues</span>
-            <span className="count">60</span>
-          </div>
-        </div>
-      </div>
-      <div className="p-col-12 p-md-6 p-lg-4">
-        <Panel header="Tasks" style={{ height: "100%" }}>
-          <ul className="task-list">
-            <li>
-              <Checkbox
-                value="task1"
-                onChange={onTaskChange}
-                checked={tasks.indexOf("task1") > -1 ? true : false}
-              ></Checkbox>
-              <span className="task-name">Sales Reports</span>
-              <i className="pi pi-chart-bar" />
-            </li>
-            <li>
-              <Checkbox
-                value="task2"
-                onChange={onTaskChange}
-                checked={tasks.indexOf("task2") > -1 ? true : false}
-              ></Checkbox>
-              <span className="task-name">Pay Invoices</span>
-              <i className="pi pi-dollar" />
-            </li>
-            <li>
-              <Checkbox
-                value="task3"
-                onChange={onTaskChange}
-                checked={tasks.indexOf("task3") > -1 ? true : false}
-              ></Checkbox>
-              <span className="task-name">Dinner with Tony</span>
-              <i className="pi pi-user" />
-            </li>
-            <li>
-              <Checkbox
-                value="task4"
-                onChange={onTaskChange}
-                checked={tasks.indexOf("task4") > -1 ? true : false}
-              ></Checkbox>
-              <span className="task-name">Client Meeting</span>
-              <i className="pi pi-users" />
-            </li>
-            <li>
-              <Checkbox
-                value="task5"
-                onChange={onTaskChange}
-                checked={tasks.indexOf("task5") > -1 ? true : false}
-              ></Checkbox>
-              <span className="task-name">New Theme</span>
-              <i className="pi pi-briefcase" />
-            </li>
-            <li>
-              <Checkbox
-                value="task6"
-                onChange={onTaskChange}
-                checked={tasks.indexOf("task6") > -1 ? true : false}
-              ></Checkbox>
-              <span className="task-name">Flight Ticket</span>
-              <i className="pi pi-briefcase" />
-            </li>
-          </ul>
-        </Panel>
-      </div>
-      <div className="p-col-12 p-md-6 p-lg-4 p-fluid contact-form">
-        <Panel header="Contact Us">
-          <div className="p-grid">
-            <div className="p-col-12">
-              <Dropdown
-                value={city}
-                options={cities}
-                placeholder="Select a City"
-                onChange={onCityChange}
-                autoWidth={false}
-              />
-            </div>
-            <div className="p-col-12">
-              <InputText type="text" placeholder="Name" />
-            </div>
-            <div className="p-col-12">
-              <InputText type="text" placeholder="Age" />
-            </div>
-            <div className="p-col-12">
-              <InputText type="text" placeholder="Message" />
-            </div>
-            <div className="p-col-12">
-              <Button type="button" label="Send" icon="fa-send" />
-            </div>
-          </div>
-        </Panel>
-      </div>
-
-      <div className="p-col-12 p-lg-4 contacts">
-        <Panel header="Contacts">
-          <ul>
-            <li>
-              <button className="p-link">
-                <img
-                  src="assets/layout/images/avatar_1.png"
-                  width="35"
-                  alt="avatar1"
-                />
-                <span className="name">Claire Williams</span>
-                <span className="email">clare@pf-sigma.com</span>
-              </button>
-            </li>
-            <li>
-              <button className="p-link">
-                <img
-                  src="assets/layout/images/avatar_2.png"
-                  width="35"
-                  alt="avatar2"
-                />
-                <span className="name">Jason Dourne</span>
-                <span className="email">jason@pf-sigma.com</span>
-              </button>
-            </li>
-            <li>
-              <button className="p-link">
-                <img
-                  src="assets/layout/images/avatar_3.png"
-                  width="35"
-                  alt="avatar3"
-                />
-                <span className="name">Jane Davidson</span>
-                <span className="email">jane@pf-sigma.com</span>
-              </button>
-            </li>
-            <li>
-              <button className="p-link">
-                <img
-                  src="assets/layout/images/avatar_4.png"
-                  width="35"
-                  alt="avatar4"
-                />
-                <span className="name">Tony Corleone</span>
-                <span className="email">tony@pf-sigma.com</span>
-              </button>
-            </li>
-          </ul>
-        </Panel>
-      </div>
-      <div className="p-col-12 p-lg-6">
-        <div className="card">
-          <h1 style={{ fontSize: "16px" }}>Recent Sales</h1>
-          <DataTable
-            value={cars}
-            style={{ marginBottom: "20px" }}
-            responsive={true}
-            selectionMode="single"
-            selection={selectedCar}
-            onSelectionChange={(e) => setSelectedCar(e.value)}
-          >
-            <Column field="vin" header="Vin" sortable={true} />
-            <Column field="year" header="Year" sortable={true} />
-            <Column field="brand" header="Brand" sortable={true} />
-            <Column field="color" header="Color" sortable={true} />
-          </DataTable>
-        </div>
-      </div>
-      <div className="p-col-12 p-lg-6">
-        <div className="card">
-          <Chart type="line" data={lineData} />
-        </div>
-      </div>
-      <div className="p-col-12 p-lg-6">
-        <div className="card">
-          <Chart type="bar" data={lineData} />
-        </div>
-      </div>
-      <div className="p-col-12 p-lg-6">
-        <div className="card">
-          <Chart type="doughnut" data={lineData} />
-        </div>
-      </div>
-      {/* <div className="p-col-12 p-lg-8">
-        <Panel header="Calendar" style={{ height: "100%" }}></Panel>
-      </div> */}
-
-      {/* <div className="p-col-12 p-lg-6">
-        <Panel header="Activity" style={{ height: "100%" }}>
-          <div className="activity-header">
-            <div className="p-grid">
-              <div className="p-col-6">
-                <span style={{ fontWeight: "bold" }}>Last Activity</span>
-                <p>Updated 1 minute ago</p>
-              </div>
-              <div className="p-col-6" style={{ textAlign: "right" }}>
-                <Button label="Refresh" icon="pi pi-refresh" />
-              </div>
-            </div>
-          </div>
-
-          <ul className="activity-list">
-            <li>
-              <div className="count">$900</div>
-              <div className="p-grid">
-                <div className="p-col-6">Income</div>
-                <div className="p-col-6">95%</div>
-              </div>
-            </li>
-            <li>
-              <div className="count" style={{ backgroundColor: "#f9c851" }}>
-                $250
-              </div>
-              <div className="p-grid">
-                <div className="p-col-6">Tax</div>
-                <div className="p-col-6">24%</div>
-              </div>
-            </li>
-            <li>
-              <div className="count" style={{ backgroundColor: "#20d077" }}>
-                $125
-              </div>
-              <div className="p-grid">
-                <div className="p-col-6">Invoices</div>
-                <div className="p-col-6">55%</div>
-              </div>
-            </li>
-            <li>
-              <div className="count" style={{ backgroundColor: "#f9c851" }}>
-                $250
-              </div>
-              <div className="p-grid">
-                <div className="p-col-6">Expenses</div>
-                <div className="p-col-6">15%</div>
-              </div>
-            </li>
-            <li>
-              <div className="count" style={{ backgroundColor: "#007be5" }}>
-                $350
-              </div>
-              <div className="p-grid">
-                <div className="p-col-6">Bonus</div>
-                <div className="p-col-6">5%</div>
-              </div>
-            </li>
-            <li>
-              <div className="count" style={{ backgroundColor: "#ef6262" }}>
-                $500
-              </div>
-              <div className="p-grid">
-                <div className="p-col-6">Revenue</div>
-                <div className="p-col-6">25%</div>
-              </div>
-            </li>
-          </ul>
-        </Panel>
-      </div> */}
     </div>
   );
 }
