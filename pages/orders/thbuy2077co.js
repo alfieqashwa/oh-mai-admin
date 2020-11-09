@@ -25,7 +25,7 @@ export default function Thbuy2077co() {
 
   React.useEffect(() => {
     (async function getTotal() {
-      await fetch("http://localhost:3001/countorders", {
+      await fetch("https://api.buy2077.co/countorders", {
         method: "GET",
       })
         .then((response) => {
@@ -37,7 +37,7 @@ export default function Thbuy2077co() {
     })();
 
     (async function getData() {
-      await fetch("http://localhost:3001/listorders?page=0&items=15", {
+      await fetch("https://api.buy2077.co/listorders?page=0&items=15", {
         method: "GET",
       })
         .then((response) => {
@@ -95,7 +95,7 @@ export default function Thbuy2077co() {
 
     (async function getData() {
       await fetch(
-        "http://localhost:3001/listorders?page=" + event.page + "&items=15",
+        "https://api.buy2077.co/listorders?page=" + event.page + "&items=15",
         {
           method: "GET",
         }
