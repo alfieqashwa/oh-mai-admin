@@ -59,10 +59,12 @@ export default function THDashboard() {
 
     if (data) {
       //Get all dates in interval and set it to 0
-      var enddate = data[0].order_datetime;
+      var enddate = moment();
+
       var startdate = data[data.length - 1].order_datetime;
+
       // If you want an inclusive end date (fully-closed interval)
-      for (var m = moment(startdate); m.isBefore(enddate); m.add(1, "days")) {
+      for (var m = moment(startdate); m <= moment(enddate); m.add(1, "days")) {
         allDates[m.format("DD-MM-YYYY")] = {
           name: m.format("DD-MM-YYYY"),
           sales: 0,
@@ -72,6 +74,7 @@ export default function THDashboard() {
       // update the sale number of days which have sales
       data.forEach((element) => {
         var dateString = moment(element.order_datetime).format("DD-MM-YYYY");
+
         allDates[dateString].sales++;
       });
 
