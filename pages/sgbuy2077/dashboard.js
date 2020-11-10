@@ -56,57 +56,52 @@ export default function THDashboard() {
 
     console.log(event.files[0]);
 
+    // read excel file. DO NOT HAVE EMPTY FIELDS OR THE READER WILL SKIP THE VALUE
     ExcelRenderer(fileObj, (err, resp) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(resp);
-        setRows(resp.rows);
-        setCols(resp.cols);
-      }
+      if (err) return console.log(err);
+
+      setRows(resp.rows);
+      setCols(resp.cols);
+
+      // clear the upload button
       uploader.current.clear();
 
-      /***** format date *******/
-      //var date = moment(
-      //     Math.round((resp.rows[1][i] - 25569) * 86400 * 1000)
-      //   ).format("DD-MM-YYYY");
+      // create data to send to backend
+      var data = [];
 
-      /***** format date *******/
+      // loop through all the data only
+      for (var i = 6; i < resp.rows[2].length; i++) {
+        var date;
+        // convert any dates to reeadable format/sql format
+        if (resp.rows[1][i] > 40000) {
+          date = moment(
+            Math.round((resp.rows[1][i] - 25569) * 86400 * 1000)
+          ).format("YYYY-DD-MM");
+        } else {
+          date = moment(resp.rows[1][i], "DD-MM-YYYY").format("YYYY-MM-DD");
+        }
 
-      // var chartData = [];
-      // var chartLabels = [];
+        // create new row of data [date, jianhao_views, jianhao_pc, ...]
+        var newRow = [];
+        newRow.push(date);
+        for (var j = 2; j < 104; j++) {
+          if (resp.rows[j] == undefined) newRow.push(0);
+          else if (resp.rows[j][i] == undefined) console.log("error");
+          else newRow.push(resp.rows[j][i]);
+        }
 
-      // for (var i = 3; i < resp.rows[1].length - 1; i++) {
-      //   console.log(i);
-      //   var date = moment(
-      //     Math.round((resp.rows[1][i] - 25569) * 86400 * 1000)
-      //   ).format("DD-MM-YYYY");
-      //   chartLabels.push(date);
-      //   chartData.push(resp.rows[18][i]);
-      // }
-      // // set the labels for the chart
-      // setChartAllData({
-      //   labels: chartLabels,
-      //   datasets: [
-      //     {
-      //       label: "Copies sold",
-      //       backgroundColor: "#66BB6A",
-      //       data: chartData,
-      //     },
-      //   ],
-      // });
+        data.push(newRow);
+      }
+
+      console.log(data);
     });
     toast.current.show({
       severity: "info",
       summary: "Success",
       detail: "File Uploaded",
     });
-
-    // console.log(moment(rows[1][3]));
-    // var str = rows[1][3];
-
-    // console.log(day);
   };
+
   const rightToolbarTemplate = () => {
     return (
       <React.Fragment>
