@@ -66,28 +66,35 @@ export default function THDashboard() {
       }
       uploader.current.clear();
 
-      var chartData = [];
-      var chartLabels = [];
+      /***** format date *******/
+      //var date = moment(
+      //     Math.round((resp.rows[1][i] - 25569) * 86400 * 1000)
+      //   ).format("DD-MM-YYYY");
 
-      for (var i = 3; i < resp.rows[1].length - 1; i++) {
-        console.log(i);
-        var date = moment(
-          Math.round((resp.rows[1][i] - 25569) * 86400 * 1000)
-        ).format("DD-MM-YYYY");
-        chartLabels.push(date);
-        chartData.push(resp.rows[18][i]);
-      }
-      // set the labels for the chart
-      setChartAllData({
-        labels: chartLabels,
-        datasets: [
-          {
-            label: "Copies sold",
-            backgroundColor: "#66BB6A",
-            data: chartData,
-          },
-        ],
-      });
+      /***** format date *******/
+
+      // var chartData = [];
+      // var chartLabels = [];
+
+      // for (var i = 3; i < resp.rows[1].length - 1; i++) {
+      //   console.log(i);
+      //   var date = moment(
+      //     Math.round((resp.rows[1][i] - 25569) * 86400 * 1000)
+      //   ).format("DD-MM-YYYY");
+      //   chartLabels.push(date);
+      //   chartData.push(resp.rows[18][i]);
+      // }
+      // // set the labels for the chart
+      // setChartAllData({
+      //   labels: chartLabels,
+      //   datasets: [
+      //     {
+      //       label: "Copies sold",
+      //       backgroundColor: "#66BB6A",
+      //       data: chartData,
+      //     },
+      //   ],
+      // });
     });
     toast.current.show({
       severity: "info",
