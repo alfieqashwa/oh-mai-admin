@@ -14,7 +14,7 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import moment from "moment";
 
-export default function Thbuy2077co() {
+export default function THOrders() {
   const [totalNum, setTotalNum] = useState(0);
   const [products, setProducts] = useState(null);
   const [globalFilter, setGlobalFilter] = useState(null);
@@ -90,28 +90,6 @@ export default function Thbuy2077co() {
     </div>
   );
 
-  const onPage = (event) => {
-    //setLoading(true);
-
-    (async function getData() {
-      await fetch(
-        "https://api.buy2077.co/listorders?page=" + event.page + "&items=15",
-        {
-          method: "GET",
-        }
-      )
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          setDtIndex(event.first);
-          setProducts(data);
-          setLoading(false);
-        });
-    })();
-  };
-
-  console.log(products);
   const dateTemplate = (rowData) => {
     var date = new Date(rowData.order_datetime);
 
@@ -143,24 +121,6 @@ export default function Thbuy2077co() {
   const lastNameTemplate = (rowData) => {
     return (
       <span style={{ overflowWrap: "break-word" }}>{rowData.last_name}</span>
-    );
-  };
-
-  const addrTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        {rowData.shipping_address_1 +
-          " " +
-          rowData.shipping_address_2 +
-          " " +
-          rowData.city +
-          " " +
-          rowData.state +
-          " " +
-          rowData.country +
-          " " +
-          rowData.postal_code}
-      </React.Fragment>
     );
   };
 
