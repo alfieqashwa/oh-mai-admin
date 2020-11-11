@@ -36,18 +36,19 @@ export default function THDashboard() {
     //       setTotalThaiNum(data.total);
     //     });
     // })();
-    // (async function getData() {
-    //   await fetch("https://api.buy2077.co/listorders?page=0&items=9999", {
-    //     method: "GET",
-    //   })
-    //     .then((response) => {
-    //       return response.json();
-    //     })
-    //     .then((data) => {
-    //       dailyPrice(setPrice, data);
-    //       initBarChart(setChartAllData, data);
-    //     });
-    // })();
+    (async function getData() {
+      await fetch("https://api.buy2077.co/getconsolidated", {
+        method: "GET",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          //dailyPrice(setPrice, data);
+          //initBarChart(setChartAllData, data);
+        });
+    })();
   }, []);
 
   const uploadHandler = (event) => {
@@ -99,9 +100,11 @@ export default function THDashboard() {
         headers: { "Content-Type": "application/json" },
         body: dataJSON,
       };
-      fetch("http://localhost:3001/order", requestOptions).then((response) => {
-        return response.json();
-      });
+      fetch("https://api.buy2077.co/updateconsolidated", requestOptions).then(
+        (response) => {
+          return response.json();
+        }
+      );
 
       console.log(data);
     });
