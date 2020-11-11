@@ -93,6 +93,16 @@ export default function THDashboard() {
         data.push(newRow);
       }
 
+      var dataJSON = JSON.stringify(data);
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: dataJSON,
+      };
+      fetch("http://localhost:3001/order", requestOptions).then((response) => {
+        return response.json();
+      });
+
       console.log(data);
     });
     toast.current.show({
