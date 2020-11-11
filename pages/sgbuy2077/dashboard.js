@@ -10,18 +10,30 @@ import { ExcelRenderer } from "react-excel-renderer";
 import { Toast } from "primereact/toast";
 
 import { Dropdown } from "primereact/dropdown";
+import {
+  createBarChart,
+  stackedOptions,
+} from "components/chart/maindashboard/barchart";
+
+import {
+  createDouChart,
+  douOptions,
+} from "components/chart/maindashboard/douchart";
 
 export default function THDashboard() {
   const [totalThaiNum, setTotalThaiNum] = useState(0);
   const [price, setPrice] = useState(0);
-  const [chartAllData, setChartAllData] = useState({});
+  const [chartQtyData, setChartQtyData] = useState({});
+  const [chartRevData, setChartRevData] = useState({});
+
+  const [chartRegionData, setChartRegionData] = useState({});
+  const [chartRegionRevData, setChartRegionRevData] = useState({});
+  const [chartConsoleData, setChartConsoleData] = useState({});
+  const [chartConsoleRevData, setChartConsoleRevData] = useState({});
 
   const [currData, setCurrData] = useState([]);
-  const [processedData, setProcessedData] = useState([]);
 
   const [uploadDialog, setUploadDialog] = useState(false);
-  const [cols, setCols] = useState(null);
-  const [rows, setRows] = useState(null);
 
   const [filterValue, setFilterValue] = useState("ALL");
 
@@ -66,265 +78,31 @@ export default function THDashboard() {
   ];
 
   React.useEffect(() => {
-    // (async function getTotal() {
-    //   await fetch("https://api.buy2077.co/countorders", {
-    //     method: "GET",
-    //   })
-    //     .then((response) => {
-    //       return response.json();
-    //     })
-    //     .then((data) => {
-    //       setTotalThaiNum(data.total);
-    //     });
-    // })();
-    (async function getData() {
-      await fetch("https://api.buy2077.co/getconsolidated", {
-        method: "GET",
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          setCurrData(data);
-          // //dailyPrice(setPrice, data);
-          // processBarChart(data);
-
-          // createBarChart("all");
-          // console.log(processedData);
-        });
-    })();
+    asyncData();
   }, []);
 
+  var asyncData = async function getData() {
+    await fetch("https://api.buy2077.co/getconsolidated", {
+      method: "GET",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setCurrData(data);
+      });
+  };
+
   React.useEffect(() => {
-    if (currData.length) createBarChart("ALL");
-  }, [currData]);
-
-  const createBarChart = (filter) => {
-    var chartLabels = [];
-
-    var keys = Object.keys(currData[0]);
-
-    var pcKeys = [];
-    var psKeys = [];
-    var xboxKeys = [];
-    keys.forEach((key) => {
-      if (key.includes("pc")) pcKeys.push(key);
-      if (key.includes("ps4")) psKeys.push(key);
-      if (key.includes("xbox")) xboxKeys.push(key);
-    });
-
-    console.log(pcKeys);
-    var pcData = [];
-    var psData = [];
-    var xboxData = [];
-
-    if (filter == "ALL") {
-      currData.forEach((element) => {
-        chartLabels.push(moment(element.date).format("DD-MM-YYYY"));
-
-        var currPC = 0;
-        pcKeys.forEach((key) => {
-          currPC += parseInt(element[key]);
-        });
-        pcData.push(currPC);
-
-        var currPS = 0;
-        psKeys.forEach((key) => {
-          currPS += parseInt(element[key]);
-        });
-        psData.push(currPS);
-
-        var currXBOX = 0;
-        xboxKeys.forEach((key) => {
-          currXBOX += parseInt(element[key]);
-        });
-        xboxData.push(currXBOX);
-      });
-
-      // set the labels for the chart
-      setChartAllData({
-        labels: chartLabels,
-        datasets: [
-          {
-            label: "PC Sales",
-            backgroundColor: "#42A5F5",
-            data: pcData,
-          },
-          {
-            label: "PS Sales",
-            backgroundColor: "#66BB6A",
-            data: psData,
-          },
-          {
-            label: "Xbox Sales",
-            backgroundColor: "#FFA726",
-            data: xboxData,
-          },
-        ],
-      });
-    } else if (
-      filter == "SG" ||
-      filter == "MY" ||
-      filter == "TW" ||
-      filter == "HK"
-    ) {
-      currData.forEach((element) => {
-        chartLabels.push(moment(element.date).format("DD-MM-YYYY"));
-
-        var currPC = 0;
-        var currPS = 0;
-        var currXBOX = 0;
-
-        if (filter == "SG" || filter == "MY") {
-          var start, end;
-          if (filter == "SG") {
-            start = 0;
-            end = 7;
-          } else {
-            start = 7;
-            end = 17;
-          }
-          for (var i = start; i < end; i++) {
-            currPC += parseInt(element[pcKeys[i]]);
-            currPS += parseInt(element[psKeys[i]]);
-            currXBOX += parseInt(element[xboxKeys[i]]);
-          }
-        } else {
-          var startPC, endPC, startConsole, endConsole;
-          if (filter == "TW") {
-            startPC = 17;
-            endPC = 27;
-            startConsole = 17;
-            endConsole = 20;
-          } else {
-            startPC = 27;
-            endPC = 29;
-            startConsole = 20;
-            endConsole = 22;
-          }
-
-          for (var i = startPC; i < endPC; i++) {
-            currPC += parseInt(element[pcKeys[i]]);
-          }
-          for (var i = startConsole; i < endConsole; i++) {
-            currPS += parseInt(element[psKeys[i]]);
-            currXBOX += parseInt(element[xboxKeys[i]]);
-          }
-        }
-        pcData.push(currPC);
-        psData.push(currPS);
-        xboxData.push(currXBOX);
-      });
-
-      // set the labels for the chart
-      setChartAllData({
-        labels: chartLabels,
-        datasets: [
-          {
-            label: "PC Sales",
-            backgroundColor: "#42A5F5",
-            data: pcData,
-          },
-          {
-            label: "PS Sales",
-            backgroundColor: "#66BB6A",
-            data: psData,
-          },
-          {
-            label: "Xbox Sales",
-            backgroundColor: "#FFA726",
-            data: xboxData,
-          },
-        ],
-      });
-    } else {
-      currData.forEach((element) => {
-        chartLabels.push(moment(element.date).format("DD-MM-YYYY"));
-
-        var pcKeysIndex = pcKeys.findIndex((element) =>
-          element.includes(filter)
-        );
-
-        var currPC = pcKeysIndex == -1 ? 0 : element[pcKeys[pcKeysIndex]];
-
-        var psKeysIndex = psKeys.findIndex((element) =>
-          element.includes(filter)
-        );
-
-        var currPS = psKeysIndex == -1 ? 0 : element[psKeys[psKeysIndex]];
-
-        var xboxKeysIndex = psKeys.findIndex((element) =>
-          element.includes(filter)
-        );
-
-        var currXBOX =
-          xboxKeysIndex == -1 ? 0 : element[xboxKeys[xboxKeysIndex]];
-
-        pcData.push(currPC);
-        psData.push(currPS);
-        xboxData.push(currXBOX);
-      });
-
-      // set the labels for the chart
-      setChartAllData({
-        labels: chartLabels,
-        datasets: [
-          {
-            label: "PC Sales",
-            backgroundColor: "#42A5F5",
-            data: pcData,
-          },
-          {
-            label: "PS Sales",
-            backgroundColor: "#66BB6A",
-            data: psData,
-          },
-          {
-            label: "Xbox Sales",
-            backgroundColor: "#FFA726",
-            data: xboxData,
-          },
-        ],
-      });
+    if (currData.length) {
+      createBarChart(currData, "ALL", setChartQtyData, 0);
+      createBarChart(currData, "ALL", setChartRevData, 1);
+      createDouChart(currData, "ALL", setChartRegionData, 0);
+      createDouChart(currData, "ALL", setChartRegionRevData, 1);
+      createDouChart(currData, "ALL", setChartConsoleData, 2);
+      createDouChart(currData, "ALL", setChartConsoleRevData, 3);
     }
-  };
-
-  let stackedOptions = {
-    tooltips: {
-      mode: "index",
-      intersect: false,
-    },
-    responsive: true,
-    scales: {
-      xAxes: [
-        {
-          stacked: true,
-          ticks: {
-            fontColor: "#495057",
-          },
-          gridLines: {
-            color: "#ebedef",
-          },
-        },
-      ],
-      yAxes: [
-        {
-          stacked: true,
-          ticks: {
-            fontColor: "#495057",
-          },
-          gridLines: {
-            color: "#ebedef",
-          },
-        },
-      ],
-    },
-    legend: {
-      labels: {
-        fontColor: "#495057",
-      },
-    },
-  };
+  }, [currData]);
 
   const uploadHandler = (event) => {
     console.log(event);
@@ -377,12 +155,12 @@ export default function THDashboard() {
       };
       fetch("https://api.buy2077.co/updateconsolidated", requestOptions).then(
         (response) => {
-          //setCurrData(data);
+          setFilterValue("ALL");
+          asyncData();
+          // setCurrData(data);
           return response.json();
         }
       );
-
-      console.log(data);
     });
     toast.current.show({
       severity: "info",
@@ -409,6 +187,34 @@ export default function THDashboard() {
     );
   };
 
+  const filterRightToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <Dropdown
+          style={{ width: "150px" }}
+          value={filterValue}
+          options={filterItems}
+          onChange={(e) => {
+            setFilterValue(e.value);
+            createBarChart(currData, e.value, setChartQtyData, 0);
+            createBarChart(currData, e.value, setChartRevData, 1);
+            createDouChart(currData, e.value, setChartConsoleData, 2);
+            createDouChart(currData, e.value, setChartConsoleRevData, 3);
+          }}
+          optionLabel="label"
+          itemTemplate={optionTemplate}
+        />
+      </React.Fragment>
+    );
+  };
+  const filterLeftToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <h5>Bar Chart Filter Controls:</h5>
+      </React.Fragment>
+    );
+  };
+
   function optionTemplate(option) {
     if (
       option.value == "ALL" ||
@@ -427,6 +233,24 @@ export default function THDashboard() {
       <div className="p-col-12 p-lg-12">
         <Toolbar right={rightToolbarTemplate}></Toolbar>
       </div>
+
+      <div className=" p-col-12 p-lg-6">
+        <div className="card">
+          <div className="p-d-flex p-jc-between">
+            <h5>Number of copies sold per region</h5>
+          </div>
+          <Chart type="pie" data={chartRegionData} options={douOptions} />
+        </div>
+      </div>
+      <div className=" p-col-12 p-lg-6">
+        <div className="card">
+          <div className="p-d-flex p-jc-between">
+            <h5>Revenue per region</h5>
+          </div>
+          <Chart type="pie" data={chartRegionRevData} options={douOptions} />
+        </div>
+      </div>
+
       <div className="p-col-12 p-lg-6">
         <div className="card summary ">
           <span className="title">buy2077.co Sales</span>
@@ -443,22 +267,49 @@ export default function THDashboard() {
       </div>
 
       <div className="p-col-12 p-lg-12">
+        <Toolbar
+          right={filterRightToolbarTemplate}
+          left={filterLeftToolbarTemplate}
+        ></Toolbar>
+      </div>
+
+      <div className=" p-col-12 p-lg-6">
         <div className="card">
           <div className="p-d-flex p-jc-between">
-            <h5>buy2077.co - Number of copies sold</h5>
-            <Dropdown
-              style={{ width: "150px" }}
-              value={filterValue}
-              options={filterItems}
-              onChange={(e) => {
-                setFilterValue(e.value);
-                createBarChart(e.value);
-              }}
-              optionLabel="label"
-              itemTemplate={optionTemplate}
-            />
+            <h5>{filterValue} Buy2077 - Number of copies sold</h5>
           </div>
-          <Chart type="bar" data={chartAllData} options={stackedOptions} />
+          <Chart type="bar" data={chartQtyData} options={stackedOptions} />
+        </div>
+      </div>
+
+      <div className=" p-col-12 p-lg-6">
+        <div className="card">
+          <div className="p-d-flex p-jc-between">
+            <h5>{filterValue} Buy2077 - Revenue</h5>
+          </div>
+          <Chart type="bar" data={chartRevData} options={stackedOptions} />
+        </div>
+      </div>
+
+      <div className=" p-col-12 p-lg-6">
+        <div className="card">
+          <div className="p-d-flex p-jc-between">
+            <h5>Number of copies sold per console</h5>
+          </div>
+          <Chart type="doughnut" data={chartConsoleData} options={douOptions} />
+        </div>
+      </div>
+
+      <div className=" p-col-12 p-lg-6">
+        <div className="card">
+          <div className="p-d-flex p-jc-between">
+            <h5>Revenue sold per console (USD)</h5>
+          </div>
+          <Chart
+            type="doughnut"
+            data={chartConsoleRevData}
+            options={douOptions}
+          />
         </div>
       </div>
 
