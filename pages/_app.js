@@ -91,22 +91,22 @@ function MyApp({ Component, pageProps }) {
         },
       ],
     },
-    {
-      label: "sg.buy2077.co",
-      icon: "pi pi-fw pi-list",
-      items: [
-        {
-          label: "Dashboard",
-          icon: "pi pi-fw pi-chart-bar",
-          to: "/sgbuy2077/dashboard",
-        },
-        {
-          label: "Order List",
-          icon: "pi pi-fw pi-file-excel",
-          to: "/sgbuy2077/orders",
-        },
-      ],
-    },
+    // {
+    //   label: "sg.buy2077.co",
+    //   icon: "pi pi-fw pi-list",
+    //   items: [
+    //     {
+    //       label: "Dashboard",
+    //       icon: "pi pi-fw pi-chart-bar",
+    //       to: "/sgbuy2077/dashboard",
+    //     },
+    //     {
+    //       label: "Order List",
+    //       icon: "pi pi-fw pi-file-excel",
+    //       to: "/sgbuy2077/orders",
+    //     },
+    //   ],
+    // },
   ];
 
   const onMenuItemClick = (event) => {

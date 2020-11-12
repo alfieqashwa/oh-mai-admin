@@ -1,156 +1,324 @@
 import React, { useState, useEffect } from "react";
-import { Panel } from "primereact/panel";
-import { Checkbox } from "primereact/checkbox";
-import { Button } from "primereact/button";
-import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
+import moment from "moment";
 import { Chart } from "primereact/chart";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
+import { dailyPrice, initBarChart, chartOptions } from "components/helper";
+import { Toolbar } from "primereact/toolbar";
+import { FileUpload } from "primereact/fileupload";
+import { Dialog } from "primereact/dialog";
+import { Button } from "primereact/button";
+import { ExcelRenderer } from "react-excel-renderer";
+import { Toast } from "primereact/toast";
+
+import { Dropdown } from "primereact/dropdown";
+import {
+  createBarChart,
+  stackedOptions,
+} from "components/chart/maindashboard/barchart";
+
+import {
+  createDouChart,
+  douOptions,
+} from "components/chart/maindashboard/douchart";
 
 export default function Dashboard() {
-  const carservice = null;
-
-  const [tasks, setTasks] = useState([]);
-  const [city, setCity] = useState(null);
-  const [cars, setCars] = useState(null);
-  const [selectedCar, setSelectedCar] = useState(null);
-  const [lineData, setLineData] = useState({
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [
-      {
-        label: "First Dataset",
-        data: [65, 59, 80, 81, 56, 55, 40],
-        fill: true,
-        borderColor: "#007be5",
-      },
-      {
-        label: "Second Dataset",
-        data: [28, 48, 40, 19, 86, 27, 90],
-        fill: true,
-        borderColor: "#20d077",
-      },
-    ],
-  });
-  const [cities, setCities] = useState([
-    { label: "New York", value: { id: 1, name: "New York", code: "NY" } },
-    { label: "Rome", value: { id: 2, name: "Rome", code: "RM" } },
-    { label: "London", value: { id: 3, name: "London", code: "LDN" } },
-    { label: "Istanbul", value: { id: 4, name: "Istanbul", code: "IST" } },
-    { label: "Paris", value: { id: 5, name: "Paris", code: "PRS" } },
-  ]);
-
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      title: "All Day Event",
-      start: "2017-02-01",
-    },
-    {
-      id: 2,
-      title: "Long Event",
-      start: "2017-02-07",
-      end: "2017-02-10",
-    },
-    {
-      id: 3,
-      title: "Repeating Event",
-      start: "2017-02-09T16:00:00",
-    },
-    {
-      id: 4,
-      title: "Repeating Event",
-      start: "2017-02-16T16:00:00",
-    },
-    {
-      id: 5,
-      title: "Conference",
-      start: "2017-02-11",
-      end: "2017-02-13",
-    },
-    {
-      id: 6,
-      title: "Meeting",
-      start: "2017-02-12T10:30:00",
-      end: "2017-02-12T12:30:00",
-    },
-    {
-      id: 7,
-      title: "Lunch",
-      start: "2017-02-12T12:00:00",
-    },
-    {
-      id: 8,
-      title: "Meeting",
-      start: "2017-02-12T14:30:00",
-    },
-    {
-      id: 9,
-      title: "Happy Hour",
-      start: "2017-02-12T17:30:00",
-    },
-    {
-      id: 10,
-      title: "Dinner",
-      start: "2017-02-12T20:00:00",
-    },
-    {
-      id: 11,
-      title: "Birthday Party",
-      start: "2017-02-13T07:00:00",
-    },
-    {
-      id: 12,
-      title: "Click for Google",
-      url: "http://google.com/",
-      start: "2017-02-28",
-    },
-  ]);
-
   const [totalThaiNum, setTotalThaiNum] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [chartQtyData, setChartQtyData] = useState({});
+  const [chartRevData, setChartRevData] = useState({});
+
+  const [chartRegionData, setChartRegionData] = useState({});
+  const [chartRegionRevData, setChartRegionRevData] = useState({});
+  const [chartConsoleData, setChartConsoleData] = useState({});
+  const [chartConsoleRevData, setChartConsoleRevData] = useState({});
+
+  const [currData, setCurrData] = useState([]);
+
+  const [uploadDialog, setUploadDialog] = useState(false);
+
+  const [filterValue, setFilterValue] = useState("ALL");
+
+  const toast = React.useRef(null);
+  const uploader = React.useRef(null);
+
+  const filterItems = [
+    { label: "All", value: "ALL" },
+    { label: "Singapore", value: "SG" },
+    { label: "Jian Hao", value: "jianhao" },
+    { label: "Debbie", value: "debbie" },
+    { label: "TitanGamers", value: "titangamers" },
+    { label: "Ridwan", value: "ridwan" },
+    { label: "Vincent", value: "vincent" },
+    { label: "NOC(Mugs)", value: "nocmug" },
+    { label: "NOC(socks)", value: "nocsocks" },
+    { label: "Malaysia", value: "MY" },
+    { label: "YingTze", value: "yingtze" },
+    { label: "Laowu", value: "laowu" },
+    { label: "Mobhouse", value: "mobhouse" },
+    { label: "Flare", value: "flare" },
+    { label: "Adibalexx", value: "adibalexx" },
+    { label: "Farhanmzln", value: "farhanmzln" },
+    { label: "Spiderjal", value: "spiderjal" },
+    { label: "Derezedd", value: "derezedd" },
+    { label: "Rezzadude", value: "rezzadude" },
+    { label: "Luqman", value: "luqman" },
+    { label: "Taiwan", value: "TW" },
+    { label: "貝莉莓", value: "貝莉莓" },
+    { label: "萊斯", value: "萊斯" },
+    { label: "老皮", value: "老皮" },
+    { label: "超粒方", value: "超粒方" },
+    { label: "殺梗", value: "殺梗" },
+    { label: "6tan", value: "6tan" },
+    { label: "魯蛋", value: "魯蛋" },
+    { label: "館長", value: "館長" },
+    { label: "Gooaye", value: "gooaye" },
+    { label: "達哥", value: "達哥" },
+    { label: "Hong Kong", value: "HK" },
+    { label: "Arhosunny", value: "arhosunny" },
+    { label: "GameplayHK", value: "gameplayhk" },
+  ];
 
   React.useEffect(() => {
-    (async function getTotal() {
-      await fetch("https://api.buy2077.co/countorders", {
-        method: "GET",
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          setTotalThaiNum(data.total);
-        });
-    })();
+    asyncData();
   }, []);
 
-  const onTaskChange = (e) => {
-    let selectedTasks = [...tasks];
-    if (e.checked) selectedTasks.push(e.value);
-    else selectedTasks.splice(selectedTasks.indexOf(e.value), 1);
-
-    setTasks(selectedTasks);
+  var asyncData = async function getData() {
+    await fetch("https://api.buy2077.co/getconsolidated", {
+      method: "GET",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setCurrData(data);
+      });
   };
 
-  const onCityChange = (e) => {
-    setCity(e.value);
+  React.useEffect(() => {
+    if (currData.length) {
+      createBarChart(currData, "ALL", setChartQtyData, 0);
+      createBarChart(currData, "ALL", setChartRevData, 1);
+      createDouChart(currData, "ALL", setChartRegionData, 0);
+      createDouChart(currData, "ALL", setChartRegionRevData, 1);
+      createDouChart(currData, "ALL", setChartConsoleData, 2);
+      createDouChart(currData, "ALL", setChartConsoleRevData, 3);
+    }
+  }, [currData]);
+
+  const uploadHandler = (event) => {
+    console.log(event);
+    let fileObj = event.files[0];
+
+    console.log(event.files[0]);
+
+    // read excel file. DO NOT HAVE EMPTY FIELDS OR THE READER WILL SKIP THE VALUE
+    ExcelRenderer(fileObj, (err, resp) => {
+      if (err) return console.log(err);
+
+      setRows(resp.rows);
+      setCols(resp.cols);
+
+      // clear the upload button
+      uploader.current.clear();
+
+      // create data to send to backend
+      var data = [];
+
+      // loop through all the data only
+      for (var i = 6; i < resp.rows[2].length; i++) {
+        var date;
+        // convert any dates to reeadable format/sql format
+        if (resp.rows[1][i] > 40000) {
+          date = moment(
+            Math.round((resp.rows[1][i] - 25569) * 86400 * 1000)
+          ).format("YYYY-DD-MM");
+        } else {
+          date = moment(resp.rows[1][i], "DD-MM-YYYY").format("YYYY-MM-DD");
+        }
+
+        // create new row of data [date, jianhao_views, jianhao_pc, ...]
+        var newRow = [];
+        newRow.push(date);
+        for (var j = 2; j < 104; j++) {
+          if (resp.rows[j] == undefined) newRow.push(0);
+          else if (resp.rows[j][i] == undefined) console.log("error");
+          else newRow.push(resp.rows[j][i]);
+        }
+
+        data.push(newRow);
+      }
+
+      var dataJSON = JSON.stringify(data);
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: dataJSON,
+      };
+      fetch("https://api.buy2077.co/updateconsolidated", requestOptions).then(
+        (response) => {
+          setFilterValue("ALL");
+          asyncData();
+          // setCurrData(data);
+          return response.json();
+        }
+      );
+    });
+    toast.current.show({
+      severity: "info",
+      summary: "Success",
+      detail: "File Uploaded",
+    });
   };
+
+  const rightToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <FileUpload
+          ref={uploader}
+          mode="basic"
+          maxFileSize={1000000}
+          label="Import"
+          chooseLabel="Import"
+          className="p-mr-2 "
+          customUpload
+          uploadHandler={uploadHandler}
+          auto
+        />
+      </React.Fragment>
+    );
+  };
+
+  const filterRightToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <Dropdown
+          style={{ width: "150px" }}
+          value={filterValue}
+          options={filterItems}
+          onChange={(e) => {
+            setFilterValue(e.value);
+            createBarChart(currData, e.value, setChartQtyData, 0);
+            createBarChart(currData, e.value, setChartRevData, 1);
+            createDouChart(currData, e.value, setChartConsoleData, 2);
+            createDouChart(currData, e.value, setChartConsoleRevData, 3);
+          }}
+          optionLabel="label"
+          itemTemplate={optionTemplate}
+        />
+      </React.Fragment>
+    );
+  };
+  const filterLeftToolbarTemplate = () => {
+    return (
+      <React.Fragment>
+        <h5>Bar Chart Filter Controls:</h5>
+      </React.Fragment>
+    );
+  };
+
+  function optionTemplate(option) {
+    if (
+      option.value == "ALL" ||
+      option.value == "SG" ||
+      option.value == "MY" ||
+      option.value == "TW" ||
+      option.value == "HK"
+    )
+      return <div>{option.label}</div>;
+    else return <div style={{ marginLeft: "20%" }}>{option.label}</div>;
+  }
 
   return (
     <div className="p-grid p-fluid dashboard">
+      <Toast ref={toast}></Toast>
+      <div className="p-col-12 p-lg-12">
+        <Toolbar right={rightToolbarTemplate}></Toolbar>
+      </div>
+
+      <div className=" p-col-12 p-lg-6">
+        <div className="card">
+          <div className="p-d-flex p-jc-between">
+            <h5>Number of copies sold per region</h5>
+          </div>
+          <Chart type="pie" data={chartRegionData} options={douOptions} />
+        </div>
+      </div>
+      <div className=" p-col-12 p-lg-6">
+        <div className="card">
+          <div className="p-d-flex p-jc-between">
+            <h5>Revenue per region</h5>
+          </div>
+          <Chart type="pie" data={chartRegionRevData} options={douOptions} />
+        </div>
+      </div>
+
       <div className="p-col-12 p-lg-6">
-        <div className="card summary">
-          <span className="title">th.buy2077.co Sales</span>
+        <div className="card summary ">
+          <span className="title">buy2077.co Sales</span>
           <span className="detail">Number of purchases</span>
           <span className="count purchases">{totalThaiNum}</span>
         </div>
       </div>
       <div className="p-col-12 p-lg-6">
-        <div className="card summary">
-          <span className="title">Revenue</span>
+        <div className="card summary ">
+          <span className="title">Daily Revenue</span>
           <span className="detail">Income for today</span>
-          <span className="count revenue">$0</span>
+          <span className="count revenue">{price}</span>
         </div>
       </div>
+
+      <div className="p-col-12 p-lg-12">
+        <Toolbar
+          right={filterRightToolbarTemplate}
+          left={filterLeftToolbarTemplate}
+        ></Toolbar>
+      </div>
+
+      <div className=" p-col-12 p-lg-6">
+        <div className="card">
+          <div className="p-d-flex p-jc-between">
+            <h5>{filterValue} Buy2077 - Number of copies sold</h5>
+          </div>
+          <Chart type="bar" data={chartQtyData} options={stackedOptions} />
+        </div>
+      </div>
+
+      <div className=" p-col-12 p-lg-6">
+        <div className="card">
+          <div className="p-d-flex p-jc-between">
+            <h5>{filterValue} Buy2077 - Revenue</h5>
+          </div>
+          <Chart type="bar" data={chartRevData} options={stackedOptions} />
+        </div>
+      </div>
+
+      <div className=" p-col-12 p-lg-6">
+        <div className="card">
+          <div className="p-d-flex p-jc-between">
+            <h5>Number of copies sold per console</h5>
+          </div>
+          <Chart type="doughnut" data={chartConsoleData} options={douOptions} />
+        </div>
+      </div>
+
+      <div className=" p-col-12 p-lg-6">
+        <div className="card">
+          <div className="p-d-flex p-jc-between">
+            <h5>Revenue sold per console (USD)</h5>
+          </div>
+          <Chart
+            type="doughnut"
+            data={chartConsoleRevData}
+            options={douOptions}
+          />
+        </div>
+      </div>
+
+      <Dialog
+        header="Upload xlsx/excel sheet here"
+        visible={uploadDialog}
+        style={{ width: "80vw" }}
+        onHide={() => setUploadDialog(false)}
+      ></Dialog>
     </div>
   );
 }
