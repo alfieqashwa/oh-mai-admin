@@ -12,6 +12,7 @@ import { RadioButton } from "primereact/radiobutton";
 import { InputNumber } from "primereact/inputnumber";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import RichEditor from "components/richeditor";
 
 import useSWR from "swr";
 import { products } from "../graphql/product";
@@ -424,6 +425,7 @@ export default function Products() {
         </div>
         <div className="p-field">
           <label htmlFor="description">Description</label>
+
           <InputTextarea
             id="description"
             value={product.description}

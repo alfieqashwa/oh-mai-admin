@@ -26,50 +26,12 @@ export const createBarChart = (currData, filter, setData, version) => {
       var currPC = 0;
       pcKeys.forEach((key) => {
         if (version == 1) {
-          var val = key.replace("_pc", "");
-          switch (val) {
-            case "jianhao":
-            case "debbie":
-            case "titangamers":
-            case "ridwan":
-            case "vincent":
-            case "nocmugs":
-            case "nocsocks":
-              currPC += parseInt(element[key]) * 69 * 0.74;
-
-              break;
-            case "yingtze":
-            case "laowu":
-            case "mobhouse":
-            case "flare":
-            case "adibalexx":
-            case "farhanmzln":
-            case "spiderjal":
-            case "derezedd":
-            case "rezzadude":
-            case "luqman":
-              currPC += parseInt(element[key]) * 219 * 0.24309;
-
-              break;
-            case "貝莉莓":
-            case "萊斯":
-            case "老皮":
-            case "超粒方":
-            case "殺梗":
-            case "6tan":
-            case "魯蛋":
-            case "館長":
-            case "gooaye":
-            case "達哥":
-              currPC += parseInt(element[key]) * 1690 * 0.04;
-
-              break;
-            case "arhosunny":
-            case "gameplayhk":
-              currPC += parseInt(element[key]) * 146 * 0.13;
-
-              break;
-          }
+          if (key.includes("sg")) currPC += parseInt(element[key]) * 69 * 0.74;
+          if (key.includes("my"))
+            currPC += parseInt(element[key]) * 219 * 0.24309;
+          if (key.includes("tw"))
+            currPC += parseInt(element[key]) * 1690 * 0.04;
+          if (key.includes("hk")) currPC += parseInt(element[key]) * 146 * 0.13;
         } else currPC += parseInt(element[key]);
       });
       pcData.push(currPC);
@@ -77,50 +39,12 @@ export const createBarChart = (currData, filter, setData, version) => {
       var currPS = 0;
       psKeys.forEach((key) => {
         if (version == 1) {
-          var val = key.replace("_ps4", "");
-          switch (val) {
-            case "jianhao":
-            case "debbie":
-            case "titangamers":
-            case "ridwan":
-            case "vincent":
-            case "nocmugs":
-            case "nocsocks":
-              currPS += parseInt(element[key]) * 79 * 0.74;
-
-              break;
-            case "yingtze":
-            case "laowu":
-            case "mobhouse":
-            case "flare":
-            case "adibalexx":
-            case "farhanmzln":
-            case "spiderjal":
-            case "derezedd":
-            case "rezzadude":
-            case "luqman":
-              currPS += parseInt(element[key]) * 259 * 0.24309;
-
-              break;
-            case "貝莉莓":
-            case "萊斯":
-            case "老皮":
-            case "超粒方":
-            case "殺梗":
-            case "6tan":
-            case "魯蛋":
-            case "館長":
-            case "gooaye":
-            case "達哥":
-              currPS += parseInt(element[key]) * 1890 * 0.04;
-
-              break;
-            case "arhosunny":
-            case "gameplayhk":
-              currPS += parseInt(element[key]) * 249 * 0.13;
-
-              break;
-          }
+          if (key.includes("sg")) currPS += parseInt(element[key]) * 79 * 0.74;
+          if (key.includes("my"))
+            currPS += parseInt(element[key]) * 259 * 0.24309;
+          if (key.includes("tw"))
+            currPS += parseInt(element[key]) * 1890 * 0.04;
+          if (key.includes("hk")) currPS += parseInt(element[key]) * 249 * 0.13;
         } else currPS += parseInt(element[key]);
       });
       psData.push(currPS);
@@ -128,50 +52,14 @@ export const createBarChart = (currData, filter, setData, version) => {
       var currXBOX = 0;
       xboxKeys.forEach((key) => {
         if (version == 1) {
-          var val = key.replace("_xbox", "");
-          switch (val) {
-            case "jianhao":
-            case "debbie":
-            case "titangamers":
-            case "ridwan":
-            case "vincent":
-            case "nocmugs":
-            case "nocsocks":
-              currXBOX += parseInt(element[key]) * 79 * 0.74;
-
-              break;
-            case "yingtze":
-            case "laowu":
-            case "mobhouse":
-            case "flare":
-            case "adibalexx":
-            case "farhanmzln":
-            case "spiderjal":
-            case "derezedd":
-            case "rezzadude":
-            case "luqman":
-              currXBOX += parseInt(element[key]) * 259 * 0.24309;
-
-              break;
-            case "貝莉莓":
-            case "萊斯":
-            case "老皮":
-            case "超粒方":
-            case "殺梗":
-            case "6tan":
-            case "魯蛋":
-            case "館長":
-            case "gooaye":
-            case "達哥":
-              currXBOX += parseInt(element[key]) * 1890 * 0.04;
-
-              break;
-            case "arhosunny":
-            case "gameplayhk":
-              currXBOX += parseInt(element[key]) * 249 * 0.13;
-
-              break;
-          }
+          if (key.includes("sg"))
+            currXBOX += parseInt(element[key]) * 79 * 0.74;
+          if (key.includes("my"))
+            currXBOX += parseInt(element[key]) * 259 * 0.24309;
+          if (key.includes("tw"))
+            currXBOX += parseInt(element[key]) * 1890 * 0.04;
+          if (key.includes("hk"))
+            currXBOX += parseInt(element[key]) * 249 * 0.13;
         } else currXBOX += parseInt(element[key]);
       });
       xboxData.push(currXBOX);
@@ -211,42 +99,18 @@ export const createBarChart = (currData, filter, setData, version) => {
       var currPS = 0;
       var currXBOX = 0;
 
-      if (filter == "SG" || filter == "MY") {
-        var start, end;
-        if (filter == "SG") {
-          start = 0;
-          end = 7;
-        } else {
-          start = 7;
-          end = 17;
-        }
-        for (var i = start; i < end; i++) {
-          currPC += parseInt(element[pcKeys[i]]);
-          currPS += parseInt(element[psKeys[i]]);
-          currXBOX += parseInt(element[xboxKeys[i]]);
-        }
-      } else {
-        var startPC, endPC, startConsole, endConsole;
-        if (filter == "TW") {
-          startPC = 17;
-          endPC = 27;
-          startConsole = 17;
-          endConsole = 20;
-        } else {
-          startPC = 27;
-          endPC = 29;
-          startConsole = 20;
-          endConsole = 22;
-        }
-
-        for (var i = startPC; i < endPC; i++) {
-          currPC += parseInt(element[pcKeys[i]]);
-        }
-        for (var i = startConsole; i < endConsole; i++) {
-          currPS += parseInt(element[psKeys[i]]);
-          currXBOX += parseInt(element[xboxKeys[i]]);
-        }
-      }
+      pcKeys.forEach((key) => {
+        if (key.includes(filter.toLowerCase()))
+          currPC += parseInt(element[key]);
+      });
+      psKeys.forEach((key) => {
+        if (key.includes(filter.toLowerCase()))
+          currPS += parseInt(element[key]);
+      });
+      xboxKeys.forEach((key) => {
+        if (key.includes(filter.toLowerCase()))
+          currXBOX += parseInt(element[key]);
+      });
 
       if (version == 1) {
         switch (filter) {
