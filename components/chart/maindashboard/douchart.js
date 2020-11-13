@@ -8,6 +8,8 @@ import {
   priceTWConsole,
   priceHKPC,
   priceHKConsole,
+  priceSGSpecialPC,
+  priceSGSpecialConsole,
 } from "./values";
 
 export const createDouChart = (currData, filter, setData, version) => {
@@ -40,12 +42,7 @@ export const createDouChart = (currData, filter, setData, version) => {
       });
     });
 
-    finalData = [
-      currSG.toFixed(2),
-      currMY.toFixed(2),
-      currTW.toFixed(2),
-      currHK.toFixed(2),
-    ];
+    finalData = [currSG, currMY, currTW, currHK];
   } else if (version == 1) {
     chartLabels = ["SG", "MY", "TW", "HK"];
 
@@ -61,31 +58,31 @@ export const createDouChart = (currData, filter, setData, version) => {
     var currHK = 0;
     currData.forEach((element) => {
       newKeys.forEach((key) => {
-        if (key.includes("sg")) {
+        if (
+          key.includes("jianhao") ||
+          key.includes("debbie") ||
+          key.includes("titangamers")
+        ) {
+          if (key.includes("pc"))
+            currSG += parseInt(element[key]) * priceSGSpecialPC;
+          else currSG += parseInt(element[key]) * priceSGSpecialConsole;
+        } else if (key.includes("sg")) {
           if (key.includes("pc")) currSG += parseInt(element[key]) * priceSGPC;
           else currSG += parseInt(element[key]) * priceSGConsole;
-        }
-        if (key.includes("my")) {
+        } else if (key.includes("my")) {
           if (key.includes("pc")) currMY += parseInt(element[key]) * priceMYPC;
           else currMY += parseInt(element[key]) * priceMYConsole;
-        }
-        if (key.includes("tw")) {
+        } else if (key.includes("tw")) {
           if (key.includes("pc")) currTW += parseInt(element[key]) * priceTWPC;
           else currTW += parseInt(element[key]) * priceTWConsole;
-        }
-        if (key.includes("hk")) {
+        } else if (key.includes("hk")) {
           if (key.includes("pc")) currHK += parseInt(element[key]) * priceHKPC;
           else currHK += parseInt(element[key]) * priceHKConsole;
         }
       });
     });
 
-    finalData = [
-      currSG.toFixed(2),
-      currMY.toFixed(2),
-      currTW.toFixed(2),
-      currHK.toFixed(2),
-    ];
+    finalData = [currSG, currMY, currTW, currHK];
   } else if (version == 2) {
     chartLabels = ["PC", "PS", "XBOX"];
 
@@ -129,7 +126,7 @@ export const createDouChart = (currData, filter, setData, version) => {
         }
       });
     });
-    finalData = [currPC.toFixed(2), currPS.toFixed(2), currXBOX.toFixed(2)];
+    finalData = [currPC, currPS, currXBOX];
   } else if (version == 3) {
     chartLabels = ["PC", "PS", "XBOX"];
 
@@ -149,12 +146,29 @@ export const createDouChart = (currData, filter, setData, version) => {
     currData.forEach((element) => {
       pcKeys.forEach((key, index) => {
         if (filter == "ALL") {
-          if (key.includes("sg")) currPC += parseInt(element[key]) * priceSGPC;
-          if (key.includes("my")) currPC += parseInt(element[key]) * priceMYPC;
-          if (key.includes("tw")) currPC += parseInt(element[key]) * priceTWPC;
-          if (key.includes("hk")) currPC += parseInt(element[key]) * priceHKPC;
+          if (
+            key.includes("jianhao") ||
+            key.includes("debbie") ||
+            key.includes("titangamers")
+          )
+            currPC += parseInt(element[key]) * priceSGSpecialPC;
+          else if (key.includes("sg"))
+            currPC += parseInt(element[key]) * priceSGPC;
+          else if (key.includes("my"))
+            currPC += parseInt(element[key]) * priceMYPC;
+          else if (key.includes("tw"))
+            currPC += parseInt(element[key]) * priceTWPC;
+          else if (key.includes("hk"))
+            currPC += parseInt(element[key]) * priceHKPC;
         } else if (filter == "SG") {
-          if (key.includes("sg")) currPC += parseInt(element[key]) * priceSGPC;
+          if (
+            key.includes("jianhao") ||
+            key.includes("debbie") ||
+            key.includes("titangamers")
+          )
+            currPC += parseInt(element[key]) * priceSGSpecialPC;
+          else if (key.includes("sg"))
+            currPC += parseInt(element[key]) * priceSGPC;
         } else if (filter == "MY") {
           if (key.includes("my")) currPC += parseInt(element[key]) * priceMYPC;
         } else if (filter == "TW") {
@@ -163,29 +177,47 @@ export const createDouChart = (currData, filter, setData, version) => {
           if (key.includes("hk")) currPC += parseInt(element[key]) * priceHKPC;
         } else {
           if (key.includes(filter)) {
-            if (key.includes("sg"))
+            if (
+              key.includes("jianhao") ||
+              key.includes("debbie") ||
+              key.includes("titangamers")
+            ) {
+              currPC += parseInt(element[key]) * priceSGSpecialPC;
+            } else if (key.includes("sg"))
               currPC += parseInt(element[key]) * priceSGPC;
-            if (key.includes("my"))
+            else if (key.includes("my"))
               currPC += parseInt(element[key]) * priceMYPC;
-            if (key.includes("tw"))
+            else if (key.includes("tw"))
               currPC += parseInt(element[key]) * priceTWPC;
-            if (key.includes("hk"))
+            else if (key.includes("hk"))
               currPC += parseInt(element[key]) * priceHKPC;
           }
         }
       });
       psKeys.forEach((key, index) => {
         if (filter == "ALL") {
-          if (key.includes("sg"))
+          if (
+            key.includes("jianhao") ||
+            key.includes("debbie") ||
+            key.includes("titangamers")
+          )
+            currPS += parseInt(element[key]) * priceSGSpecialConsole;
+          else if (key.includes("sg"))
             currPS += parseInt(element[key]) * priceSGConsole;
-          if (key.includes("my"))
+          else if (key.includes("my"))
             currPS += parseInt(element[key]) * priceMYConsole;
-          if (key.includes("tw"))
+          else if (key.includes("tw"))
             currPS += parseInt(element[key]) * priceTWConsole;
-          if (key.includes("hk"))
+          else if (key.includes("hk"))
             currPS += parseInt(element[key]) * priceHKConsole;
         } else if (filter == "SG") {
-          if (key.includes("sg"))
+          if (
+            key.includes("jianhao") ||
+            key.includes("debbie") ||
+            key.includes("titangamers")
+          )
+            currPS += parseInt(element[key]) * priceSGSpecialConsole;
+          else if (key.includes("sg"))
             currPS += parseInt(element[key]) * priceSGConsole;
         } else if (filter == "MY") {
           if (key.includes("my"))
@@ -198,13 +230,19 @@ export const createDouChart = (currData, filter, setData, version) => {
             currPS += parseInt(element[key]) * priceHKConsole;
         } else {
           if (key.includes(filter)) {
-            if (key.includes("sg"))
+            if (
+              key.includes("jianhao") ||
+              key.includes("debbie") ||
+              key.includes("titangamers")
+            )
+              currPS += parseInt(element[key]) * priceSGSpecialConsole;
+            else if (key.includes("sg"))
               currPS += parseInt(element[key]) * priceSGConsole;
-            if (key.includes("my"))
+            else if (key.includes("my"))
               currPS += parseInt(element[key]) * priceMYConsole;
-            if (key.includes("tw"))
+            else if (key.includes("tw"))
               currPS += parseInt(element[key]) * priceTWConsole;
-            if (key.includes("hk"))
+            else if (key.includes("hk"))
               currPS += parseInt(element[key]) * priceHKConsole;
           }
         }
@@ -212,16 +250,28 @@ export const createDouChart = (currData, filter, setData, version) => {
 
       xboxKeys.forEach((key, index) => {
         if (filter == "ALL") {
-          if (key.includes("sg"))
+          if (
+            key.includes("jianhao") ||
+            key.includes("debbie") ||
+            key.includes("titangamers")
+          )
+            currXBOX += parseInt(element[key]) * priceSGSpecialConsole;
+          else if (key.includes("sg")) {
             currXBOX += parseInt(element[key]) * priceSGConsole;
-          if (key.includes("my"))
+          } else if (key.includes("my"))
             currXBOX += parseInt(element[key]) * priceMYConsole;
-          if (key.includes("tw"))
+          else if (key.includes("tw"))
             currXBOX += parseInt(element[key]) * priceTWConsole;
-          if (key.includes("hk"))
+          else if (key.includes("hk"))
             currXBOX += parseInt(element[key]) * priceHKConsole;
         } else if (filter == "SG") {
-          if (key.includes("sg"))
+          if (
+            key.includes("jianhao") ||
+            key.includes("debbie") ||
+            key.includes("titangamers")
+          )
+            currXBOX += parseInt(element[key]) * priceSGSpecialConsole;
+          else if (key.includes("sg"))
             currXBOX += parseInt(element[key]) * priceSGConsole;
         } else if (filter == "MY") {
           if (key.includes("my"))
@@ -234,19 +284,25 @@ export const createDouChart = (currData, filter, setData, version) => {
             currXBOX += parseInt(element[key]) * priceHKConsole;
         } else {
           if (key.includes(filter)) {
-            if (key.includes("sg"))
+            if (
+              key.includes("jianhao") ||
+              key.includes("debbie") ||
+              key.includes("titangamers")
+            )
+              currXBOX += parseInt(element[key]) * priceSGSpecialConsole;
+            else if (key.includes("sg"))
               currXBOX += parseInt(element[key]) * priceSGConsole;
-            if (key.includes("my"))
+            else if (key.includes("my"))
               currXBOX += parseInt(element[key]) * priceMYConsole;
-            if (key.includes("tw"))
+            else if (key.includes("tw"))
               currXBOX += parseInt(element[key]) * priceTWConsole;
-            if (key.includes("hk"))
+            else if (key.includes("hk"))
               currXBOX += parseInt(element[key]) * priceHKConsole;
           }
         }
       });
     });
-    finalData = [currPC.toFixed(2), currPS.toFixed(2), currXBOX.toFixed(2)];
+    finalData = [currPC, currPS, currXBOX];
   }
 
   setData({

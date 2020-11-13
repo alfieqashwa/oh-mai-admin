@@ -1,15 +1,16 @@
-var SGUSD = 0.74;
-var MYUSD = 0.24309;
-var TWUSD = 0.04;
-var HKUSD = 0.13;
-
-export const priceSGPC = 69 * SGUSD;
-export const priceSGConsole = 79 * SGUSD;
-export const priceMYPC = 219 * MYUSD;
-export const priceMYConsole = 259 * MYUSD;
-export const priceTWPC = 1690 * TWUSD;
-export const priceTWConsole = 1890 * TWUSD;
-export const priceHKPC = 438 * HKUSD;
-export const priceHKConsole = 498 * HKUSD;
+export const priceSGPC = 55;
+export const priceSGConsole = 63;
+export const priceMYPC = 53;
+export const priceMYConsole = 63;
+export const priceTWPC = 68;
+export const priceTWConsole = 76;
+export const priceHKPC = 57;
+export const priceHKConsole = 65;
 
 export let totalSale = 0;
+
+/**
+ * Jianhao, debbie, titan
+ */
+export const priceSGSpecialPC = 51;
+export const priceSGSpecialConsole = 58;

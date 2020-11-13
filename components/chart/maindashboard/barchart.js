@@ -8,6 +8,8 @@ import {
   priceTWConsole,
   priceHKPC,
   priceHKConsole,
+  priceSGSpecialPC,
+  priceSGSpecialConsole,
 } from "./values";
 
 export const createBarChart = (currData, filter, setData, version) => {
@@ -36,18 +38,31 @@ export const createBarChart = (currData, filter, setData, version) => {
       var currPC = 0;
       pcKeys.forEach((key) => {
         if (version == 1) {
-          if (key.includes("sg")) currPC += parseInt(element[key]) * priceSGPC;
+          if (
+            key.includes("jianhao") ||
+            key.includes("debbie") ||
+            key.includes("titangamers")
+          )
+            currPC += parseInt(element[key]) * priceSGSpecialPC;
+          else if (key.includes("sg"))
+            currPC += parseInt(element[key]) * priceSGPC;
           if (key.includes("my")) currPC += parseInt(element[key]) * priceMYPC;
           if (key.includes("tw")) currPC += parseInt(element[key]) * priceTWPC;
           if (key.includes("hk")) currPC += parseInt(element[key]) * priceHKPC;
         } else currPC += parseInt(element[key]);
       });
-      pcData.push(currPC.toFixed(2));
+      pcData.push(currPC);
 
       var currPS = 0;
       psKeys.forEach((key) => {
         if (version == 1) {
-          if (key.includes("sg"))
+          if (
+            key.includes("jianhao") ||
+            key.includes("debbie") ||
+            key.includes("titangamers")
+          )
+            currPC += parseInt(element[key]) * priceSGSpecialConsole;
+          else if (key.includes("sg"))
             currPS += parseInt(element[key]) * priceSGConsole;
           if (key.includes("my"))
             currPS += parseInt(element[key]) * priceMYConsole;
@@ -57,12 +72,18 @@ export const createBarChart = (currData, filter, setData, version) => {
             currPS += parseInt(element[key]) * priceHKConsole;
         } else currPS += parseInt(element[key]);
       });
-      psData.push(currPS.toFixed(2));
+      psData.push(currPS);
 
       var currXBOX = 0;
       xboxKeys.forEach((key) => {
         if (version == 1) {
-          if (key.includes("sg"))
+          if (
+            key.includes("jianhao") ||
+            key.includes("debbie") ||
+            key.includes("titangamers")
+          )
+            currPC += parseInt(element[key]) * priceSGSpecialConsole;
+          else if (key.includes("sg"))
             currXBOX += parseInt(element[key]) * priceSGConsole;
           if (key.includes("my"))
             currXBOX += parseInt(element[key]) * priceMYConsole;
@@ -72,7 +93,7 @@ export const createBarChart = (currData, filter, setData, version) => {
             currXBOX += parseInt(element[key]) * priceHKConsole;
         } else currXBOX += parseInt(element[key]);
       });
-      xboxData.push(currXBOX.toFixed(2));
+      xboxData.push(currXBOX);
     });
 
     // set the labels for the chart
@@ -110,45 +131,73 @@ export const createBarChart = (currData, filter, setData, version) => {
       var currXBOX = 0;
 
       pcKeys.forEach((key) => {
-        if (key.includes(filter.toLowerCase()))
-          currPC += parseInt(element[key]);
+        if (key.includes(filter.toLowerCase())) {
+          //currPC += parseInt(element[key]);
+
+          if (version == 1) {
+            if (
+              key.includes("jianhao") ||
+              key.includes("debbie") ||
+              key.includes("titangamers")
+            )
+              currPC += parseInt(element[key]) * priceSGSpecialPC;
+            else if (key.includes("sg"))
+              currPC += parseInt(element[key]) * priceSGPC;
+            else if (key.includes("my"))
+              currPC += parseInt(element[key]) * priceMYPC;
+            else if (key.includes("tw"))
+              currPC += parseInt(element[key]) * priceTWPC;
+            else if (key.includes("hk"))
+              currPC += parseInt(element[key]) * priceHKPC;
+          } else currPC += parseInt(element[key]);
+        }
       });
       psKeys.forEach((key) => {
         if (key.includes(filter.toLowerCase()))
-          currPS += parseInt(element[key]);
+          if (version == 1) {
+            //currPS += parseInt(element[key]);
+
+            if (
+              key.includes("jianhao") ||
+              key.includes("debbie") ||
+              key.includes("titangamers")
+            )
+              currPS += parseInt(element[key]) * priceSGSpecialConsole;
+            else if (key.includes("sg"))
+              currPS += parseInt(element[key]) * priceSGConsole;
+            else if (key.includes("my"))
+              currPS += parseInt(element[key]) * priceMYConsole;
+            else if (key.includes("tw"))
+              currPS += parseInt(element[key]) * priceTWConsole;
+            else if (key.includes("hk"))
+              currPS += parseInt(element[key]) * priceHKConsole;
+          } else currPS += parseInt(element[key]);
       });
       xboxKeys.forEach((key) => {
         if (key.includes(filter.toLowerCase()))
-          currXBOX += parseInt(element[key]);
+          if (version == 1) {
+            //currXBOX += parseInt(element[key]);
+
+            if (
+              key.includes("jianhao") ||
+              key.includes("debbie") ||
+              key.includes("titangamers")
+            )
+              currXBOX += parseInt(element[key]) * priceSGSpecialConsole;
+            else if (key.includes("sg"))
+              currXBOX += parseInt(element[key]) * priceSGConsole;
+            else if (key.includes("my"))
+              currXBOX += parseInt(element[key]) * priceMYConsole;
+            else if (key.includes("tw"))
+              currXBOX += parseInt(element[key]) * priceTWConsole;
+            else if (key.includes("hk"))
+              currXBOX += parseInt(element[key]) * priceHKConsole;
+          } else currXBOX += parseInt(element[key]);
       });
 
-      if (version == 1) {
-        switch (filter) {
-          case "SG":
-            currPC = currPC * priceSGPC;
-            currPS = currPS * priceSGConsole;
-            currXBOX = currXBOX * priceSGConsole;
-            break;
-          case "MY":
-            currPC = currPC * priceMYPC;
-            currPS = currPS * priceMYConsole;
-            currXBOX = currXBOX * priceMYConsole;
-            break;
-          case "TW":
-            currPC = currPC * priceTWPC;
-            currPS = currPS * priceTWConsole;
-            currXBOX = currXBOX * priceTWConsole;
-            break;
-          case "HK":
-            currPC = currPC * priceHKPC;
-            currPS = currPS * priceHKConsole;
-            currXBOX = currXBOX * priceHKConsole;
-            break;
-        }
-      }
-      pcData.push(currPC.toFixed(2));
-      psData.push(currPS.toFixed(2));
-      xboxData.push(currXBOX.toFixed(2));
+      pcData.push(currPC);
+      psData.push(currPS);
+      xboxData.push(currXBOX);
     });
 
     // set the labels for the chart
@@ -183,7 +232,13 @@ export const createBarChart = (currData, filter, setData, version) => {
       if (pcKeysIndex != -1) {
         currPC = element[pcKeys[pcKeysIndex]];
         if (version == 1) {
-          if (pcKeys[pcKeysIndex].includes("sg")) currPC *= priceSGPC;
+          if (
+            pcKeys[pcKeysIndex].includes("jianhao") ||
+            pcKeys[pcKeysIndex].includes("debbie") ||
+            pcKeys[pcKeysIndex].includes("titangamers")
+          )
+            currPC *= priceSGSpecialPC;
+          else if (pcKeys[pcKeysIndex].includes("sg")) currPC *= priceSGPC;
           else if (pcKeys[pcKeysIndex].includes("my")) currPC *= priceMYPC;
           else if (pcKeys[pcKeysIndex].includes("tw")) currPC *= priceTWPC;
           else if (pcKeys[pcKeysIndex].includes("hk")) currPC *= priceHKPC;
@@ -197,7 +252,13 @@ export const createBarChart = (currData, filter, setData, version) => {
       if (psKeysIndex != -1) {
         currPS = element[psKeys[psKeysIndex]];
         if (version == 1) {
-          if (psKeys[psKeysIndex].includes("sg")) currPS *= priceSGConsole;
+          if (
+            psKeys[psKeysIndex].includes("jianhao") ||
+            psKeys[psKeysIndex].includes("debbie") ||
+            psKeys[psKeysIndex].includes("titangamers")
+          )
+            currPS *= priceSGSpecialConsole;
+          else if (psKeys[psKeysIndex].includes("sg")) currPS *= priceSGConsole;
           else if (psKeys[psKeysIndex].includes("my")) currPS *= priceMYConsole;
           else if (psKeys[psKeysIndex].includes("tw")) currPS *= priceTWConsole;
           else if (psKeys[psKeysIndex].includes("hk")) currPS *= priceHKConsole;
@@ -213,7 +274,13 @@ export const createBarChart = (currData, filter, setData, version) => {
       if (xboxKeysIndex != -1) {
         currXBOX = element[xboxKeys[xboxKeysIndex]];
         if (version == 1) {
-          if (xboxKeys[xboxKeysIndex].includes("sg"))
+          if (
+            xboxKeys[xboxKeysIndex].includes("jianhao") ||
+            xboxKeys[xboxKeysIndex].includes("debbie") ||
+            xboxKeys[xboxKeysIndex].includes("titangamers")
+          )
+            currXBOX *= priceSGSpecialConsole;
+          else if (xboxKeys[xboxKeysIndex].includes("sg"))
             currXBOX *= priceSGConsole;
           else if (xboxKeys[xboxKeysIndex].includes("my"))
             currXBOX *= priceMYConsole;
@@ -224,9 +291,9 @@ export const createBarChart = (currData, filter, setData, version) => {
         }
       }
 
-      pcData.push(currPC.toFixed(2));
-      psData.push(currPS.toFixed(2));
-      xboxData.push(currXBOX.toFixed(2));
+      pcData.push(currPC);
+      psData.push(currPS);
+      xboxData.push(currXBOX);
     });
 
     // set the labels for the chart

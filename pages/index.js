@@ -128,8 +128,8 @@ export default function Dashboard() {
     ExcelRenderer(fileObj, (err, resp) => {
       if (err) return console.log(err);
 
-      setRows(resp.rows);
-      setCols(resp.cols);
+      // setRows(resp.rows);
+      // setCols(resp.cols);
 
       // clear the upload button
       uploader.current.clear();
@@ -138,7 +138,7 @@ export default function Dashboard() {
       var data = [];
 
       // loop through all the data only
-      for (var i = 6; i < resp.rows[2].length; i++) {
+      for (var i = 7; i < resp.rows[2].length; i++) {
         var date;
         // convert any dates to reeadable format/sql format
         if (resp.rows[1][i] > 40000) {
@@ -281,6 +281,8 @@ export default function Dashboard() {
               new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
               }).format(totalEarn)}
           </span>
         </div>
@@ -306,6 +308,8 @@ export default function Dashboard() {
               new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
               }).format(dailyEarn)}
           </span>
         </div>
