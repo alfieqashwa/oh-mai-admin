@@ -1,4 +1,14 @@
 import moment from "moment";
+import {
+  priceSGPC,
+  priceSGConsole,
+  priceMYPC,
+  priceMYConsole,
+  priceTWPC,
+  priceTWConsole,
+  priceHKPC,
+  priceHKConsole,
+} from "./values";
 
 export const createDouChart = (currData, filter, setData, version) => {
   var chartLabels = ["SG", "MY", "TW", "HK"];
@@ -6,7 +16,7 @@ export const createDouChart = (currData, filter, setData, version) => {
   var keys = Object.keys(currData[0]);
 
   var finalData = [];
-  console.log(keys);
+
   if (version == 0) {
     chartLabels = ["SG", "MY", "TW", "HK"];
 
@@ -15,28 +25,27 @@ export const createDouChart = (currData, filter, setData, version) => {
       if (key.includes("pc") || key.includes("ps4") || key.includes("xbox"))
         newKeys.push(key);
     });
-    console.log(newKeys);
 
     var currSG = 0;
     var currMY = 0;
     var currTW = 0;
     var currHK = 0;
+
     currData.forEach((element) => {
-      for (var i = 0; i < 21; i++) {
-        currSG += parseInt(element[newKeys[i]]);
-      }
-      for (var i = 21; i < 51; i++) {
-        currMY += parseInt(element[newKeys[i]]);
-      }
-      for (var i = 51; i < 67; i++) {
-        currTW += parseInt(element[newKeys[i]]);
-      }
-      for (var i = 67; i < 73; i++) {
-        currHK += parseInt(element[newKeys[i]]);
-      }
+      newKeys.forEach((key) => {
+        if (key.includes("sg")) currSG += parseInt(element[key]);
+        if (key.includes("my")) currMY += parseInt(element[key]);
+        if (key.includes("tw")) currTW += parseInt(element[key]);
+        if (key.includes("hk")) currHK += parseInt(element[key]);
+      });
     });
 
-    finalData = [currSG, currMY, currTW, currHK];
+    finalData = [
+      currSG.toFixed(2),
+      currMY.toFixed(2),
+      currTW.toFixed(2),
+      currHK.toFixed(2),
+    ];
   } else if (version == 1) {
     chartLabels = ["SG", "MY", "TW", "HK"];
 
@@ -45,49 +54,38 @@ export const createDouChart = (currData, filter, setData, version) => {
       if (key.includes("pc") || key.includes("ps4") || key.includes("xbox"))
         newKeys.push(key);
     });
-    console.log(newKeys);
 
     var currSG = 0;
     var currMY = 0;
     var currTW = 0;
     var currHK = 0;
     currData.forEach((element) => {
-      for (var i = 0; i < 21; i++) {
-        var key = newKeys[i];
-        if (key.includes("pc")) currSG += parseInt(element[key]) * 69 * 0.74;
-        else if (key.includes("ps4"))
-          currSG += parseInt(element[key]) * 79 * 0.74;
-        else if (key.includes("xbox"))
-          currSG += parseInt(element[key]) * 79 * 0.74;
-      }
-      for (var i = 21; i < 51; i++) {
-        var key = newKeys[i];
-        if (key.includes("pc"))
-          currMY += parseInt(element[key]) * 219 * 0.24309;
-        else if (key.includes("ps4"))
-          currMY += parseInt(element[key]) * 259 * 0.24309;
-        else if (key.includes("xbox"))
-          currMY += parseInt(element[key]) * 259 * 0.24309;
-      }
-      for (var i = 51; i < 67; i++) {
-        var key = newKeys[i];
-        if (key.includes("pc")) currTW += parseInt(element[key]) * 1690 * 0.04;
-        else if (key.includes("ps4"))
-          currTW += parseInt(element[key]) * 1890 * 0.04;
-        else if (key.includes("xbox"))
-          currTW += parseInt(element[key]) * 1890 * 0.04;
-      }
-      for (var i = 67; i < 73; i++) {
-        var key = newKeys[i];
-        if (key.includes("pc")) currHK += parseInt(element[key]) * 146 * 0.13;
-        else if (key.includes("ps4"))
-          currHK += parseInt(element[key]) * 249 * 0.13;
-        else if (key.includes("xbox"))
-          currHK += parseInt(element[key]) * 249 * 0.13;
-      }
+      newKeys.forEach((key) => {
+        if (key.includes("sg")) {
+          if (key.includes("pc")) currSG += parseInt(element[key]) * priceSGPC;
+          else currSG += parseInt(element[key]) * priceSGConsole;
+        }
+        if (key.includes("my")) {
+          if (key.includes("pc")) currMY += parseInt(element[key]) * priceMYPC;
+          else currMY += parseInt(element[key]) * priceMYConsole;
+        }
+        if (key.includes("tw")) {
+          if (key.includes("pc")) currTW += parseInt(element[key]) * priceTWPC;
+          else currTW += parseInt(element[key]) * priceTWConsole;
+        }
+        if (key.includes("hk")) {
+          if (key.includes("pc")) currHK += parseInt(element[key]) * priceHKPC;
+          else currHK += parseInt(element[key]) * priceHKConsole;
+        }
+      });
     });
 
-    finalData = [currSG, currMY, currTW, currHK];
+    finalData = [
+      currSG.toFixed(2),
+      currMY.toFixed(2),
+      currTW.toFixed(2),
+      currHK.toFixed(2),
+    ];
   } else if (version == 2) {
     chartLabels = ["PC", "PS", "XBOX"];
 
@@ -108,51 +106,30 @@ export const createDouChart = (currData, filter, setData, version) => {
       pcKeys.forEach((key, index) => {
         if (filter == "ALL") {
           currPC += parseInt(element[key]);
-        } else if (filter == "SG") {
-          if (index < 7) currPC += parseInt(element[key]);
-        } else if (filter == "MY") {
-          if (index >= 7 && index < 17) currPC += parseInt(element[key]);
-        } else if (filter == "TW") {
-          if (index >= 17 && index < 27) currPC += parseInt(element[key]);
-        } else if (filter == "HK") {
-          if (index >= 27 && index < 29) currPC += parseInt(element[key]);
         } else {
-          if (key.includes(filter)) currPC += parseInt(element[key]);
+          if (key.includes(filter.toLowerCase()))
+            currPC += parseInt(element[key]);
         }
       });
       psKeys.forEach((key, index) => {
         if (filter == "ALL") {
           currPS += parseInt(element[key]);
-        } else if (filter == "SG") {
-          if (index < 7) currPS += parseInt(element[key]);
-        } else if (filter == "MY") {
-          if (index >= 7 && index < 17) currPS += parseInt(element[key]);
-        } else if (filter == "TW") {
-          if (index >= 17 && index < 20) currPS += parseInt(element[key]);
-        } else if (filter == "HK") {
-          if (index >= 20 && index < 22) currPS += parseInt(element[key]);
         } else {
-          if (key.includes(filter)) currPS += parseInt(element[key]);
+          if (key.includes(filter.toLowerCase()))
+            currPS += parseInt(element[key]);
         }
       });
 
       xboxKeys.forEach((key, index) => {
         if (filter == "ALL") {
           currXBOX += parseInt(element[key]);
-        } else if (filter == "SG") {
-          if (index < 7) currXBOX += parseInt(element[key]);
-        } else if (filter == "MY") {
-          if (index >= 7 && index < 17) currXBOX += parseInt(element[key]);
-        } else if (filter == "TW") {
-          if (index >= 17 && index < 20) currXBOX += parseInt(element[key]);
-        } else if (filter == "HK") {
-          if (index >= 20 && index < 22) currXBOX += parseInt(element[key]);
         } else {
-          if (key.includes(filter)) currXBOX += parseInt(element[key]);
+          if (key.includes(filter.toLowerCase()))
+            currXBOX += parseInt(element[key]);
         }
       });
     });
-    finalData = [currPC, currPS, currXBOX];
+    finalData = [currPC.toFixed(2), currPS.toFixed(2), currXBOX.toFixed(2)];
   } else if (version == 3) {
     chartLabels = ["PC", "PS", "XBOX"];
 
@@ -172,317 +149,104 @@ export const createDouChart = (currData, filter, setData, version) => {
     currData.forEach((element) => {
       pcKeys.forEach((key, index) => {
         if (filter == "ALL") {
-          var val = key.replace("_pc", "");
-          switch (val) {
-            case "jianhao":
-            case "debbie":
-            case "titangamers":
-            case "ridwan":
-            case "vincent":
-            case "nocmugs":
-            case "nocsocks":
-              currPC += parseInt(element[key]) * 69 * 0.74;
-              break;
-            case "yingtze":
-            case "laowu":
-            case "mobhouse":
-            case "flare":
-            case "adibalexx":
-            case "farhanmzln":
-            case "spiderjal":
-            case "derezedd":
-            case "rezzadude":
-            case "luqman":
-              currPC += parseInt(element[key]) * 219 * 0.24309;
-              break;
-            case "貝莉莓":
-            case "萊斯":
-            case "老皮":
-            case "超粒方":
-            case "殺梗":
-            case "6tan":
-            case "魯蛋":
-            case "館長":
-            case "gooaye":
-            case "達哥":
-              currPC += parseInt(element[key]) * 1690 * 0.04;
-              break;
-            case "arhosunny":
-            case "gameplayhk":
-              currPC += parseInt(element[key]) * 146 * 0.13;
-              break;
-          }
+          if (key.includes("sg")) currPC += parseInt(element[key]) * priceSGPC;
+          if (key.includes("my")) currPC += parseInt(element[key]) * priceMYPC;
+          if (key.includes("tw")) currPC += parseInt(element[key]) * priceTWPC;
+          if (key.includes("hk")) currPC += parseInt(element[key]) * priceHKPC;
         } else if (filter == "SG") {
-          if (index < 7) currPC += parseInt(element[key]) * 69 * 0.74;
+          if (key.includes("sg")) currPC += parseInt(element[key]) * priceSGPC;
         } else if (filter == "MY") {
-          if (index >= 7 && index < 17)
-            currPC += parseInt(element[key]) * 219 * 0.24309;
+          if (key.includes("my")) currPC += parseInt(element[key]) * priceMYPC;
         } else if (filter == "TW") {
-          if (index >= 17 && index < 27)
-            currPC += parseInt(element[key]) * 1690 * 0.04;
+          if (key.includes("tw")) currPC += parseInt(element[key]) * priceTWPC;
         } else if (filter == "HK") {
-          if (index >= 27 && index < 29)
-            currPC += parseInt(element[key]) * 146 * 0.13;
+          if (key.includes("hk")) currPC += parseInt(element[key]) * priceHKPC;
         } else {
           if (key.includes(filter)) {
-            var val = key.replace("_pc", "");
-            switch (val) {
-              case "jianhao":
-              case "debbie":
-              case "titangamers":
-              case "ridwan":
-              case "vincent":
-              case "nocmugs":
-              case "nocsocks":
-                currPC += parseInt(element[key]) * 69 * 0.74;
-                break;
-              case "yingtze":
-              case "laowu":
-              case "mobhouse":
-              case "flare":
-              case "adibalexx":
-              case "farhanmzln":
-              case "spiderjal":
-              case "derezedd":
-              case "rezzadude":
-              case "luqman":
-                currPC += parseInt(element[key]) * 219 * 0.24309;
-                break;
-              case "貝莉莓":
-              case "萊斯":
-              case "老皮":
-              case "超粒方":
-              case "殺梗":
-              case "6tan":
-              case "魯蛋":
-              case "館長":
-              case "gooaye":
-              case "達哥":
-                currPC += parseInt(element[key]) * 1690 * 0.04;
-                break;
-              case "arhosunny":
-              case "gameplayhk":
-                currPC += parseInt(element[key]) * 146 * 0.13;
-                break;
-            }
+            if (key.includes("sg"))
+              currPC += parseInt(element[key]) * priceSGPC;
+            if (key.includes("my"))
+              currPC += parseInt(element[key]) * priceMYPC;
+            if (key.includes("tw"))
+              currPC += parseInt(element[key]) * priceTWPC;
+            if (key.includes("hk"))
+              currPC += parseInt(element[key]) * priceHKPC;
           }
         }
       });
       psKeys.forEach((key, index) => {
         if (filter == "ALL") {
-          var val = key.replace("_ps4", "");
-          switch (val) {
-            case "jianhao":
-            case "debbie":
-            case "titangamers":
-            case "ridwan":
-            case "vincent":
-            case "nocmugs":
-            case "nocsocks":
-              currPS += parseInt(element[key]) * 79 * 0.74;
-
-              break;
-            case "yingtze":
-            case "laowu":
-            case "mobhouse":
-            case "flare":
-            case "adibalexx":
-            case "farhanmzln":
-            case "spiderjal":
-            case "derezedd":
-            case "rezzadude":
-            case "luqman":
-              currPS += parseInt(element[key]) * 259 * 0.24309;
-
-              break;
-            case "貝莉莓":
-            case "萊斯":
-            case "老皮":
-            case "超粒方":
-            case "殺梗":
-            case "6tan":
-            case "魯蛋":
-            case "館長":
-            case "gooaye":
-            case "達哥":
-              currPS += parseInt(element[key]) * 1890 * 0.04;
-
-              break;
-            case "arhosunny":
-            case "gameplayhk":
-              currPS += parseInt(element[key]) * 249 * 0.13;
-
-              break;
-          }
+          if (key.includes("sg"))
+            currPS += parseInt(element[key]) * priceSGConsole;
+          if (key.includes("my"))
+            currPS += parseInt(element[key]) * priceMYConsole;
+          if (key.includes("tw"))
+            currPS += parseInt(element[key]) * priceTWConsole;
+          if (key.includes("hk"))
+            currPS += parseInt(element[key]) * priceHKConsole;
         } else if (filter == "SG") {
-          if (index < 7) currPS += parseInt(element[key]) * 79 * 0.74;
+          if (key.includes("sg"))
+            currPS += parseInt(element[key]) * priceSGConsole;
         } else if (filter == "MY") {
-          if (index >= 7 && index < 17)
-            currPS += parseInt(element[key]) * 259 * 0.24309;
+          if (key.includes("my"))
+            currPS += parseInt(element[key]) * priceMYConsole;
         } else if (filter == "TW") {
-          if (index >= 17 && index < 20)
-            currPS += parseInt(element[key]) * 1890 * 0.04;
+          if (key.includes("tw"))
+            currPS += parseInt(element[key]) * priceTWConsole;
         } else if (filter == "HK") {
-          if (index >= 20 && index < 22)
-            currPS += parseInt(element[key]) * 249 * 0.13;
+          if (key.includes("hk"))
+            currPS += parseInt(element[key]) * priceHKConsole;
         } else {
           if (key.includes(filter)) {
-            var val = key.replace("_ps4", "");
-            switch (val) {
-              case "jianhao":
-              case "debbie":
-              case "titangamers":
-              case "ridwan":
-              case "vincent":
-              case "nocmugs":
-              case "nocsocks":
-                currPS += parseInt(element[key]) * 79 * 0.74;
-
-                break;
-              case "yingtze":
-              case "laowu":
-              case "mobhouse":
-              case "flare":
-              case "adibalexx":
-              case "farhanmzln":
-              case "spiderjal":
-              case "derezedd":
-              case "rezzadude":
-              case "luqman":
-                currPS += parseInt(element[key]) * 259 * 0.24309;
-
-                break;
-              case "貝莉莓":
-              case "萊斯":
-              case "老皮":
-              case "超粒方":
-              case "殺梗":
-              case "6tan":
-              case "魯蛋":
-              case "館長":
-              case "gooaye":
-              case "達哥":
-                currPS += parseInt(element[key]) * 1890 * 0.04;
-
-                break;
-              case "arhosunny":
-              case "gameplayhk":
-                currPS += parseInt(element[key]) * 249 * 0.13;
-
-                break;
-            }
+            if (key.includes("sg"))
+              currPS += parseInt(element[key]) * priceSGConsole;
+            if (key.includes("my"))
+              currPS += parseInt(element[key]) * priceMYConsole;
+            if (key.includes("tw"))
+              currPS += parseInt(element[key]) * priceTWConsole;
+            if (key.includes("hk"))
+              currPS += parseInt(element[key]) * priceHKConsole;
           }
         }
       });
 
       xboxKeys.forEach((key, index) => {
         if (filter == "ALL") {
-          var val = key.replace("_xbox", "");
-          switch (val) {
-            case "jianhao":
-            case "debbie":
-            case "titangamers":
-            case "ridwan":
-            case "vincent":
-            case "nocmugs":
-            case "nocsocks":
-              currXBOX += parseInt(element[key]) * 79 * 0.74;
-
-              break;
-            case "yingtze":
-            case "laowu":
-            case "mobhouse":
-            case "flare":
-            case "adibalexx":
-            case "farhanmzln":
-            case "spiderjal":
-            case "derezedd":
-            case "rezzadude":
-            case "luqman":
-              currXBOX += parseInt(element[key]) * 259 * 0.24309;
-
-              break;
-            case "貝莉莓":
-            case "萊斯":
-            case "老皮":
-            case "超粒方":
-            case "殺梗":
-            case "6tan":
-            case "魯蛋":
-            case "館長":
-            case "gooaye":
-            case "達哥":
-              currXBOX += parseInt(element[key]) * 1890 * 0.04;
-
-              break;
-            case "arhosunny":
-            case "gameplayhk":
-              currXBOX += parseInt(element[key]) * 249 * 0.13;
-
-              break;
-          }
+          if (key.includes("sg"))
+            currXBOX += parseInt(element[key]) * priceSGConsole;
+          if (key.includes("my"))
+            currXBOX += parseInt(element[key]) * priceMYConsole;
+          if (key.includes("tw"))
+            currXBOX += parseInt(element[key]) * priceTWConsole;
+          if (key.includes("hk"))
+            currXBOX += parseInt(element[key]) * priceHKConsole;
         } else if (filter == "SG") {
-          if (index < 7) currXBOX += parseInt(element[key]) * 79 * 0.74;
+          if (key.includes("sg"))
+            currXBOX += parseInt(element[key]) * priceSGConsole;
         } else if (filter == "MY") {
-          if (index >= 7 && index < 17)
-            currXBOX += parseInt(element[key]) * 259 * 0.24309;
+          if (key.includes("my"))
+            currXBOX += parseInt(element[key]) * priceMYConsole;
         } else if (filter == "TW") {
-          if (index >= 17 && index < 20)
-            currXBOX += parseInt(element[key]) * 1890 * 0.04;
+          if (key.includes("tw"))
+            currXBOX += parseInt(element[key]) * priceTWConsole;
         } else if (filter == "HK") {
-          if (index >= 20 && index < 22)
-            currXBOX += parseInt(element[key]) * 249 * 0.13;
+          if (key.includes("hk"))
+            currXBOX += parseInt(element[key]) * priceHKConsole;
         } else {
           if (key.includes(filter)) {
-            var val = key.replace("_xbox", "");
-            switch (val) {
-              case "jianhao":
-              case "debbie":
-              case "titangamers":
-              case "ridwan":
-              case "vincent":
-              case "nocmugs":
-              case "nocsocks":
-                currXBOX += parseInt(element[key]) * 79 * 0.74;
-
-                break;
-              case "yingtze":
-              case "laowu":
-              case "mobhouse":
-              case "flare":
-              case "adibalexx":
-              case "farhanmzln":
-              case "spiderjal":
-              case "derezedd":
-              case "rezzadude":
-              case "luqman":
-                currXBOX += parseInt(element[key]) * 259 * 0.24309;
-
-                break;
-              case "貝莉莓":
-              case "萊斯":
-              case "老皮":
-              case "超粒方":
-              case "殺梗":
-              case "6tan":
-              case "魯蛋":
-              case "館長":
-              case "gooaye":
-              case "達哥":
-                currXBOX += parseInt(element[key]) * 1890 * 0.04;
-
-                break;
-              case "arhosunny":
-              case "gameplayhk":
-                currXBOX += parseInt(element[key]) * 249 * 0.13;
-
-                break;
-            }
+            if (key.includes("sg"))
+              currXBOX += parseInt(element[key]) * priceSGConsole;
+            if (key.includes("my"))
+              currXBOX += parseInt(element[key]) * priceMYConsole;
+            if (key.includes("tw"))
+              currXBOX += parseInt(element[key]) * priceTWConsole;
+            if (key.includes("hk"))
+              currXBOX += parseInt(element[key]) * priceHKConsole;
           }
         }
       });
     });
-    finalData = [currPC, currPS, currXBOX];
+    finalData = [currPC.toFixed(2), currPS.toFixed(2), currXBOX.toFixed(2)];
   }
 
   setData({

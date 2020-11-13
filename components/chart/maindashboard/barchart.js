@@ -1,4 +1,14 @@
 import moment from "moment";
+import {
+  priceSGPC,
+  priceSGConsole,
+  priceMYPC,
+  priceMYConsole,
+  priceTWPC,
+  priceTWConsole,
+  priceHKPC,
+  priceHKConsole,
+} from "./values";
 
 export const createBarChart = (currData, filter, setData, version) => {
   var chartLabels = [];
@@ -26,43 +36,43 @@ export const createBarChart = (currData, filter, setData, version) => {
       var currPC = 0;
       pcKeys.forEach((key) => {
         if (version == 1) {
-          if (key.includes("sg")) currPC += parseInt(element[key]) * 69 * 0.74;
-          if (key.includes("my"))
-            currPC += parseInt(element[key]) * 219 * 0.24309;
-          if (key.includes("tw"))
-            currPC += parseInt(element[key]) * 1690 * 0.04;
-          if (key.includes("hk")) currPC += parseInt(element[key]) * 146 * 0.13;
+          if (key.includes("sg")) currPC += parseInt(element[key]) * priceSGPC;
+          if (key.includes("my")) currPC += parseInt(element[key]) * priceMYPC;
+          if (key.includes("tw")) currPC += parseInt(element[key]) * priceTWPC;
+          if (key.includes("hk")) currPC += parseInt(element[key]) * priceHKPC;
         } else currPC += parseInt(element[key]);
       });
-      pcData.push(currPC);
+      pcData.push(currPC.toFixed(2));
 
       var currPS = 0;
       psKeys.forEach((key) => {
         if (version == 1) {
-          if (key.includes("sg")) currPS += parseInt(element[key]) * 79 * 0.74;
+          if (key.includes("sg"))
+            currPS += parseInt(element[key]) * priceSGConsole;
           if (key.includes("my"))
-            currPS += parseInt(element[key]) * 259 * 0.24309;
+            currPS += parseInt(element[key]) * priceMYConsole;
           if (key.includes("tw"))
-            currPS += parseInt(element[key]) * 1890 * 0.04;
-          if (key.includes("hk")) currPS += parseInt(element[key]) * 249 * 0.13;
+            currPS += parseInt(element[key]) * priceTWConsole;
+          if (key.includes("hk"))
+            currPS += parseInt(element[key]) * priceHKConsole;
         } else currPS += parseInt(element[key]);
       });
-      psData.push(currPS);
+      psData.push(currPS.toFixed(2));
 
       var currXBOX = 0;
       xboxKeys.forEach((key) => {
         if (version == 1) {
           if (key.includes("sg"))
-            currXBOX += parseInt(element[key]) * 79 * 0.74;
+            currXBOX += parseInt(element[key]) * priceSGConsole;
           if (key.includes("my"))
-            currXBOX += parseInt(element[key]) * 259 * 0.24309;
+            currXBOX += parseInt(element[key]) * priceMYConsole;
           if (key.includes("tw"))
-            currXBOX += parseInt(element[key]) * 1890 * 0.04;
+            currXBOX += parseInt(element[key]) * priceTWConsole;
           if (key.includes("hk"))
-            currXBOX += parseInt(element[key]) * 249 * 0.13;
+            currXBOX += parseInt(element[key]) * priceHKConsole;
         } else currXBOX += parseInt(element[key]);
       });
-      xboxData.push(currXBOX);
+      xboxData.push(currXBOX.toFixed(2));
     });
 
     // set the labels for the chart
@@ -115,30 +125,30 @@ export const createBarChart = (currData, filter, setData, version) => {
       if (version == 1) {
         switch (filter) {
           case "SG":
-            currPC = currPC * 69 * 0.74;
-            currPS = currPS * 79 * 0.74;
-            currXBOX = currXBOX * 79 * 0.74;
+            currPC = currPC * priceSGPC;
+            currPS = currPS * priceSGConsole;
+            currXBOX = currXBOX * priceSGConsole;
             break;
           case "MY":
-            currPC = currPC * 219 * 0.24309;
-            currPS = currPS * 259 * 0.24309;
-            currXBOX = currXBOX * 259 * 0.24309;
+            currPC = currPC * priceMYPC;
+            currPS = currPS * priceMYConsole;
+            currXBOX = currXBOX * priceMYConsole;
             break;
           case "TW":
-            currPC = currPC * 1690 * 0.04;
-            currPS = currPS * 1890 * 0.04;
-            currXBOX = currXBOX * 1890 * 0.04;
+            currPC = currPC * priceTWPC;
+            currPS = currPS * priceTWConsole;
+            currXBOX = currXBOX * priceTWConsole;
             break;
           case "HK":
-            currPC = currPC * 146 * 0.13;
-            currPS = currPS * 249 * 0.13;
-            currXBOX = currXBOX * 249 * 0.13;
+            currPC = currPC * priceHKPC;
+            currPS = currPS * priceHKConsole;
+            currXBOX = currXBOX * priceHKConsole;
             break;
         }
       }
-      pcData.push(currPC);
-      psData.push(currPS);
-      xboxData.push(currXBOX);
+      pcData.push(currPC.toFixed(2));
+      psData.push(currPS.toFixed(2));
+      xboxData.push(currXBOX.toFixed(2));
     });
 
     // set the labels for the chart
@@ -168,71 +178,55 @@ export const createBarChart = (currData, filter, setData, version) => {
 
       var pcKeysIndex = pcKeys.findIndex((element) => element.includes(filter));
 
-      var currPC = pcKeysIndex == -1 ? 0 : element[pcKeys[pcKeysIndex]];
+      var currPC = 0;
+
+      if (pcKeysIndex != -1) {
+        currPC = element[pcKeys[pcKeysIndex]];
+        if (version == 1) {
+          if (pcKeys[pcKeysIndex].includes("sg")) currPC *= priceSGPC;
+          else if (pcKeys[pcKeysIndex].includes("my")) currPC *= priceMYPC;
+          else if (pcKeys[pcKeysIndex].includes("tw")) currPC *= priceTWPC;
+          else if (pcKeys[pcKeysIndex].includes("hk")) currPC *= priceHKPC;
+        }
+      }
 
       var psKeysIndex = psKeys.findIndex((element) => element.includes(filter));
 
-      var currPS = psKeysIndex == -1 ? 0 : element[psKeys[psKeysIndex]];
+      var currPS = 0;
+
+      if (psKeysIndex != -1) {
+        currPS = element[psKeys[psKeysIndex]];
+        if (version == 1) {
+          if (psKeys[psKeysIndex].includes("sg")) currPS *= priceSGConsole;
+          else if (psKeys[psKeysIndex].includes("my")) currPS *= priceMYConsole;
+          else if (psKeys[psKeysIndex].includes("tw")) currPS *= priceTWConsole;
+          else if (psKeys[psKeysIndex].includes("hk")) currPS *= priceHKConsole;
+        }
+      }
 
       var xboxKeysIndex = psKeys.findIndex((element) =>
         element.includes(filter)
       );
 
-      var currXBOX = xboxKeysIndex == -1 ? 0 : element[xboxKeys[xboxKeysIndex]];
+      var currXBOX = 0;
 
-      if (version == 1) {
-        switch (filter) {
-          case "jianhao":
-          case "debbie":
-          case "titangamers":
-          case "ridwan":
-          case "vincent":
-          case "nocmugs":
-          case "nocsocks":
-            currPC = currPC * 69 * 0.74;
-            currPS = currPS * 79 * 0.74;
-            currXBOX = currXBOX * 79 * 0.74;
-            break;
-          case "yingtze":
-          case "laowu":
-          case "mobhouse":
-          case "flare":
-          case "adibalexx":
-          case "farhanmzln":
-          case "spiderjal":
-          case "derezedd":
-          case "rezzadude":
-          case "luqman":
-            currPC = currPC * 219 * 0.24309;
-            currPS = currPS * 259 * 0.24309;
-            currXBOX = currXBOX * 259 * 0.24309;
-            break;
-          case "貝莉莓":
-          case "萊斯":
-          case "老皮":
-          case "超粒方":
-          case "殺梗":
-          case "6tan":
-          case "魯蛋":
-          case "館長":
-          case "gooaye":
-          case "達哥":
-            currPC = currPC * 1690 * 0.04;
-            currPS = currPS * 1890 * 0.04;
-            currXBOX = currXBOX * 1890 * 0.04;
-            break;
-          case "arhosunny":
-          case "gameplayhk":
-            currPC = currPC * 146 * 0.13;
-            currPS = currPS * 249 * 0.13;
-            currXBOX = currXBOX * 249 * 0.13;
-            break;
+      if (xboxKeysIndex != -1) {
+        currXBOX = element[xboxKeys[xboxKeysIndex]];
+        if (version == 1) {
+          if (xboxKeys[xboxKeysIndex].includes("sg"))
+            currXBOX *= priceSGConsole;
+          else if (xboxKeys[xboxKeysIndex].includes("my"))
+            currXBOX *= priceMYConsole;
+          else if (xboxKeys[xboxKeysIndex].includes("tw"))
+            currXBOX *= priceTWConsole;
+          else if (xboxKeys[xboxKeysIndex].includes("hk"))
+            currXBOX *= priceHKConsole;
         }
       }
 
-      pcData.push(currPC);
-      psData.push(currPS);
-      xboxData.push(currXBOX);
+      pcData.push(currPC.toFixed(2));
+      psData.push(currPS.toFixed(2));
+      xboxData.push(currXBOX.toFixed(2));
     });
 
     // set the labels for the chart
