@@ -17,6 +17,7 @@ import RichEditor from "components/richeditor";
 import useSWR from "swr";
 import { products } from "../graphql/product";
 import { fetcher } from "../lib/useSWR";
+import Link from "next/link";
 
 export default function Products() {
   let emptyProduct = {
@@ -199,12 +200,13 @@ export default function Products() {
   const leftToolbarTemplate = () => {
     return (
       <React.Fragment>
-        <Button
-          label="New"
-          icon="pi pi-plus"
-          className="p-button-success p-mr-2"
-          onClick={openNew}
-        />
+        <Link href="/addproduct">
+          <Button
+            label="New"
+            icon="pi pi-plus"
+            className="p-button-success p-mr-2"
+          />
+        </Link>
         <Button
           label="Delete"
           icon="pi pi-trash"
@@ -276,18 +278,20 @@ export default function Products() {
   };
 
   const priceBodyTemplate = (rowData) => {
-    console.log(rowData);
     return rowData.current_price;
   };
 
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <Button
-          icon="pi pi-pencil"
-          className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editProduct(rowData)}
-        />
+        <Link
+          href={{ pathname: "/editproduct", query: { slug: rowData.slug } }}
+        >
+          <Button
+            icon="pi pi-pencil"
+            className="p-button-rounded p-button-success p-mr-2"
+          />
+        </Link>
         <Button
           icon="pi pi-trash"
           className="p-button-rounded p-button-warning"

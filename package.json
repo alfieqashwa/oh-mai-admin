@@ -26,6 +26,7 @@
     "sass": "^1.28.0",
     "slate": "^0.59.0",
     "slate-history": "^0.59.0",
+    "slate-hyperscript": "^0.59.0",
     "slate-react": "^0.59.0",
     "swr": "^0.3.8"
   }

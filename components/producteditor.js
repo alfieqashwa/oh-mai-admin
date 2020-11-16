@@ -14,11 +14,19 @@ import { Chips } from "primereact/chips";
 import { InputText } from "primereact/inputtext";
 import { InputSwitch } from "primereact/inputswitch";
 import RichEditor from "components/richeditor";
+import { useRouter } from "next/router";
 import useSWR from "swr";
-import { CREATE_PRODUCT } from "../graphql/product";
-import { mutate } from "../lib/useSWR";
+import {
+  CREATE_PRODUCT,
+  GET_PRODUCT_FROM_SLUG,
+  UPDATE_PRODUCT,
+} from "graphql/product";
+import { mutate, fetcherargs } from "lib/useSWR";
 
-export default function Products() {
+export default function ProductEditor(props) {
+  const { slug } = props;
+  const router = useRouter();
+
   let emptyProduct = {
     sku: "",
     product_name: "",
@@ -42,22 +50,23 @@ export default function Products() {
   const [product, setProduct] = useState(emptyProduct);
   const [duplicateSKU, setDuplicateSKU] = useState(false);
   const [duplicateSLUG, setDuplicateSLUG] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState(null);
 
-  const [deleteProductDialog, setDeleteProductDialog] = useState(false);
-  const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [globalFilter, setGlobalFilter] = useState(null);
+
   const toast = useRef(null);
-  const dt = useRef(null);
 
-  // const { data, error } = useSWR(products, fetcher);
-  // if (error) console.log(error);
+  const { data, error } = useSWR(
+    [GET_PRODUCT_FROM_SLUG, JSON.stringify({ slug: slug })],
+    fetcherargs
+  );
 
-  // if (!data) return <></>;
+  React.useEffect(() => {
+    if (slug && data && data.products) setProduct(data.products[0]);
+  }, [data]);
 
   const CreateProduct = (variables) => {
-    return mutate(CREATE_PRODUCT, variables);
+    if (slug) return mutate(UPDATE_PRODUCT, variables);
+    else return mutate(CREATE_PRODUCT, variables);
   };
 
   async function Mutation() {
@@ -66,27 +75,32 @@ export default function Products() {
       const newData = await CreateProduct(product);
       obj.data = newData;
 
-      toast.current.show({
-        severity: "success",
-        summary: "Successful",
-        detail: "Product Created",
-        life: 3000,
-      });
+      if (slug) {
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Product Edited. Returning to product list page",
+          life: 1900,
+        });
+      } else {
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Product Created",
+          life: 1900,
+        });
+      }
       setSubmitted(false);
       setProduct(emptyProduct);
-      // // Create and redirect to the checkout page on success
-      // router.push("/checkout");
+      setTimeout(() => {
+        router.push("/products");
+      }, 2000);
     } catch (err) {
-      // We are expecting any errors caught to be because
-      // the email address given already exists in the database
-      console.log(err.response.errors[0].message);
-
       if (err.response.errors[0].message == "Duplicate SKU found") {
         setDuplicateSKU(true);
       } else if (err.response.errors[0].message == "Duplicate Slug found") {
         setDuplicateSLUG(true);
       }
-
       obj.error = err;
     }
     return obj;
@@ -107,43 +121,6 @@ export default function Products() {
     ) {
       Mutation();
     }
-
-    // if (data)
-    //   toast.current.show({
-    //     severity: "success",
-    //     summary: "Successful",
-    //     detail: "Product Created",
-    //     life: 3000,
-    //   });
-    // if (product.name.trim()) {
-    //   let _products = [...products];
-    //   let _product = { ...product };
-    //   if (product.id) {
-    //     const index = findIndexById(product.id);
-
-    //     _products[index] = _product;
-    //     toast.current.show({
-    //       severity: "success",
-    //       summary: "Successful",
-    //       detail: "Product Updated",
-    //       life: 3000,
-    //     });
-    //   } else {
-    //     _product.id = createId();
-    //     _product.image = "product-placeholder.svg";
-    //     _products.push(_product);
-    //     toast.current.show({
-    //       severity: "success",
-    //       summary: "Successful",
-    //       detail: "Product Created",
-    //       life: 3000,
-    //     });
-    //   }
-
-    //   setProducts(_products);
-    //   setProductDialog(false);
-    //   setProduct(emptyProduct);
-    // }
   };
 
   const clearAll = () => {
@@ -187,14 +164,6 @@ export default function Products() {
     setProduct(_product);
   };
 
-  const onDropDownChange = (e, name) => {
-    const val = (e.target && e.target.value) || null;
-    let _product = { ...product };
-    _product[`${name}`] = val;
-
-    setProduct(_product);
-  };
-
   const onUpload = () => {
     toast.show({
       severity: "info",
@@ -203,7 +172,10 @@ export default function Products() {
     });
   };
 
-  //console.log(product);
+  if (error) console.log(error);
+
+  if (!data) return <></>;
+
   return (
     <div>
       <Toast ref={toast} />
@@ -280,7 +252,17 @@ export default function Products() {
 
           <div className="p-field p-col-12">
             <label htmlFor="description">Description</label>
-            <RichEditor updateDesc={updateDesc} />
+            <RichEditor
+              updateDesc={updateDesc}
+              existingValue={
+                product.description
+                  ? new DOMParser().parseFromString(
+                      product.description,
+                      "text/html"
+                    )
+                  : null
+              }
+            />
           </div>
 
           <div className="p-field p-col-12 p-md-5">
