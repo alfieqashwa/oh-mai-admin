@@ -7,44 +7,41 @@ import { Button } from "primereact/button";
 import { FileUpload } from "primereact/fileupload";
 import { Rating } from "primereact/rating";
 import { Toolbar } from "primereact/toolbar";
-import { InputTextarea } from "primereact/inputtextarea";
+import { Dropdown } from "primereact/dropdown";
 import { RadioButton } from "primereact/radiobutton";
 import { InputNumber } from "primereact/inputnumber";
-import { Dialog } from "primereact/dialog";
+import { Chips } from "primereact/chips";
 import { InputText } from "primereact/inputtext";
+import { InputSwitch } from "primereact/inputswitch";
 import RichEditor from "components/richeditor";
-
 import useSWR from "swr";
-import { products } from "../graphql/product";
-import { fetcher } from "../lib/useSWR";
+import { CREATE_PRODUCT } from "../graphql/product";
+import { mutate } from "../lib/useSWR";
 
 export default function Products() {
   let emptyProduct = {
-    id: null,
     sku: "",
     product_name: "",
-    images: null,
+    featured_image: "",
+    images: [],
     kol_id: "",
-    views: null,
-    sales: null,
-    current_price: null,
-    base_price: null,
-    sale_price: null,
+
+    base_price: 0,
+    sale_price: 0,
     slug: "",
-    permalink: "",
-    date_created: "",
-    date_modified: "",
+
     description: "",
     on_sale: false,
-    stock_quantity: null,
-    stock_status: "",
-    categories: null,
-    tags: null,
+    stock_quantity: 0,
+    stock_status: null,
+    categories: [],
+    tags: [],
   };
 
   // const [products, setProducts] = useState(null);
   const [product, setProduct] = useState(emptyProduct);
-  const [productDialog, setProductDialog] = useState(false);
+  const [duplicateSKU, setDuplicateSKU] = useState(false);
+  const [duplicateSLUG, setDuplicateSLUG] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
 
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -59,138 +56,105 @@ export default function Products() {
 
   // if (!data) return <></>;
 
-  const formatCurrency = (value) => {
-    // return value.toLocaleString("en-US", {
-    //   style: "currency",
-    //   currency: "USD",
-    // });
+  const CreateProduct = (variables) => {
+    return mutate(CREATE_PRODUCT, variables);
   };
 
-  const openNew = () => {
-    setProduct(emptyProduct);
-    setSubmitted(false);
-    setProductDialog(true);
-  };
+  async function Mutation() {
+    const obj = {};
+    try {
+      const newData = await CreateProduct(product);
+      obj.data = newData;
 
-  const hideDialog = () => {
-    setSubmitted(false);
-    setProductDialog(false);
-  };
+      toast.current.show({
+        severity: "success",
+        summary: "Successful",
+        detail: "Product Created",
+        life: 3000,
+      });
+      setSubmitted(false);
+      setProduct(emptyProduct);
+      // // Create and redirect to the checkout page on success
+      // router.push("/checkout");
+    } catch (err) {
+      // We are expecting any errors caught to be because
+      // the email address given already exists in the database
+      console.log(err.response.errors[0].message);
 
-  const hideDeleteProductDialog = () => {
-    setDeleteProductDialog(false);
-  };
+      if (err.response.errors[0].message == "Duplicate SKU found") {
+        setDuplicateSKU(true);
+      } else if (err.response.errors[0].message == "Duplicate Slug found") {
+        setDuplicateSLUG(true);
+      }
 
-  const hideDeleteProductsDialog = () => {
-    setDeleteProductsDialog(false);
-  };
+      obj.error = err;
+    }
+    return obj;
+  }
 
   const saveProduct = () => {
     setSubmitted(true);
-
-    if (product.name.trim()) {
-      let _products = [...products];
-      let _product = { ...product };
-      if (product.id) {
-        const index = findIndexById(product.id);
-
-        _products[index] = _product;
-        toast.current.show({
-          severity: "success",
-          summary: "Successful",
-          detail: "Product Updated",
-          life: 3000,
-        });
-      } else {
-        _product.id = createId();
-        _product.image = "product-placeholder.svg";
-        _products.push(_product);
-        toast.current.show({
-          severity: "success",
-          summary: "Successful",
-          detail: "Product Created",
-          life: 3000,
-        });
-      }
-
-      setProducts(_products);
-      setProductDialog(false);
-      setProduct(emptyProduct);
+    if (
+      product.sku &&
+      product.product_name &&
+      product.slug &&
+      product.base_price &&
+      product.sale_price &&
+      product.stock_quantity &&
+      product.stock_status &&
+      !duplicateSKU &&
+      !duplicateSLUG
+    ) {
+      Mutation();
     }
+
+    // if (data)
+    //   toast.current.show({
+    //     severity: "success",
+    //     summary: "Successful",
+    //     detail: "Product Created",
+    //     life: 3000,
+    //   });
+    // if (product.name.trim()) {
+    //   let _products = [...products];
+    //   let _product = { ...product };
+    //   if (product.id) {
+    //     const index = findIndexById(product.id);
+
+    //     _products[index] = _product;
+    //     toast.current.show({
+    //       severity: "success",
+    //       summary: "Successful",
+    //       detail: "Product Updated",
+    //       life: 3000,
+    //     });
+    //   } else {
+    //     _product.id = createId();
+    //     _product.image = "product-placeholder.svg";
+    //     _products.push(_product);
+    //     toast.current.show({
+    //       severity: "success",
+    //       summary: "Successful",
+    //       detail: "Product Created",
+    //       life: 3000,
+    //     });
+    //   }
+
+    //   setProducts(_products);
+    //   setProductDialog(false);
+    //   setProduct(emptyProduct);
+    // }
   };
 
-  const editProduct = (product) => {
-    setProduct({ ...product });
-    setProductDialog(true);
-  };
-
-  const confirmDeleteProduct = (product) => {
-    setProduct(product);
-    setDeleteProductDialog(true);
-  };
-
-  const deleteProduct = () => {
-    let _products = products.filter((val) => val.id !== product.id);
-    setProduct(_products);
-    setDeleteProductDialog(false);
+  const clearAll = () => {
     setProduct(emptyProduct);
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: "Product Deleted",
-      life: 3000,
-    });
   };
 
-  const findIndexById = (id) => {
-    let index = -1;
-    for (let i = 0; i < products.length; i++) {
-      if (products[i].id === id) {
-        index = i;
-        break;
-      }
-    }
-
-    return index;
-  };
-
-  const createId = () => {
-    let id = "";
-    let chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-  };
-
-  const exportCSV = () => {
-    dt.current.exportCSV();
-  };
-
-  const confirmDeleteSelected = () => {
-    setDeleteProductsDialog(true);
-  };
-
-  const deleteSelectedProducts = () => {
-    let _products = products.filter((val) => !selectedProducts.includes(val));
-    setProducts(_products);
-    setDeleteProductsDialog(false);
-    setSelectedProducts(null);
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: "Products Deleted",
-      life: 3000,
-    });
-  };
-
-  const onCategoryChange = (e) => {
+  const updateDesc = (value) => {
     let _product = { ...product };
-    _product["category"] = e.value;
+    _product["description"] = value;
     setProduct(_product);
   };
-
   const onInputChange = (e, name) => {
     const val = (e.target && e.target.value) || "";
     let _product = { ...product };
@@ -207,324 +171,268 @@ export default function Products() {
     setProduct(_product);
   };
 
-  const leftToolbarTemplate = () => {
-    return (
-      <React.Fragment>
-        <Button
-          label="New"
-          icon="pi pi-plus"
-          className="p-button-success p-mr-2"
-          onClick={openNew}
-        />
-        <Button
-          label="Delete"
-          icon="pi pi-trash"
-          className="p-button-danger"
-          onClick={confirmDeleteSelected}
-          disabled={!selectedProducts || !selectedProducts.length}
-        />
-      </React.Fragment>
-    );
+  const onSelectChange = (e, name) => {
+    const val = (e.target && e.target.value) || false;
+    let _product = { ...product };
+    _product[`${name}`] = val;
+
+    setProduct(_product);
   };
 
-  const rightToolbarTemplate = () => {
-    return (
-      <React.Fragment>
-        <FileUpload
-          mode="basic"
-          accept="image/*"
-          maxFileSize={1000000}
-          label="Import"
-          chooseLabel="Import"
-          className="p-mr-2 p-d-inline-block"
-        />
-        <Button
-          label="Export"
-          icon="pi pi-upload"
-          className="p-button-help"
-          onClick={exportCSV}
-        />
-      </React.Fragment>
-    );
+  const onChipsChange = (e, name) => {
+    const val = (e.target && e.target.value) || [];
+    let _product = { ...product };
+    _product[`${name}`] = val;
+
+    setProduct(_product);
   };
 
-  const header = (
-    <div className="table-header">
-      <h5 className="p-m-0">Manage Products</h5>
-      <span className="p-input-icon-left">
-        <i className="pi pi-search" />
-        <InputText
-          type="search"
-          onInput={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Search..."
-        />
-      </span>
-    </div>
-  );
+  const onDropDownChange = (e, name) => {
+    const val = (e.target && e.target.value) || null;
+    let _product = { ...product };
+    _product[`${name}`] = val;
 
-  const imageBodyTemplate = (rowData) => {
-    return (
-      <img
-        src={`assets/demo/images/product/${rowData.image}`}
-        onError={(e) =>
-          (e.target.src =
-            "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
-        }
-        alt={rowData.image}
-        className="product-image"
-      />
-    );
+    setProduct(_product);
   };
 
-  const categoryTemplate = (rowData) => {
-    return (
-      <div>
-        {rowData.categories.map((eaCat) => (
-          <p>{eaCat}</p>
-        ))}
-      </div>
-    );
+  const onUpload = () => {
+    toast.show({
+      severity: "info",
+      summary: "Success",
+      detail: "File Uploaded",
+    });
   };
 
-  const priceBodyTemplate = (rowData) => {
-    console.log(rowData);
-    return rowData.current_price;
-  };
-
-  const actionBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <Button
-          icon="pi pi-pencil"
-          className="p-button-rounded p-button-success p-mr-2"
-          onClick={() => editProduct(rowData)}
-        />
-        <Button
-          icon="pi pi-trash"
-          className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteProduct(rowData)}
-        />
-      </React.Fragment>
-    );
-  };
-
-  const productDialogFooter = (
-    <React.Fragment>
-      <Button
-        label="Cancel"
-        icon="pi pi-times"
-        className="p-button-text"
-        onClick={hideDialog}
-      />
-      <Button
-        label="Save"
-        icon="pi pi-check"
-        className="p-button-text"
-        onClick={saveProduct}
-      />
-    </React.Fragment>
-  );
-  const deleteProductDialogFooter = (
-    <React.Fragment>
-      <Button
-        label="No"
-        icon="pi pi-times"
-        className="p-button-text"
-        onClick={hideDeleteProductDialog}
-      />
-      <Button
-        label="Yes"
-        icon="pi pi-check"
-        className="p-button-text"
-        onClick={deleteProduct}
-      />
-    </React.Fragment>
-  );
-  const deleteProductsDialogFooter = (
-    <React.Fragment>
-      <Button
-        label="No"
-        icon="pi pi-times"
-        className="p-button-text"
-        onClick={hideDeleteProductsDialog}
-      />
-      <Button
-        label="Yes"
-        icon="pi pi-check"
-        className="p-button-text"
-        onClick={deleteSelectedProducts}
-      />
-    </React.Fragment>
-  );
-
+  //console.log(product);
   return (
-    <div className="datatable-crud-demo">
+    <div>
       <Toast ref={toast} />
-      <div className="card ">
-        <div className="p-fluid">
-          {product.image && (
-            <img
-              src={`assets/demo/images/product/${product.image}`}
-              onError={(e) =>
-                (e.target.src =
-                  "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
-              }
-              alt={product.image}
-              className="product-image"
+      <div className="card">
+        <div className="p-fluid p-formgrid p-grid">
+          <div className="p-field p-col-12 p-md-4">
+            <label htmlFor="sku">SKU Number</label>
+            <InputText
+              id="sku"
+              value={product.sku}
+              onChange={(e) => {
+                onInputChange(e, "sku");
+                setDuplicateSKU(false);
+              }}
+              required
+              className={classNames({
+                "p-invalid": (submitted && !product.sku) || duplicateSKU,
+              })}
             />
-          )}
-          <div className="p-formgrid p-grid">
-            <div className="p-field p-col">
-              <label htmlFor="sku">SKU Number</label>
-              <InputText
-                id="sku"
-                value={product.sku}
-                onChange={(e) => onInputChange(e, "sku")}
-                required
-                autoFocus
-                className={classNames({
-                  "p-invalid": submitted && !product.sku,
-                })}
-              />
-              {submitted && !product.sku && (
-                <small className="p-invalid">SKU is required.</small>
-              )}
-            </div>
-
-            <div className="p-field p-col">
-              <label htmlFor="product_name">Product Name</label>
-              <InputText
-                id="product_name"
-                value={product.product_name}
-                onChange={(e) => onInputChange(e, "product_name")}
-                required
-                autoFocus
-                className={classNames({
-                  "p-invalid": submitted && !product.product_name,
-                })}
-              />
-              {submitted && !product.product_name && (
-                <small className="p-invalid">Product Name is required.</small>
-              )}
-            </div>
+            {submitted && !product.sku && (
+              <small id="sku-help" className="p-invalid">
+                SKU is required.
+              </small>
+            )}
+            {duplicateSKU && (
+              <small id="sku-help" className="p-invalid">
+                A Unique SKU is required.
+              </small>
+            )}
           </div>
 
-          <div className="p-field">
+          <div className="p-field p-col-12 p-md-4">
+            <label htmlFor="product_name">Product Name</label>
+            <InputText
+              id="product_name"
+              value={product.product_name}
+              onChange={(e) => onInputChange(e, "product_name")}
+              required
+              className={classNames({
+                "p-invalid": submitted && !product.product_name,
+              })}
+            />
+            {submitted && !product.product_name && (
+              <small id="prod-name-help" className="p-invalid">
+                Product Name is required.
+              </small>
+            )}
+          </div>
+          <div className="p-field p-col-12 p-md-4">
+            <label htmlFor="slug">Product Slug</label>
+            <InputText
+              id="slug"
+              value={product.slug}
+              onChange={(e) => {
+                onInputChange(e, "slug");
+                setDuplicateSLUG(false);
+              }}
+              required
+              className={classNames({
+                "p-invalid": (submitted && !product.slug) || duplicateSLUG,
+              })}
+            />
+            {submitted && !product.slug && (
+              <small id="prod-slug-help" className="p-invalid">
+                Product Slug is required.
+              </small>
+            )}
+            {duplicateSLUG && (
+              <small id="prod-slug-help" className="p-invalid">
+                A Unique Slug is required.
+              </small>
+            )}
+          </div>
+
+          <div className="p-field p-col-12">
             <label htmlFor="description">Description</label>
-            <RichEditor />
+            <RichEditor updateDesc={updateDesc} />
           </div>
 
-          <div className="p-formgrid p-grid">
-            <div className="p-field p-col">
-              <label htmlFor="base_price">Base Price</label>
-              <InputText
-                id="base_price"
-                value={product.base_price}
-                onChange={(e) => onInputNumberChange(e, "base_price")}
-                required
-                autoFocus
-                className={classNames({
-                  "p-invalid": submitted && !product.base_price,
-                })}
-              />
-              {submitted && !product.base_price && (
-                <small className="p-invalid">Base Price is required.</small>
-              )}
-            </div>
-
-            <div className="p-field p-col">
-              <label htmlFor="sale_price">Sale Price</label>
-              <InputText
-                id="sale_price"
-                value={product.sale_price}
-                onChange={(e) => onInputNumberChange(e, "sale_price")}
-                required
-                autoFocus
-                className={classNames({
-                  "p-invalid": submitted && !product.sale_price,
-                })}
-              />
-              {submitted && !product.sale_price && (
-                <small className="p-invalid">Sale Price is required.</small>
-              )}
-            </div>
+          <div className="p-field p-col-12 p-md-5">
+            <label htmlFor="base_price">Base Price</label>
+            <InputNumber
+              id="base_price"
+              value={product.base_price}
+              onChange={(e) => onInputNumberChange(e, "base_price")}
+              required
+              className={classNames({
+                "p-invalid": submitted && !product.base_price,
+              })}
+              mode="currency"
+              currency="SGD"
+              locale="en-SG"
+            />
+            {submitted && !product.base_price && (
+              <small className="p-invalid">Base Price is required.</small>
+            )}
           </div>
 
-          <div className="p-field">
-            <label className="p-mb-3">Category</label>
-            <div className="p-formgrid p-grid">
-              <div className="p-field-radiobutton p-col-6">
-                <RadioButton
-                  inputId="category1"
-                  name="category"
-                  value="Accessories"
-                  onChange={onCategoryChange}
-                  checked={product.category === "Accessories"}
-                />
-                <label htmlFor="category1">Accessories</label>
-              </div>
-              <div className="p-field-radiobutton p-col-6">
-                <RadioButton
-                  inputId="category2"
-                  name="category"
-                  value="Clothing"
-                  onChange={onCategoryChange}
-                  checked={product.category === "Clothing"}
-                />
-                <label htmlFor="category2">Clothing</label>
-              </div>
-              <div className="p-field-radiobutton p-col-6">
-                <RadioButton
-                  inputId="category3"
-                  name="category"
-                  value="Electronics"
-                  onChange={onCategoryChange}
-                  checked={product.category === "Electronics"}
-                />
-                <label htmlFor="category3">Electronics</label>
-              </div>
-              <div className="p-field-radiobutton p-col-6">
-                <RadioButton
-                  inputId="category4"
-                  name="category"
-                  value="Fitness"
-                  onChange={onCategoryChange}
-                  checked={product.category === "Fitness"}
-                />
-                <label htmlFor="category4">Fitness</label>
-              </div>
-            </div>
+          <div className="p-field p-col-12 p-md-5">
+            <label htmlFor="sale_price">Sale Price</label>
+            <InputNumber
+              id="sale_price"
+              value={product.sale_price}
+              onChange={(e) => onInputNumberChange(e, "sale_price")}
+              required
+              className={classNames({
+                "p-invalid": submitted && !product.sale_price,
+              })}
+              mode="currency"
+              currency="SGD"
+              locale="en-SG"
+            />
+            {submitted && !product.sale_price && (
+              <small className="p-invalid">Sale Price is required.</small>
+            )}
+          </div>
+          <div className="p-field p-col-12 p-md-2">
+            <p htmlFor="on_sale">On Sale</p>
+
+            <InputSwitch
+              id="on_sale"
+              checked={product.on_sale}
+              onChange={(e) => onSelectChange(e, "on_sale")}
+            />
           </div>
 
-          <div className="p-formgrid p-grid">
-            <div className="p-field p-col">
-              <label htmlFor="price">Price</label>
-              <InputNumber
-                id="price"
-                value={product.price}
-                onValueChange={(e) => onInputNumberChange(e, "price")}
-                mode="currency"
-                currency="USD"
-                locale="en-US"
-              />
-            </div>
-            <div className="p-field p-col">
-              <label htmlFor="quantity">Quantity</label>
-              <InputNumber
-                id="quantity"
-                value={product.quantity}
-                onValueChange={(e) => onInputNumberChange(e, "quantity")}
-                integeronly
-              />
-            </div>
+          <div className="p-field p-col-12 p-md-6">
+            <label htmlFor="stock_quantity">Stock Quantity</label>
+            <InputNumber
+              id="stock_quantity"
+              value={product.stock_quantity}
+              onChange={(e) => onInputNumberChange(e, "stock_quantity")}
+              required
+              className={classNames({
+                "p-invalid": submitted && !product.stock_quantity,
+              })}
+            />
+            {submitted && !product.stock_quantity && (
+              <small className="p-invalid">Stock Quantity is required.</small>
+            )}
+          </div>
+
+          <div className="p-field p-col-12 p-md-6">
+            <label htmlFor="stock_status">Stock Status</label>
+            <Dropdown
+              value={product.stock_status}
+              options={[
+                { label: "In Stock", value: "IN_STOCK" },
+                { label: "Sold Out", value: "SOLD_OUT" },
+              ]}
+              onChange={(e) => onInputChange(e, "stock_status")}
+              placeholder="Select stock status"
+            />
+            {submitted && !product.stock_status && (
+              <small className="p-invalid">Stock Status is required.</small>
+            )}
+          </div>
+
+          <div className="p-field p-col-12 p-md-6">
+            <label htmlFor="categories">Categories</label>
+            <Chips
+              id="categories"
+              value={product.categories}
+              onChange={(e) => onChipsChange(e, "categories")}
+              separator=","
+            />
+            <small id="categories-help" className="p-d-block">
+              Seperate each category by ","
+            </small>
+          </div>
+          <div className="p-field p-col-12 p-md-6">
+            <label htmlFor="tags">Tags</label>
+            <Chips
+              id="tags"
+              value={product.tags}
+              onChange={(e) => onChipsChange(e, "tags")}
+              separator=","
+            />
+            <small id="tags-help" className="p-d-block">
+              Seperate each tag by ","
+            </small>
+          </div>
+
+          <div className="p-field p-col-12 ">
+            <label htmlFor="images">
+              Featured Image <strong>(Not working, need CDN)</strong>
+            </label>
+            <FileUpload
+              disabled
+              id="images"
+              name="images[]"
+              //url="./upload.php"
+              onUpload={onUpload}
+              accept="image/*"
+              maxFileSize={1000000}
+              emptyTemplate={
+                <p className="p-m-0">
+                  Drag and drop one featured here to upload.
+                </p>
+              }
+            />
+          </div>
+
+          <div className="p-field p-col-12 ">
+            <label htmlFor="images">
+              Images <strong>(Not working, need CDN)</strong>
+            </label>
+            <FileUpload
+              disabled
+              id="images"
+              name="images[]"
+              //url="./upload.php"
+              onUpload={onUpload}
+              multiple
+              accept="image/*"
+              maxFileSize={1000000}
+              emptyTemplate={
+                <p className="p-m-0">Drag and drop images here to upload.</p>
+              }
+            />
           </div>
         </div>
+
         <div className="p-d-flex p-jc-end">
           <Button
-            label="Cancel"
+            label="Clear All"
             icon="pi pi-times"
             className="p-button-text"
-            onClick={hideDialog}
+            onClick={clearAll}
           />
           <Button
             label="Save"
