@@ -65,17 +65,17 @@ function MyApp({ Component, pageProps }) {
   };
 
   const menu = [
-    {
+    /*{
       label: "Dashboard",
       icon: "pi pi-fw pi-home",
       to: "/",
-    },
-    // {
-    //   label: "Products",
-    //   icon: "pi pi-fw pi-circle-off",
-    //   to: "/products",
-    // },
-    {
+    },*/
+     {
+       label: "Products",
+       icon: "pi pi-fw pi-circle-off",
+       to: "/products",
+     },
+    /*{
       label: "th.buy2077.co",
       icon: "pi pi-fw pi-list",
       items: [
@@ -90,7 +90,7 @@ function MyApp({ Component, pageProps }) {
           to: "/thbuy2077/orders",
         },
       ],
-    },
+    },*/
     // {
     //   label: "sg.buy2077.co",
     //   icon: "pi pi-fw pi-list",
