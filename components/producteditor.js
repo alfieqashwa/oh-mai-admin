@@ -52,6 +52,7 @@ export default function ProductEditor(props) {
   const [duplicateSLUG, setDuplicateSLUG] = useState(false);
 
   const [submitted, setSubmitted] = useState(false);
+    const [htmlDesc, setHtmlDesc] = useState(null);
 
   const toast = useRef(null);
 
@@ -61,7 +62,17 @@ export default function ProductEditor(props) {
   );
 
   React.useEffect(() => {
-    if (slug && data && data.products) setProduct(data.products[0]);
+      // if this is edit product
+      if (slug && data && data.products) {
+          // infuse default data
+          setProduct(data.products[0]);
+          // create the html from plaintest
+          setHtmlDesc(new DOMParser().parseFromString(
+            data.products[0].description,
+            "text/html"
+          ))
+      }
+      
   }, [data]);
 
   const CreateProduct = (variables) => {
@@ -252,17 +263,14 @@ export default function ProductEditor(props) {
 
           <div className="p-field p-col-12">
             <label htmlFor="description">Description</label>
+          
             <RichEditor
               updateDesc={updateDesc}
               existingValue={
-                product.description
-                  ? new DOMParser().parseFromString(
-                      product.description,
-                      "text/html"
-                    )
-                  : null
+                htmlDesc
               }
             />
+            
           </div>
 
           <div className="p-field p-col-12 p-md-5">
