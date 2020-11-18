@@ -70,11 +70,6 @@ function MyApp({ Component, pageProps }) {
       icon: "pi pi-fw pi-home",
       to: "/",
     },
-    // {
-    //   label: "Products",
-    //   icon: "pi pi-fw pi-circle-off",
-    //   to: "/products",
-    // },
     {
       label: "th.buy2077.co",
       icon: "pi pi-fw pi-list",
@@ -91,6 +86,11 @@ function MyApp({ Component, pageProps }) {
         },
       ],
     },
+                {
+                  label: "Products",
+                  icon: "pi pi-fw pi-circle-off",
+                  to: "/products",
+                },
     // {
     //   label: "sg.buy2077.co",
     //   icon: "pi pi-fw pi-list",
