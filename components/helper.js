@@ -34,12 +34,16 @@ export const initBarChart = (setChartAllData, data) => {
 
   if (data) {
     //Get all dates in interval and set it to 0
-    var enddate = moment();
+    var enddate = moment().startOf("day");
 
     var startdate = data[data.length - 1].order_datetime;
 
     // If you want an inclusive end date (fully-closed interval)
-    for (var m = moment(startdate); m <= moment(enddate); m.add(1, "days")) {
+    for (
+      var m = moment(startdate).startOf("day");
+      m.isSameOrBefore(enddate);
+      m.add(1, "days")
+    ) {
       allDates[m.format("DD-MM-YYYY")] = {
         name: m.format("DD-MM-YYYY"),
         sales: 0,
@@ -49,8 +53,7 @@ export const initBarChart = (setChartAllData, data) => {
     // update the sale number of days which have sales
     data.forEach((element) => {
       var dateString = moment(element.order_datetime).format("DD-MM-YYYY");
-
-      allDates[dateString].sales++;
+      if (element.order_status == "successful") allDates[dateString].sales++;
     });
 
     // push it into the charts
@@ -94,6 +97,7 @@ export let chartOptions = {
       {
         ticks: {
           fontColor: "#495057",
+          beginAtZero: true,
         },
       },
     ],
