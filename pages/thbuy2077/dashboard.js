@@ -46,9 +46,9 @@ export default function THDashboard() {
       </div>
       <div className="p-col-12 p-lg-6">
         <div className="card summary">
-          <span className="title">Daily Revenue</span>
-          <span className="detail">Income for today</span>
-          <span className="count revenue">{price}</span>
+          <span className="title">th.buy2077.co Revenue</span>
+          <span className="detail">Income for purchases</span>
+          <span className="count revenue">฿{price}</span>
         </div>
       </div>
       <div className="p-col-12 p-lg-12">

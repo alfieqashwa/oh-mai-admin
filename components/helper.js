@@ -11,12 +11,13 @@ export function dailyPrice(setPrice, data) {
   if (data) {
     var currentPrice = 0;
     data.forEach((element) => {
-      var str = moment(element.order_datetime);
+      if (element.order_status == "successful") currentPrice += element.price;
+      // var str = moment(element.order_datetime);
 
-      var today = moment();
-      if (today.isSame(str, "day")) {
-        currentPrice += element.price;
-      }
+      // var today = moment();
+      // if (today.isSame(str, "day")) {
+      //   if (element.order_status == "successful") currentPrice += element.price;
+      // }
     });
     setPrice(currentPrice);
   }
