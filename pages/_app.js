@@ -16,6 +16,7 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "../layout/flags/flags.css";
 import "../layout/layout.scss";
+import "react-dropzone-uploader/dist/styles.css";
 
 function MyApp({ Component, pageProps }) {
   const [layoutMode, setLayoutMode] = useState("overlay");
@@ -86,11 +87,11 @@ function MyApp({ Component, pageProps }) {
         },
       ],
     },
-                {
-                  label: "Products",
-                  icon: "pi pi-fw pi-circle-off",
-                  to: "/products",
-                },
+    {
+      label: "Products",
+      icon: "pi pi-fw pi-circle-off",
+      to: "/products",
+    },
     // {
     //   label: "sg.buy2077.co",
     //   icon: "pi pi-fw pi-list",

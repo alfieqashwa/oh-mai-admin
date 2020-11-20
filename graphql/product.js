@@ -14,7 +14,7 @@ export const products = `{
 
 export const GET_PRODUCT_FROM_SLUG = `query getProductFromSlug($slug:String)
   {
-    products(slug:$slug) {
+    products(filter:{slug:$slug}) {
       sku
       product_name
       featured_image

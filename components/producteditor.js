@@ -22,6 +22,7 @@ import {
   UPDATE_PRODUCT,
 } from "graphql/product";
 import { mutate, fetcherargs } from "lib/useSWR";
+import Dropzone from "react-dropzone-uploader";
 
 export default function ProductEditor(props) {
   const { slug } = props;
@@ -52,7 +53,8 @@ export default function ProductEditor(props) {
   const [duplicateSLUG, setDuplicateSLUG] = useState(false);
 
   const [submitted, setSubmitted] = useState(false);
-    const [htmlDesc, setHtmlDesc] = useState(null);
+  const [htmlDesc, setHtmlDesc] = useState(null);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const toast = useRef(null);
 
@@ -62,17 +64,18 @@ export default function ProductEditor(props) {
   );
 
   React.useEffect(() => {
-      // if this is edit product
-      if (slug && data && data.products) {
-          // infuse default data
-          setProduct(data.products[0]);
-          // create the html from plaintest
-          setHtmlDesc(new DOMParser().parseFromString(
-            data.products[0].description,
-            "text/html"
-          ))
-      }
-      
+    // if this is edit product
+    if (slug && data && data.products) {
+      // infuse default data
+      setProduct(data.products[0]);
+      // create the html from plaintest
+      setHtmlDesc(
+        new DOMParser().parseFromString(
+          data.products[0].description,
+          "text/html"
+        )
+      );
+    }
   }, [data]);
 
   const CreateProduct = (variables) => {
@@ -85,6 +88,26 @@ export default function ProductEditor(props) {
     try {
       const newData = await CreateProduct(product);
       obj.data = newData;
+
+      let uploaded = false;
+      var formData = new FormData();
+      uploadedFiles.forEach((f) => {
+        formData.append("Files", f);
+      });
+
+      formData.append("slug", slug);
+      const requestOptions = {
+        method: "POST",
+        body: formData,
+      };
+      fetch("http://localhost:3002/upload", requestOptions).then((response) => {
+        console.log(response);
+        if (response.status == 400) {
+          uploaded = true;
+        } else {
+          throw "Upload Failed";
+        }
+      });
 
       if (slug) {
         toast.current.show({
@@ -175,12 +198,13 @@ export default function ProductEditor(props) {
     setProduct(_product);
   };
 
-  const onUpload = () => {
-    toast.show({
-      severity: "info",
-      summary: "Success",
-      detail: "File Uploaded",
-    });
+  const handleChangeStatus = ({ file, meta }, status) => {
+    if (status == "done") {
+      setUploadedFiles([...uploadedFiles, file]);
+    }
+    if (status == "removed") {
+      setUploadedFiles(uploadedFiles.filter((e) => e !== file));
+    }
   };
 
   if (error) console.log(error);
@@ -263,14 +287,8 @@ export default function ProductEditor(props) {
 
           <div className="p-field p-col-12">
             <label htmlFor="description">Description</label>
-          
-            <RichEditor
-              updateDesc={updateDesc}
-              existingValue={
-                htmlDesc
-              }
-            />
-            
+
+            <RichEditor updateDesc={updateDesc} existingValue={htmlDesc} />
           </div>
 
           <div className="p-field p-col-12 p-md-5">
@@ -378,41 +396,20 @@ export default function ProductEditor(props) {
           </div>
 
           <div className="p-field p-col-12 ">
-            <label htmlFor="images">
-              Featured Image <strong>(Not working, need CDN)</strong>
-            </label>
-            <FileUpload
-              disabled
-              id="images"
-              name="images[]"
-              //url="./upload.php"
-              onUpload={onUpload}
-              accept="image/*"
-              maxFileSize={1000000}
-              emptyTemplate={
-                <p className="p-m-0">
-                  Drag and drop one featured here to upload.
-                </p>
-              }
+            <label htmlFor="images">Featured Image</label>
+            <Dropzone
+              onChangeStatus={handleChangeStatus}
+              styles={{ dropzone: { minHeight: 200, maxHeight: 250 } }}
+              maxFiles={1}
+              multiple={false}
             />
           </div>
 
           <div className="p-field p-col-12 ">
-            <label htmlFor="images">
-              Images <strong>(Not working, need CDN)</strong>
-            </label>
-            <FileUpload
-              disabled
-              id="images"
-              name="images[]"
-              //url="./upload.php"
-              onUpload={onUpload}
-              multiple
-              accept="image/*"
-              maxFileSize={1000000}
-              emptyTemplate={
-                <p className="p-m-0">Drag and drop images here to upload.</p>
-              }
+            <label htmlFor="images">Images</label>
+            <Dropzone
+              onChangeStatus={handleChangeStatus}
+              styles={{ dropzone: { minHeight: 200, maxHeight: 250 } }}
             />
           </div>
         </div>
