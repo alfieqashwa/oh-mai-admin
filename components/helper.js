@@ -91,7 +91,6 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
       xboxData.push(xboxSales);
     }
 
-    console.log(allDates);
     // set the labels for the chart
     setChartAllData({
       labels: chartLabels,

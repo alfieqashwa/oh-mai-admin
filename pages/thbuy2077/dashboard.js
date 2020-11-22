@@ -26,7 +26,7 @@ export default function THDashboard() {
     { label: "Gladiuz KB", value: "Gladiuz KB" },
     { label: "Gufunnarock", value: "Gufunnarock" },
     { label: "Hua Hed", value: "Hua Hed" },
-    { label: "Special", value: "Special" },
+    { label: "Mixed KOL", value: "Mixed KOL" },
   ];
   function optionTemplate(option) {
     if (option.value == "ALL") return <div>{option.label}</div>;
