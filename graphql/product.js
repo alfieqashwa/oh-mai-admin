@@ -12,9 +12,9 @@ export const products = `{
     }
   }`;
 
-export const GET_PRODUCT_FROM_SLUG = `query getProductFromSlug($slug:String)
+export const GET_PRODUCT_FROM_SLUG = `query getProductFromSlug($filter: UserFilter)
   {
-    products(slug:$slug) {
+    products(filter: $filter) {
       sku
       product_name
       featured_image
