@@ -57,7 +57,7 @@ export default function ProductEditor(props) {
   const toast = useRef(null);
 
   const { data, error } = useSWR(
-    [GET_PRODUCT_FROM_SLUG, JSON.stringify({ slug: slug })],
+    [GET_PRODUCT_FROM_SLUG, JSON.stringify({filter: { slug: slug }})],
     fetcherargs
   );
 
