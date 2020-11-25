@@ -86,7 +86,7 @@ export default function ProductEditor(props) {
   const toast = useRef(null);
 
   const { data, error } = useSWR(
-    [GET_PRODUCT_FROM_SLUG, JSON.stringify({ slug: slug })],
+    [GET_PRODUCT_FROM_SLUG, JSON.stringify({ filter: { slug: slug } })],
     fetcherargs
   );
 
@@ -175,7 +175,6 @@ export default function ProductEditor(props) {
       product.slug &&
       product.base_price &&
       product.sale_price &&
-      product.stock_quantity &&
       product.stock_status &&
       !duplicateSKU &&
       !duplicateSLUG
@@ -392,14 +391,7 @@ export default function ProductEditor(props) {
               id="stock_quantity"
               value={product.stock_quantity}
               onChange={(e) => onInputNumberChange(e, "stock_quantity")}
-              required
-              className={classNames({
-                "p-invalid": submitted && !product.stock_quantity,
-              })}
             />
-            {submitted && !product.stock_quantity && (
-              <small className="p-invalid">Stock Quantity is required.</small>
-            )}
           </div>
 
           <div className="p-field p-col-12 p-md-6">

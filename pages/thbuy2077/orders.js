@@ -208,7 +208,7 @@ export default function THOrders() {
           <Column
             field="email"
             header="Email"
-            headerStyle={{ width: "150px" }}
+            headerStyle={{ width: "250px" }}
           ></Column>
           <Column
             field="phone_number"

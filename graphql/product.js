@@ -15,14 +15,13 @@ export const products = `{
     }
   }`;
 
-export const GET_PRODUCT_FROM_SLUG = `query getProductFromSlug($slug:String)
+export const GET_PRODUCT_FROM_SLUG = `query getProductFromSlug($filter: UserFilter)
   {
-    products(filter:{slug:$slug}) {
+    products(filter: $filter) {
       sku
       product_name
       featured_image
       images
-      kol_id
       base_price
       sale_price
       slug
@@ -38,9 +37,6 @@ export const GET_PRODUCT_FROM_SLUG = `query getProductFromSlug($slug:String)
 export const CREATE_PRODUCT = `mutation createproduct(
     $sku: String,
     $product_name: String,
-    
-    
-    $kol_id: String,
     $base_price: Float,
     $sale_price: Float,
     $slug: String,
@@ -56,9 +52,6 @@ export const CREATE_PRODUCT = `mutation createproduct(
     createProduct(
       sku: $sku
       product_name: $product_name
-      
-      
-      kol_id: $kol_id
       base_price: $base_price
       sale_price: $sale_price
       slug: $slug
@@ -79,8 +72,6 @@ export const CREATE_PRODUCT = `mutation createproduct(
 export const UPDATE_PRODUCT = `mutation updateProduct(
     $sku: String,
     $product_name: String,
-    
-    $kol_id: String,
     $base_price: Float,
     $sale_price: Float,
     $slug: String,
@@ -96,7 +87,6 @@ export const UPDATE_PRODUCT = `mutation updateProduct(
     updateProduct(
       sku: $sku
       product_name: $product_name
-      kol_id: $kol_id
       base_price: $base_price
       sale_price: $sale_price
       slug: $slug
