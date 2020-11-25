@@ -27,6 +27,14 @@ export default function THDashboard() {
     { label: "Gufunnarock", value: "Gufunnarock" },
     { label: "Hua Hed", value: "Hua Hed" },
     { label: "Mixed KOL", value: "Mixed KOL" },
+    { label: "Boung Lengame", value: "Boung Lengame" },
+    { label: "Gamer Live TV", value: "Gamer Live TV" },
+    { label: "Hon BoYa", value: "Hon BoYa" },
+    { label: "Jai Raw", value: "Jai Raw" },
+    { label: "Julio", value: "Julio" },
+    { label: "SheapGamer", value: "SheapGamer" },
+    { label: "Tanny", value: "Tanny" },
+    { label: "Yoshi Minburi", value: "Yoshi Minburi" },
   ];
   function optionTemplate(option) {
     if (option.value == "ALL") return <div>{option.label}</div>;
