@@ -29,6 +29,7 @@
     "slate-history": "^0.59.0",
     "slate-hyperscript": "^0.59.0",
     "slate-react": "^0.59.0",
-    "swr": "^0.3.8"
+    "swr": "^0.3.8",
+    "use-object-url": "^1.0.0"
   }
 }

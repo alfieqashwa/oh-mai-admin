@@ -8,7 +8,10 @@ export const products = `{
       on_sale,
       sale_price,
       slug,
-      categories
+      categories,
+      tags,
+      stock_quantity,
+      stock_status
     }
   }`;
 
@@ -36,7 +39,7 @@ export const CREATE_PRODUCT = `mutation createproduct(
     $sku: String,
     $product_name: String,
     
-    $images: [String],
+    
     $kol_id: String,
     $base_price: Float,
     $sale_price: Float,
@@ -54,7 +57,7 @@ export const CREATE_PRODUCT = `mutation createproduct(
       sku: $sku
       product_name: $product_name
       
-      images: $images
+      
       kol_id: $kol_id
       base_price: $base_price
       sale_price: $sale_price
@@ -76,7 +79,7 @@ export const CREATE_PRODUCT = `mutation createproduct(
 export const UPDATE_PRODUCT = `mutation updateProduct(
     $sku: String,
     $product_name: String,
-    $images: [String],
+    
     $kol_id: String,
     $base_price: Float,
     $sale_price: Float,
@@ -88,11 +91,11 @@ export const UPDATE_PRODUCT = `mutation updateProduct(
     $categories: [String],
     $tags: [String],
     $new_featured_image: Upload,
+    $images_file:[Upload]
   ){
     updateProduct(
       sku: $sku
       product_name: $product_name
-      images: $images
       kol_id: $kol_id
       base_price: $base_price
       sale_price: $sale_price
@@ -104,8 +107,16 @@ export const UPDATE_PRODUCT = `mutation updateProduct(
       categories: $categories
       tags: $tags
       new_featured_image: $new_featured_image
+      images_file: $images_file
     ){
       id
     }
+  }
+  `;
+
+export const DELETE_PRODUCT = `mutation deleteProduct(
+  $id: ID
+  ){
+    deleteProduct(id: $id)
   }
   `;

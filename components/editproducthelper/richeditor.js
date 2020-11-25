@@ -98,7 +98,7 @@ export default function RichEditor(props) {
   React.useEffect(() => {
     if (existingValue) {
       setValue(deserialize(existingValue.body));
-      console.log(deserialize(existingValue.body));
+      //console.log(deserialize(existingValue.body));
     }
   }, [existingValue]);
 

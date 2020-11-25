@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { FileUpload } from "primereact/fileupload";
-import { Rating } from "primereact/rating";
-import { Toolbar } from "primereact/toolbar";
 import { Dropdown } from "primereact/dropdown";
-import { RadioButton } from "primereact/radiobutton";
 import { InputNumber } from "primereact/inputnumber";
 import { Chips } from "primereact/chips";
 import { InputText } from "primereact/inputtext";
 import { InputSwitch } from "primereact/inputswitch";
-import { Dialog } from "primereact/dialog";
-import RichEditor from "components/richeditor";
+import RichEditor from "components/editproducthelper/richeditor";
+
+import { ImageDataTable } from "components/editproducthelper/datatabletemplate";
+import {
+  DeleteImageDialog,
+  UploadImageDialog,
+} from "components/editproducthelper/editproductdialog";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import {
@@ -22,9 +21,11 @@ import {
   GET_PRODUCT_FROM_SLUG,
   UPDATE_PRODUCT,
 } from "graphql/product";
-import { UPLOADS3 } from "graphql/fileupload";
 import { mutate, fetcherargs } from "lib/useSWR";
 import Dropzone from "react-dropzone-uploader";
+import { ProgressSpinner } from "primereact/progressspinner";
+
+import { Dialog } from "primereact/dialog";
 
 export default function ProductEditor(props) {
   const { slug } = props;
@@ -72,7 +73,15 @@ export default function ProductEditor(props) {
   // feature image FILE object
   const [featuredImage, setFeaturedImage] = useState(null);
 
+  // images
   const [images, setImages] = useState([]);
+  const [editImages, setEditImages] = useState(false);
+  const [tempImages, setTempImages] = useState([]);
+  const [deleteImageDialog, setDeleteImageDialog] = useState(false);
+  const [toDelete, setToDelete] = useState(null);
+
+  // spinner
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const toast = useRef(null);
 
@@ -103,6 +112,7 @@ export default function ProductEditor(props) {
           const file = new File([blob], `image${i}.jpg`, { type: blob.type });
           imageFiles.push(file);
         }
+
         setImages(imageFiles);
       })();
     }
@@ -112,14 +122,6 @@ export default function ProductEditor(props) {
     if (slug) return mutate(UPDATE_PRODUCT, variables);
     else return mutate(CREATE_PRODUCT, variables);
   };
-  const uploadImageMutation = (variables, slug) => {
-    if (slug) return mutate(UPLOADS3, { files: variables, slug: slug });
-    else return mutate(UPLOADS3, { files: variables, slug: slug });
-  };
-
-  async function uploadImages() {
-    uploadImageMutation(uploadedFiles, `products/${product.slug}`);
-  }
 
   async function uploadToDB(_product) {
     try {
@@ -129,6 +131,7 @@ export default function ProductEditor(props) {
       if (images) _product["images_file"] = [...images];
 
       await productMutation(_product);
+      setShowSpinner(false);
 
       if (slug) {
         toast.current.show({
@@ -145,17 +148,21 @@ export default function ProductEditor(props) {
           life: 1900,
         });
       }
-      // setSubmitted(false);
-      // setProduct(emptyProduct);
-      // setTimeout(() => {
-      //   router.push("/products");
-      // }, 2000);
+      setSubmitted(false);
+
+      setTimeout(() => {
+        setProduct(emptyProduct);
+        router.push("/products");
+      }, 2000);
     } catch (err) {
       console.log(err);
-      if (err.response.errors[0].message == "Duplicate SKU found") {
-        setDuplicateSKU(true);
-      } else if (err.response.errors[0].message == "Duplicate Slug found") {
-        setDuplicateSLUG(true);
+      if (err.response) {
+        if (err.response.errors[0].message == "Duplicate SKU found") {
+          setDuplicateSKU(true);
+        } else if (err.response.errors[0].message == "Duplicate Slug found") {
+          setDuplicateSLUG(true);
+        }
+      } else {
       }
     }
   }
@@ -174,13 +181,8 @@ export default function ProductEditor(props) {
       !duplicateSLUG
     ) {
       uploadToDB();
-      //uploadImages();
-      //uploadImagesThenDB();
+      setShowSpinner(true);
     }
-  };
-
-  const clearAll = () => {
-    setProduct(emptyProduct);
   };
 
   const updateDesc = (value) => {
@@ -232,93 +234,11 @@ export default function ProductEditor(props) {
   const handleFeaturedChangeStatus = ({ file, meta }, status) => {
     if (status == "done") {
       setFeaturedImage(file);
-      //setUploadedFiles([file, ...uploadedFiles]);
     }
     if (status == "removed") {
       setFeaturedImage(null);
-      //setUploadedFiles(uploadedFiles.filter((e) => e !== file));
     }
   };
-
-  const handleDialogFeatured = ({ file, meta }, status) => {
-    if (status == "done") {
-      setNewFeatured(file);
-    }
-    if (status == "removed") {
-      setNewFeatured(null);
-    }
-  };
-
-  const onRowReorder = (e) => {
-    setImages(e.value);
-    console.log(e.value);
-    // this.setState({ products: e.value }, () => {
-    //     this.toast.show({severity:'success', summary: 'Rows Reordered', life: 3000});
-    // });
-  };
-  const imageBodyTemplate = (rowData) => {
-    return (
-      <img
-        src={rowData.name ? URL.createObjectURL(rowData) : ""}
-        onError={(e) =>
-          (e.target.src =
-            "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
-        }
-        alt={rowData.name}
-        className="product-image"
-      />
-    );
-  };
-
-  const actionBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <Button
-          icon="pi pi-trash"
-          className="p-button-rounded p-button-warning"
-          //onClick={() => confirmDeleteProduct(rowData)}
-        />
-      </React.Fragment>
-    );
-  };
-
-  const renderHeader = () => {
-    return (
-      <div className="table-header">
-        List of Customers
-        <span className="p-input-icon-left">
-          <i className="pi pi-search" />
-          <Button
-            icon="pi pi-pencil"
-            label="Upload New Featured Image"
-            className="p-button-rounded p-button-success p-mr-2"
-            onClick={() => setEditFeatured(true)}
-          />
-        </span>
-      </div>
-    );
-  };
-
-  const editFeaturedImageFooter = (
-    <React.Fragment>
-      <Button
-        label="No"
-        icon="pi pi-times"
-        className="p-button-text"
-        onClick={() => setEditFeatured(false)}
-      />
-      <Button
-        label="Yes"
-        icon="pi pi-check"
-        className="p-button-text"
-        onClick={() => {
-          if (newFeatured) setFeaturedImage(newFeatured);
-          //setUploadedFiles([newFeatured, ...uploadedFiles]);
-          setEditFeatured(false);
-        }}
-      />
-    </React.Fragment>
-  );
 
   if (error) console.log(error);
 
@@ -373,27 +293,42 @@ export default function ProductEditor(props) {
             )}
           </div>
           <div className="p-field p-col-12 p-md-4">
-            <label htmlFor="slug">Product Slug</label>
-            <InputText
-              id="slug"
-              value={product.slug}
-              onChange={(e) => {
-                onInputChange(e, "slug");
-                setDuplicateSLUG(false);
-              }}
-              required
-              className={classNames({
-                "p-invalid": (submitted && !product.slug) || duplicateSLUG,
-              })}
-            />
+            <label htmlFor="slug">Product Link</label>
+            <span className="p-input-icon-left">
+              <p
+                style={{
+                  position: "absolute",
+                  top: "20%",
+                  margin: "0 0 0 0.2em",
+                  color: "rgba(0,0,0,0.4)",
+                }}
+              >
+                {"https://gamebox.com/<kolname>/"}
+              </p>
+              <InputText
+                id="slug"
+                value={product.slug}
+                onChange={(e) => {
+                  onInputChange(e, "slug");
+                  setDuplicateSLUG(false);
+                }}
+                required
+                className={classNames(
+                  {
+                    "p-invalid": (submitted && !product.slug) || duplicateSLUG,
+                  },
+                  "input"
+                )}
+              />
+            </span>
             {submitted && !product.slug && (
               <small id="prod-slug-help" className="p-invalid">
-                Product Slug is required.
+                Product Link is required.
               </small>
             )}
             {duplicateSLUG && (
               <small id="prod-slug-help" className="p-invalid">
-                A Unique Slug is required.
+                A Unique Link is required.
               </small>
             )}
           </div>
@@ -548,22 +483,13 @@ export default function ProductEditor(props) {
           <div className="p-field p-col-12 p-md-6">
             <p htmlFor="images">Images</p>
             {slug && (
-              <div>
-                <DataTable
-                  header={() => renderHeader()}
-                  value={images}
-                  reorderableColumns
-                  onRowReorder={onRowReorder}
-                >
-                  <Column
-                    header="Reorder"
-                    rowReorder
-                    style={{ width: "100px" }}
-                  />
-                  <Column header="Image" body={imageBodyTemplate}></Column>
-                  <Column body={actionBodyTemplate}></Column>
-                </DataTable>
-              </div>
+              <ImageDataTable
+                images={images}
+                setToDelete={setToDelete}
+                setDeleteImageDialog={setDeleteImageDialog}
+                setEditImages={setEditImages}
+                setImages={setImages}
+              />
             )}
             {!slug && (
               <Dropzone
@@ -583,10 +509,10 @@ export default function ProductEditor(props) {
 
         <div className="p-d-flex p-jc-end">
           <Button
-            label="Clear All"
+            label="Cancel"
             icon="pi pi-times"
             className="p-button-text"
-            onClick={clearAll}
+            onClick={() => router.push("/products")}
           />
           <Button
             label="Save"
@@ -598,25 +524,49 @@ export default function ProductEditor(props) {
       </div>
 
       <Dialog
-        visible={editFeatured}
-        style={{ width: "450px" }}
-        header="Upload New Featured Image"
-        modal
-        footer={editFeaturedImageFooter}
-        onHide={() => setEditFeatured(false)}
+        visible={showSpinner}
+        showHeader={false}
+        closeOnEscape={false}
+        closable={false}
+        onHide={() => {}}
+        style={{ boxShadow: "none" }}
+        contentStyle={{ backgroundColor: "rgba(0,0,0,0)" }}
       >
-        <div className="confirmation-content">
-          <Dropzone
-            onChangeStatus={handleDialogFeatured}
-            styles={{ dropzone: { minHeight: 350, maxHeight: 350 } }}
-            maxFiles={1}
-            multiple={false}
-            inputContent="Drag an image or Click to Browse"
-            addClassNames={{ previewImage: "featuredPreview" }}
-            accept="image/*"
-          />
-        </div>
+        <ProgressSpinner />
       </Dialog>
+
+      <UploadImageDialog
+        visible={editFeatured}
+        headerText={"Upload New Featured Image"}
+        onHide={() => setEditFeatured(false)}
+        inputText={"Drag an image or Click to Browse"}
+        isFeatureImage={true}
+        setEditFeatured={setEditFeatured}
+        newFeatured={newFeatured}
+        setNewFeatured={setNewFeatured}
+        setFeaturedImage={setFeaturedImage}
+      />
+
+      <UploadImageDialog
+        visible={editImages}
+        headerText={"Upload New Images"}
+        onHide={() => setEditImages(false)}
+        inputText={"Drag in Images"}
+        isFeatureImage={false}
+        setEditImages={setEditImages}
+        images={images}
+        setImages={setImages}
+        tempImages={tempImages}
+        setTempImages={setTempImages}
+      />
+      <DeleteImageDialog
+        deleteImageDialog={deleteImageDialog}
+        setDeleteImageDialog={setDeleteImageDialog}
+        toDelete={toDelete}
+        setToDelete={setToDelete}
+        images={images}
+        setImages={setImages}
+      />
     </div>
   );
 }

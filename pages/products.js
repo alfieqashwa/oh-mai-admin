@@ -1,22 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import classNames from "classnames";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { FileUpload } from "primereact/fileupload";
-import { Rating } from "primereact/rating";
 import { Toolbar } from "primereact/toolbar";
-import { InputTextarea } from "primereact/inputtextarea";
-import { RadioButton } from "primereact/radiobutton";
-import { InputNumber } from "primereact/inputnumber";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import RichEditor from "components/richeditor";
 
 import useSWR from "swr";
-import { products } from "../graphql/product";
-import { fetcher } from "../lib/useSWR";
+import { products, DELETE_PRODUCT } from "../graphql/product";
+import { fetcher, mutate } from "../lib/useSWR";
 import Link from "next/link";
 
 export default function Products() {
@@ -32,14 +26,12 @@ export default function Products() {
     inventoryStatus: "INSTOCK",
   };
 
-  // const [products, setProducts] = useState(null);
   const [product, setProduct] = useState(emptyProduct);
-  const [productDialog, setProductDialog] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState(null);
+  const [selectedSingle, setSelectedSingle] = useState(null);
 
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
   const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
@@ -49,24 +41,7 @@ export default function Products() {
 
   if (!data) return <></>;
 
-  const formatCurrency = (value) => {
-    // return value.toLocaleString("en-US", {
-    //   style: "currency",
-    //   currency: "USD",
-    // });
-  };
-
-  const openNew = () => {
-    setProduct(emptyProduct);
-    setSubmitted(false);
-    setProductDialog(true);
-  };
-
-  const hideDialog = () => {
-    setSubmitted(false);
-    setProductDialog(false);
-  };
-
+  console.log(data);
   const hideDeleteProductDialog = () => {
     setDeleteProductDialog(false);
   };
@@ -75,83 +50,30 @@ export default function Products() {
     setDeleteProductsDialog(false);
   };
 
-  const saveProduct = () => {
-    setSubmitted(true);
-
-    if (product.name.trim()) {
-      let _products = [...products];
-      let _product = { ...product };
-      if (product.id) {
-        const index = findIndexById(product.id);
-
-        _products[index] = _product;
-        toast.current.show({
-          severity: "success",
-          summary: "Successful",
-          detail: "Product Updated",
-          life: 3000,
-        });
-      } else {
-        _product.id = createId();
-        _product.image = "product-placeholder.svg";
-        _products.push(_product);
-        toast.current.show({
-          severity: "success",
-          summary: "Successful",
-          detail: "Product Created",
-          life: 3000,
-        });
-      }
-
-      setProducts(_products);
-      setProductDialog(false);
-      setProduct(emptyProduct);
-    }
-  };
-
-  const editProduct = (product) => {
-    setProduct({ ...product });
-    setProductDialog(true);
-  };
-
   const confirmDeleteProduct = (product) => {
-    setProduct(product);
+    setSelectedSingle(product);
     setDeleteProductDialog(true);
   };
 
+  async function deleteProductMutation(id) {
+    await mutate(DELETE_PRODUCT, { id: id });
+  }
+  async function deleteProductsMutation(id) {
+    for (var i = 0; i < id.length; i++) {
+      await mutate(DELETE_PRODUCT, { id: id[i] });
+    }
+  }
+
   const deleteProduct = () => {
-    let _products = products.filter((val) => val.id !== product.id);
-    setProduct(_products);
+    deleteProductMutation(selectedSingle.id);
     setDeleteProductDialog(false);
-    setProduct(emptyProduct);
+    setSelectedSingle(null);
     toast.current.show({
       severity: "success",
       summary: "Successful",
       detail: "Product Deleted",
       life: 3000,
     });
-  };
-
-  const findIndexById = (id) => {
-    let index = -1;
-    for (let i = 0; i < products.length; i++) {
-      if (products[i].id === id) {
-        index = i;
-        break;
-      }
-    }
-
-    return index;
-  };
-
-  const createId = () => {
-    let id = "";
-    let chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
   };
 
   const exportCSV = () => {
@@ -163,8 +85,14 @@ export default function Products() {
   };
 
   const deleteSelectedProducts = () => {
-    let _products = products.filter((val) => !selectedProducts.includes(val));
-    setProducts(_products);
+    var ids = [];
+
+    selectedProducts.forEach((element) => {
+      ids.push(element.id);
+    });
+
+    deleteProductsMutation(ids);
+
     setDeleteProductsDialog(false);
     setSelectedProducts(null);
     toast.current.show({
@@ -173,28 +101,6 @@ export default function Products() {
       detail: "Products Deleted",
       life: 3000,
     });
-  };
-
-  const onCategoryChange = (e) => {
-    let _product = { ...product };
-    _product["category"] = e.value;
-    setProduct(_product);
-  };
-
-  const onInputChange = (e, name) => {
-    const val = (e.target && e.target.value) || "";
-    let _product = { ...product };
-    _product[`${name}`] = val;
-
-    setProduct(_product);
-  };
-
-  const onInputNumberChange = (e, name) => {
-    const val = e.value || 0;
-    let _product = { ...product };
-    _product[`${name}`] = val;
-
-    setProduct(_product);
   };
 
   const leftToolbarTemplate = () => {
@@ -221,14 +127,14 @@ export default function Products() {
   const rightToolbarTemplate = () => {
     return (
       <React.Fragment>
-        <FileUpload
+        {/* <FileUpload
           mode="basic"
           accept="image/*"
           maxFileSize={1000000}
           label="Import"
           chooseLabel="Import"
           className="p-mr-2 p-d-inline-block"
-        />
+        /> */}
         <Button
           label="Export"
           icon="pi pi-upload"
@@ -277,8 +183,26 @@ export default function Products() {
     );
   };
 
+  const tagsTemplate = (rowData) => {
+    return (
+      <div>
+        {rowData.tags.map((eaCat) => (
+          <p>{eaCat}</p>
+        ))}
+      </div>
+    );
+  };
+
   const priceBodyTemplate = (rowData) => {
-    return rowData.current_price;
+    var formatter = new Intl.NumberFormat("en-SG", {
+      style: "currency",
+      currency: "SGD",
+    });
+    return formatter.format(rowData.current_price);
+  };
+
+  const onsaleTemplate = (rowData) => {
+    return rowData.on_sale ? "Yes" : "No";
   };
 
   const actionBodyTemplate = (rowData) => {
@@ -301,22 +225,6 @@ export default function Products() {
     );
   };
 
-  const productDialogFooter = (
-    <React.Fragment>
-      <Button
-        label="Cancel"
-        icon="pi pi-times"
-        className="p-button-text"
-        onClick={hideDialog}
-      />
-      <Button
-        label="Save"
-        icon="pi pi-check"
-        className="p-button-text"
-        onClick={saveProduct}
-      />
-    </React.Fragment>
-  );
   const deleteProductDialogFooter = (
     <React.Fragment>
       <Button
@@ -365,7 +273,6 @@ export default function Products() {
           value={data.products}
           selection={selectedProducts}
           onSelectionChange={(e) => setSelectedProducts(e.value)}
-          dataKey="id"
           paginator
           rows={10}
           rowsPerPageOptions={[5, 10, 25]}
@@ -373,142 +280,86 @@ export default function Products() {
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
           globalFilter={globalFilter}
           header={header}
+          scrollable
         >
           <Column
             selectionMode="multiple"
             headerStyle={{ width: "3rem" }}
           ></Column>
-          <Column field="sku" header="SKU" sortable></Column>
-          <Column field="product_name" header="Name" sortable></Column>
-          <Column header="Featured Image" body={imageBodyTemplate}></Column>
+          <Column
+            field="sku"
+            header="SKU"
+            sortable
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
+            field="product_name"
+            header="Name"
+            sortable
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
+            header="Featured Image"
+            body={imageBodyTemplate}
+            headerStyle={{ width: "150px" }}
+          ></Column>
           <Column
             field="current_price"
-            header="Price"
+            header="Current Price"
             body={priceBodyTemplate}
             sortable
+            headerStyle={{ width: "150px" }}
           ></Column>
-          <Column header="Category" body={categoryTemplate}></Column>
+          <Column
+            field="base_price"
+            header="Base Price"
+            body={priceBodyTemplate}
+            headerStyle={{ width: "150px" }}
+            sortable
+          ></Column>
+          <Column
+            field="sale_price"
+            header="Sale Price"
+            body={priceBodyTemplate}
+            headerStyle={{ width: "150px" }}
+            sortable
+          ></Column>
+          <Column
+            field="on_sale"
+            header="Is it on sale?"
+            body={onsaleTemplate}
+            headerStyle={{ width: "150px" }}
+            sortable
+          ></Column>
+          <Column
+            header="Category"
+            body={categoryTemplate}
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
+            header="Tags"
+            body={tagsTemplate}
+            headerStyle={{ width: "150px" }}
+          ></Column>
 
-          <Column body={actionBodyTemplate}></Column>
+          <Column
+            field="stock_quantity"
+            header="Stock Quantity"
+            sortable
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
+            field="stock_status"
+            header="Stock Status"
+            sortable
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
+            body={actionBodyTemplate}
+            headerStyle={{ width: "150px" }}
+          ></Column>
         </DataTable>
       </div>
-
-      <Dialog
-        visible={productDialog}
-        style={{ width: "450px" }}
-        header="Product Details"
-        modal
-        className="p-fluid"
-        footer={productDialogFooter}
-        onHide={hideDialog}
-      >
-        {product.image && (
-          <img
-            src={`assets/demo/images/product/${product.image}`}
-            onError={(e) =>
-              (e.target.src =
-                "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
-            }
-            alt={product.image}
-            className="product-image"
-          />
-        )}
-        <div className="p-field">
-          <label htmlFor="name">Name</label>
-          <InputText
-            id="name"
-            value={product.name}
-            onChange={(e) => onInputChange(e, "name")}
-            required
-            autoFocus
-            className={classNames({ "p-invalid": submitted && !product.name })}
-          />
-          {submitted && !product.name && (
-            <small className="p-invalid">Name is required.</small>
-          )}
-        </div>
-        <div className="p-field">
-          <label htmlFor="description">Description</label>
-
-          <InputTextarea
-            id="description"
-            value={product.description}
-            onChange={(e) => onInputChange(e, "description")}
-            required
-            rows={3}
-            cols={20}
-          />
-        </div>
-
-        <div className="p-field">
-          <label className="p-mb-3">Category</label>
-          <div className="p-formgrid p-grid">
-            <div className="p-field-radiobutton p-col-6">
-              <RadioButton
-                inputId="category1"
-                name="category"
-                value="Accessories"
-                onChange={onCategoryChange}
-                checked={product.category === "Accessories"}
-              />
-              <label htmlFor="category1">Accessories</label>
-            </div>
-            <div className="p-field-radiobutton p-col-6">
-              <RadioButton
-                inputId="category2"
-                name="category"
-                value="Clothing"
-                onChange={onCategoryChange}
-                checked={product.category === "Clothing"}
-              />
-              <label htmlFor="category2">Clothing</label>
-            </div>
-            <div className="p-field-radiobutton p-col-6">
-              <RadioButton
-                inputId="category3"
-                name="category"
-                value="Electronics"
-                onChange={onCategoryChange}
-                checked={product.category === "Electronics"}
-              />
-              <label htmlFor="category3">Electronics</label>
-            </div>
-            <div className="p-field-radiobutton p-col-6">
-              <RadioButton
-                inputId="category4"
-                name="category"
-                value="Fitness"
-                onChange={onCategoryChange}
-                checked={product.category === "Fitness"}
-              />
-              <label htmlFor="category4">Fitness</label>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-formgrid p-grid">
-          <div className="p-field p-col">
-            <label htmlFor="price">Price</label>
-            <InputNumber
-              id="price"
-              value={product.price}
-              onValueChange={(e) => onInputNumberChange(e, "price")}
-              mode="currency"
-              currency="USD"
-              locale="en-US"
-            />
-          </div>
-          <div className="p-field p-col">
-            <label htmlFor="quantity">Quantity</label>
-            <InputNumber
-              id="quantity"
-              value={product.quantity}
-              onValueChange={(e) => onInputNumberChange(e, "quantity")}
-              integeronly
-            />
-          </div>
-        </div>
-      </Dialog>
 
       <Dialog
         visible={deleteProductDialog}
