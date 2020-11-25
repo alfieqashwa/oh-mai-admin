@@ -256,7 +256,7 @@ export default function Products() {
   const imageBodyTemplate = (rowData) => {
     return (
       <img
-        src={`assets/demo/images/product/${rowData.image}`}
+        src={`${rowData.featured_image}`}
         onError={(e) =>
           (e.target.src =
             "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
@@ -380,7 +380,7 @@ export default function Products() {
           ></Column>
           <Column field="sku" header="SKU" sortable></Column>
           <Column field="product_name" header="Name" sortable></Column>
-          <Column header="Image" body={imageBodyTemplate}></Column>
+          <Column header="Featured Image" body={imageBodyTemplate}></Column>
           <Column
             field="current_price"
             header="Price"

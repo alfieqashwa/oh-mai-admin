@@ -13,6 +13,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Chips } from "primereact/chips";
 import { InputText } from "primereact/inputtext";
 import { InputSwitch } from "primereact/inputswitch";
+import { Dialog } from "primereact/dialog";
 import RichEditor from "components/richeditor";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -21,6 +22,7 @@ import {
   GET_PRODUCT_FROM_SLUG,
   UPDATE_PRODUCT,
 } from "graphql/product";
+import { UPLOADS3 } from "graphql/fileupload";
 import { mutate, fetcherargs } from "lib/useSWR";
 import Dropzone from "react-dropzone-uploader";
 
@@ -45,16 +47,32 @@ export default function ProductEditor(props) {
     stock_status: null,
     categories: [],
     tags: [],
+    new_featured_image: null,
+    images_file: [],
   };
 
   // const [products, setProducts] = useState(null);
   const [product, setProduct] = useState(emptyProduct);
+
+  // checks for duplicate
   const [duplicateSKU, setDuplicateSKU] = useState(false);
   const [duplicateSLUG, setDuplicateSLUG] = useState(false);
 
+  // check if submitted
   const [submitted, setSubmitted] = useState(false);
+
+  //value of html for slate editor
   const [htmlDesc, setHtmlDesc] = useState(null);
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  //const [uploadedFiles, setUploadedFiles] = useState([]);
+
+  // edit feature image
+  const [editFeatured, setEditFeatured] = useState(false);
+  const [newFeatured, setNewFeatured] = useState(null);
+
+  // feature image FILE object
+  const [featuredImage, setFeaturedImage] = useState(null);
+
+  const [images, setImages] = useState([]);
 
   const toast = useRef(null);
 
@@ -75,39 +93,42 @@ export default function ProductEditor(props) {
           "text/html"
         )
       );
+
+      (async () => {
+        var imageFiles = [];
+        for (var i = 0; i < data.products[0].images.length; i++) {
+          const response = await fetch(data.products[0].images[i]);
+          // here image is url/location of image
+          const blob = await response.blob();
+          const file = new File([blob], `image${i}.jpg`, { type: blob.type });
+          imageFiles.push(file);
+        }
+        setImages(imageFiles);
+      })();
     }
   }, [data]);
 
-  const CreateProduct = (variables) => {
+  const productMutation = (variables) => {
     if (slug) return mutate(UPDATE_PRODUCT, variables);
     else return mutate(CREATE_PRODUCT, variables);
   };
+  const uploadImageMutation = (variables, slug) => {
+    if (slug) return mutate(UPLOADS3, { files: variables, slug: slug });
+    else return mutate(UPLOADS3, { files: variables, slug: slug });
+  };
 
-  async function Mutation() {
-    const obj = {};
+  async function uploadImages() {
+    uploadImageMutation(uploadedFiles, `products/${product.slug}`);
+  }
+
+  async function uploadToDB(_product) {
     try {
-      const newData = await CreateProduct(product);
-      obj.data = newData;
+      let _product = { ...product };
+      if (featuredImage) _product["new_featured_image"] = featuredImage;
 
-      let uploaded = false;
-      var formData = new FormData();
-      uploadedFiles.forEach((f) => {
-        formData.append("Files", f);
-      });
+      if (images) _product["images_file"] = [...images];
 
-      formData.append("slug", slug);
-      const requestOptions = {
-        method: "POST",
-        body: formData,
-      };
-      fetch("http://localhost:3002/upload", requestOptions).then((response) => {
-        console.log(response);
-        if (response.status == 400) {
-          uploaded = true;
-        } else {
-          throw "Upload Failed";
-        }
-      });
+      await productMutation(_product);
 
       if (slug) {
         toast.current.show({
@@ -124,20 +145,19 @@ export default function ProductEditor(props) {
           life: 1900,
         });
       }
-      setSubmitted(false);
-      setProduct(emptyProduct);
-      setTimeout(() => {
-        router.push("/products");
-      }, 2000);
+      // setSubmitted(false);
+      // setProduct(emptyProduct);
+      // setTimeout(() => {
+      //   router.push("/products");
+      // }, 2000);
     } catch (err) {
+      console.log(err);
       if (err.response.errors[0].message == "Duplicate SKU found") {
         setDuplicateSKU(true);
       } else if (err.response.errors[0].message == "Duplicate Slug found") {
         setDuplicateSLUG(true);
       }
-      obj.error = err;
     }
-    return obj;
   }
 
   const saveProduct = () => {
@@ -153,7 +173,9 @@ export default function ProductEditor(props) {
       !duplicateSKU &&
       !duplicateSLUG
     ) {
-      Mutation();
+      uploadToDB();
+      //uploadImages();
+      //uploadImagesThenDB();
     }
   };
 
@@ -200,12 +222,103 @@ export default function ProductEditor(props) {
 
   const handleChangeStatus = ({ file, meta }, status) => {
     if (status == "done") {
-      setUploadedFiles([...uploadedFiles, file]);
+      setImages([...images, file]);
     }
     if (status == "removed") {
-      setUploadedFiles(uploadedFiles.filter((e) => e !== file));
+      setImages(images.filter((e) => e !== file));
     }
   };
+
+  const handleFeaturedChangeStatus = ({ file, meta }, status) => {
+    if (status == "done") {
+      setFeaturedImage(file);
+      //setUploadedFiles([file, ...uploadedFiles]);
+    }
+    if (status == "removed") {
+      setFeaturedImage(null);
+      //setUploadedFiles(uploadedFiles.filter((e) => e !== file));
+    }
+  };
+
+  const handleDialogFeatured = ({ file, meta }, status) => {
+    if (status == "done") {
+      setNewFeatured(file);
+    }
+    if (status == "removed") {
+      setNewFeatured(null);
+    }
+  };
+
+  const onRowReorder = (e) => {
+    setImages(e.value);
+    console.log(e.value);
+    // this.setState({ products: e.value }, () => {
+    //     this.toast.show({severity:'success', summary: 'Rows Reordered', life: 3000});
+    // });
+  };
+  const imageBodyTemplate = (rowData) => {
+    return (
+      <img
+        src={rowData.name ? URL.createObjectURL(rowData) : ""}
+        onError={(e) =>
+          (e.target.src =
+            "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
+        }
+        alt={rowData.name}
+        className="product-image"
+      />
+    );
+  };
+
+  const actionBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <Button
+          icon="pi pi-trash"
+          className="p-button-rounded p-button-warning"
+          //onClick={() => confirmDeleteProduct(rowData)}
+        />
+      </React.Fragment>
+    );
+  };
+
+  const renderHeader = () => {
+    return (
+      <div className="table-header">
+        List of Customers
+        <span className="p-input-icon-left">
+          <i className="pi pi-search" />
+          <Button
+            icon="pi pi-pencil"
+            label="Upload New Featured Image"
+            className="p-button-rounded p-button-success p-mr-2"
+            onClick={() => setEditFeatured(true)}
+          />
+        </span>
+      </div>
+    );
+  };
+
+  const editFeaturedImageFooter = (
+    <React.Fragment>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={() => setEditFeatured(false)}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={() => {
+          if (newFeatured) setFeaturedImage(newFeatured);
+          //setUploadedFiles([newFeatured, ...uploadedFiles]);
+          setEditFeatured(false);
+        }}
+      />
+    </React.Fragment>
+  );
 
   if (error) console.log(error);
 
@@ -395,22 +508,76 @@ export default function ProductEditor(props) {
             </small>
           </div>
 
-          <div className="p-field p-col-12 ">
-            <label htmlFor="images">Featured Image</label>
-            <Dropzone
-              onChangeStatus={handleChangeStatus}
-              styles={{ dropzone: { minHeight: 200, maxHeight: 250 } }}
-              maxFiles={1}
-              multiple={false}
-            />
+          <div className="p-field p-col-12  p-md-6">
+            <p htmlFor="images">Featured Image</p>
+            {slug && (
+              <div className="p-d-flex p-flex-column p-ai-center">
+                <div>
+                  <img
+                    src={
+                      featuredImage
+                        ? URL.createObjectURL(featuredImage)
+                        : product.featured_image
+                    }
+                    style={{ width: "350px" }}
+                  />
+                </div>
+                <div>
+                  <Button
+                    icon="pi pi-pencil"
+                    label="Upload New Featured Image"
+                    className="p-button-rounded p-button-success p-mr-2"
+                    onClick={() => setEditFeatured(true)}
+                  />
+                </div>
+              </div>
+            )}
+            {!slug && (
+              <Dropzone
+                onChangeStatus={handleFeaturedChangeStatus}
+                styles={{ dropzone: { minHeight: 350, maxHeight: 350 } }}
+                maxFiles={1}
+                multiple={false}
+                inputContent="Drag an image or Click to Browse"
+                addClassNames={{ previewImage: "featuredPreview" }}
+                accept="image/*"
+              />
+            )}
           </div>
 
-          <div className="p-field p-col-12 ">
-            <label htmlFor="images">Images</label>
-            <Dropzone
-              onChangeStatus={handleChangeStatus}
-              styles={{ dropzone: { minHeight: 200, maxHeight: 250 } }}
-            />
+          <div className="p-field p-col-12 p-md-6">
+            <p htmlFor="images">Images</p>
+            {slug && (
+              <div>
+                <DataTable
+                  header={() => renderHeader()}
+                  value={images}
+                  reorderableColumns
+                  onRowReorder={onRowReorder}
+                >
+                  <Column
+                    header="Reorder"
+                    rowReorder
+                    style={{ width: "100px" }}
+                  />
+                  <Column header="Image" body={imageBodyTemplate}></Column>
+                  <Column body={actionBodyTemplate}></Column>
+                </DataTable>
+              </div>
+            )}
+            {!slug && (
+              <Dropzone
+                onChangeStatus={handleChangeStatus}
+                styles={{ dropzone: { minHeight: 350, maxHeight: 350 } }}
+                inputContent="Drag images or Click to Browse"
+                inputWithFilesContent="Add More Images"
+                addClassNames={{
+                  previewImage: "featuredPreview",
+                  preview: "previewContainer",
+                }}
+                accept="image/*"
+              />
+            )}
           </div>
         </div>
 
@@ -429,6 +596,27 @@ export default function ProductEditor(props) {
           />
         </div>
       </div>
+
+      <Dialog
+        visible={editFeatured}
+        style={{ width: "450px" }}
+        header="Upload New Featured Image"
+        modal
+        footer={editFeaturedImageFooter}
+        onHide={() => setEditFeatured(false)}
+      >
+        <div className="confirmation-content">
+          <Dropzone
+            onChangeStatus={handleDialogFeatured}
+            styles={{ dropzone: { minHeight: 350, maxHeight: 350 } }}
+            maxFiles={1}
+            multiple={false}
+            inputContent="Drag an image or Click to Browse"
+            addClassNames={{ previewImage: "featuredPreview" }}
+            accept="image/*"
+          />
+        </div>
+      </Dialog>
     </div>
   );
 }

@@ -15,3 +15,17 @@
   border: 1px solid #ced4da;
   border-radius: 5px;
 }
+
+.featuredPreview {
+  max-height: 140px;
+  max-width: 240px;
+}
+
+.previewContainer {
+  min-height: auto;
+}
+
+.product-image {
+  width: 100px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}

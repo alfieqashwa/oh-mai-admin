@@ -9,14 +9,13 @@ import { CSSTransition } from "react-transition-group";
 import "../styles/globals.css";
 
 import PrimeReact from "primereact/utils";
-
+import "react-dropzone-uploader/dist/styles.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "../layout/flags/flags.css";
 import "../layout/layout.scss";
-import "react-dropzone-uploader/dist/styles.css";
 
 function MyApp({ Component, pageProps }) {
   const [layoutMode, setLayoutMode] = useState("overlay");
