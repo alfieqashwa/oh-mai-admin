@@ -9,7 +9,7 @@ import { CSSTransition } from "react-transition-group";
 import "../styles/globals.css";
 
 import PrimeReact from "primereact/utils";
-
+import "react-dropzone-uploader/dist/styles.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
@@ -86,11 +86,11 @@ function MyApp({ Component, pageProps }) {
         },
       ],
     },
-                {
-                  label: "Products",
-                  icon: "pi pi-fw pi-circle-off",
-                  to: "/products",
-                },
+    {
+      label: "Products",
+      icon: "pi pi-fw pi-circle-off",
+      to: "/products",
+    },
     // {
     //   label: "sg.buy2077.co",
     //   icon: "pi pi-fw pi-list",

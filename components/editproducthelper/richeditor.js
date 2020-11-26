@@ -94,10 +94,12 @@ export default function RichEditor(props) {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
-                                 
- React.useEffect(()=>{
-      if(existingValue)
-          setValue(deserialize(existingValue.body))
+
+  React.useEffect(() => {
+    if (existingValue) {
+      setValue(deserialize(existingValue.body));
+      //console.log(deserialize(existingValue.body));
+    }
   }, [existingValue]);
 
   const serialize = (node) => {

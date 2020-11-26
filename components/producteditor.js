@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { FileUpload } from "primereact/fileupload";
-import { Rating } from "primereact/rating";
-import { Toolbar } from "primereact/toolbar";
 import { Dropdown } from "primereact/dropdown";
-import { RadioButton } from "primereact/radiobutton";
 import { InputNumber } from "primereact/inputnumber";
 import { Chips } from "primereact/chips";
 import { InputText } from "primereact/inputtext";
 import { InputSwitch } from "primereact/inputswitch";
-import RichEditor from "components/richeditor";
+import RichEditor from "components/editproducthelper/richeditor";
+
+import { ImageDataTable } from "components/editproducthelper/datatabletemplate";
+import {
+  DeleteImageDialog,
+  UploadImageDialog,
+} from "components/editproducthelper/editproductdialog";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import {
@@ -22,6 +22,10 @@ import {
   UPDATE_PRODUCT,
 } from "graphql/product";
 import { mutate, fetcherargs } from "lib/useSWR";
+import Dropzone from "react-dropzone-uploader";
+import { ProgressSpinner } from "primereact/progressspinner";
+
+import { Dialog } from "primereact/dialog";
 
 export default function ProductEditor(props) {
   const { slug } = props;
@@ -44,47 +48,90 @@ export default function ProductEditor(props) {
     stock_status: null,
     categories: [],
     tags: [],
+    new_featured_image: null,
+    images_file: [],
   };
 
   // const [products, setProducts] = useState(null);
   const [product, setProduct] = useState(emptyProduct);
+
+  // checks for duplicate
   const [duplicateSKU, setDuplicateSKU] = useState(false);
   const [duplicateSLUG, setDuplicateSLUG] = useState(false);
 
+  // check if submitted
   const [submitted, setSubmitted] = useState(false);
-    const [htmlDesc, setHtmlDesc] = useState(null);
+
+  //value of html for slate editor
+  const [htmlDesc, setHtmlDesc] = useState(null);
+  //const [uploadedFiles, setUploadedFiles] = useState([]);
+
+  // edit feature image
+  const [editFeatured, setEditFeatured] = useState(false);
+  const [newFeatured, setNewFeatured] = useState(null);
+
+  // feature image FILE object
+  const [featuredImage, setFeaturedImage] = useState(null);
+
+  // images
+  const [images, setImages] = useState([]);
+  const [editImages, setEditImages] = useState(false);
+  const [tempImages, setTempImages] = useState([]);
+  const [deleteImageDialog, setDeleteImageDialog] = useState(false);
+  const [toDelete, setToDelete] = useState(null);
+
+  // spinner
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const toast = useRef(null);
 
   const { data, error } = useSWR(
-    [GET_PRODUCT_FROM_SLUG, JSON.stringify({filter: { slug: slug }})],
+    [GET_PRODUCT_FROM_SLUG, JSON.stringify({ filter: { slug: slug } })],
     fetcherargs
   );
 
   React.useEffect(() => {
-      // if this is edit product
-      if (slug && data && data.products) {
-          // infuse default data
-          setProduct(data.products[0]);
-          // create the html from plaintest
-          setHtmlDesc(new DOMParser().parseFromString(
-            data.products[0].description,
-            "text/html"
-          ))
-      }
-      
+    // if this is edit product
+    if (slug && data && data.products) {
+      // infuse default data
+      setProduct(data.products[0]);
+      // create the html from plaintest
+      setHtmlDesc(
+        new DOMParser().parseFromString(
+          data.products[0].description,
+          "text/html"
+        )
+      );
+
+      (async () => {
+        var imageFiles = [];
+        for (var i = 0; i < data.products[0].images.length; i++) {
+          const response = await fetch(data.products[0].images[i]);
+          // here image is url/location of image
+          const blob = await response.blob();
+          const file = new File([blob], `image${i}.jpg`, { type: blob.type });
+          imageFiles.push(file);
+        }
+
+        setImages(imageFiles);
+      })();
+    }
   }, [data]);
 
-  const CreateProduct = (variables) => {
+  const productMutation = (variables) => {
     if (slug) return mutate(UPDATE_PRODUCT, variables);
     else return mutate(CREATE_PRODUCT, variables);
   };
 
-  async function Mutation() {
-    const obj = {};
+  async function uploadToDB(_product) {
     try {
-      const newData = await CreateProduct(product);
-      obj.data = newData;
+      let _product = { ...product };
+      if (featuredImage) _product["new_featured_image"] = featuredImage;
+
+      if (images) _product["images_file"] = [...images];
+
+      await productMutation(_product);
+      setShowSpinner(false);
 
       if (slug) {
         toast.current.show({
@@ -102,19 +149,22 @@ export default function ProductEditor(props) {
         });
       }
       setSubmitted(false);
-      setProduct(emptyProduct);
+
       setTimeout(() => {
+        setProduct(emptyProduct);
         router.push("/products");
       }, 2000);
     } catch (err) {
-      if (err.response.errors[0].message == "Duplicate SKU found") {
-        setDuplicateSKU(true);
-      } else if (err.response.errors[0].message == "Duplicate Slug found") {
-        setDuplicateSLUG(true);
+      console.log(err);
+      if (err.response) {
+        if (err.response.errors[0].message == "Duplicate SKU found") {
+          setDuplicateSKU(true);
+        } else if (err.response.errors[0].message == "Duplicate Slug found") {
+          setDuplicateSLUG(true);
+        }
+      } else {
       }
-      obj.error = err;
     }
-    return obj;
   }
 
   const saveProduct = () => {
@@ -125,17 +175,13 @@ export default function ProductEditor(props) {
       product.slug &&
       product.base_price &&
       product.sale_price &&
-      product.stock_quantity &&
       product.stock_status &&
       !duplicateSKU &&
       !duplicateSLUG
     ) {
-      Mutation();
+      uploadToDB();
+      setShowSpinner(true);
     }
-  };
-
-  const clearAll = () => {
-    setProduct(emptyProduct);
   };
 
   const updateDesc = (value) => {
@@ -175,12 +221,22 @@ export default function ProductEditor(props) {
     setProduct(_product);
   };
 
-  const onUpload = () => {
-    toast.show({
-      severity: "info",
-      summary: "Success",
-      detail: "File Uploaded",
-    });
+  const handleChangeStatus = ({ file, meta }, status) => {
+    if (status == "done") {
+      setImages([...images, file]);
+    }
+    if (status == "removed") {
+      setImages(images.filter((e) => e !== file));
+    }
+  };
+
+  const handleFeaturedChangeStatus = ({ file, meta }, status) => {
+    if (status == "done") {
+      setFeaturedImage(file);
+    }
+    if (status == "removed") {
+      setFeaturedImage(null);
+    }
   };
 
   if (error) console.log(error);
@@ -236,41 +292,50 @@ export default function ProductEditor(props) {
             )}
           </div>
           <div className="p-field p-col-12 p-md-4">
-            <label htmlFor="slug">Product Slug</label>
-            <InputText
-              id="slug"
-              value={product.slug}
-              onChange={(e) => {
-                onInputChange(e, "slug");
-                setDuplicateSLUG(false);
-              }}
-              required
-              className={classNames({
-                "p-invalid": (submitted && !product.slug) || duplicateSLUG,
-              })}
-            />
+            <label htmlFor="slug">Product Link</label>
+            <span className="p-input-icon-left">
+              <p
+                style={{
+                  position: "absolute",
+                  top: "20%",
+                  margin: "0 0 0 0.2em",
+                  color: "rgba(0,0,0,0.4)",
+                }}
+              >
+                {"https://gamebox.com/<kolname>/"}
+              </p>
+              <InputText
+                id="slug"
+                value={product.slug}
+                onChange={(e) => {
+                  onInputChange(e, "slug");
+                  setDuplicateSLUG(false);
+                }}
+                required
+                className={classNames(
+                  {
+                    "p-invalid": (submitted && !product.slug) || duplicateSLUG,
+                  },
+                  "input"
+                )}
+              />
+            </span>
             {submitted && !product.slug && (
               <small id="prod-slug-help" className="p-invalid">
-                Product Slug is required.
+                Product Link is required.
               </small>
             )}
             {duplicateSLUG && (
               <small id="prod-slug-help" className="p-invalid">
-                A Unique Slug is required.
+                A Unique Link is required.
               </small>
             )}
           </div>
 
           <div className="p-field p-col-12">
             <label htmlFor="description">Description</label>
-          
-            <RichEditor
-              updateDesc={updateDesc}
-              existingValue={
-                htmlDesc
-              }
-            />
-            
+
+            <RichEditor updateDesc={updateDesc} existingValue={htmlDesc} />
           </div>
 
           <div className="p-field p-col-12 p-md-5">
@@ -326,14 +391,7 @@ export default function ProductEditor(props) {
               id="stock_quantity"
               value={product.stock_quantity}
               onChange={(e) => onInputNumberChange(e, "stock_quantity")}
-              required
-              className={classNames({
-                "p-invalid": submitted && !product.stock_quantity,
-              })}
             />
-            {submitted && !product.stock_quantity && (
-              <small className="p-invalid">Stock Quantity is required.</small>
-            )}
           </div>
 
           <div className="p-field p-col-12 p-md-6">
@@ -377,52 +435,76 @@ export default function ProductEditor(props) {
             </small>
           </div>
 
-          <div className="p-field p-col-12 ">
-            <label htmlFor="images">
-              Featured Image <strong>(Not working, need CDN)</strong>
-            </label>
-            <FileUpload
-              disabled
-              id="images"
-              name="images[]"
-              //url="./upload.php"
-              onUpload={onUpload}
-              accept="image/*"
-              maxFileSize={1000000}
-              emptyTemplate={
-                <p className="p-m-0">
-                  Drag and drop one featured here to upload.
-                </p>
-              }
-            />
+          <div className="p-field p-col-12  p-md-6">
+            <p htmlFor="images">Featured Image</p>
+            {slug && (
+              <div className="p-d-flex p-flex-column p-ai-center">
+                <div>
+                  <img
+                    src={
+                      featuredImage
+                        ? URL.createObjectURL(featuredImage)
+                        : product.featured_image
+                    }
+                    style={{ width: "350px" }}
+                  />
+                </div>
+                <div>
+                  <Button
+                    icon="pi pi-pencil"
+                    label="Upload New Featured Image"
+                    className="p-button-rounded p-button-success p-mr-2"
+                    onClick={() => setEditFeatured(true)}
+                  />
+                </div>
+              </div>
+            )}
+            {!slug && (
+              <Dropzone
+                onChangeStatus={handleFeaturedChangeStatus}
+                styles={{ dropzone: { minHeight: 350, maxHeight: 350 } }}
+                maxFiles={1}
+                multiple={false}
+                inputContent="Drag an image or Click to Browse"
+                addClassNames={{ previewImage: "featuredPreview" }}
+                accept="image/*"
+              />
+            )}
           </div>
 
-          <div className="p-field p-col-12 ">
-            <label htmlFor="images">
-              Images <strong>(Not working, need CDN)</strong>
-            </label>
-            <FileUpload
-              disabled
-              id="images"
-              name="images[]"
-              //url="./upload.php"
-              onUpload={onUpload}
-              multiple
-              accept="image/*"
-              maxFileSize={1000000}
-              emptyTemplate={
-                <p className="p-m-0">Drag and drop images here to upload.</p>
-              }
-            />
+          <div className="p-field p-col-12 p-md-6">
+            <p htmlFor="images">Images</p>
+            {slug && (
+              <ImageDataTable
+                images={images}
+                setToDelete={setToDelete}
+                setDeleteImageDialog={setDeleteImageDialog}
+                setEditImages={setEditImages}
+                setImages={setImages}
+              />
+            )}
+            {!slug && (
+              <Dropzone
+                onChangeStatus={handleChangeStatus}
+                styles={{ dropzone: { minHeight: 350, maxHeight: 350 } }}
+                inputContent="Drag images or Click to Browse"
+                inputWithFilesContent="Add More Images"
+                addClassNames={{
+                  previewImage: "featuredPreview",
+                  preview: "previewContainer",
+                }}
+                accept="image/*"
+              />
+            )}
           </div>
         </div>
 
         <div className="p-d-flex p-jc-end">
           <Button
-            label="Clear All"
+            label="Cancel"
             icon="pi pi-times"
             className="p-button-text"
-            onClick={clearAll}
+            onClick={() => router.push("/products")}
           />
           <Button
             label="Save"
@@ -432,6 +514,51 @@ export default function ProductEditor(props) {
           />
         </div>
       </div>
+
+      <Dialog
+        visible={showSpinner}
+        showHeader={false}
+        closeOnEscape={false}
+        closable={false}
+        onHide={() => {}}
+        style={{ boxShadow: "none" }}
+        contentStyle={{ backgroundColor: "rgba(0,0,0,0)" }}
+      >
+        <ProgressSpinner />
+      </Dialog>
+
+      <UploadImageDialog
+        visible={editFeatured}
+        headerText={"Upload New Featured Image"}
+        onHide={() => setEditFeatured(false)}
+        inputText={"Drag an image or Click to Browse"}
+        isFeatureImage={true}
+        setEditFeatured={setEditFeatured}
+        newFeatured={newFeatured}
+        setNewFeatured={setNewFeatured}
+        setFeaturedImage={setFeaturedImage}
+      />
+
+      <UploadImageDialog
+        visible={editImages}
+        headerText={"Upload New Images"}
+        onHide={() => setEditImages(false)}
+        inputText={"Drag in Images"}
+        isFeatureImage={false}
+        setEditImages={setEditImages}
+        images={images}
+        setImages={setImages}
+        tempImages={tempImages}
+        setTempImages={setTempImages}
+      />
+      <DeleteImageDialog
+        deleteImageDialog={deleteImageDialog}
+        setDeleteImageDialog={setDeleteImageDialog}
+        toDelete={toDelete}
+        setToDelete={setToDelete}
+        images={images}
+        setImages={setImages}
+      />
     </div>
   );
 }
