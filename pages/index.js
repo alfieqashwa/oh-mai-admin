@@ -24,6 +24,8 @@ import {
   createTotalChart,
   createDailyChart,
 } from "components/chart/maindashboard/flatchart";
+import { fetcher, mutate } from "../lib/useSWR";
+import { GET_LOGIN } from "graphql/login";
 
 export default function Dashboard() {
   const [totalNum, setTotalNum] = useState(0);
@@ -370,4 +372,23 @@ export default function Dashboard() {
       ></Dialog>
     </div>
   );
+}
+
+export async function getStaticProps(context) {
+  const login = await fetcher(GET_LOGIN);
+
+  console.log(login);
+
+  // if (login.currentConsumer == null) {
+  //   return {
+  //     redirect: {
+  //       destination: "/login",
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+
+  return {
+    props: {}, // will be passed to the page component as props
+  };
 }

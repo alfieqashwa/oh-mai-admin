@@ -179,6 +179,7 @@ export default function ProductEditor(props) {
       !duplicateSKU &&
       !duplicateSLUG
     ) {
+      //console.log(product.description);
       uploadToDB();
       setShowSpinner(true);
     }

@@ -66,7 +66,11 @@ const deserialize = (el) => {
   ) {
     parent = el.childNodes[0];
   }
-  const children = Array.from(parent.childNodes).map(deserialize).flat();
+  let children = Array.from(parent.childNodes).map(deserialize).flat();
+
+  if (children.length === 0) {
+    children = [{ text: "" }];
+  }
 
   if (el.nodeName === "BODY") {
     return jsx("fragment", {}, children);
@@ -105,6 +109,7 @@ export default function RichEditor(props) {
   const serialize = (node) => {
     if (Text.isText(node)) {
       var val = escapeHtml(node.text);
+
       if (node.bold) val = `<strong>${val}</strong>`;
       if (node.code) {
         val = `<code>${val}</code>`;

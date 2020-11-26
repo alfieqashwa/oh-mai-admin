@@ -20,9 +20,17 @@ import {
   douOptions,
 } from "components/chart/maindashboard/douchart";
 
-export default function THDashboard() {
-  const [totalThaiNum, setTotalThaiNum] = useState(0);
-  const [price, setPrice] = useState(0);
+import {
+  createTotalChart,
+  createDailyChart,
+} from "components/chart/maindashboard/flatchart";
+
+export default function Dashboard() {
+  const [totalNum, setTotalNum] = useState(0);
+  const [totalEarn, setTotalEarn] = useState(0);
+  const [dailyNum, setDailyNum] = useState(0);
+  const [dailyEarn, setDailyEarn] = useState(0);
+  const [dailyDate, setDailyDate] = useState(0);
   const [chartQtyData, setChartQtyData] = useState({});
   const [chartRevData, setChartRevData] = useState({});
 
@@ -39,6 +47,8 @@ export default function THDashboard() {
 
   const toast = React.useRef(null);
   const uploader = React.useRef(null);
+
+  let totalSale = 0;
 
   const filterItems = [
     { label: "All", value: "ALL" },
@@ -71,8 +81,8 @@ export default function THDashboard() {
     { label: "魯蛋", value: "魯蛋" },
     { label: "館長", value: "館長" },
     { label: "Gooaye", value: "gooaye" },
-    { label: "達哥", value: "達哥" },
     { label: "Hong Kong", value: "HK" },
+    { label: "達哥", value: "達哥" },
     { label: "Arhosunny", value: "arhosunny" },
     { label: "GameplayHK", value: "gameplayhk" },
   ];
@@ -101,6 +111,10 @@ export default function THDashboard() {
       createDouChart(currData, "ALL", setChartRegionRevData, 1);
       createDouChart(currData, "ALL", setChartConsoleData, 2);
       createDouChart(currData, "ALL", setChartConsoleRevData, 3);
+      createTotalChart(currData, setTotalNum, false);
+      createTotalChart(currData, setTotalEarn, true);
+      createDailyChart(currData, setDailyNum, false, setDailyDate);
+      createDailyChart(currData, setDailyEarn, true, setDailyDate);
     }
   }, [currData]);
 
@@ -114,8 +128,8 @@ export default function THDashboard() {
     ExcelRenderer(fileObj, (err, resp) => {
       if (err) return console.log(err);
 
-      setRows(resp.rows);
-      setCols(resp.cols);
+      // setRows(resp.rows);
+      // setCols(resp.cols);
 
       // clear the upload button
       uploader.current.clear();
@@ -124,7 +138,7 @@ export default function THDashboard() {
       var data = [];
 
       // loop through all the data only
-      for (var i = 6; i < resp.rows[2].length; i++) {
+      for (var i = 7; i < resp.rows[2].length; i++) {
         var date;
         // convert any dates to reeadable format/sql format
         if (resp.rows[1][i] > 40000) {
@@ -253,16 +267,51 @@ export default function THDashboard() {
 
       <div className="p-col-12 p-lg-6">
         <div className="card summary ">
-          <span className="title">buy2077.co Sales</span>
-          <span className="detail">Number of purchases</span>
-          <span className="count purchases">{totalThaiNum}</span>
+          <span className="title">buy2077.co Total Copies</span>
+          <span className="detail">Number of total copies sold</span>
+          <span className="count purchases">{totalNum}</span>
         </div>
       </div>
       <div className="p-col-12 p-lg-6">
         <div className="card summary ">
-          <span className="title">Daily Revenue</span>
-          <span className="detail">Income for today</span>
-          <span className="count revenue">{price}</span>
+          <span className="title">buy2077.co Total Revenue</span>
+          <span className="detail">Revenue of total sold</span>
+          <span className="count revenue">
+            {"USD" +
+              new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }).format(totalEarn)}
+          </span>
+        </div>
+      </div>
+
+      <div className="p-col-12 p-lg-6">
+        <div className="card summary ">
+          <span className="title">
+            {"buy2077.co " + dailyDate + " Daily Copies"}
+          </span>
+          <span className="detail">Number of daily copies sold</span>
+          <span className="count purchases">{dailyNum}</span>
+        </div>
+      </div>
+      <div className="p-col-12 p-lg-6">
+        <div className="card summary ">
+          <span className="title">
+            {"buy2077.co " + dailyDate + " Daily Revenue"}
+          </span>
+          <span className="detail">Revenue of daily sold</span>
+          <span className="count revenue">
+            {"USD" +
+              new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }).format(dailyEarn)}
+          </span>
         </div>
       </div>
 

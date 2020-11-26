@@ -11,6 +11,7 @@ import { InputText } from "primereact/inputtext";
 import useSWR from "swr";
 import { products, DELETE_PRODUCT } from "../graphql/product";
 import { fetcher, mutate } from "../lib/useSWR";
+import { LOGIN_MUTATION, GET_LOGIN } from "graphql/login";
 import Link from "next/link";
 
 export default function Products() {
@@ -402,4 +403,29 @@ export default function Products() {
       </Dialog>
     </div>
   );
+}
+
+export async function getStaticProps(context) {
+  const firsttry = await mutate(LOGIN_MUTATION, {
+    email: "haskelchua@gmail.com",
+    password: "1234",
+  });
+  console.log(firsttry);
+
+  const login = await fetcher(GET_LOGIN);
+
+  console.log(login);
+
+  if (login.currentConsumer == null) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {}, // will be passed to the page component as props
+  };
 }

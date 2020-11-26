@@ -2,27 +2,48 @@ import React, { useState } from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
+import { LOGIN_MUTATION } from "graphql/login";
+import { mutate } from "../lib/useSWR";
+import { useRouter } from "next/router";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  async function loginMutation(email, password) {
+    try {
+      const a = await mutate(LOGIN_MUTATION, {
+        email: email,
+        password: password,
+      });
+      console.log(a);
+      router.push("/products");
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   function onLoginClicked() {
-    console.log(username);
+    console.log(email);
     console.log(password);
     console.log("Login");
+    loginMutation(email, password);
   }
   return (
-    <div className="p-grid p-justify-between">
-      <div className="p-fluid">
+    <div
+      className="p-grid p-align-center p-justify-center"
+      style={{ height: "calc(100vh - 100px)" }}
+    >
+      <div className="p-fluid" style={{ marginBottom: "10%" }}>
         <div className="p-field">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="email">Email</label>
           <InputText
-            id="username"
+            id="email"
             type="text"
-            value={username}
+            value={email}
             onChange={(e) => {
-              setUsername(e.target.value);
+              setEmail(e.target.value);
             }}
           />
         </div>
