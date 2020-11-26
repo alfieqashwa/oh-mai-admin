@@ -13,8 +13,31 @@ import { products, DELETE_PRODUCT } from "../graphql/product";
 import { fetcher, mutate } from "../lib/useSWR";
 import { LOGIN_MUTATION, GET_LOGIN } from "graphql/login";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Products() {
+  const router = useRouter();
+  // useEffect(() => {
+  //   test();
+  // }, []);
+
+  // async function test() {
+  //   const login = await fetcher(GET_LOGIN);
+  //   console.log(login);
+
+  //   if (login.currentConsumer == null) {
+  //     router.push("/login");
+  //   }
+  // }
+
+  const { data: user, error: userErr } = useSWR(GET_LOGIN, fetcher);
+
+  //if (!user) return <></>;
+  if (user && user.currentConsumer == null) {
+    router.push("/login");
+    return <></>;
+  }
+
   let emptyProduct = {
     id: null,
     name: "",
@@ -37,12 +60,11 @@ export default function Products() {
   const toast = useRef(null);
   const dt = useRef(null);
 
-  const { data, error } = useSWR(products, fetcher);
-  if (error) console.log(error);
+  const { data: prod, error: prodErr } = useSWR(products, fetcher);
+  if (prodErr) console.log(prodErr);
 
-  if (!data) return <></>;
+  if (!prod) return <></>;
 
-  console.log(data);
   const hideDeleteProductDialog = () => {
     setDeleteProductDialog(false);
   };
@@ -271,7 +293,7 @@ export default function Products() {
 
         <DataTable
           ref={dt}
-          value={data.products}
+          value={prod?.products}
           selection={selectedProducts}
           onSelectionChange={(e) => setSelectedProducts(e.value)}
           paginator
@@ -405,27 +427,28 @@ export default function Products() {
   );
 }
 
-export async function getStaticProps(context) {
-  const firsttry = await mutate(LOGIN_MUTATION, {
-    email: "haskelchua@gmail.com",
-    password: "1234",
-  });
-  console.log(firsttry);
+// export async function getStaticProps(context) {
+//   // const firsttry = await mutate(LOGIN_MUTATION, {
+//   //   email: "haskelchua@gmail.com",
+//   //   password: "1234",
+//   // });
+//   // console.log(firsttry);
 
-  const login = await fetcher(GET_LOGIN);
+//   const login = await fetcher(GET_LOGIN);
 
-  console.log(login);
+//   console.log(login);
 
-  if (login.currentConsumer == null) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
+//   if (login.currentConsumer == null) {
+//     return {
+//       redirect: {
+//         destination: "/login",
+//         permanent: false,
+//       },
+//       revalidate: 1,
+//     };
+//   }
 
-  return {
-    props: {}, // will be passed to the page component as props
-  };
-}
+//   return {
+//     props: {}, // will be passed to the page component as props
+//   };
+// }

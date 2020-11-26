@@ -3,21 +3,33 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { LOGIN_MUTATION } from "graphql/login";
-import { mutate } from "../lib/useSWR";
+import { mutate, fetcherargs } from "../lib/useSWR";
+import useSWR from "swr";
 import { useRouter } from "next/router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [clicked, setClicked] = useState("");
   const router = useRouter();
+
+  const { data, error } = useSWR(
+    clicked
+      ? [LOGIN_MUTATION, JSON.stringify({ email: email, password: password })]
+      : null,
+    fetcherargs
+  );
+
+  //console.log(data);
 
   async function loginMutation(email, password) {
     try {
+      console.log("run");
       const a = await mutate(LOGIN_MUTATION, {
-        email: email,
-        password: password,
+        email: "haskelchua@gmail.com",
+        password: "1234",
       });
-      console.log(a);
+      console.log(document.cookie);
       router.push("/products");
     } catch (err) {
       console.log(err);
@@ -25,9 +37,10 @@ export default function Login() {
   }
 
   function onLoginClicked() {
-    console.log(email);
-    console.log(password);
-    console.log("Login");
+    // console.log(email);
+    // console.log(password);
+    //console.log("Login");
+    //setClicked(true);
     loginMutation(email, password);
   }
   return (
@@ -59,7 +72,7 @@ export default function Login() {
             }}
           />
         </div>
-        <Button label="Login" onClick={onLoginClicked} />
+        <Button label="Login" onClick={() => onLoginClicked()} />
       </div>
     </div>
   );
