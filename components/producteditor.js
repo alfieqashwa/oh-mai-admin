@@ -294,17 +294,10 @@ export default function ProductEditor(props) {
           </div>
           <div className="p-field p-col-12 p-md-4">
             <label htmlFor="slug">Product Link</label>
-            <span className="p-input-icon-left">
-              <p
-                style={{
-                  position: "absolute",
-                  top: "20%",
-                  margin: "0 0 0 0.2em",
-                  color: "rgba(0,0,0,0.4)",
-                }}
-              >
-                {"https://gamebox.com/<kolname>/"}
-              </p>
+            <div className="p-inputgroup">
+              <span className="p-inputgroup-addon">
+                {"www.gamebox.com/<kolname>/"}
+              </span>
               <InputText
                 id="slug"
                 value={product.slug}
@@ -320,7 +313,7 @@ export default function ProductEditor(props) {
                   "input"
                 )}
               />
-            </span>
+            </div>
             {submitted && !product.slug && (
               <small id="prod-slug-help" className="p-invalid">
                 Product Link is required.
