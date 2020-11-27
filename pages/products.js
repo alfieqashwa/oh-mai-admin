@@ -3,7 +3,6 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { FileUpload } from "primereact/fileupload";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
@@ -11,46 +10,12 @@ import { InputText } from "primereact/inputtext";
 import useSWR from "swr";
 import { products, DELETE_PRODUCT } from "../graphql/product";
 import { fetcher, mutate } from "../lib/useSWR";
-import { LOGIN_MUTATION, GET_LOGIN } from "graphql/login";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import useUser from "lib/useUser";
 
 export default function Products() {
-  const router = useRouter();
-  // useEffect(() => {
-  //   test();
-  // }, []);
+  const person = useUser({ redirectTo: "/login" });
 
-  // async function test() {
-  //   const login = await fetcher(GET_LOGIN);
-  //   console.log(login);
-
-  //   if (login.currentConsumer == null) {
-  //     router.push("/login");
-  //   }
-  // }
-
-  const { data: user, error: userErr } = useSWR(GET_LOGIN, fetcher);
-
-  //if (!user) return <></>;
-  if (user && user.currentConsumer == null) {
-    router.push("/login");
-    return <></>;
-  }
-
-  let emptyProduct = {
-    id: null,
-    name: "",
-    image: null,
-    description: "",
-    category: null,
-    price: 0,
-    quantity: 0,
-    rating: 0,
-    inventoryStatus: "INSTOCK",
-  };
-
-  const [product, setProduct] = useState(emptyProduct);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [selectedSingle, setSelectedSingle] = useState(null);
 
@@ -64,6 +29,8 @@ export default function Products() {
   if (prodErr) console.log(prodErr);
 
   if (!prod) return <></>;
+
+  console.log(selectedSingle);
 
   const hideDeleteProductDialog = () => {
     setDeleteProductDialog(false);
@@ -281,174 +248,155 @@ export default function Products() {
     </React.Fragment>
   );
 
-  return (
-    <div className="datatable-crud-demo">
-      <Toast ref={toast} />
-      <div className="card">
-        <Toolbar
-          className="p-mb-4"
-          left={leftToolbarTemplate}
-          right={rightToolbarTemplate}
-        ></Toolbar>
+  if (person) {
+    return (
+      <div className="datatable-crud-demo">
+        <Toast ref={toast} />
+        <div className="card">
+          <Toolbar
+            className="p-mb-4"
+            left={leftToolbarTemplate}
+            right={rightToolbarTemplate}
+          ></Toolbar>
 
-        <DataTable
-          ref={dt}
-          value={prod?.products}
-          selection={selectedProducts}
-          onSelectionChange={(e) => setSelectedProducts(e.value)}
-          paginator
-          rows={10}
-          rowsPerPageOptions={[5, 10, 25]}
-          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-          globalFilter={globalFilter}
-          header={header}
-          scrollable
+          <DataTable
+            ref={dt}
+            value={prod?.products}
+            selection={selectedProducts}
+            onSelectionChange={(e) => setSelectedProducts(e.value)}
+            paginator
+            rows={10}
+            rowsPerPageOptions={[5, 10, 25]}
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+            globalFilter={globalFilter}
+            header={header}
+            scrollable
+          >
+            <Column
+              selectionMode="multiple"
+              headerStyle={{ width: "3rem" }}
+            ></Column>
+            <Column
+              field="sku"
+              header="SKU"
+              sortable
+              headerStyle={{ width: "150px" }}
+            ></Column>
+            <Column
+              field="product_name"
+              header="Name"
+              sortable
+              headerStyle={{ width: "150px" }}
+            ></Column>
+            <Column
+              header="Featured Image"
+              body={imageBodyTemplate}
+              headerStyle={{ width: "150px" }}
+            ></Column>
+            <Column
+              field="current_price"
+              header="Current Price"
+              body={priceBodyTemplate}
+              sortable
+              headerStyle={{ width: "150px" }}
+            ></Column>
+            <Column
+              field="base_price"
+              header="Base Price"
+              body={priceBodyTemplate}
+              headerStyle={{ width: "150px" }}
+              sortable
+            ></Column>
+            <Column
+              field="sale_price"
+              header="Sale Price"
+              body={priceBodyTemplate}
+              headerStyle={{ width: "150px" }}
+              sortable
+            ></Column>
+            <Column
+              field="on_sale"
+              header="Is it on sale?"
+              body={onsaleTemplate}
+              headerStyle={{ width: "150px" }}
+              sortable
+            ></Column>
+            <Column
+              header="Category"
+              body={categoryTemplate}
+              headerStyle={{ width: "150px" }}
+            ></Column>
+            <Column
+              header="Tags"
+              body={tagsTemplate}
+              headerStyle={{ width: "150px" }}
+            ></Column>
+
+            <Column
+              field="stock_quantity"
+              header="Stock Quantity"
+              sortable
+              headerStyle={{ width: "150px" }}
+            ></Column>
+            <Column
+              field="stock_status"
+              header="Stock Status"
+              sortable
+              headerStyle={{ width: "150px" }}
+            ></Column>
+            <Column
+              body={actionBodyTemplate}
+              headerStyle={{ width: "150px" }}
+            ></Column>
+          </DataTable>
+        </div>
+
+        <Dialog
+          visible={deleteProductDialog}
+          style={{ width: "450px" }}
+          header="Confirm"
+          modal
+          footer={deleteProductDialogFooter}
+          onHide={hideDeleteProductDialog}
         >
-          <Column
-            selectionMode="multiple"
-            headerStyle={{ width: "3rem" }}
-          ></Column>
-          <Column
-            field="sku"
-            header="SKU"
-            sortable
-            headerStyle={{ width: "150px" }}
-          ></Column>
-          <Column
-            field="product_name"
-            header="Name"
-            sortable
-            headerStyle={{ width: "150px" }}
-          ></Column>
-          <Column
-            header="Featured Image"
-            body={imageBodyTemplate}
-            headerStyle={{ width: "150px" }}
-          ></Column>
-          <Column
-            field="current_price"
-            header="Current Price"
-            body={priceBodyTemplate}
-            sortable
-            headerStyle={{ width: "150px" }}
-          ></Column>
-          <Column
-            field="base_price"
-            header="Base Price"
-            body={priceBodyTemplate}
-            headerStyle={{ width: "150px" }}
-            sortable
-          ></Column>
-          <Column
-            field="sale_price"
-            header="Sale Price"
-            body={priceBodyTemplate}
-            headerStyle={{ width: "150px" }}
-            sortable
-          ></Column>
-          <Column
-            field="on_sale"
-            header="Is it on sale?"
-            body={onsaleTemplate}
-            headerStyle={{ width: "150px" }}
-            sortable
-          ></Column>
-          <Column
-            header="Category"
-            body={categoryTemplate}
-            headerStyle={{ width: "150px" }}
-          ></Column>
-          <Column
-            header="Tags"
-            body={tagsTemplate}
-            headerStyle={{ width: "150px" }}
-          ></Column>
+          <div className="confirmation-content">
+            <i
+              className="pi pi-exclamation-triangle p-mr-3"
+              style={{ fontSize: "2rem" }}
+            />
+            {selectedSingle && (
+              <span>
+                Are you sure you want to delete{" "}
+                <b>{selectedSingle.product_name}</b>?
+              </span>
+            )}
+          </div>
+        </Dialog>
 
-          <Column
-            field="stock_quantity"
-            header="Stock Quantity"
-            sortable
-            headerStyle={{ width: "150px" }}
-          ></Column>
-          <Column
-            field="stock_status"
-            header="Stock Status"
-            sortable
-            headerStyle={{ width: "150px" }}
-          ></Column>
-          <Column
-            body={actionBodyTemplate}
-            headerStyle={{ width: "150px" }}
-          ></Column>
-        </DataTable>
+        <Dialog
+          visible={deleteProductsDialog}
+          style={{ width: "450px" }}
+          header="Confirm"
+          modal
+          footer={deleteProductsDialogFooter}
+          onHide={hideDeleteProductsDialog}
+        >
+          <div className="confirmation-content">
+            <i
+              className="pi pi-exclamation-triangle p-mr-3"
+              style={{ fontSize: "2rem" }}
+            />
+            {selectedProducts && (
+              <span>
+                Are you sure you want to delete the selected products?
+              </span>
+            )}
+          </div>
+        </Dialog>
       </div>
+    );
+  }
 
-      <Dialog
-        visible={deleteProductDialog}
-        style={{ width: "450px" }}
-        header="Confirm"
-        modal
-        footer={deleteProductDialogFooter}
-        onHide={hideDeleteProductDialog}
-      >
-        <div className="confirmation-content">
-          <i
-            className="pi pi-exclamation-triangle p-mr-3"
-            style={{ fontSize: "2rem" }}
-          />
-          {product && (
-            <span>
-              Are you sure you want to delete <b>{product.name}</b>?
-            </span>
-          )}
-        </div>
-      </Dialog>
-
-      <Dialog
-        visible={deleteProductsDialog}
-        style={{ width: "450px" }}
-        header="Confirm"
-        modal
-        footer={deleteProductsDialogFooter}
-        onHide={hideDeleteProductsDialog}
-      >
-        <div className="confirmation-content">
-          <i
-            className="pi pi-exclamation-triangle p-mr-3"
-            style={{ fontSize: "2rem" }}
-          />
-          {product && (
-            <span>Are you sure you want to delete the selected products?</span>
-          )}
-        </div>
-      </Dialog>
-    </div>
-  );
+  return <></>;
 }
-
-// export async function getStaticProps(context) {
-//   // const firsttry = await mutate(LOGIN_MUTATION, {
-//   //   email: "haskelchua@gmail.com",
-//   //   password: "1234",
-//   // });
-//   // console.log(firsttry);
-
-//   const login = await fetcher(GET_LOGIN);
-
-//   console.log(login);
-
-//   if (login.currentConsumer == null) {
-//     return {
-//       redirect: {
-//         destination: "/login",
-//         permanent: false,
-//       },
-//       revalidate: 1,
-//     };
-//   }
-
-//   return {
-//     props: {}, // will be passed to the page component as props
-//   };
-// }

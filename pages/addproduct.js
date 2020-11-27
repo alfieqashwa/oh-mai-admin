@@ -1,8 +1,17 @@
 import ProductEditor from "components/producteditor";
+
+import useUser from "lib/useUser";
+
 export default function AddProduct() {
-  return (
-    <>
-      <ProductEditor slug={""} />
-    </>
-  );
+  const person = useUser({ redirectTo: "/login" });
+
+  if (person) {
+    return (
+      <>
+        <ProductEditor slug={""} />
+      </>
+    );
+  }
+
+  return <></>;
 }
