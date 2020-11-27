@@ -1,7 +1,20 @@
 export const kols = `{
   kols {
     id,
+    first_name,
+    last_name,
     display_name,
+    email,
+    contact_number,
+    slug,
+    bank_details{
+      bank,
+      bank_account_number,
+      bank_code,
+      bank_branch_code,
+      swift_code,
+    },
+    approved,
     banner_image,
     profile_image,
     description,
@@ -11,7 +24,7 @@ export const kols = `{
       instagram,
       youtube,
     },
-    slug,
+    featured,
     products{
       product_name,
       slug,
@@ -21,26 +34,119 @@ export const kols = `{
   }
 }`;
 
-export const GET_KOL_FROM_SLUG = `query getKOLFromSlug($slug:String)
-  {
-    kols(slug:$slug) {
-      display_name,
-      banner_image,
-      profile_image,
-      description,
-      social_medias{
-        facebook,
-        twitter,
-        instagram,
-        youtube,
-      },
+export const GET_KOL_FROM_SLUG = `query getKOLFromSlug($filter: KOLFilter)
+{
+  kols(filter: $filter) {
+    first_name,
+    last_name,
+    display_name,
+    email,
+    contact_number,
+    slug,
+    bank_details{
+      bank,
+      bank_account_number,
+      bank_code,
+      bank_branch_code,
+      swift_code,
+    },
+    approved,
+    banner_image,
+    profile_image,
+    description,
+    social_medias{
+      facebook,
+      twitter,
+      instagram,
+      youtube,
+    },
+    featured,
+    products{
+      product_name,
       slug,
-      products{
-        product_name,
-        slug,
-        current_price,
-        categories,
-        featured_image
-      }
+      current_price,
+      categories
     }
-  }`;
+  }
+}`;
+
+export const CREATE_KOL = `mutation createKOL(
+  $first_name: String
+  $last_name: String
+  $display_name: String
+  $email: String
+  $contact_number: Int
+  $slug: String
+  $bank_details: BankDetailsInput
+  $approved: Boolean
+  
+  $description: String
+  $featured: Boolean
+  $social_medias: SocialMediaInput
+  $new_banner_image: Upload
+      $new_profile_image: Upload
+  $products: [ID]
+  ){
+    createKol(
+      first_name: $first_name
+      last_name: $last_name
+      display_name: $display_name
+      email: $email
+      contact_number: $contact_number
+      slug: $slug
+      bank_details: $bank_details
+      approved: $approved
+     
+      description: $description
+      featured: $featured
+      social_medias: $social_medias
+      new_banner_image: $new_banner_image
+      new_profile_image: $new_profile_image
+      products: $products
+    ){
+      id
+    }
+  }
+`;
+
+export const UPDATE_KOL = `mutation updateKOL(
+  $first_name: String
+  $last_name: String
+  $display_name: String
+  $email: String
+  $contact_number: Int
+  $slug: String
+  $bank_details: BankDetailsInput
+  $approved: Boolean
+  
+  $description: String
+  $featured: Boolean
+  $social_medias: SocialMediaInput
+  $products: [ID]
+  ){
+    updateKol(
+      first_name: $first_name
+      last_name: $last_name
+      display_name: $display_name
+      email: $email
+      contact_number: $contact_number
+      slug: $slug
+      bank_details: $bank_details
+      approved: $approved
+      
+      description: $description
+      featured: $featured
+      social_medias: $social_medias
+      products: $products
+    ){
+      id
+    }
+  }
+`;
+
+export const DELETE_KOL = `mutation deleteKol(
+  $id: ID
+  ){
+    deleteKol(id: $id)
+  }
+`;

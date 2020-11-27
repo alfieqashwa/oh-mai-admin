@@ -16,8 +16,10 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "../layout/flags/flags.css";
 import "../layout/layout.scss";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
   const [layoutMode, setLayoutMode] = useState("overlay");
   const [staticMenuInactive, setStaticMenuInactive] = useState(false);
   const [overlayMenuActive, setOverlayMenuActive] = useState(false);
@@ -175,6 +177,7 @@ function MyApp({ Component, pageProps }) {
             {/* <img alt="Logo" src={"/layout/images/logo-white.png"} /> */}
           </div>
           <AppProfile />
+
           <AppMenu model={menu} onMenuItemClick={onMenuItemClick} />
         </div>
       </CSSTransition>
