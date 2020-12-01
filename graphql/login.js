@@ -1,11 +1,12 @@
 export const GET_LOGIN = `{
-    currentConsumer {
+  currentUser {
       id,
+      first_name
     }
   }`;
 
 export const LOGIN_MUTATION = `mutation loginMutation($email: String!, $password: String!){
-    consumerLogin(email: $email, password: $password){
+  login(email: $email, password: $password){
         id
     }
 }`;

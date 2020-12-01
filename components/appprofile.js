@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 import { CSSTransition } from "react-transition-group";
+import useUser from "lib/useUser";
 
 export const AppProfile = () => {
   const [expanded, setExpanded] = useState(false);
 
+  const person = useUser();
   const onClick = (event) => {
     // setExpanded((prevState) => !prevState);
     // event.preventDefault();
@@ -16,7 +18,7 @@ export const AppProfile = () => {
         <img src="/layout/images/avatar_2.png" alt="Profile" />
       </div>
       <button className="p-link layout-profile-link" onClick={onClick}>
-        <span className="username">Admin</span>
+        <span className="username">{person ? person.first_name : "Admin"}</span>
         <i className="pi pi-fw pi-cog" />
       </button>
       <CSSTransition
