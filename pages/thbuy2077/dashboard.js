@@ -107,14 +107,7 @@ export default function THDashboard() {
   if (person) {
     return (
       <div className="p-grid p-fluid dashboard">
-        <div className="p-col-12 ">
-          <div className="card summary">
-            <span className="title">Sales</span>
-            <span className="detail">Number of purchases</span>
-            <span className="count purchases">{totalThaiNum}</span>
-          </div>
-        </div>
-        <div className="p-col-12 p-lg-6">
+        <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <span className="title">Revenue</span>
             <span className="detail">in Thai Baht</span>
@@ -129,7 +122,7 @@ export default function THDashboard() {
           </div>
         </div>
 
-        <div className="p-col-12 p-lg-6">
+        <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <span className="title">Revenue</span>
             <span className="detail">in USD</span>
@@ -143,7 +136,7 @@ export default function THDashboard() {
           </div>
         </div>
 
-        <div className="p-col-12">
+        <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <span className="title">Gross Profit</span>
             <span className="detail">Gross Profit in USD</span>
@@ -157,7 +150,7 @@ export default function THDashboard() {
           </div>
         </div>
 
-        <div className="p-col-12 ">
+        <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <span className="title">KOL Cost</span>
             <span className="detail">Amount given to KOL</span>
@@ -171,7 +164,7 @@ export default function THDashboard() {
           </div>
         </div>
 
-        <div className="p-col-12 ">
+        <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <span className="title">Logistics</span>
             <span className="detail">Shipping Cost</span>
@@ -184,8 +177,7 @@ export default function THDashboard() {
             </span>
           </div>
         </div>
-
-        <div className="p-col-12 ">
+        <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <span className="title">Payment Gateway</span>
             <span className="detail">Omise Fee (3.65%)</span>
@@ -199,10 +191,17 @@ export default function THDashboard() {
           </div>
         </div>
 
-        <div className="p-col-12 p-lg-12">
+        <div className="p-col-12 p-lg-6">
+          <div className="card summary">
+            <span className="title">Successful Orders</span>
+            <span className="detail">Number of purchases</span>
+            <span className="count purchases">{totalThaiNum}</span>
+          </div>
+        </div>
+        <div className="p-col-12 p-lg-6">
           <div className="card summary">
             <span className="title">Net Profit</span>
-            <span className="detail"></span>
+            <span className="detail">Net Profit in USD</span>
             <span className="count visitors">
               US
               {new Intl.NumberFormat("en-US", {
