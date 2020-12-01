@@ -195,3 +195,10 @@
     width: 55vw;
   }
 }
+
+@media (min-width: 1025px) {
+  .chartsMid {
+    display: flex;
+    justify-content: center;
+  }
+}

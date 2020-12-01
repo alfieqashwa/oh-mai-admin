@@ -28,6 +28,9 @@ export default function THDashboard() {
   const [tabState, setTabState] = useState(0);
   const [currData, setCurrData] = useState([]);
 
+  const [rates, setRates] = useState(0);
+  const [ratesDate, setRatesDate] = useState(0);
+
   const filterItems = [
     { label: "All", value: "ALL" },
     { label: "Chicken Show", value: "Chickenshow" },
@@ -79,6 +82,15 @@ export default function THDashboard() {
           initBarKOLChart(setChartKOLData, data);
         });
     })();
+
+    (async function getExchangeRate() {
+      fetch("https://api.exchangeratesapi.io/latest?base=THB&symbols=USD")
+        .then((res) => res.json())
+        .then((data) => {
+          setRatesDate(data.date);
+          setRates(data.rates.USD);
+        });
+    })();
   }, []);
 
   const filterRightToolbarTemplate = () => {
@@ -128,14 +140,16 @@ export default function THDashboard() {
 
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
-            <span className="title">Revenue</span>
-            <span className="detail">in USD</span>
+            <span className="title">Revenue in USD</span>
+            <span className="detail">
+              Conversion rate: {rates}, last updated: {ratesDate}
+            </span>
             <span className="count revenue">
               US
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
-              }).format(price * 0.0330381)}
+              }).format(price * rates)}
             </span>
           </div>
         </div>
@@ -149,7 +163,7 @@ export default function THDashboard() {
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
-              }).format((price * 0.0330381) / 2)}
+              }).format((price * rates) / 2)}
             </span>
           </div>
         </div>
@@ -190,7 +204,7 @@ export default function THDashboard() {
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
-              }).format((price * 0.0330381 * 3.65) / 100)}
+              }).format((price * rates * 3.65) / 100)}
             </span>
           </div>
         </div>
@@ -212,10 +226,10 @@ export default function THDashboard() {
                 style: "currency",
                 currency: "USD",
               }).format(
-                (price * 0.0330381) / 2 -
+                (price * rates) / 2 -
                   4 * totalThaiNum -
                   4 * totalThaiNum -
-                  (price * 0.0330381 * 3) / 100
+                  (price * rates * 3) / 100
               )}
             </span>
           </div>
@@ -236,7 +250,7 @@ export default function THDashboard() {
                   <h5>th.buy2077.co - Copies sold</h5>
                   <span>{filterRightToolbarTemplate()}</span>
                 </div>
-                <div className="p-d-flex p-jc-center">
+                <div className="chartsMid">
                   <div className="charts">
                     <Chart
                       type="bar"
@@ -251,7 +265,7 @@ export default function THDashboard() {
                   <h5>th.buy2077.co - Revenue</h5>
                   <span>{filterRightToolbarTemplate()}</span>
                 </div>
-                <div className="p-d-flex p-jc-center">
+                <div className="chartsMid">
                   <div className="charts">
                     <Chart
                       type="bar"
@@ -266,7 +280,7 @@ export default function THDashboard() {
                 <div className="p-d-flex p-jc-between">
                   <h5>th.buy2077.co - Breakdown of Platforms</h5>
                 </div>
-                <div className="p-d-flex p-jc-center">
+                <div className="chartsMid">
                   <div className="charts">
                     <Chart
                       type="pie"
@@ -281,7 +295,7 @@ export default function THDashboard() {
                 <div className="p-d-flex p-jc-between">
                   <h5>th.buy2077.co - Breakdown of KOLs</h5>
                 </div>
-                <div className="p-d-flex p-jc-center">
+                <div className="chartsMid">
                   <div className="charts">
                     <Chart
                       type="bar"
