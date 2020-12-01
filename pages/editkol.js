@@ -1,15 +1,15 @@
-import ProductEditor from "components/producteditor";
+import KolEditor from "components/koleditor";
 import { useRouter } from "next/router";
 import useUser from "lib/useUser";
 
-export default function EditProduct() {
+export default function EditKOL() {
   const router = useRouter();
   const person = useUser({ redirectTo: "/login" });
 
   if (person) {
     return (
       <>
-        <ProductEditor slug={router.query.slug} />
+        <KolEditor slug={router.query.slug} />
       </>
     );
   }

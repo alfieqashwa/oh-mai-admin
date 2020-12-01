@@ -20,6 +20,7 @@
     "primereact": "^5.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-dropzone-uploader": "^2.11.0",
     "react-excel-renderer": "^1.1.0",
     "react-icons": "^3.11.0",
     "react-transition-group": "^4.4.1",
@@ -28,6 +29,7 @@
     "slate-history": "^0.59.0",
     "slate-hyperscript": "^0.59.0",
     "slate-react": "^0.59.0",
-    "swr": "^0.3.8"
+    "swr": "^0.3.8",
+    "use-object-url": "^1.0.0"
   }
 }

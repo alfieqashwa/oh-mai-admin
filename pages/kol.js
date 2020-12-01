@@ -8,60 +8,60 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 
 import useSWR from "swr";
-import { products, DELETE_PRODUCT } from "../graphql/product";
+import { kols, DELETE_KOL } from "../graphql/Kol";
 import { fetcher, mutate } from "../lib/useSWR";
 import Link from "next/link";
 import useUser from "lib/useUser";
 
-export default function Products() {
+export default function KOL() {
   const person = useUser({ redirectTo: "/login" });
 
-  const [selectedProducts, setSelectedProducts] = useState(null);
+  const [selectedKols, setSelectedKols] = useState(null);
   const [selectedSingle, setSelectedSingle] = useState(null);
 
-  const [deleteProductDialog, setDeleteProductDialog] = useState(false);
-  const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
+  const [deleteKolDialog, setDeleteKolDialog] = useState(false);
+  const [deleteKolsDialog, setDeleteKolsDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
 
-  const { data: prod, error: prodErr } = useSWR(products, fetcher);
+  const { data: prod, error: prodErr } = useSWR(kols, fetcher);
   if (prodErr) console.log(prodErr);
 
   if (!prod) return <></>;
 
   console.log(selectedSingle);
 
-  const hideDeleteProductDialog = () => {
-    setDeleteProductDialog(false);
+  const hideDeleteKolDialog = () => {
+    setDeleteKolDialog(false);
   };
 
-  const hideDeleteProductsDialog = () => {
-    setDeleteProductsDialog(false);
+  const hideDeleteKolsDialog = () => {
+    setDeleteKolsDialog(false);
   };
 
-  const confirmDeleteProduct = (product) => {
-    setSelectedSingle(product);
-    setDeleteProductDialog(true);
+  const confirmDeleteKol = (Kol) => {
+    setSelectedSingle(Kol);
+    setDeleteKolDialog(true);
   };
 
-  async function deleteProductMutation(id) {
-    await mutate(DELETE_PRODUCT, { id: id });
+  async function deleteKolMutation(id) {
+    await mutate(DELETE_KOL, { id: id });
   }
-  async function deleteProductsMutation(id) {
+  async function deleteKolsMutation(id) {
     for (var i = 0; i < id.length; i++) {
-      await mutate(DELETE_PRODUCT, { id: id[i] });
+      await mutate(DELETE_KOL, { id: id[i] });
     }
   }
 
-  const deleteProduct = () => {
-    deleteProductMutation(selectedSingle.id);
-    setDeleteProductDialog(false);
+  const deleteKol = () => {
+    deleteKolMutation(selectedSingle.id);
+    setDeleteKolDialog(false);
     setSelectedSingle(null);
     toast.current.show({
       severity: "success",
       summary: "Successful",
-      detail: "Product Deleted",
+      detail: "Kol Deleted",
       life: 3000,
     });
   };
@@ -71,24 +71,24 @@ export default function Products() {
   };
 
   const confirmDeleteSelected = () => {
-    setDeleteProductsDialog(true);
+    setDeleteKolsDialog(true);
   };
 
-  const deleteSelectedProducts = () => {
+  const deleteSelectedKols = () => {
     var ids = [];
 
-    selectedProducts.forEach((element) => {
+    selectedKols.forEach((element) => {
       ids.push(element.id);
     });
 
-    deleteProductsMutation(ids);
+    deleteKolsMutation(ids);
 
-    setDeleteProductsDialog(false);
-    setSelectedProducts(null);
+    setDeleteKolsDialog(false);
+    setSelectedKols(null);
     toast.current.show({
       severity: "success",
       summary: "Successful",
-      detail: "Products Deleted",
+      detail: "Kols Deleted",
       life: 3000,
     });
   };
@@ -96,7 +96,7 @@ export default function Products() {
   const leftToolbarTemplate = () => {
     return (
       <React.Fragment>
-        <Link href="/addproduct">
+        <Link href="/addkol">
           <Button
             label="New"
             icon="pi pi-plus"
@@ -108,7 +108,7 @@ export default function Products() {
           icon="pi pi-trash"
           className="p-button-danger"
           onClick={confirmDeleteSelected}
-          disabled={!selectedProducts || !selectedProducts.length}
+          disabled={!selectedKols || !selectedKols.length}
         />
       </React.Fragment>
     );
@@ -137,7 +137,7 @@ export default function Products() {
 
   const header = (
     <div className="table-header">
-      <h5 className="p-m-0">Manage Products</h5>
+      <h5 className="p-m-0">Manage Kols</h5>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -158,7 +158,7 @@ export default function Products() {
             "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
         }
         alt={rowData.image}
-        className="product-image"
+        className="Kol-image"
       />
     );
   };
@@ -192,15 +192,38 @@ export default function Products() {
   };
 
   const onsaleTemplate = (rowData) => {
-    return rowData.on_sale ? "Yes" : "No";
+    return rowData.approved ? "Yes" : "No";
+  };
+  const featuredTemplate = (rowData) => {
+    return rowData.featured ? "Yes" : "No";
+  };
+
+  const bankDetailsTemplate = (rowData) => {
+    return (
+      <div>
+        <p>{rowData.bank}</p>
+        <p>{rowData.bank_account_name}</p>
+        <p>{rowData.bank_code}</p>
+        <p>{rowData.bank_branch_code}</p>
+        <p>{rowData.swift_code}</p>
+      </div>
+    );
+  };
+
+  const productsTemplate = (rowData) => {
+    return (
+      <div>
+        {rowData?.product_name?.map((eaCat) => (
+          <p>{eaCat}</p>
+        ))}
+      </div>
+    );
   };
 
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <Link
-          href={{ pathname: "/editproduct", query: { slug: rowData.slug } }}
-        >
+        <Link href={{ pathname: "/editKol", query: { slug: rowData.slug } }}>
           <Button
             icon="pi pi-pencil"
             className="p-button-rounded p-button-success p-mr-2"
@@ -209,41 +232,41 @@ export default function Products() {
         <Button
           icon="pi pi-trash"
           className="p-button-rounded p-button-warning"
-          onClick={() => confirmDeleteProduct(rowData)}
+          onClick={() => confirmDeleteKol(rowData)}
         />
       </React.Fragment>
     );
   };
 
-  const deleteProductDialogFooter = (
+  const deleteKolDialogFooter = (
     <React.Fragment>
       <Button
         label="No"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={hideDeleteProductDialog}
+        onClick={hideDeleteKolDialog}
       />
       <Button
         label="Yes"
         icon="pi pi-check"
         className="p-button-text"
-        onClick={deleteProduct}
+        onClick={deleteKol}
       />
     </React.Fragment>
   );
-  const deleteProductsDialogFooter = (
+  const deleteKolsDialogFooter = (
     <React.Fragment>
       <Button
         label="No"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={hideDeleteProductsDialog}
+        onClick={hideDeleteKolsDialog}
       />
       <Button
         label="Yes"
         icon="pi pi-check"
         className="p-button-text"
-        onClick={deleteSelectedProducts}
+        onClick={deleteSelectedKols}
       />
     </React.Fragment>
   );
@@ -261,14 +284,14 @@ export default function Products() {
 
           <DataTable
             ref={dt}
-            value={prod?.products}
-            selection={selectedProducts}
-            onSelectionChange={(e) => setSelectedProducts(e.value)}
+            value={prod?.kols}
+            selection={selectedKols}
+            onSelectionChange={(e) => setSelectedKols(e.value)}
             paginator
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Kols"
             globalFilter={globalFilter}
             header={header}
             scrollable
@@ -278,87 +301,77 @@ export default function Products() {
               headerStyle={{ width: "3rem" }}
             ></Column>
             <Column
-              field="sku"
-              header="SKU"
+              field="first_name"
+              header="First Name"
               sortable
               headerStyle={{ width: "150px" }}
             ></Column>
             <Column
-              field="product_name"
-              header="Name"
+              field="last_name"
+              header="Last Name"
               sortable
               headerStyle={{ width: "150px" }}
             ></Column>
             <Column
-              header="Featured Image"
-              body={imageBodyTemplate}
-              headerStyle={{ width: "150px" }}
-            ></Column>
-            <Column
-              field="current_price"
-              header="Current Price"
-              body={priceBodyTemplate}
+              field="display_name"
+              header="Display Name"
               sortable
               headerStyle={{ width: "150px" }}
             ></Column>
             <Column
-              field="base_price"
-              header="Base Price"
-              body={priceBodyTemplate}
-              headerStyle={{ width: "150px" }}
+              field="email"
+              header="Email"
               sortable
+              headerStyle={{ width: "150px" }}
             ></Column>
             <Column
-              field="sale_price"
-              header="Sale Price"
-              body={priceBodyTemplate}
-              headerStyle={{ width: "150px" }}
+              field="contact_number"
+              header="Contact Number"
               sortable
+              headerStyle={{ width: "150px" }}
             ></Column>
             <Column
-              field="on_sale"
-              header="Is it on sale?"
+              field="slug"
+              header="Slug"
+              sortable
+              headerStyle={{ width: "150px" }}
+            ></Column>
+            <Column
+              field="approved"
+              header="Is KOL approved?"
               body={onsaleTemplate}
               headerStyle={{ width: "150px" }}
               sortable
             ></Column>
             <Column
-              header="Category"
-              body={categoryTemplate}
+              field="featured"
+              header="Is KOL featured?"
+              body={featuredTemplate}
               headerStyle={{ width: "150px" }}
-            ></Column>
-            <Column
-              header="Tags"
-              body={tagsTemplate}
-              headerStyle={{ width: "150px" }}
-            ></Column>
-
-            <Column
-              field="stock_quantity"
-              header="Stock Quantity"
               sortable
-              headerStyle={{ width: "150px" }}
             ></Column>
             <Column
-              field="stock_status"
-              header="Stock Status"
+              header="Bank Details"
+              body={bankDetailsTemplate}
+              headerStyle={{ width: "150px" }}
               sortable
-              headerStyle={{ width: "150px" }}
             ></Column>
             <Column
-              body={actionBodyTemplate}
+              header="Products"
+              body={productsTemplate}
               headerStyle={{ width: "150px" }}
+              sortable
             ></Column>
           </DataTable>
         </div>
 
         <Dialog
-          visible={deleteProductDialog}
+          visible={deleteKolDialog}
           style={{ width: "450px" }}
           header="Confirm"
           modal
-          footer={deleteProductDialogFooter}
-          onHide={hideDeleteProductDialog}
+          footer={deleteKolDialogFooter}
+          onHide={hideDeleteKolDialog}
         >
           <div className="confirmation-content">
             <i
@@ -367,30 +380,28 @@ export default function Products() {
             />
             {selectedSingle && (
               <span>
-                Are you sure you want to delete{" "}
-                <b>{selectedSingle.product_name}</b>?
+                Are you sure you want to delete <b>{selectedSingle.Kol_name}</b>
+                ?
               </span>
             )}
           </div>
         </Dialog>
 
         <Dialog
-          visible={deleteProductsDialog}
+          visible={deleteKolsDialog}
           style={{ width: "450px" }}
           header="Confirm"
           modal
-          footer={deleteProductsDialogFooter}
-          onHide={hideDeleteProductsDialog}
+          footer={deleteKolsDialogFooter}
+          onHide={hideDeleteKolsDialog}
         >
           <div className="confirmation-content">
             <i
               className="pi pi-exclamation-triangle p-mr-3"
               style={{ fontSize: "2rem" }}
             />
-            {selectedProducts && (
-              <span>
-                Are you sure you want to delete the selected products?
-              </span>
+            {selectedKols && (
+              <span>Are you sure you want to delete the selected Kols?</span>
             )}
           </div>
         </Dialog>

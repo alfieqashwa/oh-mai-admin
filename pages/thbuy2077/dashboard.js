@@ -9,8 +9,10 @@ import {
 } from "components/helper";
 import { Toolbar } from "primereact/toolbar";
 import { Dropdown } from "primereact/dropdown";
+import useUser from "lib/useUser";
 
 export default function THDashboard() {
+  const person = useUser({ redirectTo: "/login" });
   const [totalThaiNum, setTotalThaiNum] = useState(0);
   const [price, setPrice] = useState(0);
   const [chartAllData, setChartAllData] = useState({});
@@ -96,48 +98,51 @@ export default function THDashboard() {
     );
   };
 
-  return (
-    <div className="p-grid p-fluid dashboard">
-      <div className="p-col-12 p-lg-6">
-        <div className="card summary">
-          <span className="title">th.buy2077.co Sales</span>
-          <span className="detail">Number of purchases</span>
-          <span className="count purchases">{totalThaiNum}</span>
+  if (person) {
+    return (
+      <div className="p-grid p-fluid dashboard">
+        <div className="p-col-12 p-lg-6">
+          <div className="card summary">
+            <span className="title">th.buy2077.co Sales</span>
+            <span className="detail">Number of purchases</span>
+            <span className="count purchases">{totalThaiNum}</span>
+          </div>
         </div>
-      </div>
-      <div className="p-col-12 p-lg-6">
-        <div className="card summary">
-          <span className="title">th.buy2077.co Revenue</span>
-          <span className="detail">Income for purchases</span>
-          <span className="count revenue">
-            {new Intl.NumberFormat("th-TH", {
-              style: "currency",
-              currency: "THB",
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0,
-            }).format(price)}
-          </span>
+        <div className="p-col-12 p-lg-6">
+          <div className="card summary">
+            <span className="title">th.buy2077.co Revenue</span>
+            <span className="detail">Income for purchases</span>
+            <span className="count revenue">
+              {new Intl.NumberFormat("th-TH", {
+                style: "currency",
+                currency: "THB",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }).format(price)}
+            </span>
+          </div>
         </div>
-      </div>
-      <div className="p-col-12 p-lg-12">
-        <Toolbar
-          right={filterRightToolbarTemplate}
-          left={filterLeftToolbarTemplate}
-        ></Toolbar>
-      </div>
+        <div className="p-col-12 p-lg-12">
+          <Toolbar
+            right={filterRightToolbarTemplate}
+            left={filterLeftToolbarTemplate}
+          ></Toolbar>
+        </div>
 
-      <div className="p-col-12 p-lg-6">
-        <div className="card">
-          <h5>th.buy2077.co - Number of copies sold</h5>
-          <Chart type="bar" data={chartAllData} options={chartOptions} />
+        <div className="p-col-12 p-lg-6">
+          <div className="card">
+            <h5>th.buy2077.co - Number of copies sold</h5>
+            <Chart type="bar" data={chartAllData} options={chartOptions} />
+          </div>
+        </div>
+        <div className="p-col-12 p-lg-6">
+          <div className="card">
+            <h5>th.buy2077.co - Revenue of copies sold</h5>
+            <Chart type="bar" data={chartRevData} options={chartPriceOptions} />
+          </div>
         </div>
       </div>
-      <div className="p-col-12 p-lg-6">
-        <div className="card">
-          <h5>th.buy2077.co - Revenue of copies sold</h5>
-          <Chart type="bar" data={chartRevData} options={chartPriceOptions} />
-        </div>
-      </div>
-    </div>
-  );
+    );
+  }
+  return <></>;
 }

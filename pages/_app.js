@@ -9,15 +9,17 @@ import { CSSTransition } from "react-transition-group";
 import "../styles/globals.css";
 
 import PrimeReact from "primereact/utils";
-
+import "react-dropzone-uploader/dist/styles.css";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "../layout/flags/flags.css";
 import "../layout/layout.scss";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
   const [layoutMode, setLayoutMode] = useState("overlay");
   const [staticMenuInactive, setStaticMenuInactive] = useState(false);
   const [overlayMenuActive, setOverlayMenuActive] = useState(false);
@@ -76,6 +78,12 @@ function MyApp({ Component, pageProps }) {
       to: "/thbuy2077/orders",
     },
     //{
+    // {
+    //   label: "Products",
+    //   icon: "pi pi-fw pi-circle-off",
+    //   to: "/products",
+    // },
+    // {
     //   label: "sg.buy2077.co",
     //   icon: "pi pi-fw pi-list",
     //   items: [
@@ -159,6 +167,7 @@ function MyApp({ Component, pageProps }) {
             {/* <img alt="Logo" src={"/layout/images/logo-white.png"} /> */}
           </div>
           <AppProfile />
+
           <AppMenu model={menu} onMenuItemClick={onMenuItemClick} />
         </div>
       </CSSTransition>

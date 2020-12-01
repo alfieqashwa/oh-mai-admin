@@ -1,14 +1,14 @@
-import ProductEditor from "components/producteditor";
+import KolEditor from "components/koleditor";
 
 import useUser from "lib/useUser";
 
-export default function AddProduct() {
+export default function AddKOL() {
   const person = useUser({ redirectTo: "/login" });
 
   if (person) {
     return (
       <>
-        <ProductEditor slug={""} />
+        <KolEditor slug={""} />
       </>
     );
   }

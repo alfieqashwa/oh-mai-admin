@@ -25,7 +25,7 @@ import {
   createDailyChart,
 } from "components/chart/maindashboard/flatchart";
 
-export default function Dashboard() {
+export default function SGBuy2077Dashboard(props) {
   const [totalNum, setTotalNum] = useState(0);
   const [totalEarn, setTotalEarn] = useState(0);
   const [dailyNum, setDailyNum] = useState(0);

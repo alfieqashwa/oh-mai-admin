@@ -1,16 +1,20 @@
 import React from "react";
 import { InputText } from "primereact/inputtext";
+import { useRouter } from "next/router";
 
 export const AppTopbar = (props) => {
+  const router = useRouter();
   return (
     <div className="layout-topbar clearfix">
-      <button
-        type="button"
-        className="p-link layout-menu-button"
-        onClick={props.onToggleMenu}
-      >
-        <span className="pi pi-bars" />
-      </button>
+      {router.pathname != "/login" && (
+        <button
+          type="button"
+          className="p-link layout-menu-button"
+          onClick={props.onToggleMenu}
+        >
+          <span className="pi pi-bars" />
+        </button>
+      )}
       {/* <div className="layout-topbar-icons">
         <span className="layout-topbar-search">
           <InputText type="text" placeholder="Search" />
