@@ -177,3 +177,41 @@ export let chartPriceOptions = {
     ],
   },
 };
+
+export const initPieChart = (setChartAllData, data) => {
+  var chartData = 0;
+  var psData = 0;
+  var xboxData = 0;
+
+  // update the sale number of days which have sales
+  data.forEach((element) => {
+    if (element.order_status == "successful") {
+      if (element.platform == "PC") {
+        chartData++;
+      } else if (element.platform == "PS4") {
+        psData++;
+      } else if (element.platform == "XBOX") {
+        xboxData++;
+      }
+    }
+  });
+
+  // set the labels for the chart
+  setChartAllData({
+    labels: ["PC", "PS", "XBOX"],
+    datasets: [
+      {
+        data: [chartData, psData, xboxData],
+        backgroundColor: ["#42A5F5", "#66BB6A", "#FFA726"],
+        hoverBackgroundColor: ["#64B5F6", "#81C784", "#FFB74D"],
+      },
+    ],
+  });
+};
+export const pieOptions = {
+  legend: {
+    labels: {
+      fontColor: "#495057",
+    },
+  },
+};

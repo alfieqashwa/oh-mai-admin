@@ -6,6 +6,8 @@ import {
   initBarChart,
   chartOptions,
   chartPriceOptions,
+  initPieChart,
+  pieOptions,
 } from "components/helper";
 import { Toolbar } from "primereact/toolbar";
 import { Dropdown } from "primereact/dropdown";
@@ -17,6 +19,8 @@ export default function THDashboard() {
   const [price, setPrice] = useState(0);
   const [chartAllData, setChartAllData] = useState({});
   const [chartRevData, setChartRevData] = useState({});
+
+  const [chartPieData, setChartPieData] = useState({});
   const [filterValue, setFilterValue] = useState("ALL");
 
   const [currData, setCurrData] = useState([]);
@@ -68,6 +72,7 @@ export default function THDashboard() {
           setCurrData(data);
           initBarChart(setChartAllData, data, "ALL", false);
           initBarChart(setChartRevData, data, "ALL", true);
+          initPieChart(setChartPieData, data);
         });
     })();
   }, []);
@@ -230,6 +235,13 @@ export default function THDashboard() {
           <div className="card">
             <h5>th.buy2077.co - Revenue of copies sold</h5>
             <Chart type="bar" data={chartRevData} options={chartPriceOptions} />
+          </div>
+        </div>
+
+        <div className="p-col-12 p-lg-6">
+          <div className="card">
+            <h5>th.buy2077.co - Breakdown of Platforms</h5>
+            <Chart type="pie" data={chartPieData} options={pieOptions} />
           </div>
         </div>
       </div>
