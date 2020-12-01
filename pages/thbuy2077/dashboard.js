@@ -102,7 +102,7 @@ export default function THDashboard() {
   if (person) {
     return (
       <div className="p-grid p-fluid dashboard">
-        <div className="p-col-12 p-lg-6">
+        <div className="p-col-12 ">
           <div className="card summary">
             <span className="title">Sales</span>
             <span className="detail">Number of purchases</span>
@@ -129,6 +129,7 @@ export default function THDashboard() {
             <span className="title">Revenue</span>
             <span className="detail">in USD</span>
             <span className="count revenue">
+              US
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
@@ -137,11 +138,12 @@ export default function THDashboard() {
           </div>
         </div>
 
-        <div className="p-col-12 p-lg-6">
+        <div className="p-col-12">
           <div className="card summary">
             <span className="title">Gross Profit</span>
-            <span className="detail"></span>
+            <span className="detail">Gross Profit in USD</span>
             <span className="count revenue">
+              US
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
@@ -150,11 +152,12 @@ export default function THDashboard() {
           </div>
         </div>
 
-        <div className="p-col-12 p-lg-6">
+        <div className="p-col-12 ">
           <div className="card summary">
             <span className="title">KOL Cost</span>
-            <span className="detail"></span>
-            <span className="count revenue">
+            <span className="detail">Amount given to KOL</span>
+            <span className="count payment">
+              US
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
@@ -163,11 +166,12 @@ export default function THDashboard() {
           </div>
         </div>
 
-        <div className="p-col-12 p-lg-6">
+        <div className="p-col-12 ">
           <div className="card summary">
             <span className="title">Logistics</span>
-            <span className="detail"></span>
-            <span className="count revenue">
+            <span className="detail">Shipping Cost</span>
+            <span className="count payment">
+              US
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
@@ -176,11 +180,12 @@ export default function THDashboard() {
           </div>
         </div>
 
-        <div className="p-col-12 p-lg-6">
+        <div className="p-col-12 ">
           <div className="card summary">
             <span className="title">Payment Gateway</span>
-            <span className="detail"></span>
-            <span className="count revenue">
+            <span className="detail">Payment Gateway Fee</span>
+            <span className="count payment">
+              US
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
@@ -193,7 +198,8 @@ export default function THDashboard() {
           <div className="card summary">
             <span className="title">Net Profit</span>
             <span className="detail"></span>
-            <span className="count revenue">
+            <span className="count visitors">
+              US
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
