@@ -215,3 +215,92 @@ export const pieOptions = {
     },
   },
 };
+
+export const initBarKOLChart = (setChartAllData, data) => {
+  var chartData = 0;
+  var psData = 0;
+  var xboxData = 0;
+
+  var currData = {
+    Chickenshow: 0,
+    Cyberclasher: 0,
+    "Gladiuz KB": 0,
+    Gufunnarock: 0,
+    "Hua Hed": 0,
+    "Mixed KOL": 0,
+    "Boung Lengame": 0,
+    "Gamer Live TV": 0,
+    "Hon BoYa": 0,
+    "Jai Raw": 0,
+    Julio: 0,
+    SheapGamer: 0,
+    Tanny: 0,
+    "Yoshi Minburi": 0,
+  };
+
+  // update the sale number of days which have sales
+  data.forEach((element) => {
+    if (element.order_status == "successful") {
+      currData[element.kol]++;
+    }
+  });
+
+  console.log(currData["Cyberclasher"]);
+  // set the labels for the chart
+  setChartAllData({
+    labels: [
+      "Chickenshow",
+      "Cyberclasher",
+      "Gladiuz KB",
+      "Gufunnarock",
+      "Hua Hed",
+      "Mixed KOL",
+      "Boung Lengame",
+      "Gamer Live TV",
+      "Hon BoYa",
+      "Jai Raw",
+      "Julio",
+      "SheapGamer",
+      "Tanny",
+      "Yoshi Minburi",
+    ],
+
+    datasets: [
+      {
+        label: "Copies Sold",
+        backgroundColor: [
+          "#EC407A",
+          "#AB47BC",
+          "#42A5F5",
+          "#7E57C2",
+          "#66BB6A",
+          "#FFCA28",
+          "#26A69A",
+          "#461697",
+          "#bb9ead",
+          "#09f0e4",
+          "#69c58b",
+          "#9d8e88",
+          "#83ddf6",
+          "#2a1d1d",
+        ],
+        data: [
+          currData["Chickenshow"],
+          currData["Cyberclasher"],
+          currData["Gladiuz KB"],
+          currData["Gufunnarock"],
+          currData["Hua Hed"],
+          currData["Mixed KOL"],
+          currData["Boung Lengame"],
+          currData["Gamer Live TV"],
+          currData["Hon BoYa"],
+          currData["Jai Raw"],
+          currData["Julio"],
+          currData["SheapGamer"],
+          currData["Tanny"],
+          currData["Yoshi Minburi"],
+        ],
+      },
+    ],
+  });
+};

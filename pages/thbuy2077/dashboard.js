@@ -8,10 +8,12 @@ import {
   chartPriceOptions,
   initPieChart,
   pieOptions,
+  initBarKOLChart,
 } from "components/helper";
 import { Toolbar } from "primereact/toolbar";
 import { Dropdown } from "primereact/dropdown";
 import useUser from "lib/useUser";
+import { TabView, TabPanel } from "primereact/tabview";
 
 export default function THDashboard() {
   const person = useUser({ redirectTo: "/login" });
@@ -19,10 +21,11 @@ export default function THDashboard() {
   const [price, setPrice] = useState(0);
   const [chartAllData, setChartAllData] = useState({});
   const [chartRevData, setChartRevData] = useState({});
-
+  const [chartKOLData, setChartKOLData] = useState({});
   const [chartPieData, setChartPieData] = useState({});
   const [filterValue, setFilterValue] = useState("ALL");
 
+  const [tabState, setTabState] = useState(0);
   const [currData, setCurrData] = useState([]);
 
   const filterItems = [
@@ -73,6 +76,7 @@ export default function THDashboard() {
           initBarChart(setChartAllData, data, "ALL", false);
           initBarChart(setChartRevData, data, "ALL", true);
           initPieChart(setChartPieData, data);
+          initBarKOLChart(setChartKOLData, data);
         });
     })();
   }, []);
@@ -217,30 +221,77 @@ export default function THDashboard() {
           </div>
         </div>
 
-        <div className="p-col-12 p-lg-12">
+        {/* <div className="p-col-12 p-lg-12">
           <Toolbar
             right={filterRightToolbarTemplate}
             left={filterLeftToolbarTemplate}
           ></Toolbar>
-        </div>
+        </div> */}
 
-        <div className="p-col-12 p-lg-6">
-          <div className="card">
-            <h5>th.buy2077.co - Number of copies sold</h5>
-            <Chart type="bar" data={chartAllData} options={chartOptions} />
-          </div>
-        </div>
-        <div className="p-col-12 p-lg-6">
-          <div className="card">
-            <h5>th.buy2077.co - Revenue of copies sold</h5>
-            <Chart type="bar" data={chartRevData} options={chartPriceOptions} />
-          </div>
-        </div>
+        <div className="p-col-12 ">
+          <div className="card" style={{ height: "100%" }}>
+            <TabView>
+              <TabPanel header="Copies sold">
+                <div className="p-d-flex p-jc-between">
+                  <h5>th.buy2077.co - Copies sold</h5>
+                  <span>{filterRightToolbarTemplate()}</span>
+                </div>
+                <div className="p-d-flex p-jc-center">
+                  <div className="charts">
+                    <Chart
+                      type="bar"
+                      data={chartAllData}
+                      options={chartOptions}
+                    />
+                  </div>
+                </div>
+              </TabPanel>
+              <TabPanel header="Revenue">
+                <div className="p-d-flex p-jc-between">
+                  <h5>th.buy2077.co - Revenue</h5>
+                  <span>{filterRightToolbarTemplate()}</span>
+                </div>
+                <div className="p-d-flex p-jc-center">
+                  <div className="charts">
+                    <Chart
+                      type="bar"
+                      data={chartRevData}
+                      options={chartPriceOptions}
+                    />
+                  </div>
+                </div>
+              </TabPanel>
 
-        <div className="p-col-12 p-lg-6">
-          <div className="card">
-            <h5>th.buy2077.co - Breakdown of Platforms</h5>
-            <Chart type="pie" data={chartPieData} options={pieOptions} />
+              <TabPanel header="Platform Breakdown">
+                <div className="p-d-flex p-jc-between">
+                  <h5>th.buy2077.co - Breakdown of Platforms</h5>
+                </div>
+                <div className="p-d-flex p-jc-center">
+                  <div className="charts">
+                    <Chart
+                      type="pie"
+                      data={chartPieData}
+                      options={pieOptions}
+                    />
+                  </div>
+                </div>
+              </TabPanel>
+
+              <TabPanel header="KOL Breakdown">
+                <div className="p-d-flex p-jc-between">
+                  <h5>th.buy2077.co - Breakdown of KOLs</h5>
+                </div>
+                <div className="p-d-flex p-jc-center">
+                  <div className="charts">
+                    <Chart
+                      type="bar"
+                      data={chartKOLData}
+                      options={chartOptions}
+                    />
+                  </div>
+                </div>
+              </TabPanel>
+            </TabView>
           </div>
         </div>
       </div>

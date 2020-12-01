@@ -187,3 +187,11 @@
     }
   }
 }
+
+@media (min-width: 1025px) {
+  .charts {
+    position: relative;
+    //height: 50vh;
+    width: 55vw;
+  }
+}
