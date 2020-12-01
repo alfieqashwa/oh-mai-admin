@@ -8,7 +8,7 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 
 import useSWR from "swr";
-import { kols, DELETE_KOL } from "../graphql/Kol";
+import { kols, DELETE_KOL } from "../graphql/kol";
 import { fetcher, mutate } from "../lib/useSWR";
 import Link from "next/link";
 import useUser from "lib/useUser";
