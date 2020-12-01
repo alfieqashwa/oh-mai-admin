@@ -98,20 +98,21 @@ export default function THDashboard() {
     );
   };
 
+  console.log(price);
   if (person) {
     return (
       <div className="p-grid p-fluid dashboard">
         <div className="p-col-12 p-lg-6">
           <div className="card summary">
-            <span className="title">th.buy2077.co Sales</span>
+            <span className="title">Sales</span>
             <span className="detail">Number of purchases</span>
             <span className="count purchases">{totalThaiNum}</span>
           </div>
         </div>
         <div className="p-col-12 p-lg-6">
           <div className="card summary">
-            <span className="title">th.buy2077.co Revenue</span>
-            <span className="detail">Income for purchases</span>
+            <span className="title">Revenue</span>
+            <span className="detail">in Thai Baht</span>
             <span className="count revenue">
               {new Intl.NumberFormat("th-TH", {
                 style: "currency",
@@ -122,6 +123,90 @@ export default function THDashboard() {
             </span>
           </div>
         </div>
+
+        <div className="p-col-12 p-lg-6">
+          <div className="card summary">
+            <span className="title">Revenue</span>
+            <span className="detail">in USD</span>
+            <span className="count revenue">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(price * 0.0330381)}
+            </span>
+          </div>
+        </div>
+
+        <div className="p-col-12 p-lg-6">
+          <div className="card summary">
+            <span className="title">Gross Profit</span>
+            <span className="detail"></span>
+            <span className="count revenue">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format((price * 0.0330381) / 2)}
+            </span>
+          </div>
+        </div>
+
+        <div className="p-col-12 p-lg-6">
+          <div className="card summary">
+            <span className="title">KOL Cost</span>
+            <span className="detail"></span>
+            <span className="count revenue">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(4 * totalThaiNum)}
+            </span>
+          </div>
+        </div>
+
+        <div className="p-col-12 p-lg-6">
+          <div className="card summary">
+            <span className="title">Logistics</span>
+            <span className="detail"></span>
+            <span className="count revenue">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(4 * totalThaiNum)}
+            </span>
+          </div>
+        </div>
+
+        <div className="p-col-12 p-lg-6">
+          <div className="card summary">
+            <span className="title">Payment Gateway</span>
+            <span className="detail"></span>
+            <span className="count revenue">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format((price * 0.0330381 * 3) / 100)}
+            </span>
+          </div>
+        </div>
+
+        <div className="p-col-12 p-lg-12">
+          <div className="card summary">
+            <span className="title">Net Profit</span>
+            <span className="detail"></span>
+            <span className="count revenue">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(
+                (price * 0.0330381) / 2 -
+                  4 * totalThaiNum -
+                  4 * totalThaiNum -
+                  (price * 0.0330381 * 3) / 100
+              )}
+            </span>
+          </div>
+        </div>
+
         <div className="p-col-12 p-lg-12">
           <Toolbar
             right={filterRightToolbarTemplate}
