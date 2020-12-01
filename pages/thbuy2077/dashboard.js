@@ -183,13 +183,13 @@ export default function THDashboard() {
         <div className="p-col-12 ">
           <div className="card summary">
             <span className="title">Payment Gateway</span>
-            <span className="detail">Payment Gateway Fee</span>
+            <span className="detail">Omise Fee (3.65%)</span>
             <span className="count payment">
               US
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: "USD",
-              }).format((price * 0.0330381 * 3) / 100)}
+              }).format((price * 0.0330381 * 3.65) / 100)}
             </span>
           </div>
         </div>
