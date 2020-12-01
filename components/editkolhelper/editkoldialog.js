@@ -64,7 +64,8 @@ export const DeleteProductDialog = (props) => {
 export const AddProductDialog = (props) => {
   const { data: prod, error: prodErr } = useSWR(products, fetcher);
 
-  const { addProductDialog, setAddProductDialog } = props;
+  const { addProductDialog, setAddProductDialog, addProduct } = props;
+
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [globalFilter, setGlobalFilter] = useState(null);
   const dt = useRef(null);
@@ -94,7 +95,10 @@ export const AddProductDialog = (props) => {
         label="Yes"
         icon="pi pi-check"
         className="p-button-text"
-        onClick={() => {}}
+        onClick={() => {
+          addProduct(selectedProducts);
+          setAddProductDialog(false);
+        }}
       />
     </React.Fragment>
   );

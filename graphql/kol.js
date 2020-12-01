@@ -84,7 +84,7 @@ export const CREATE_KOL = `mutation createKOL(
   $featured: Boolean
   $social_medias: SocialMediaInput
   $new_banner_image: Upload
-      $new_profile_image: Upload
+  $new_profile_image: Upload
   $products: [ID]
   ){
     createKol(

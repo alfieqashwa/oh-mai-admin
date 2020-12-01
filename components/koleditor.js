@@ -265,6 +265,22 @@ export default function KolEditor(props) {
     setToDelete(null);
   };
 
+  const addProduct = (selectedProducts) => {
+    console.log(selectedProducts);
+    let _kol = { ...kol };
+    let prod = [..._kol.products];
+    console.log(prod);
+
+    selectedProducts.forEach((product) => {
+      let newProd = {
+        product_name: product.product_name,
+        slug: product.slug,
+        current_price: product.current_price,
+        categories: [...product.categories],
+      };
+    });
+  };
+
   if (error) console.log(error);
 
   if (!data) return <></>;
@@ -706,6 +722,7 @@ export default function KolEditor(props) {
       <AddProductDialog
         addProductDialog={addProductDialog}
         setAddProductDialog={setAddProductDialog}
+        addProduct={addProduct}
       />
 
       <DeleteProductDialog
