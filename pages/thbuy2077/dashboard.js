@@ -237,6 +237,8 @@ export default function THDashboard() {
                       Amount given to KOL per copy: $
                     </span>
                     <InputNumber
+                      mode="decimal"
+                      minFractionDigits={2}
                       value={initKOLFee}
                       onValueChange={(e) => setInitKOLFee(e.value)}
                       style={{ width: "43%" }}
@@ -272,6 +274,8 @@ export default function THDashboard() {
                       <p>Shipping Cost per copy: $</p>
                     </span>
                     <InputNumber
+                      mode="decimal"
+                      minFractionDigits={2}
                       value={shippingCost}
                       onValueChange={(e) => setShippingCost(e.value)}
                       style={{ width: "43%" }}

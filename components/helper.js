@@ -116,7 +116,7 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
 };
 
 export let chartOptions = {
-  aspectRatio: 1.5,
+  aspectRatio: 1.8,
   legend: {
     labels: {
       fontColor: "#495057",
