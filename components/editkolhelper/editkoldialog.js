@@ -89,7 +89,10 @@ export const AddProductDialog = (props) => {
         label="No"
         icon="pi pi-times"
         className="p-button-text"
-        onClick={() => setDeleteProductDialog(false)}
+        onClick={() => {
+          setAddProductDialog(false);
+          setSelectedProducts(null);
+        }}
       />
       <Button
         label="Yes"
@@ -98,6 +101,7 @@ export const AddProductDialog = (props) => {
         onClick={() => {
           addProduct(selectedProducts);
           setAddProductDialog(false);
+          setSelectedProducts(null);
         }}
       />
     </React.Fragment>
@@ -118,7 +122,10 @@ export const AddProductDialog = (props) => {
       header="Add Products"
       modal
       footer={addProductDialogFooter}
-      onHide={() => setAddProductDialog(false)}
+      onHide={() => {
+        setAddProductDialog(false);
+        setSelectedProducts(null);
+      }}
     >
       <DataTable
         ref={dt}

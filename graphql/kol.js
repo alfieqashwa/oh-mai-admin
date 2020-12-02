@@ -26,6 +26,7 @@ export const kols = `{
     },
     featured,
     products{
+      id,
       product_name,
       slug,
       current_price,
@@ -62,6 +63,7 @@ export const GET_KOL_FROM_SLUG = `query getKOLFromSlug($filter: KOLFilter)
     },
     featured,
     products{
+      id,
       product_name,
       slug,
       current_price,
@@ -85,7 +87,7 @@ export const CREATE_KOL = `mutation createKOL(
   $social_medias: SocialMediaInput
   $new_banner_image: Upload
   $new_profile_image: Upload
-  $products: [ID]
+  $products_id: [ID]
   ){
     createKol(
       first_name: $first_name
@@ -102,7 +104,7 @@ export const CREATE_KOL = `mutation createKOL(
       social_medias: $social_medias
       new_banner_image: $new_banner_image
       new_profile_image: $new_profile_image
-      products: $products
+      products: $products_id
     ){
       id
     }
@@ -122,7 +124,9 @@ export const UPDATE_KOL = `mutation updateKOL(
   $description: String
   $featured: Boolean
   $social_medias: SocialMediaInput
-  $products: [ID]
+  $new_banner_image: Upload
+  $new_profile_image: Upload
+  $products_id: [ID]
   ){
     updateKol(
       first_name: $first_name
@@ -137,7 +141,9 @@ export const UPDATE_KOL = `mutation updateKOL(
       description: $description
       featured: $featured
       social_medias: $social_medias
-      products: $products
+      new_banner_image: $new_banner_image
+      new_profile_image: $new_profile_image
+      products: $products_id
     ){
       id
     }

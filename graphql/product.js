@@ -18,6 +18,7 @@ export const products = `{
 export const GET_PRODUCT_FROM_SLUG = `query getProductFromSlug($filter: UserFilter)
   {
     products(filter: $filter) {
+      id
       sku
       product_name
       featured_image

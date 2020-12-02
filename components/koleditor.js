@@ -58,6 +58,7 @@ export default function KolEditor(props) {
     },
     featured: false,
     products: [],
+    products_id: [],
     new_banner_image: null,
     new_profile_image: null,
   };
@@ -106,7 +107,7 @@ export default function KolEditor(props) {
 
   React.useEffect(() => {
     // if this is edit kol
-    if (slug && data && data.kols) {
+    if (slug && data && data.kols.length > 0) {
       // infuse default data
       setKol(data.kols[0]);
       // create the html from plaintest
@@ -126,32 +127,39 @@ export default function KolEditor(props) {
       let _kol = { ...kol };
       if (bannerImage) _kol["new_banner_image"] = bannerImage;
       if (profileImage) _kol["new_profile_image"] = profileImage;
-      console.log(_kol);
+
+      //console.log(_kol);
+      _kol.products_id = [];
+      if (_kol.products.length > 0) {
+        _kol.products.forEach((prod) => {
+          _kol.products_id.push(prod.id);
+        });
+      }
 
       await kolMutation(_kol);
-      // setShowSpinner(false);
+      setShowSpinner(false);
 
-      // if (slug) {
-      //   toast.current.show({
-      //     severity: "success",
-      //     summary: "Successful",
-      //     detail: "Kol Edited. Returning to kol list page",
-      //     life: 1900,
-      //   });
-      // } else {
-      //   toast.current.show({
-      //     severity: "success",
-      //     summary: "Successful",
-      //     detail: "Kol Created",
-      //     life: 1900,
-      //   });
-      // }
-      // setSubmitted(false);
+      if (slug) {
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Kol Edited. Returning to kol list page",
+          life: 1900,
+        });
+      } else {
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Kol Created",
+          life: 1900,
+        });
+      }
+      setSubmitted(false);
 
-      // setTimeout(() => {
-      //   setKol(emptyKol);
-      //   router.push("/kol");
-      // }, 2000);
+      setTimeout(() => {
+        setKol(emptyKol);
+        router.push("/kol");
+      }, 2000);
     } catch (err) {
       console.log(err);
       if (err.response) {
@@ -175,9 +183,9 @@ export default function KolEditor(props) {
       !duplicateEmail &&
       !duplicateSLUG
     ) {
-      console.log(kol);
+      //console.log(kol);
       uploadToDB();
-      //setShowSpinner(true);
+      setShowSpinner(true);
     }
   };
 
@@ -254,7 +262,6 @@ export default function KolEditor(props) {
 
   const removeProduct = () => {
     let _kol = { ...kol };
-    console.log(_kol.products);
 
     let updateProduct = _kol.products.filter((e) => e.slug !== toDelete.slug);
 
@@ -266,19 +273,23 @@ export default function KolEditor(props) {
   };
 
   const addProduct = (selectedProducts) => {
-    console.log(selectedProducts);
     let _kol = { ...kol };
     let prod = [..._kol.products];
-    console.log(prod);
 
     selectedProducts.forEach((product) => {
-      let newProd = {
-        product_name: product.product_name,
-        slug: product.slug,
-        current_price: product.current_price,
-        categories: [...product.categories],
-      };
+      if (!prod.find((e) => e.slug == product.slug)) {
+        let newProd = {
+          id: product.id,
+          product_name: product.product_name,
+          slug: product.slug,
+          current_price: product.current_price,
+          categories: [...product.categories],
+        };
+        prod.push(newProd);
+      }
     });
+    _kol.products = prod;
+    setKol(_kol);
   };
 
   if (error) console.log(error);

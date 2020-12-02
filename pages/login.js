@@ -17,14 +17,14 @@ export default function Login() {
 
   async function loginMutation(email, password) {
     try {
-      console.log("run");
+      //console.log("run");
       const a = await mutate(LOGIN_MUTATION, {
         email: email,
         password: password,
       });
 
       router.push("/");
-      console.log("pushed");
+      //console.log("pushed");
     } catch (err) {
       console.log(err.response?.errors[0].message);
       if (

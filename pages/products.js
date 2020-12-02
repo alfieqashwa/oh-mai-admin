@@ -30,7 +30,7 @@ export default function Products() {
 
   if (!prod) return <></>;
 
-  console.log(selectedSingle);
+  //console.log(selectedSingle);
 
   const hideDeleteProductDialog = () => {
     setDeleteProductDialog(false);

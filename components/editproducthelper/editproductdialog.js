@@ -115,6 +115,7 @@ export const UploadImageDialog = (props) => {
         icon="pi pi-check"
         className="p-button-text"
         onClick={() => {
+          console.log("setting");
           if (newFeatured) setFeaturedImage(newFeatured);
           //setUploadedFiles([newFeatured, ...uploadedFiles]);
           setEditFeatured(false);

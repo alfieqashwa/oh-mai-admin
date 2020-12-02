@@ -49,6 +49,13 @@ export const ProductDataTable = (props) => {
         sortable
         headerStyle={{ width: "150px" }}
       ></Column>
+
+      <Column
+        field="slug"
+        header="Slug"
+        sortable
+        headerStyle={{ width: "150px" }}
+      ></Column>
       <Column body={actionBodyTemplate} style={{ width: "15%" }}></Column>
     </DataTable>
   );

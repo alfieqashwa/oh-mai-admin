@@ -30,8 +30,6 @@ export default function KOL() {
 
   if (!prod) return <></>;
 
-  console.log(selectedSingle);
-
   const hideDeleteKolDialog = () => {
     setDeleteKolDialog(false);
   };
@@ -223,7 +221,7 @@ export default function KOL() {
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <Link href={{ pathname: "/editKol", query: { slug: rowData.slug } }}>
+        <Link href={{ pathname: "/editkol", query: { slug: rowData.slug } }}>
           <Button
             icon="pi pi-pencil"
             className="p-button-rounded p-button-success p-mr-2"
@@ -361,6 +359,10 @@ export default function KOL() {
               body={productsTemplate}
               headerStyle={{ width: "150px" }}
               sortable
+            ></Column>
+            <Column
+              body={actionBodyTemplate}
+              headerStyle={{ width: "150px" }}
             ></Column>
           </DataTable>
         </div>
