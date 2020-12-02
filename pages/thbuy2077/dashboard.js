@@ -14,11 +14,17 @@ import { Toolbar } from "primereact/toolbar";
 import { Dropdown } from "primereact/dropdown";
 import useUser from "lib/useUser";
 import { TabView, TabPanel } from "primereact/tabview";
+import { InputNumber } from "primereact/inputnumber";
 
 export default function THDashboard() {
   const person = useUser({ redirectTo: "/login" });
+
   const [totalThaiNum, setTotalThaiNum] = useState(0);
   const [price, setPrice] = useState(0);
+  const [priceUSD, setPriceUSD] = useState(0);
+  const [grossProfitUSD, setGrossProfitUSD] = useState(0);
+  const [omisePay, setOmisePay] = useState(0);
+
   const [chartAllData, setChartAllData] = useState({});
   const [chartRevData, setChartRevData] = useState({});
   const [chartKOLData, setChartKOLData] = useState({});
@@ -26,6 +32,8 @@ export default function THDashboard() {
   const [filterValue, setFilterValue] = useState("ALL");
 
   const [tabState, setTabState] = useState(0);
+  const [initKOLFee, setInitKOLFee] = useState(4);
+  const [shippingCost, setShippingCost] = useState(4.6);
   const [currData, setCurrData] = useState([]);
 
   const [rates, setRates] = useState(0);
@@ -84,7 +92,7 @@ export default function THDashboard() {
     })();
 
     (async function getExchangeRate() {
-      fetch("https://api.exchangeratesapi.io/latest?base=THB&symbols=USD")
+      await fetch("https://api.exchangeratesapi.io/latest?base=THB&symbols=USD")
         .then((res) => res.json())
         .then((data) => {
           setRatesDate(data.date);
@@ -92,6 +100,12 @@ export default function THDashboard() {
         });
     })();
   }, []);
+
+  React.useEffect(() => {
+    setPriceUSD(price * rates);
+    setGrossProfitUSD((price * rates) / 2);
+    setOmisePay((price * rates * 3.65) / 100);
+  }, [price, rates]);
 
   const filterRightToolbarTemplate = () => {
     return (
@@ -125,113 +139,189 @@ export default function THDashboard() {
       <div className="p-grid p-fluid dashboard">
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
-            <span className="title">Revenue</span>
-            <span className="detail">in Thai Baht</span>
-            <span className="count revenue">
-              {new Intl.NumberFormat("th-TH", {
-                style: "currency",
-                currency: "THB",
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-              }).format(price)}
-            </span>
+            <div className="p-d-flex p-jc-between">
+              <div className="p-d-flex p-flex-column">
+                <div className="title">Revenue</div>
+                <div className="detail">in Thai Baht</div>
+              </div>
+
+              <div className="p-d-flex p-ai-center p-jc-center">
+                <div className="count revenue">
+                  {new Intl.NumberFormat("th-TH", {
+                    style: "currency",
+                    currency: "THB",
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  }).format(price)}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
-            <span className="title">Revenue in USD</span>
-            <span className="detail">
-              Conversion rate: {rates}, last updated: {ratesDate}
-            </span>
-            <span className="count revenue">
-              US
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(price * rates)}
-            </span>
+            <div className="p-d-flex p-jc-between">
+              <div className="p-d-flex p-flex-column">
+                <div className="title">Revenue in USD</div>
+                <div className="detail">
+                  Conversion rate: {rates}, last updated: {ratesDate}
+                </div>
+              </div>
+              <div className="p-d-flex p-ai-center p-jc-center">
+                <div className="count revenue">
+                  US
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(priceUSD)}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
-            <span className="title">Gross Profit</span>
-            <span className="detail">Gross Profit in USD</span>
-            <span className="count revenue">
-              US
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format((price * rates) / 2)}
-            </span>
+            <div className="p-d-flex p-jc-between">
+              <div className="p-d-flex p-flex-column">
+                <div className="title">Gross Profit</div>
+                <div className="detail">Gross Profit in USD</div>
+              </div>
+              <div className="p-d-flex p-ai-center p-jc-center">
+                <div className="count revenue">
+                  US
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(grossProfitUSD)}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
-            <span className="title">KOL Cost</span>
-            <span className="detail">Amount given to KOL</span>
-            <span className="count payment">
-              US
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(4 * totalThaiNum)}
-            </span>
+            <div className="p-d-flex p-jc-between">
+              <div className="p-d-flex p-flex-column">
+                <div className="title">KOL Cost</div>
+                <div className="detail">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon">
+                      Amount given to KOL per copy: $
+                    </span>
+                    <InputNumber
+                      id="integeronly"
+                      value={initKOLFee}
+                      onValueChange={(e) => setInitKOLFee(e.value)}
+                      style={{ width: "25%" }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-d-flex p-ai-center p-jc-center">
+                <div className="count payment">
+                  US
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(initKOLFee * totalThaiNum)}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
-            <span className="title">Logistics</span>
-            <span className="detail">Shipping Cost</span>
-            <span className="count payment">
-              US
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(4 * totalThaiNum)}
-            </span>
+            <div className="p-d-flex p-jc-between">
+              <div className="p-d-flex p-flex-column">
+                <div className="title">Logistics</div>
+                <div className="detail">
+                  <div className="p-inputgroup">
+                    <span className="p-inputgroup-addon">
+                      Shipping Cost per copy: $
+                    </span>
+                    <InputNumber
+                      id="integeronly"
+                      value={shippingCost}
+                      onValueChange={(e) => setShippingCost(e.value)}
+                      style={{ width: "25%" }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="p-d-flex p-ai-center p-jc-center">
+                <div className="count payment">
+                  US
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(shippingCost * totalThaiNum)}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
-            <span className="title">Payment Gateway</span>
-            <span className="detail">Omise Fee (3.65%)</span>
-            <span className="count payment">
-              US
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format((price * rates * 3.65) / 100)}
-            </span>
+            <div className="p-d-flex p-jc-between">
+              <div className="p-d-flex p-flex-column">
+                <div className="title">Payment Gateway</div>
+                <div className="detail" style={{ minHeight: "35px" }}>
+                  Omise Fee (3.65%)
+                </div>
+              </div>
+              <div className="p-d-flex p-ai-center p-jc-center">
+                <div className="count payment">
+                  US
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(omisePay)}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="p-col-12 p-lg-6">
           <div className="card summary">
-            <span className="title">Successful Orders</span>
-            <span className="detail">Number of purchases</span>
-            <span className="count purchases">{totalThaiNum}</span>
+            <div className="p-d-flex p-jc-between">
+              <div className="p-d-flex p-flex-column">
+                <div className="title">Successful Orders</div>
+                <div className="detail">Number of purchases</div>
+              </div>
+              <div className="count purchases  p-d-flex p-ai-center">
+                {totalThaiNum}
+              </div>
+            </div>
           </div>
         </div>
+
         <div className="p-col-12 p-lg-6">
           <div className="card summary">
-            <span className="title">Net Profit</span>
-            <span className="detail">Net Profit in USD</span>
-            <span className="count visitors">
-              US
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(
-                (price * rates) / 2 -
-                  4 * totalThaiNum -
-                  4 * totalThaiNum -
-                  (price * rates * 3) / 100
-              )}
-            </span>
+            <div className="p-d-flex p-jc-between">
+              <div className="p-d-flex p-flex-column">
+                <div className="title">Net Profit</div>
+                <div className="detail">Net Profit in USD</div>
+              </div>
+              <div className="count visitors p-d-flex p-ai-center">
+                US
+                {new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(
+                  grossProfitUSD -
+                    initKOLFee * totalThaiNum -
+                    shippingCost * totalThaiNum -
+                    omisePay
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
