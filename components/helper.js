@@ -116,10 +116,14 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
 };
 
 export let chartOptions = {
+  aspectRatio: 1.5,
   legend: {
     labels: {
       fontColor: "#495057",
     },
+  },
+  animation: {
+    duration: 0, // general animation time
   },
   scales: {
     xAxes: [
@@ -143,12 +147,15 @@ export let chartOptions = {
 };
 
 export let chartPriceOptions = {
+  aspectRatio: 1.5,
   legend: {
     labels: {
       fontColor: "#495057",
     },
   },
-
+  animation: {
+    duration: 0, // general animation time
+  },
   scales: {
     xAxes: [
       {
@@ -214,6 +221,9 @@ export const pieOptions = {
       fontColor: "#495057",
     },
   },
+  animation: {
+    duration: 0, // general animation time
+  },
 };
 
 export const initBarKOLChart = (setChartAllData, data) => {
@@ -245,7 +255,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
     }
   });
 
-  console.log(currData["Cyberclasher"]);
+  //console.log(currData["Cyberclasher"]);
   // set the labels for the chart
   setChartAllData({
     labels: [

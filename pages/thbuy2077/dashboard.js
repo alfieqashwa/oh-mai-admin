@@ -39,6 +39,8 @@ export default function THDashboard() {
   const [rates, setRates] = useState(0);
   const [ratesDate, setRatesDate] = useState(0);
 
+  const [refreshInterval, setRefreshInterval] = useState(20000);
+
   const filterItems = [
     { label: "All", value: "ALL" },
     { label: "Chicken Show", value: "Chickenshow" },
@@ -61,7 +63,8 @@ export default function THDashboard() {
     else return <div style={{ marginLeft: "20%" }}>{option.label}</div>;
   }
 
-  React.useEffect(() => {
+  const fetchMetrics = () => {
+    console.log("fetchMetrics");
     (async function getTotal() {
       await fetch("https://api.buy2077.co/countorders", {
         method: "GET",
@@ -99,7 +102,18 @@ export default function THDashboard() {
           setRates(data.rates.USD);
         });
     })();
+  };
+
+  React.useEffect(() => {
+    fetchMetrics();
   }, []);
+
+  React.useEffect(() => {
+    if (refreshInterval && refreshInterval > 0) {
+      const interval = setInterval(fetchMetrics, refreshInterval);
+      return () => clearInterval(interval);
+    }
+  }, [refreshInterval]);
 
   React.useEffect(() => {
     setPriceUSD(price * rates);
@@ -133,14 +147,16 @@ export default function THDashboard() {
     );
   };
 
-  console.log(price);
   if (person) {
     return (
       <div className="p-grid p-fluid dashboard">
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <div className="p-d-flex p-jc-between">
-              <div className="p-d-flex p-flex-column">
+              <div
+                className="p-d-flex p-flex-column"
+                style={{ paddingRight: "2%" }}
+              >
                 <div className="title">Revenue</div>
                 <div className="detail">in Thai Baht</div>
               </div>
@@ -162,7 +178,10 @@ export default function THDashboard() {
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <div className="p-d-flex p-jc-between">
-              <div className="p-d-flex p-flex-column">
+              <div
+                className="p-d-flex p-flex-column"
+                style={{ paddingRight: "2%" }}
+              >
                 <div className="title">Revenue in USD</div>
                 <div className="detail">
                   Conversion rate: {rates}, last updated: {ratesDate}
@@ -184,7 +203,10 @@ export default function THDashboard() {
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <div className="p-d-flex p-jc-between">
-              <div className="p-d-flex p-flex-column">
+              <div
+                className="p-d-flex p-flex-column"
+                style={{ paddingRight: "2%" }}
+              >
                 <div className="title">Gross Profit</div>
                 <div className="detail">Gross Profit in USD</div>
               </div>
@@ -204,7 +226,10 @@ export default function THDashboard() {
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <div className="p-d-flex p-jc-between">
-              <div className="p-d-flex p-flex-column">
+              <div
+                className="p-d-flex p-flex-column"
+                style={{ paddingRight: "2%" }}
+              >
                 <div className="title">KOL Cost</div>
                 <div className="detail">
                   <div className="p-inputgroup">
@@ -215,7 +240,7 @@ export default function THDashboard() {
                       id="integeronly"
                       value={initKOLFee}
                       onValueChange={(e) => setInitKOLFee(e.value)}
-                      style={{ width: "25%" }}
+                      style={{ width: "43%" }}
                     />
                   </div>
                 </div>
@@ -237,18 +262,21 @@ export default function THDashboard() {
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <div className="p-d-flex p-jc-between">
-              <div className="p-d-flex p-flex-column">
+              <div
+                className="p-d-flex p-flex-column"
+                style={{ paddingRight: "2%" }}
+              >
                 <div className="title">Logistics</div>
                 <div className="detail">
                   <div className="p-inputgroup">
                     <span className="p-inputgroup-addon">
-                      Shipping Cost per copy: $
+                      <p>Shipping Cost per copy: $</p>
                     </span>
                     <InputNumber
                       id="integeronly"
                       value={shippingCost}
                       onValueChange={(e) => setShippingCost(e.value)}
-                      style={{ width: "25%" }}
+                      style={{ width: "43%" }}
                     />
                   </div>
                 </div>
@@ -269,7 +297,10 @@ export default function THDashboard() {
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <div className="p-d-flex p-jc-between">
-              <div className="p-d-flex p-flex-column">
+              <div
+                className="p-d-flex p-flex-column"
+                style={{ paddingRight: "2%" }}
+              >
                 <div className="title">Payment Gateway</div>
                 <div className="detail" style={{ minHeight: "35px" }}>
                   Omise Fee (3.65%)
@@ -291,7 +322,10 @@ export default function THDashboard() {
         <div className="p-col-12 p-lg-6">
           <div className="card summary">
             <div className="p-d-flex p-jc-between">
-              <div className="p-d-flex p-flex-column">
+              <div
+                className="p-d-flex p-flex-column"
+                style={{ paddingRight: "2%" }}
+              >
                 <div className="title">Successful Orders</div>
                 <div className="detail">Number of purchases</div>
               </div>
@@ -305,7 +339,10 @@ export default function THDashboard() {
         <div className="p-col-12 p-lg-6">
           <div className="card summary">
             <div className="p-d-flex p-jc-between">
-              <div className="p-d-flex p-flex-column">
+              <div
+                className="p-d-flex p-flex-column"
+                style={{ paddingRight: "2%" }}
+              >
                 <div className="title">Net Profit</div>
                 <div className="detail">Net Profit in USD</div>
               </div>
