@@ -10,6 +10,7 @@ import useUser from "lib/useUser";
 
 export default function Login() {
   useUser({ redirectTo: "/", redirectIfFound: true });
+  const [wrongField, setWrongField] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -25,7 +26,13 @@ export default function Login() {
       router.push("/");
       console.log("pushed");
     } catch (err) {
-      console.log(err);
+      console.log(err.response?.errors[0].message);
+      if (
+        err.response?.errors[0].message ==
+        "Failed to serialize user into session"
+      ) {
+        setWrongField(true);
+      }
     }
   }
 
@@ -46,6 +53,7 @@ export default function Login() {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
+              setWrongField(false);
             }}
           />
         </div>
@@ -58,10 +66,13 @@ export default function Login() {
             feedback={false}
             onChange={(e) => {
               setPassword(e.target.value);
+              setWrongField(false);
             }}
           />
         </div>
         <Button label="Login" onClick={() => onLoginClicked()} />
+
+        {wrongField && <p className="p-invalid">Wrong email/password.</p>}
       </div>
     </div>
   );
