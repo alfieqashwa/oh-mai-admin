@@ -5,7 +5,9 @@ import {
   dailyPrice,
   initBarChart,
   chartOptions,
+  chartMobileOptions,
   chartPriceOptions,
+  chartMobilePriceOptions,
   initPieChart,
   pieOptions,
   initBarKOLChart,
@@ -38,6 +40,8 @@ export default function THDashboard() {
 
   const [rates, setRates] = useState(0);
   const [ratesDate, setRatesDate] = useState(0);
+
+  const [isDesktop, setIsDesktop] = useState(true);
 
   const [refreshInterval, setRefreshInterval] = useState(20000);
 
@@ -105,6 +109,7 @@ export default function THDashboard() {
   };
 
   React.useEffect(() => {
+    if (window.innerWidth < 1024) setIsDesktop(false);
     fetchMetrics();
   }, []);
 
@@ -241,7 +246,7 @@ export default function THDashboard() {
                       minFractionDigits={2}
                       value={initKOLFee}
                       onValueChange={(e) => setInitKOLFee(e.value)}
-                      style={{ width: "43%" }}
+                      style={{ width: isDesktop ? "43%" : "100%" }}
                     />
                   </div>
                 </div>
@@ -278,7 +283,7 @@ export default function THDashboard() {
                       minFractionDigits={2}
                       value={shippingCost}
                       onValueChange={(e) => setShippingCost(e.value)}
-                      style={{ width: "43%" }}
+                      style={{ width: isDesktop ? "43%" : "100%" }}
                     />
                   </div>
                 </div>
@@ -384,7 +389,7 @@ export default function THDashboard() {
                     <Chart
                       type="bar"
                       data={chartAllData}
-                      options={chartOptions}
+                      options={isDesktop ? chartOptions : chartMobileOptions}
                     />
                   </div>
                 </div>
@@ -399,7 +404,9 @@ export default function THDashboard() {
                     <Chart
                       type="bar"
                       data={chartRevData}
-                      options={chartPriceOptions}
+                      options={
+                        isDesktop ? chartPriceOptions : chartMobilePriceOptions
+                      }
                     />
                   </div>
                 </div>
@@ -429,7 +436,7 @@ export default function THDashboard() {
                     <Chart
                       type="bar"
                       data={chartKOLData}
-                      options={chartOptions}
+                      options={isDesktop ? chartOptions : chartMobileOptions}
                     />
                   </div>
                 </div>

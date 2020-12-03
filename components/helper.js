@@ -116,7 +116,38 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
 };
 
 export let chartOptions = {
-  aspectRatio: 1.8,
+  aspectRatio: 2,
+  legend: {
+    labels: {
+      fontColor: "#495057",
+    },
+  },
+  animation: {
+    duration: 0, // general animation time
+  },
+  scales: {
+    xAxes: [
+      {
+        stacked: true,
+        ticks: {
+          fontColor: "#495057",
+        },
+      },
+    ],
+    yAxes: [
+      {
+        stacked: true,
+        ticks: {
+          fontColor: "#495057",
+          beginAtZero: true,
+        },
+      },
+    ],
+  },
+};
+
+export let chartMobileOptions = {
+  aspectRatio: 1.3,
   legend: {
     labels: {
       fontColor: "#495057",
@@ -147,7 +178,46 @@ export let chartOptions = {
 };
 
 export let chartPriceOptions = {
-  aspectRatio: 1.5,
+  aspectRatio: 2,
+  legend: {
+    labels: {
+      fontColor: "#495057",
+    },
+  },
+  animation: {
+    duration: 0, // general animation time
+  },
+  scales: {
+    xAxes: [
+      {
+        stacked: true,
+        ticks: {
+          fontColor: "#495057",
+        },
+      },
+    ],
+    yAxes: [
+      {
+        stacked: true,
+        ticks: {
+          fontColor: "#495057",
+          beginAtZero: true,
+          callback: function (value, index, values) {
+            return new Intl.NumberFormat("th-TH", {
+              style: "currency",
+              currency: "THB",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(value);
+          },
+        },
+      },
+    ],
+  },
+};
+
+export let chartMobilePriceOptions = {
+  aspectRatio: 1.3,
   legend: {
     labels: {
       fontColor: "#495057",
