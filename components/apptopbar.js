@@ -5,16 +5,22 @@ import { useRouter } from "next/router";
 export const AppTopbar = (props) => {
   const router = useRouter();
   return (
-    <div className="layout-topbar clearfix">
-      {router.pathname != "/login" && (
-        <button
-          type="button"
-          className="p-link layout-menu-button"
-          onClick={props.onToggleMenu}
-        >
-          <span className="pi pi-bars" />
-        </button>
-      )}
+    <div className="layout-topbar clearfix p-grid">
+      <div className="p-col">
+        {router.pathname != "/login" && (
+          <button
+            type="button"
+            className="p-link layout-menu-button"
+            onClick={props.onToggleMenu}
+          >
+            <span className="pi pi-bars" />
+          </button>
+        )}
+      </div>
+      <div className="p-col-10 p-lg-4" style={{ textAlign: "center" }}>
+        Cyberpunk 2077 Thailand Pre-order
+      </div>
+      <div className="p-col mobileTop"></div>
       {/* <div className="layout-topbar-icons">
         <span className="layout-topbar-search">
           <InputText type="text" placeholder="Search" />

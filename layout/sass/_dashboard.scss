@@ -1,8 +1,15 @@
+@media (max-width: 1024px) {
+  .mobileTop {
+    display: none;
+  }
+}
+
 /* Dashboard */
 .dashboard {
   .summary {
     position: relative;
     margin-bottom: 0;
+    height: 100%;
 
     .title {
       font-size: 20px;

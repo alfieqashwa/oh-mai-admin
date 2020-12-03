@@ -67,38 +67,488 @@ function MyApp({ Component, pageProps }) {
   };
 
   const menu = [
-    {
-      label: "Dashboard",
-      icon: "pi pi-fw pi-home",
-      to: "/",
-    },
-    {
-      label: "Order List",
-      icon: "pi pi-fw pi-file-excel",
-      to: "/thbuy2077/orders",
-    },
-    //{
     // {
-    //   label: "Products",
-    //   icon: "pi pi-fw pi-circle-off",
-    //   to: "/products",
+    //   label: "Dashboard",
+    //   icon: "pi pi-fw pi-home",
+    //   to: "/",
     // },
     // {
-    //   label: "sg.buy2077.co",
-    //   icon: "pi pi-fw pi-list",
-    //   items: [
-    //     {
-    //       label: "Dashboard",
-    //       icon: "pi pi-fw pi-chart-bar",
-    //       to: "/sgbuy2077/dashboard",
-    //     },
-    //     {
-    //       label: "Order List",
-    //       icon: "pi pi-fw pi-file-excel",
-    //       to: "/sgbuy2077/orders",
-    //     },
-    //   ],
+    //   label: "Order List",
+    //   icon: "pi pi-fw pi-file-excel",
+    //   to: "/thbuy2077/orders",
     // },
+    {
+      label: "Cyberpunk 2077",
+      icon: "pi pi-fw pi-list",
+      items: [
+        {
+          label: "Singapore",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              to: "/sgbuy2077/dashboard",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              to: "/sgbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Thailand",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Malaysia",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Taiwan",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Hong Kong",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Philippines",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Vietnam",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      label: "NBA 2K21",
+      icon: "pi pi-fw pi-list",
+      items: [
+        {
+          label: "Singapore",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              to: "/sgbuy2077/dashboard",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              to: "/sgbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Thailand",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Malaysia",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Taiwan",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Hong Kong",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Philippines",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Vietnam",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      label: "Yakuza: Like A Dragon",
+      icon: "pi pi-fw pi-list",
+      items: [
+        {
+          label: "Singapore",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              to: "/sgbuy2077/dashboard",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              to: "/sgbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Thailand",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Malaysia",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Taiwan",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Hong Kong",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Philippines",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Vietnam",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      label: "Borderlands: Legendary Collection",
+      icon: "pi pi-fw pi-list",
+      items: [
+        {
+          label: "Singapore",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              to: "/sgbuy2077/dashboard",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              to: "/sgbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Thailand",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Malaysia",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Taiwan",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Hong Kong",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Philippines",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+        {
+          label: "Vietnam",
+          icon: "pi pi-fw pi-list",
+          items: [
+            {
+              label: "Dashboard",
+              icon: "pi pi-fw pi-chart-bar",
+              //to: "/",
+            },
+            {
+              label: "Order List",
+              icon: "pi pi-fw pi-file-excel",
+              //to: "/thbuy2077/orders",
+            },
+          ],
+        },
+      ],
+    },
   ];
 
   const onMenuItemClick = (event) => {

@@ -17,6 +17,7 @@ import { Dropdown } from "primereact/dropdown";
 import useUser from "lib/useUser";
 import { TabView, TabPanel } from "primereact/tabview";
 import { InputNumber } from "primereact/inputnumber";
+import { BreadCrumb } from "primereact/breadcrumb";
 
 export default function THDashboard() {
   const person = useUser({ redirectTo: "/login" });
@@ -152,9 +153,20 @@ export default function THDashboard() {
     );
   };
 
+  const items = [
+    { label: "Cyberpunk 2077" },
+    { label: "Thailand" },
+    { label: "Dashboard" },
+  ];
+
+  const home = { icon: "pi pi-home" };
+
   if (person) {
     return (
       <div className="p-grid p-fluid dashboard">
+        <div className="p-col-12">
+          <BreadCrumb model={items} home={home} />
+        </div>
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <div className="p-d-flex p-jc-between">
@@ -162,11 +174,11 @@ export default function THDashboard() {
                 className="p-d-flex p-flex-column"
                 style={{ paddingRight: "2%" }}
               >
-                <div className="title">Revenue</div>
-                <div className="detail">in Thai Baht</div>
+                <div className="title">Revenue in Thai Baht</div>
+                <div className="detail"></div>
               </div>
 
-              <div className="p-d-flex p-ai-center p-jc-center">
+              <div className="p-d-flex p-ai-start p-jc-center">
                 <div className="count revenue">
                   {new Intl.NumberFormat("th-TH", {
                     style: "currency",
@@ -188,11 +200,11 @@ export default function THDashboard() {
                 style={{ paddingRight: "2%" }}
               >
                 <div className="title">Revenue in USD</div>
-                <div className="detail">
-                  Conversion rate: {rates}, last updated: {ratesDate}
+                <div className="detail" style={{}}>
+                  Conversion rate: {rates.toFixed(3)}
                 </div>
               </div>
-              <div className="p-d-flex p-ai-center p-jc-center">
+              <div className="p-d-flex p-ai-start p-jc-center">
                 <div className="count revenue">
                   US
                   {new Intl.NumberFormat("en-US", {
@@ -215,7 +227,7 @@ export default function THDashboard() {
                 <div className="title">Gross Profit</div>
                 <div className="detail">Gross Profit in USD</div>
               </div>
-              <div className="p-d-flex p-ai-center p-jc-center">
+              <div className="p-d-flex p-ai-start p-jc-center">
                 <div className="count revenue">
                   US
                   {new Intl.NumberFormat("en-US", {
@@ -235,24 +247,23 @@ export default function THDashboard() {
                 className="p-d-flex p-flex-column"
                 style={{ paddingRight: "2%" }}
               >
-                <div className="title">KOL Cost</div>
+                <div className="title">KOL Comissions</div>
                 <div className="detail">
                   <div className="p-inputgroup">
-                    <span className="p-inputgroup-addon">
-                      Amount given to KOL per copy: $
-                    </span>
+                    <span className="p-inputgroup-addon">Per unit:</span>
                     <InputNumber
-                      mode="decimal"
-                      minFractionDigits={2}
+                      mode="currency"
+                      currency="USD"
+                      locale="en-US"
                       value={initKOLFee}
                       onValueChange={(e) => setInitKOLFee(e.value)}
-                      style={{ width: isDesktop ? "43%" : "100%" }}
+                      style={{ width: isDesktop ? "43%" : "43%" }}
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="p-d-flex p-ai-center p-jc-center">
+              <div className="p-d-flex p-ai-start p-jc-center">
                 <div className="count payment">
                   US
                   {new Intl.NumberFormat("en-US", {
@@ -272,23 +283,24 @@ export default function THDashboard() {
                 className="p-d-flex p-flex-column"
                 style={{ paddingRight: "2%" }}
               >
-                <div className="title">Logistics</div>
+                <div className="title">Domestic Fulfillment Cost</div>
                 <div className="detail">
                   <div className="p-inputgroup">
                     <span className="p-inputgroup-addon">
-                      <p>Shipping Cost per copy: $</p>
+                      <p>Per unit:</p>
                     </span>
                     <InputNumber
-                      mode="decimal"
-                      minFractionDigits={2}
+                      mode="currency"
+                      currency="USD"
+                      locale="en-US"
                       value={shippingCost}
                       onValueChange={(e) => setShippingCost(e.value)}
-                      style={{ width: isDesktop ? "43%" : "100%" }}
+                      style={{ width: isDesktop ? "43%" : "43%" }}
                     />
                   </div>
                 </div>
               </div>
-              <div className="p-d-flex p-ai-center p-jc-center">
+              <div className="p-d-flex p-ai-start p-jc-center">
                 <div className="count payment">
                   US
                   {new Intl.NumberFormat("en-US", {
@@ -310,10 +322,10 @@ export default function THDashboard() {
               >
                 <div className="title">Payment Gateway</div>
                 <div className="detail" style={{ minHeight: "35px" }}>
-                  Omise Fee (3.65%)
+                  Transaction Fee (3.65%)
                 </div>
               </div>
-              <div className="p-d-flex p-ai-center p-jc-center">
+              <div className="p-d-flex p-ai-start p-jc-center">
                 <div className="count payment">
                   US
                   {new Intl.NumberFormat("en-US", {
