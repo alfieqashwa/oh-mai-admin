@@ -95,6 +95,11 @@ function MyApp({ Component, pageProps }) {
               icon: "pi pi-fw pi-file-excel",
               to: "/sgbuy2077/orders",
             },
+            {
+              label: "View Micro Site",
+              icon: "pi pi-fw pi-file-excel",
+              external: "https://buy2077.sg",
+            },
           ],
         },
         {
@@ -110,6 +115,11 @@ function MyApp({ Component, pageProps }) {
               label: "Order List",
               icon: "pi pi-fw pi-file-excel",
               to: "/thbuy2077/orders",
+            },
+            {
+              label: "View Micro Site",
+              icon: "pi pi-fw pi-file-excel",
+              external: "https://th.buy2077.co",
             },
           ],
         },
@@ -127,6 +137,11 @@ function MyApp({ Component, pageProps }) {
               icon: "pi pi-fw pi-file-excel",
               //to: "/thbuy2077/orders",
             },
+            {
+              label: "View Micro Site",
+              icon: "pi pi-fw pi-file-excel",
+              external: "https://buy2077.co",
+            },
           ],
         },
         {
@@ -142,6 +157,11 @@ function MyApp({ Component, pageProps }) {
               label: "Order List",
               icon: "pi pi-fw pi-file-excel",
               //to: "/thbuy2077/orders",
+            },
+            {
+              label: "View Micro Site",
+              icon: "pi pi-fw pi-file-excel",
+              external: "https://buy2077.tw",
             },
           ],
         },
@@ -229,6 +249,11 @@ function MyApp({ Component, pageProps }) {
               icon: "pi pi-fw pi-file-excel",
               to: "/thbuy2077/orders",
             },
+            {
+              label: "View Micro Site",
+              icon: "pi pi-fw pi-file-excel",
+              to: "https://th.buy2077.co",
+            },
           ],
         },
         {
@@ -245,6 +270,11 @@ function MyApp({ Component, pageProps }) {
               icon: "pi pi-fw pi-file-excel",
               //to: "/thbuy2077/orders",
             },
+            {
+              label: "View Micro Site",
+              icon: "pi pi-fw pi-file-excel",
+              to: "https://buy2077.co",
+            },
           ],
         },
         {
@@ -260,6 +290,11 @@ function MyApp({ Component, pageProps }) {
               label: "Order List",
               icon: "pi pi-fw pi-file-excel",
               //to: "/thbuy2077/orders",
+            },
+            {
+              label: "View Micro Site",
+              icon: "pi pi-fw pi-file-excel",
+              to: "https://buy2077.tw",
             },
           ],
         },
@@ -474,7 +509,6 @@ function MyApp({ Component, pageProps }) {
             {
               label: "Dashboard",
               icon: "pi pi-fw pi-chart-bar",
-              //to: "/",
             },
             {
               label: "Order List",

@@ -1,6 +1,7 @@
 import React from "react";
 import { InputText } from "primereact/inputtext";
 import { useRouter } from "next/router";
+import { FaShareSquare } from "react-icons/fa";
 
 export const AppTopbar = (props) => {
   const router = useRouter();
@@ -18,7 +19,18 @@ export const AppTopbar = (props) => {
         )}
       </div>
       <div className="p-col-10 p-lg-4" style={{ textAlign: "center" }}>
-        Cyberpunk 2077 Thailand Pre-order
+        <div
+          onClick={() => {
+            window.open("https://th.buy2077.co", "_blank");
+          }}
+          style={{ cursor: "pointer" }}
+        >
+          Cyberpunk 2077 Thailand Pre-order{" "}
+          <span>
+            {" "}
+            <FaShareSquare />{" "}
+          </span>
+        </div>
       </div>
       <div className="p-col mobileTop"></div>
       {/* <div className="layout-topbar-icons">

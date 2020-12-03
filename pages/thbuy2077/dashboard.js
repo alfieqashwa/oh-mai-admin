@@ -44,7 +44,7 @@ export default function THDashboard() {
 
   const [isDesktop, setIsDesktop] = useState(true);
 
-  const [refreshInterval, setRefreshInterval] = useState(20000);
+  const [refreshInterval, setRefreshInterval] = useState(5000);
 
   const filterItems = [
     { label: "All", value: "ALL" },
@@ -92,10 +92,6 @@ export default function THDashboard() {
         .then((data) => {
           dailyPrice(setPrice, data);
           setCurrData(data);
-          initBarChart(setChartAllData, data, filterValue, false);
-          initBarChart(setChartRevData, data, filterValue, true);
-          initPieChart(setChartPieData, data);
-          initBarKOLChart(setChartKOLData, data);
         });
     })();
 
@@ -127,6 +123,15 @@ export default function THDashboard() {
     setOmisePay((price * rates * 3.65) / 100);
   }, [price, rates]);
 
+  React.useEffect(() => {
+    if (currData.length > 0) {
+      //console.log(currData);
+      initBarChart(setChartAllData, currData, filterValue, false);
+      initBarChart(setChartRevData, currData, filterValue, true);
+      initPieChart(setChartPieData, currData);
+      initBarKOLChart(setChartKOLData, currData);
+    }
+  }, [currData]);
   const filterRightToolbarTemplate = () => {
     return (
       <React.Fragment>
