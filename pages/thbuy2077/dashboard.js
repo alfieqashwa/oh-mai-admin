@@ -91,8 +91,8 @@ export default function THDashboard() {
         .then((data) => {
           dailyPrice(setPrice, data);
           setCurrData(data);
-          initBarChart(setChartAllData, data, "ALL", false);
-          initBarChart(setChartRevData, data, "ALL", true);
+          initBarChart(setChartAllData, data, filterValue, false);
+          initBarChart(setChartRevData, data, filterValue, true);
           initPieChart(setChartPieData, data);
           initBarKOLChart(setChartKOLData, data);
         });
