@@ -88,16 +88,16 @@ function MyApp({ Component, pageProps }) {
             {
               label: "Dashboard",
               icon: "pi pi-fw pi-chart-bar",
-              to: "/sgbuy2077/dashboard",
+              // to: "/sgbuy2077/dashboard",
             },
             {
               label: "Order List",
               icon: "pi pi-fw pi-file-excel",
-              to: "/sgbuy2077/orders",
+              // to: "/sgbuy2077/orders",
             },
             {
               label: "View Micro Site",
-              icon: "pi pi-fw pi-file-excel",
+              icon: "pi pi-fw pi-external-link",
               external: "https://buy2077.sg",
             },
           ],
@@ -118,7 +118,7 @@ function MyApp({ Component, pageProps }) {
             },
             {
               label: "View Micro Site",
-              icon: "pi pi-fw pi-file-excel",
+              icon: "pi pi-fw pi-external-link",
               external: "https://th.buy2077.co",
             },
           ],
@@ -139,7 +139,7 @@ function MyApp({ Component, pageProps }) {
             },
             {
               label: "View Micro Site",
-              icon: "pi pi-fw pi-file-excel",
+              icon: "pi pi-fw pi-external-link",
               external: "https://buy2077.co",
             },
           ],
@@ -160,7 +160,7 @@ function MyApp({ Component, pageProps }) {
             },
             {
               label: "View Micro Site",
-              icon: "pi pi-fw pi-file-excel",
+              icon: "pi pi-fw pi-external-link",
               external: "https://buy2077.tw",
             },
           ],
@@ -226,12 +226,12 @@ function MyApp({ Component, pageProps }) {
             {
               label: "Dashboard",
               icon: "pi pi-fw pi-chart-bar",
-              to: "/sgbuy2077/dashboard",
+              // to: "/sgbuy2077/dashboard",
             },
             {
               label: "Order List",
               icon: "pi pi-fw pi-file-excel",
-              to: "/sgbuy2077/orders",
+              // to: "/sgbuy2077/orders",
             },
           ],
         },
@@ -242,17 +242,17 @@ function MyApp({ Component, pageProps }) {
             {
               label: "Dashboard",
               icon: "pi pi-fw pi-chart-bar",
-              to: "/",
+              // to: "/",
             },
             {
               label: "Order List",
               icon: "pi pi-fw pi-file-excel",
-              to: "/thbuy2077/orders",
+              // to: "/thbuy2077/orders",
             },
             {
               label: "View Micro Site",
               icon: "pi pi-fw pi-file-excel",
-              to: "https://th.buy2077.co",
+              // to: "https://th.buy2077.co",
             },
           ],
         },
@@ -273,7 +273,7 @@ function MyApp({ Component, pageProps }) {
             {
               label: "View Micro Site",
               icon: "pi pi-fw pi-file-excel",
-              to: "https://buy2077.co",
+              // to: "https://buy2077.co",
             },
           ],
         },
@@ -294,7 +294,7 @@ function MyApp({ Component, pageProps }) {
             {
               label: "View Micro Site",
               icon: "pi pi-fw pi-file-excel",
-              to: "https://buy2077.tw",
+              // to: "https://buy2077.tw",
             },
           ],
         },
@@ -359,12 +359,12 @@ function MyApp({ Component, pageProps }) {
             {
               label: "Dashboard",
               icon: "pi pi-fw pi-chart-bar",
-              to: "/sgbuy2077/dashboard",
+              // to: "/sgbuy2077/dashboard",
             },
             {
               label: "Order List",
               icon: "pi pi-fw pi-file-excel",
-              to: "/sgbuy2077/orders",
+              // to: "/sgbuy2077/orders",
             },
           ],
         },
@@ -375,12 +375,12 @@ function MyApp({ Component, pageProps }) {
             {
               label: "Dashboard",
               icon: "pi pi-fw pi-chart-bar",
-              to: "/",
+              // to: "/",
             },
             {
               label: "Order List",
               icon: "pi pi-fw pi-file-excel",
-              to: "/thbuy2077/orders",
+              // to: "/thbuy2077/orders",
             },
           ],
         },
@@ -477,12 +477,12 @@ function MyApp({ Component, pageProps }) {
             {
               label: "Dashboard",
               icon: "pi pi-fw pi-chart-bar",
-              to: "/sgbuy2077/dashboard",
+              // to: "/sgbuy2077/dashboard",
             },
             {
               label: "Order List",
               icon: "pi pi-fw pi-file-excel",
-              to: "/sgbuy2077/orders",
+              // to: "/sgbuy2077/orders",
             },
           ],
         },
@@ -493,12 +493,12 @@ function MyApp({ Component, pageProps }) {
             {
               label: "Dashboard",
               icon: "pi pi-fw pi-chart-bar",
-              to: "/",
+              // to: "/",
             },
             {
               label: "Order List",
               icon: "pi pi-fw pi-file-excel",
-              to: "/thbuy2077/orders",
+              // to: "/thbuy2077/orders",
             },
           ],
         },

@@ -25,7 +25,7 @@ export const AppTopbar = (props) => {
           }}
           style={{ cursor: "pointer" }}
         >
-          Cyberpunk 2077 Thailand Pre-order{" "}
+          Project V{" "}
           <span>
             {" "}
             <FaShareSquare />{" "}
