@@ -316,6 +316,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
     SheapGamer: 0,
     Tanny: 0,
     "Yoshi Minburi": 0,
+    TGMT: 0,
   };
 
   // update the sale number of days which have sales
@@ -343,6 +344,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
       "SheapGamer",
       "Tanny",
       "Yoshi Minburi",
+      "TGMT",
     ],
 
     datasets: [
@@ -363,6 +365,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
           "#9d8e88",
           "#83ddf6",
           "#2a1d1d",
+          "#333333",
         ],
         data: [
           currData["Chickenshow"],
@@ -379,6 +382,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
           currData["SheapGamer"],
           currData["Tanny"],
           currData["Yoshi Minburi"],
+          currData["TGMT"],
         ],
       },
     ],
