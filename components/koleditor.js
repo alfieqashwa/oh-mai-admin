@@ -20,7 +20,13 @@ import {
 } from "components/editkolhelper/editkoldialog";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { GET_KOL_FROM_SLUG, CREATE_KOL, UPDATE_KOL } from "graphql/kol";
+import {
+  GET_KOL_FROM_SLUG,
+  CREATE_KOL,
+  UPDATE_KOL,
+  KOL_USER_INFO,
+  FIND_EXIST_USER,
+} from "graphql/kol";
 import { mutate, fetcherargs } from "lib/useSWR";
 import Dropzone from "react-dropzone-uploader";
 import { ProgressSpinner } from "primereact/progressspinner";
@@ -33,6 +39,7 @@ export default function KolEditor(props) {
   const router = useRouter();
 
   let emptyKol = {
+    id: "",
     first_name: "",
     last_name: "",
     display_name: "",
@@ -98,6 +105,8 @@ export default function KolEditor(props) {
   // spinner
   const [showSpinner, setShowSpinner] = useState(false);
 
+  const [updatedEmail, setUpdatedEmail] = useState(false);
+
   const toast = useRef(null);
 
   const { data, error } = useSWR(
@@ -106,6 +115,7 @@ export default function KolEditor(props) {
   );
 
   React.useEffect(() => {
+    console.log(data);
     // if this is edit kol
     if (slug && data && data.kols.length > 0) {
       // infuse default data
@@ -114,6 +124,19 @@ export default function KolEditor(props) {
       setHtmlDesc(
         new DOMParser().parseFromString(data.kols[0].description, "text/html")
       );
+
+      (async () => {
+        let a = await fetcherargs(KOL_USER_INFO, { id: data.kols[0].user_id });
+
+        let _kol = { ...data.kols[0] };
+
+        _kol.first_name = a.user.first_name;
+        _kol.last_name = a.user.last_name;
+        _kol.email = a.user.email;
+        _kol.contact_number = a.user.contact_number;
+        _kol.id = a.user.id;
+        setKol(_kol);
+      })();
     }
   }, [data]);
 
@@ -134,6 +157,19 @@ export default function KolEditor(props) {
         _kol.products.forEach((prod) => {
           _kol.products_id.push(prod.id);
         });
+      }
+      _kol.password = "password";
+
+      if (slug) {
+        let findUser = await fetcherargs(FIND_EXIST_USER, {
+          email: _kol.email,
+        });
+        if (findUser.user.id != _kol.id) {
+          var err = {
+            response: { errors: [{ message: "Duplicate Email found" }] },
+          };
+          throw err;
+        }
       }
 
       await kolMutation(_kol);
@@ -161,6 +197,7 @@ export default function KolEditor(props) {
         router.push("/kol");
       }, 2000);
     } catch (err) {
+      setShowSpinner(false);
       console.log(err);
       if (err.response) {
         if (err.response.errors[0].message == "Duplicate Email found") {
