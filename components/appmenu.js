@@ -58,6 +58,10 @@ const AppSubmenu = (props) => {
           </a>
         </Link>
       );
+    } else if (item.external) {
+      return (
+        <a onClick={(e) => window.open(item.external, "_blank")}>{content}</a>
+      );
     } else {
       return (
         <a

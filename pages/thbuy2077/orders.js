@@ -48,6 +48,7 @@ export default function THOrders() {
         })
         .then((data) => {
           setProducts(data);
+          console.log(data);
           setLoading(false);
         });
     })();
@@ -241,6 +242,11 @@ export default function THOrders() {
             <Column
               field="country"
               header="Shipping Address Country"
+              headerStyle={{ width: "300px" }}
+            ></Column>
+            <Column
+              field="postal_code"
+              header="Shipping Address Postal Code"
               headerStyle={{ width: "300px" }}
             ></Column>
           </DataTable>

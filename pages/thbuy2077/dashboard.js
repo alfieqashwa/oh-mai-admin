@@ -5,7 +5,9 @@ import {
   dailyPrice,
   initBarChart,
   chartOptions,
+  chartMobileOptions,
   chartPriceOptions,
+  chartMobilePriceOptions,
   initPieChart,
   pieOptions,
   initBarKOLChart,
@@ -15,6 +17,7 @@ import { Dropdown } from "primereact/dropdown";
 import useUser from "lib/useUser";
 import { TabView, TabPanel } from "primereact/tabview";
 import { InputNumber } from "primereact/inputnumber";
+import { BreadCrumb } from "primereact/breadcrumb";
 
 export default function THDashboard() {
   const person = useUser({ redirectTo: "/login" });
@@ -39,7 +42,9 @@ export default function THDashboard() {
   const [rates, setRates] = useState(0);
   const [ratesDate, setRatesDate] = useState(0);
 
-  const [refreshInterval, setRefreshInterval] = useState(20000);
+  const [isDesktop, setIsDesktop] = useState(true);
+
+  const [refreshInterval, setRefreshInterval] = useState(5000);
 
   const filterItems = [
     { label: "All", value: "ALL" },
@@ -57,6 +62,7 @@ export default function THDashboard() {
     { label: "SheapGamer", value: "SheapGamer" },
     { label: "Tanny", value: "Tanny" },
     { label: "Yoshi Minburi", value: "Yoshi Minburi" },
+    { label: "TGMT", value: "TGMT" },
   ];
   function optionTemplate(option) {
     if (option.value == "ALL") return <div>{option.label}</div>;
@@ -87,10 +93,6 @@ export default function THDashboard() {
         .then((data) => {
           dailyPrice(setPrice, data);
           setCurrData(data);
-          initBarChart(setChartAllData, data, "ALL", false);
-          initBarChart(setChartRevData, data, "ALL", true);
-          initPieChart(setChartPieData, data);
-          initBarKOLChart(setChartKOLData, data);
         });
     })();
 
@@ -105,6 +107,7 @@ export default function THDashboard() {
   };
 
   React.useEffect(() => {
+    if (window.innerWidth < 1024) setIsDesktop(false);
     fetchMetrics();
   }, []);
 
@@ -121,6 +124,15 @@ export default function THDashboard() {
     setOmisePay((price * rates * 3.65) / 100);
   }, [price, rates]);
 
+  React.useEffect(() => {
+    if (currData.length > 0) {
+      //console.log(currData);
+      initBarChart(setChartAllData, currData, filterValue, false);
+      initBarChart(setChartRevData, currData, filterValue, true);
+      initPieChart(setChartPieData, currData);
+      initBarKOLChart(setChartKOLData, currData);
+    }
+  }, [currData]);
   const filterRightToolbarTemplate = () => {
     return (
       <React.Fragment>
@@ -147,9 +159,20 @@ export default function THDashboard() {
     );
   };
 
+  const items = [
+    { label: "Cyberpunk 2077" },
+    { label: "Thailand" },
+    { label: "Dashboard" },
+  ];
+
+  const home = { icon: "pi pi-home" };
+
   if (person) {
     return (
       <div className="p-grid p-fluid dashboard">
+        <div className="p-col-12">
+          <BreadCrumb model={items} home={home} />
+        </div>
         <div className="p-col-12 p-lg-4">
           <div className="card summary">
             <div className="p-d-flex p-jc-between">
@@ -157,11 +180,11 @@ export default function THDashboard() {
                 className="p-d-flex p-flex-column"
                 style={{ paddingRight: "2%" }}
               >
-                <div className="title">Revenue</div>
-                <div className="detail">in Thai Baht</div>
+                <div className="title">Revenue in Thai Baht</div>
+                <div className="detail"></div>
               </div>
 
-              <div className="p-d-flex p-ai-center p-jc-center">
+              <div className="p-d-flex p-ai-start p-jc-center">
                 <div className="count revenue">
                   {new Intl.NumberFormat("th-TH", {
                     style: "currency",
@@ -183,11 +206,11 @@ export default function THDashboard() {
                 style={{ paddingRight: "2%" }}
               >
                 <div className="title">Revenue in USD</div>
-                <div className="detail">
-                  Conversion rate: {rates}, last updated: {ratesDate}
+                <div className="detail" style={{}}>
+                  Conversion rate: {rates.toFixed(3)}
                 </div>
               </div>
-              <div className="p-d-flex p-ai-center p-jc-center">
+              <div className="p-d-flex p-ai-start p-jc-center">
                 <div className="count revenue">
                   US
                   {new Intl.NumberFormat("en-US", {
@@ -210,7 +233,7 @@ export default function THDashboard() {
                 <div className="title">Gross Profit</div>
                 <div className="detail">Gross Profit in USD</div>
               </div>
-              <div className="p-d-flex p-ai-center p-jc-center">
+              <div className="p-d-flex p-ai-start p-jc-center">
                 <div className="count revenue">
                   US
                   {new Intl.NumberFormat("en-US", {
@@ -230,23 +253,23 @@ export default function THDashboard() {
                 className="p-d-flex p-flex-column"
                 style={{ paddingRight: "2%" }}
               >
-                <div className="title">KOL Cost</div>
+                <div className="title">KOL Comissions</div>
                 <div className="detail">
                   <div className="p-inputgroup">
-                    <span className="p-inputgroup-addon">
-                      Amount given to KOL per copy: $
-                    </span>
+                    <span className="p-inputgroup-addon">Per unit:</span>
                     <InputNumber
-                      id="integeronly"
+                      mode="currency"
+                      currency="USD"
+                      locale="en-US"
                       value={initKOLFee}
                       onValueChange={(e) => setInitKOLFee(e.value)}
-                      style={{ width: "43%" }}
+                      style={{ width: isDesktop ? "43%" : "43%" }}
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="p-d-flex p-ai-center p-jc-center">
+              <div className="p-d-flex p-ai-start p-jc-center">
                 <div className="count payment">
                   US
                   {new Intl.NumberFormat("en-US", {
@@ -266,22 +289,24 @@ export default function THDashboard() {
                 className="p-d-flex p-flex-column"
                 style={{ paddingRight: "2%" }}
               >
-                <div className="title">Logistics</div>
+                <div className="title">Domestic Fulfillment Cost</div>
                 <div className="detail">
                   <div className="p-inputgroup">
                     <span className="p-inputgroup-addon">
-                      <p>Shipping Cost per copy: $</p>
+                      <p>Per unit:</p>
                     </span>
                     <InputNumber
-                      id="integeronly"
+                      mode="currency"
+                      currency="USD"
+                      locale="en-US"
                       value={shippingCost}
                       onValueChange={(e) => setShippingCost(e.value)}
-                      style={{ width: "43%" }}
+                      style={{ width: isDesktop ? "43%" : "43%" }}
                     />
                   </div>
                 </div>
               </div>
-              <div className="p-d-flex p-ai-center p-jc-center">
+              <div className="p-d-flex p-ai-start p-jc-center">
                 <div className="count payment">
                   US
                   {new Intl.NumberFormat("en-US", {
@@ -303,10 +328,10 @@ export default function THDashboard() {
               >
                 <div className="title">Payment Gateway</div>
                 <div className="detail" style={{ minHeight: "35px" }}>
-                  Omise Fee (3.65%)
+                  Transaction Fee (3.65%)
                 </div>
               </div>
-              <div className="p-d-flex p-ai-center p-jc-center">
+              <div className="p-d-flex p-ai-start p-jc-center">
                 <div className="count payment">
                   US
                   {new Intl.NumberFormat("en-US", {
@@ -382,7 +407,7 @@ export default function THDashboard() {
                     <Chart
                       type="bar"
                       data={chartAllData}
-                      options={chartOptions}
+                      options={isDesktop ? chartOptions : chartMobileOptions}
                     />
                   </div>
                 </div>
@@ -397,7 +422,9 @@ export default function THDashboard() {
                     <Chart
                       type="bar"
                       data={chartRevData}
-                      options={chartPriceOptions}
+                      options={
+                        isDesktop ? chartPriceOptions : chartMobilePriceOptions
+                      }
                     />
                   </div>
                 </div>
@@ -427,7 +454,7 @@ export default function THDashboard() {
                     <Chart
                       type="bar"
                       data={chartKOLData}
-                      options={chartOptions}
+                      options={isDesktop ? chartOptions : chartMobileOptions}
                     />
                   </div>
                 </div>

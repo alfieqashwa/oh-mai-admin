@@ -116,7 +116,38 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
 };
 
 export let chartOptions = {
-  aspectRatio: 1.5,
+  aspectRatio: 2,
+  legend: {
+    labels: {
+      fontColor: "#495057",
+    },
+  },
+  animation: {
+    duration: 0, // general animation time
+  },
+  scales: {
+    xAxes: [
+      {
+        stacked: true,
+        ticks: {
+          fontColor: "#495057",
+        },
+      },
+    ],
+    yAxes: [
+      {
+        stacked: true,
+        ticks: {
+          fontColor: "#495057",
+          beginAtZero: true,
+        },
+      },
+    ],
+  },
+};
+
+export let chartMobileOptions = {
+  aspectRatio: 1.3,
   legend: {
     labels: {
       fontColor: "#495057",
@@ -147,7 +178,46 @@ export let chartOptions = {
 };
 
 export let chartPriceOptions = {
-  aspectRatio: 1.5,
+  aspectRatio: 2,
+  legend: {
+    labels: {
+      fontColor: "#495057",
+    },
+  },
+  animation: {
+    duration: 0, // general animation time
+  },
+  scales: {
+    xAxes: [
+      {
+        stacked: true,
+        ticks: {
+          fontColor: "#495057",
+        },
+      },
+    ],
+    yAxes: [
+      {
+        stacked: true,
+        ticks: {
+          fontColor: "#495057",
+          beginAtZero: true,
+          callback: function (value, index, values) {
+            return new Intl.NumberFormat("th-TH", {
+              style: "currency",
+              currency: "THB",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(value);
+          },
+        },
+      },
+    ],
+  },
+};
+
+export let chartMobilePriceOptions = {
+  aspectRatio: 1.3,
   legend: {
     labels: {
       fontColor: "#495057",
@@ -246,6 +316,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
     SheapGamer: 0,
     Tanny: 0,
     "Yoshi Minburi": 0,
+    TGMT: 0,
   };
 
   // update the sale number of days which have sales
@@ -273,6 +344,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
       "SheapGamer",
       "Tanny",
       "Yoshi Minburi",
+      "TGMT",
     ],
 
     datasets: [
@@ -293,6 +365,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
           "#9d8e88",
           "#83ddf6",
           "#2a1d1d",
+          "#333333",
         ],
         data: [
           currData["Chickenshow"],
@@ -309,6 +382,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
           currData["SheapGamer"],
           currData["Tanny"],
           currData["Yoshi Minburi"],
+          currData["TGMT"],
         ],
       },
     ],
