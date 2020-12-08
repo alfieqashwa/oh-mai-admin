@@ -263,7 +263,7 @@ export const initPieChart = (setChartAllData, data) => {
   // update the sale number of days which have sales
   data.forEach((element) => {
     if (element.order_status == "successful") {
-      if (element.platform == "PC") {
+      if (element.platform.includes("PC")) {
         chartData++;
       } else if (element.platform == "PS4") {
         psData++;
