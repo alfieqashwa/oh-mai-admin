@@ -265,9 +265,9 @@ export const initPieChart = (setChartAllData, data) => {
     if (element.order_status == "successful") {
       if (element.platform.includes("PC")) {
         chartData++;
-      } else if (element.platform == "PS4") {
+      } else if (element.platform.includes("PS4")) {
         psData++;
-      } else if (element.platform == "XBOX") {
+      } else if (element.platform.includes("XBOX")) {
         xboxData++;
       }
     }
