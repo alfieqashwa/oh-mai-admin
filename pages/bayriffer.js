@@ -74,7 +74,7 @@ export default function Bayriffer() {
             }
           }
           setProducts(filteredList);
-          console.log(filteredList);
+          //console.log(filteredList);
           setLoading(false);
         });
     })();

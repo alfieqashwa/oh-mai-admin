@@ -2,9 +2,21 @@ import React from "react";
 import { InputText } from "primereact/inputtext";
 import { useRouter } from "next/router";
 import { FaShareSquare } from "react-icons/fa";
+import { Button } from "primereact/button";
+
+import { LOGOUT } from "graphql/login";
+
+import { mutate, fetcherargs } from "../lib/useSWR";
 
 export const AppTopbar = (props) => {
   const router = useRouter();
+
+  async function logout() {
+    await mutate(LOGOUT);
+
+    router.push("/login");
+  }
+
   return (
     <div className="layout-topbar clearfix p-grid">
       <div className="p-col">
@@ -18,7 +30,7 @@ export const AppTopbar = (props) => {
           </button>
         )}
       </div>
-      <div className="p-col-10 p-lg-4" style={{ textAlign: "center" }}>
+      <div className="p-col-4 p-lg-4" style={{ textAlign: "center" }}>
         <div
           onClick={() => {
             window.open("https://th.buy2077.co", "_blank");
@@ -32,7 +44,23 @@ export const AppTopbar = (props) => {
           </span>
         </div>
       </div>
-      <div className="p-col mobileTop"></div>
+      <div className="p-col p-d-flex p-jc-end">
+        {router.pathname != "/login" && (
+          <button
+            type="button"
+            className="p-link layout-menu-button"
+            onClick={() => {
+              logout();
+            }}
+            style={{
+              border: "1px solid white",
+              padding: "0px 10px 2px 10px",
+            }}
+          >
+            Logout
+          </button>
+        )}
+      </div>
       {/* <div className="layout-topbar-icons">
         <span className="layout-topbar-search">
           <InputText type="text" placeholder="Search" />

@@ -11,3 +11,7 @@ export const LOGIN_MUTATION = `mutation loginMutation($email: String!, $password
         id
     }
 }`;
+
+export const LOGOUT = `mutation {
+  logout
+}`;
