@@ -8,7 +8,7 @@ export const AppTopbar = (props) => {
   return (
     <div className="layout-topbar clearfix p-grid">
       <div className="p-col">
-        {router.pathname != "/login" && (
+        {router.pathname != "/login" && router.pathname != "/bayriffer" && (
           <button
             type="button"
             className="p-link layout-menu-button"

@@ -636,6 +636,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <div className={wrapperClass} onClick={onWrapperClick}>
       <AppTopbar onToggleMenu={onToggleMenu} />
+
       <CSSTransition
         classNames="layout-sidebar"
         timeout={{ enter: 200, exit: 200 }}
@@ -655,6 +656,7 @@ function MyApp({ Component, pageProps }) {
           <AppMenu model={menu} onMenuItemClick={onMenuItemClick} />
         </div>
       </CSSTransition>
+
       <div className="layout-main">
         <Component {...pageProps} />
       </div>

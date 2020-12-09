@@ -23,7 +23,9 @@ export default function Login() {
         password: password,
       });
 
-      router.push("/");
+      if (email == "bayriffer") {
+        router.push("/bayriffer");
+      } else router.push("/");
       console.log("pushed");
     } catch (err) {
       console.log(err.response?.errors[0].message);

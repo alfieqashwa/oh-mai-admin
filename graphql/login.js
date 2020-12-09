@@ -1,6 +1,7 @@
 export const GET_LOGIN = `{
   currentUser {
       id,
+      email,
       first_name
     }
   }`;
