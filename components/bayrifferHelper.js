@@ -1,34 +1,11 @@
 import moment from "moment";
 
 /**
- * Daily price function
- * To display the revenue of each day.
- * @param {*} setPrice function to set price
- * @param {*} data sql data for manipulation
- */
-export function dailyPrice(setPrice, data) {
-  setPrice(0);
-  if (data) {
-    var currentPrice = 0;
-    data.forEach((element) => {
-      if (element.order_status == "successful") currentPrice += element.price;
-      // var str = moment(element.order_datetime);
-
-      // var today = moment();
-      // if (today.isSame(str, "day")) {
-      //   if (element.order_status == "successful") currentPrice += element.price;
-      // }
-    });
-    setPrice(currentPrice);
-  }
-}
-
-/**
  * Initialize bar chart with our data
  * @param {*} setChartAllData function to set the labels and datasets of the bar chart
  * @param {*} data sql data for manipulation
  */
-export const initBarChart = (setChartAllData, data, filter, revenue) => {
+export const initBayrifferBarChart = (setChartAllData, data, revenue) => {
   var allDates = {};
   var chartData = [];
   var psData = [];
@@ -50,7 +27,6 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
       allDates[m.format("DD-MM-YYYY")] = {
         name: m.format("DD-MM-YYYY"),
         sales: 0,
-        pcSec: 0,
         psSales: 0,
         xboxSales: 0,
       };
@@ -60,16 +36,12 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
     data.forEach((element) => {
       var dateString = moment(element.order_datetime).format("DD-MM-YYYY");
       if (element.order_status == "successful") {
-        if (filter == "ALL" || element.kol == filter) {
-          if (element.platform == "PC - Second Shipment") {
-            allDates[dateString].pcSec++;
-          } else if (element.platform == "PC") {
-            allDates[dateString].sales++;
-          } else if (element.platform == "PS4") {
-            allDates[dateString].psSales++;
-          } else if (element.platform == "XBOX") {
-            allDates[dateString].xboxSales++;
-          }
+        if (element.platform == "PC") {
+          allDates[dateString].sales++;
+        } else if (element.platform == "PS4") {
+          allDates[dateString].psSales++;
+        } else if (element.platform == "XBOX") {
+          allDates[dateString].xboxSales++;
         }
       }
     });
@@ -77,13 +49,11 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
     // push it into the charts
     for (var key in allDates) {
       var label = allDates[key].name;
-      var pcSec = allDates[key].pcSec;
       var sales = allDates[key].sales;
       var psSales = allDates[key].psSales;
       var xboxSales = allDates[key].xboxSales;
 
       if (revenue) {
-        pcSec *= 1690;
         sales *= 1790;
         psSales *= 1890;
         xboxSales *= 1890;
@@ -91,7 +61,7 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
 
       chartLabels.push(label);
 
-      chartData.push(sales + pcSec);
+      chartData.push(sales);
       psData.push(psSales);
       xboxData.push(xboxSales);
     }
@@ -260,7 +230,7 @@ export let chartMobilePriceOptions = {
   },
 };
 
-export const initPieChart = (setChartAllData, data) => {
+export const initBayrifferPieChart = (setChartAllData, data) => {
   var chartData = 0;
   var psData = 0;
   var xboxData = 0;
@@ -299,101 +269,4 @@ export const pieOptions = {
   animation: {
     duration: 0, // general animation time
   },
-};
-
-export const initBarKOLChart = (setChartAllData, data) => {
-  var chartData = 0;
-  var psData = 0;
-  var xboxData = 0;
-
-  var currData = {
-    Chickenshow: 0,
-    Cyberclasher: 0,
-    "Gladiuz KB": 0,
-    Gufunnarock: 0,
-    "Hua Hed": 0,
-    "Mixed KOL": 0,
-    "Boung Lengame": 0,
-    "Gamer Live TV": 0,
-    "Hon BoYa": 0,
-    "Jai Raw": 0,
-    Julio: 0,
-    SheapGamer: 0,
-    Tanny: 0,
-    "Yoshi Minburi": 0,
-    TGMT: 0,
-    "Bay Riffer": 0,
-  };
-
-  // update the sale number of days which have sales
-  data.forEach((element) => {
-    if (element.order_status == "successful") {
-      currData[element.kol]++;
-    }
-  });
-
-  //console.log(currData["Cyberclasher"]);
-  // set the labels for the chart
-  setChartAllData({
-    labels: [
-      "Chickenshow",
-      "Cyberclasher",
-      "Gladiuz KB",
-      "Gufunnarock",
-      "Hua Hed",
-      "Mixed KOL",
-      "Boung Lengame",
-      "Gamer Live TV",
-      "Hon BoYa",
-      "Jai Raw",
-      "Julio",
-      "SheapGamer",
-      "Tanny",
-      "Yoshi Minburi",
-      "TGMT",
-      "Bay Riffer",
-    ],
-
-    datasets: [
-      {
-        label: "Copies Sold",
-        backgroundColor: [
-          "#EC407A",
-          "#AB47BC",
-          "#42A5F5",
-          "#7E57C2",
-          "#66BB6A",
-          "#FFCA28",
-          "#26A69A",
-          "#461697",
-          "#bb9ead",
-          "#09f0e4",
-          "#69c58b",
-          "#9d8e88",
-          "#83ddf6",
-          "#2a1d1d",
-          "#333333",
-          "#ff0000",
-        ],
-        data: [
-          currData["Chickenshow"],
-          currData["Cyberclasher"],
-          currData["Gladiuz KB"],
-          currData["Gufunnarock"],
-          currData["Hua Hed"],
-          currData["Mixed KOL"],
-          currData["Boung Lengame"],
-          currData["Gamer Live TV"],
-          currData["Hon BoYa"],
-          currData["Jai Raw"],
-          currData["Julio"],
-          currData["SheapGamer"],
-          currData["Tanny"],
-          currData["Yoshi Minburi"],
-          currData["TGMT"],
-          currData["Bay Riffer"],
-        ],
-      },
-    ],
-  });
 };

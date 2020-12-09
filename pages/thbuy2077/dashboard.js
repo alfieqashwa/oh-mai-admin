@@ -63,6 +63,7 @@ export default function THDashboard() {
     { label: "Tanny", value: "Tanny" },
     { label: "Yoshi Minburi", value: "Yoshi Minburi" },
     { label: "TGMT", value: "TGMT" },
+    { label: "Bay Riffer", value: "Bay Riffer" },
   ];
   function optionTemplate(option) {
     if (option.value == "ALL") return <div>{option.label}</div>;

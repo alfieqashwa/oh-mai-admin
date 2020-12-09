@@ -14,9 +14,12 @@ import {
 
 import THDashboard from "pages/thbuy2077/dashboard";
 
+import Bayriffer from "pages/bayriffer";
+
 export default function Index() {
   const person = useUser({ redirectTo: "/login" });
 
-  if (person) return <THDashboard />;
+  if (person?.email == "bayriffer") return <Bayriffer />;
+  else if (person) return <THDashboard />;
   else return <></>;
 }
