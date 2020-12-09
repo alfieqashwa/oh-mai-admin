@@ -7,8 +7,11 @@ import { Button } from "primereact/button";
 import { LOGOUT } from "graphql/login";
 
 import { mutate, fetcherargs } from "../lib/useSWR";
+import useUser from "lib/useUser";
 
 export const AppTopbar = (props) => {
+  const person = useUser({ redirectTo: "/login" });
+
   const router = useRouter();
 
   async function logout() {
