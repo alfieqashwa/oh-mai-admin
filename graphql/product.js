@@ -49,6 +49,8 @@ export const CREATE_PRODUCT = `mutation createproduct(
     $tags: [String],
     $new_featured_image: Upload,
     $images_file:[Upload]
+    $kol_profit: Int
+    $company_profit: Int
   ){
     createProduct(
       sku: $sku
@@ -64,6 +66,8 @@ export const CREATE_PRODUCT = `mutation createproduct(
       tags: $tags
       new_featured_image: $new_featured_image
       images_file: $images_file
+      kol_profit: $kol_profit
+      company_profit: $company_profit
     ){
       id
     }
@@ -84,6 +88,8 @@ export const UPDATE_PRODUCT = `mutation updateProduct(
     $tags: [String],
     $new_featured_image: Upload,
     $images_file:[Upload]
+    $kol_profit: Int
+    $company_profit: Int
   ){
     updateProduct(
       sku: $sku
@@ -99,6 +105,8 @@ export const UPDATE_PRODUCT = `mutation updateProduct(
       tags: $tags
       new_featured_image: $new_featured_image
       images_file: $images_file
+      kol_profit: $kol_profit
+      company_profit: $company_profit
     ){
       id
     }

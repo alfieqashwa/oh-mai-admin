@@ -316,11 +316,15 @@ export default function KolEditor(props) {
     selectedProducts.forEach((product) => {
       if (!prod.find((e) => e.slug == product.slug)) {
         let newProd = {
-          id: product.id,
-          product_name: product.product_name,
-          slug: product.slug,
-          current_price: product.current_price,
-          categories: [...product.categories],
+          product: {
+            id: product.id,
+            product_name: product.product_name,
+            slug: product.slug,
+            current_price: product.current_price,
+            kol_profit: product.kol_profit,
+            categories: [...product.categories],
+          },
+          kol_profit: product.kol_profit,
         };
         prod.push(newProd);
       }
