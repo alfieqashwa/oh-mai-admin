@@ -50,6 +50,7 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
       allDates[m.format("DD-MM-YYYY")] = {
         name: m.format("DD-MM-YYYY"),
         sales: 0,
+        pcSec: 0,
         psSales: 0,
         xboxSales: 0,
       };
@@ -60,7 +61,9 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
       var dateString = moment(element.order_datetime).format("DD-MM-YYYY");
       if (element.order_status == "successful") {
         if (filter == "ALL" || element.kol == filter) {
-          if (element.platform == "PC") {
+          if (element.platform == "PC - Second Shipment") {
+            allDates[dateString].pcSec++;
+          } else if (element.platform == "PC") {
             allDates[dateString].sales++;
           } else if (element.platform == "PS4") {
             allDates[dateString].psSales++;
@@ -74,11 +77,13 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
     // push it into the charts
     for (var key in allDates) {
       var label = allDates[key].name;
+      var pcSec = allDates[key].pcSec;
       var sales = allDates[key].sales;
       var psSales = allDates[key].psSales;
       var xboxSales = allDates[key].xboxSales;
 
       if (revenue) {
+        pcSec *= 1690;
         sales *= 1790;
         psSales *= 1890;
         xboxSales *= 1890;
@@ -86,7 +91,7 @@ export const initBarChart = (setChartAllData, data, filter, revenue) => {
 
       chartLabels.push(label);
 
-      chartData.push(sales);
+      chartData.push(sales + pcSec);
       psData.push(psSales);
       xboxData.push(xboxSales);
     }
@@ -317,6 +322,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
     Tanny: 0,
     "Yoshi Minburi": 0,
     TGMT: 0,
+    "Bay Riffer": 0,
   };
 
   // update the sale number of days which have sales
@@ -345,6 +351,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
       "Tanny",
       "Yoshi Minburi",
       "TGMT",
+      "Bay Riffer",
     ],
 
     datasets: [
@@ -366,6 +373,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
           "#83ddf6",
           "#2a1d1d",
           "#333333",
+          "#ff0000",
         ],
         data: [
           currData["Chickenshow"],
@@ -383,6 +391,7 @@ export const initBarKOLChart = (setChartAllData, data) => {
           currData["Tanny"],
           currData["Yoshi Minburi"],
           currData["TGMT"],
+          currData["Bay Riffer"],
         ],
       },
     ],
