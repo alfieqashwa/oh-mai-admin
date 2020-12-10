@@ -10,6 +10,7 @@ import { Column } from "primereact/column";
 import useSWR from "swr";
 import { products, DELETE_PRODUCT } from "graphql/product";
 import { fetcher, mutate } from "lib/useSWR";
+import { InputNumber } from "primereact/inputnumber";
 
 export const DeleteProductDialog = (props) => {
   const {
@@ -165,6 +166,65 @@ export const AddProductDialog = (props) => {
           headerStyle={{ width: "150px" }}
         ></Column>
       </DataTable>
+    </Dialog>
+  );
+};
+
+export const EditProductDialog = (props) => {
+  const { editProfitDialog, setEditProfitDialog, toEdit, editProfit } = props;
+
+  const [value, setValue] = useState(0);
+
+  React.useEffect(() => {
+    if (toEdit) {
+      setValue(toEdit.kol_profit);
+    }
+  }, [toEdit]);
+
+  const editProductDialogFooter = (
+    <React.Fragment>
+      <Button
+        label="No"
+        icon="pi pi-times"
+        className="p-button-text"
+        onClick={() => setEditProfitDialog(false)}
+      />
+      <Button
+        label="Yes"
+        icon="pi pi-check"
+        className="p-button-text"
+        onClick={() => {
+          editProfit(value);
+          setEditProfitDialog(false);
+        }}
+      />
+    </React.Fragment>
+  );
+
+  return (
+    <Dialog
+      visible={editProfitDialog}
+      style={{ width: "450px" }}
+      header="Confirm"
+      modal
+      footer={editProductDialogFooter}
+      onHide={() => setEditProfitDialog(false)}
+    >
+      <div className="confirmation-content" style={{ padding: "20px 0px" }}>
+        <i
+          className="pi pi-exclamation-triangle p-mr-3"
+          style={{ fontSize: "2rem" }}
+        />
+        <span>
+          <InputNumber
+            value={value}
+            onValueChange={(e) => setValue(e.value)}
+            mode="decimal"
+            minFractionDigits={2}
+            maxFracionDigits={2}
+          />
+        </span>
+      </div>
     </Dialog>
   );
 };

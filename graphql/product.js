@@ -12,6 +12,7 @@ export const products = `{
       tags,
       stock_quantity,
       stock_status
+      kol_profit
     }
   }`;
 
@@ -32,6 +33,7 @@ export const GET_PRODUCT_FROM_SLUG = `query getProductFromSlug($filter: UserFilt
       stock_status
       categories
       tags
+      kol_profit
     }
   }`;
 

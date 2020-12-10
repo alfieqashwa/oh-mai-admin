@@ -11,6 +11,8 @@ export const ProductDataTable = (props) => {
     setToDelete,
     setDeleteProductDialog,
     setAddProductDialog,
+    setToEdit,
+    setEditProfitDialog,
   } = props;
 
   const actionBodyTemplate = (rowData) => {
@@ -25,6 +27,22 @@ export const ProductDataTable = (props) => {
           }}
         />
       </React.Fragment>
+    );
+  };
+
+  const profitTemplate = (rowData) => {
+    return (
+      <div className="p-d-flex p-ai-center">
+        <div style={{ marginRight: "10px" }}>{rowData.kol_profit}</div>
+        <Button
+          icon="pi pi-pencil"
+          className="p-button-rounded p-button-success p-mr-2"
+          onClick={() => {
+            setToEdit(rowData);
+            setEditProfitDialog(true);
+          }}
+        />
+      </div>
     );
   };
 
@@ -44,15 +62,22 @@ export const ProductDataTable = (props) => {
   return (
     <DataTable header={renderHeader} value={products}>
       <Column
-        field="product_name"
+        field="product.product_name"
         header="Name"
         sortable
         headerStyle={{ width: "150px" }}
       ></Column>
 
       <Column
-        field="slug"
+        field="product.slug"
         header="Slug"
+        sortable
+        headerStyle={{ width: "150px" }}
+      ></Column>
+      <Column
+        field="kol_profit"
+        header="Commission"
+        body={profitTemplate}
         sortable
         headerStyle={{ width: "150px" }}
       ></Column>

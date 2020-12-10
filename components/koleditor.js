@@ -17,6 +17,7 @@ import {
 import {
   AddProductDialog,
   DeleteProductDialog,
+  EditProductDialog,
 } from "components/editkolhelper/editkoldialog";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -101,6 +102,8 @@ export default function KolEditor(props) {
   const [toDelete, setToDelete] = useState(null);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
   const [addProductDialog, setAddProductDialog] = useState(false);
+  const [toEdit, setToEdit] = useState(null);
+  const [editProfitDialog, setEditProfitDialog] = useState(false);
 
   // spinner
   const [showSpinner, setShowSpinner] = useState(false);
@@ -155,7 +158,12 @@ export default function KolEditor(props) {
       _kol.products_id = [];
       if (_kol.products.length > 0) {
         _kol.products.forEach((prod) => {
-          _kol.products_id.push(prod.id);
+          let newProd = {
+            product_id: prod.product.id,
+            kol_profit: prod.kol_profit,
+          };
+
+          _kol.products_id.push(newProd);
         });
       }
       _kol.password = "password";
@@ -300,7 +308,9 @@ export default function KolEditor(props) {
   const removeProduct = () => {
     let _kol = { ...kol };
 
-    let updateProduct = _kol.products.filter((e) => e.slug !== toDelete.slug);
+    let updateProduct = _kol.products.filter(
+      (e) => e.product?.slug !== toDelete.product.slug
+    );
 
     _kol.products = updateProduct;
 
@@ -314,7 +324,8 @@ export default function KolEditor(props) {
     let prod = [..._kol.products];
 
     selectedProducts.forEach((product) => {
-      if (!prod.find((e) => e.slug == product.slug)) {
+      if (!prod.find((e) => e.product?.slug == product.slug)) {
+        console.log(product);
         let newProd = {
           product: {
             id: product.id,
@@ -329,6 +340,20 @@ export default function KolEditor(props) {
         prod.push(newProd);
       }
     });
+    _kol.products = prod;
+    setKol(_kol);
+  };
+
+  const editProfit = (value) => {
+    let _kol = { ...kol };
+    let prod = [..._kol.products];
+
+    prod.forEach((eaProd) => {
+      if (eaProd.product.slug == toEdit.product.slug) {
+        eaProd.kol_profit = value;
+      }
+    });
+
     _kol.products = prod;
     setKol(_kol);
   };
@@ -715,6 +740,8 @@ export default function KolEditor(props) {
               setToDelete={setToDelete}
               setDeleteProductDialog={setDeleteProductDialog}
               setAddProductDialog={setAddProductDialog}
+              setToEdit={setToEdit}
+              setEditProfitDialog={setEditProfitDialog}
             />
           </div>
         </div>
@@ -782,6 +809,13 @@ export default function KolEditor(props) {
         setDeleteProductDialog={setDeleteProductDialog}
         toDelete={toDelete}
         removeProduct={removeProduct}
+      />
+
+      <EditProductDialog
+        editProfitDialog={editProfitDialog}
+        setEditProfitDialog={setEditProfitDialog}
+        toEdit={toEdit}
+        editProfit={editProfit}
       />
     </div>
   );

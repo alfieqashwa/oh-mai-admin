@@ -22,11 +22,15 @@ export const kols = `{
     },
     featured,
     products{
-      id,
-      product_name,
-      slug,
-      current_price,
-      categories
+      product{
+        id,
+        product_name,
+        slug,
+        current_price,
+        categories,
+        kol_profit
+      },
+      kol_profit
     }
     user_id,
   }
@@ -86,7 +90,7 @@ export const GET_KOL_FROM_SLUG = `query getKOLFromSlug($filter: KOLFilter)
         current_price,
         categories,
         kol_profit
-      }
+      },
       kol_profit
     }
     user_id
