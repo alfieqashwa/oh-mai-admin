@@ -113,7 +113,7 @@ export const CREATE_KOL = `mutation createKOL(
   $social_medias: SocialMediaInput
   $new_banner_image: Upload
   $new_profile_image: Upload
-  $products_id: [ProductInput]
+  $product: [ProductInput]
   ){
     createKol(
       first_name: $first_name
@@ -131,7 +131,7 @@ export const CREATE_KOL = `mutation createKOL(
       social_medias: $social_medias
       new_banner_image: $new_banner_image
       new_profile_image: $new_profile_image
-      products: $products_id
+      products: $product
     ){
       id
     }
@@ -153,7 +153,7 @@ export const UPDATE_KOL = `mutation updateKOL(
   $social_medias: SocialMediaInput
   $new_banner_image: Upload
   $new_profile_image: Upload
-  $products_id: [ProductInput]
+  $product: [ProductInput]
   $id: ID
   ){
     updateKol(
@@ -171,7 +171,7 @@ export const UPDATE_KOL = `mutation updateKOL(
       social_medias: $social_medias
       new_banner_image: $new_banner_image
       new_profile_image: $new_profile_image
-      products: $products_id
+      products: $product
     ){
       id
     }
