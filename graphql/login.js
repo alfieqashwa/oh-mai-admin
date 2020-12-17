@@ -9,6 +9,7 @@ export const GET_LOGIN = `{
 export const LOGIN_MUTATION = `mutation loginMutation($email: String!, $password: String!){
   login(email: $email, password: $password){
         id
+        token
     }
 }`;
 

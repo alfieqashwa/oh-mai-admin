@@ -265,10 +265,18 @@ export default function KOL() {
   };
 
   const productsTemplate = (rowData) => {
+    console.log(rowData);
     return (
       <div>
         {rowData?.products?.map((eaCat) => (
-          <p>{eaCat.product_name}</p>
+          <div>
+            <p>
+              {"Name: " +
+                eaCat.product.product_name +
+                ", Profit: " +
+                eaCat.kol_profit}{" "}
+            </p>
+          </div>
         ))}
       </div>
     );

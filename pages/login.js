@@ -7,6 +7,7 @@ import { mutate, fetcherargs } from "../lib/useSWR";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import useUser from "lib/useUser";
+import Cookies from "js-cookie";
 
 export default function Login() {
   useUser({ redirectTo: "/", redirectIfFound: true });
@@ -25,7 +26,12 @@ export default function Login() {
 
       if (email == "bayriffer") {
         router.push("/bayriffer");
-      } else router.push("/");
+      } else {
+        console.log(a);
+        Cookies.set("token", a.login.token);
+
+        router.push("/");
+      }
       console.log("pushed");
     } catch (err) {
       console.log(err.response?.errors[0].message);

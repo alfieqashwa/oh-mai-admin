@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3004",
     "build": "next build",
     "start": "next start"
   },
@@ -13,6 +13,7 @@
     "escape-html": "^1.0.3",
     "graphql": "^15.4.0",
     "graphql-request": "^3.3.0",
+    "js-cookie": "^2.2.1",
     "moment": "^2.29.1",
     "next": "10.0.0",
     "primeflex": "^2.0.0",

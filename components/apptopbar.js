@@ -6,6 +6,8 @@ import { Button } from "primereact/button";
 
 import { LOGOUT } from "graphql/login";
 
+import Cookies from "js-cookie";
+
 import { mutate, fetcherargs } from "../lib/useSWR";
 import useUser from "lib/useUser";
 
@@ -53,6 +55,7 @@ export const AppTopbar = (props) => {
             type="button"
             className="p-link layout-menu-button"
             onClick={() => {
+              Cookies.remove("token");
               logout();
             }}
             style={{

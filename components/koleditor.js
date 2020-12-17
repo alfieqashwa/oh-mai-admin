@@ -155,15 +155,15 @@ export default function KolEditor(props) {
       if (profileImage) _kol["new_profile_image"] = profileImage;
 
       //console.log(_kol);
-      _kol.products_id = [];
+      _kol.product = [];
       if (_kol.products.length > 0) {
         _kol.products.forEach((prod) => {
           let newProd = {
-            product_id: prod.product.id,
+            product: prod.product.id,
             kol_profit: prod.kol_profit,
           };
 
-          _kol.products_id.push(newProd);
+          _kol.product.push(newProd);
         });
       }
       _kol.password = "password";
