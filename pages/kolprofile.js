@@ -43,7 +43,7 @@ export default function KOLProfile() {
   }
 
   function itemTemplate(product, layout) {
-    console.log(product);
+    //console.log(product);
     if (!product) {
       return null;
     }
@@ -93,7 +93,7 @@ export default function KOLProfile() {
 
   if (!data) return <></>;
 
-  console.log(data);
+  //console.log(data);
   return (
     <div className="card">
       <div className="p-fluid p-formgrid p-grid">

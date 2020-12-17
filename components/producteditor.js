@@ -50,6 +50,8 @@ export default function ProductEditor(props) {
     tags: [],
     new_featured_image: null,
     images_file: [],
+    kol_profit: 0,
+    company_profit: 0,
   };
 
   // const [products, setProducts] = useState(null);
@@ -176,6 +178,8 @@ export default function ProductEditor(props) {
       product.base_price &&
       product.sale_price &&
       product.stock_status &&
+      product.kol_profit &&
+      product.company_profit &&
       !duplicateSKU &&
       !duplicateSLUG
     ) {
@@ -377,6 +381,30 @@ export default function ProductEditor(props) {
               checked={product.on_sale}
               onChange={(e) => onSelectChange(e, "on_sale")}
             />
+          </div>
+
+          <div className="p-field p-col-12 p-md-6">
+            <label htmlFor="kol_profit">KOL Profit</label>
+            <InputNumber
+              id="kol_profit"
+              value={product.kol_profit}
+              onChange={(e) => onInputNumberChange(e, "kol_profit")}
+            />
+            {submitted && !product.kol_profit && (
+              <small className="p-invalid">Kol Profit is required.</small>
+            )}
+          </div>
+
+          <div className="p-field p-col-12 p-md-6">
+            <label htmlFor="company_profit">Company Profit</label>
+            <InputNumber
+              id="company_profit"
+              value={product.company_profit}
+              onChange={(e) => onInputNumberChange(e, "company_profit")}
+            />
+            {submitted && !product.company_profit && (
+              <small className="p-invalid">Company Profit is required.</small>
+            )}
           </div>
 
           <div className="p-field p-col-12 p-md-6">

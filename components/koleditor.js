@@ -17,10 +17,17 @@ import {
 import {
   AddProductDialog,
   DeleteProductDialog,
+  EditProductDialog,
 } from "components/editkolhelper/editkoldialog";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { GET_KOL_FROM_SLUG, CREATE_KOL, UPDATE_KOL } from "graphql/kol";
+import {
+  GET_KOL_FROM_SLUG,
+  CREATE_KOL,
+  UPDATE_KOL,
+  KOL_USER_INFO,
+  FIND_EXIST_USER,
+} from "graphql/kol";
 import { mutate, fetcherargs } from "lib/useSWR";
 import Dropzone from "react-dropzone-uploader";
 import { ProgressSpinner } from "primereact/progressspinner";
@@ -33,6 +40,7 @@ export default function KolEditor(props) {
   const router = useRouter();
 
   let emptyKol = {
+    id: "",
     first_name: "",
     last_name: "",
     display_name: "",
@@ -58,6 +66,7 @@ export default function KolEditor(props) {
     },
     featured: false,
     products: [],
+    products_id: [],
     new_banner_image: null,
     new_profile_image: null,
   };
@@ -93,9 +102,13 @@ export default function KolEditor(props) {
   const [toDelete, setToDelete] = useState(null);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
   const [addProductDialog, setAddProductDialog] = useState(false);
+  const [toEdit, setToEdit] = useState(null);
+  const [editProfitDialog, setEditProfitDialog] = useState(false);
 
   // spinner
   const [showSpinner, setShowSpinner] = useState(false);
+
+  const [updatedEmail, setUpdatedEmail] = useState(false);
 
   const toast = useRef(null);
 
@@ -105,14 +118,28 @@ export default function KolEditor(props) {
   );
 
   React.useEffect(() => {
+    console.log(data);
     // if this is edit kol
-    if (slug && data && data.kols) {
+    if (slug && data && data.kols.length > 0) {
       // infuse default data
       setKol(data.kols[0]);
       // create the html from plaintest
       setHtmlDesc(
         new DOMParser().parseFromString(data.kols[0].description, "text/html")
       );
+
+      (async () => {
+        let a = await fetcherargs(KOL_USER_INFO, { id: data.kols[0].user_id });
+
+        let _kol = { ...data.kols[0] };
+
+        _kol.first_name = a.user.first_name;
+        _kol.last_name = a.user.last_name;
+        _kol.email = a.user.email;
+        _kol.contact_number = a.user.contact_number;
+        _kol.id = a.user.id;
+        setKol(_kol);
+      })();
     }
   }, [data]);
 
@@ -126,33 +153,59 @@ export default function KolEditor(props) {
       let _kol = { ...kol };
       if (bannerImage) _kol["new_banner_image"] = bannerImage;
       if (profileImage) _kol["new_profile_image"] = profileImage;
-      console.log(_kol);
+
+      //console.log(_kol);
+      _kol.product = [];
+      if (_kol.products.length > 0) {
+        _kol.products.forEach((prod) => {
+          let newProd = {
+            product: prod.product.id,
+            kol_profit: prod.kol_profit,
+          };
+
+          _kol.product.push(newProd);
+        });
+      }
+      _kol.password = "password";
+
+      if (slug) {
+        let findUser = await fetcherargs(FIND_EXIST_USER, {
+          email: _kol.email,
+        });
+        if (findUser.user.id != _kol.id) {
+          var err = {
+            response: { errors: [{ message: "Duplicate Email found" }] },
+          };
+          throw err;
+        }
+      }
 
       await kolMutation(_kol);
-      // setShowSpinner(false);
+      setShowSpinner(false);
 
-      // if (slug) {
-      //   toast.current.show({
-      //     severity: "success",
-      //     summary: "Successful",
-      //     detail: "Kol Edited. Returning to kol list page",
-      //     life: 1900,
-      //   });
-      // } else {
-      //   toast.current.show({
-      //     severity: "success",
-      //     summary: "Successful",
-      //     detail: "Kol Created",
-      //     life: 1900,
-      //   });
-      // }
-      // setSubmitted(false);
+      if (slug) {
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Kol Edited. Returning to kol list page",
+          life: 1900,
+        });
+      } else {
+        toast.current.show({
+          severity: "success",
+          summary: "Successful",
+          detail: "Kol Created",
+          life: 1900,
+        });
+      }
+      setSubmitted(false);
 
-      // setTimeout(() => {
-      //   setKol(emptyKol);
-      //   router.push("/kol");
-      // }, 2000);
+      setTimeout(() => {
+        setKol(emptyKol);
+        router.push("/kol");
+      }, 2000);
     } catch (err) {
+      setShowSpinner(false);
       console.log(err);
       if (err.response) {
         if (err.response.errors[0].message == "Duplicate Email found") {
@@ -175,9 +228,9 @@ export default function KolEditor(props) {
       !duplicateEmail &&
       !duplicateSLUG
     ) {
-      console.log(kol);
+      //console.log(kol);
       uploadToDB();
-      //setShowSpinner(true);
+      setShowSpinner(true);
     }
   };
 
@@ -254,15 +307,55 @@ export default function KolEditor(props) {
 
   const removeProduct = () => {
     let _kol = { ...kol };
-    console.log(_kol.products);
 
-    let updateProduct = _kol.products.filter((e) => e.slug !== toDelete.slug);
+    let updateProduct = _kol.products.filter(
+      (e) => e.product?.slug !== toDelete.product.slug
+    );
 
     _kol.products = updateProduct;
 
     setKol(_kol);
 
     setToDelete(null);
+  };
+
+  const addProduct = (selectedProducts) => {
+    let _kol = { ...kol };
+    let prod = [..._kol.products];
+
+    selectedProducts.forEach((product) => {
+      if (!prod.find((e) => e.product?.slug == product.slug)) {
+        console.log(product);
+        let newProd = {
+          product: {
+            id: product.id,
+            product_name: product.product_name,
+            slug: product.slug,
+            current_price: product.current_price,
+            kol_profit: product.kol_profit,
+            categories: [...product.categories],
+          },
+          kol_profit: product.kol_profit,
+        };
+        prod.push(newProd);
+      }
+    });
+    _kol.products = prod;
+    setKol(_kol);
+  };
+
+  const editProfit = (value) => {
+    let _kol = { ...kol };
+    let prod = [..._kol.products];
+
+    prod.forEach((eaProd) => {
+      if (eaProd.product.slug == toEdit.product.slug) {
+        eaProd.kol_profit = value;
+      }
+    });
+
+    _kol.products = prod;
+    setKol(_kol);
   };
 
   if (error) console.log(error);
@@ -647,6 +740,8 @@ export default function KolEditor(props) {
               setToDelete={setToDelete}
               setDeleteProductDialog={setDeleteProductDialog}
               setAddProductDialog={setAddProductDialog}
+              setToEdit={setToEdit}
+              setEditProfitDialog={setEditProfitDialog}
             />
           </div>
         </div>
@@ -706,6 +801,7 @@ export default function KolEditor(props) {
       <AddProductDialog
         addProductDialog={addProductDialog}
         setAddProductDialog={setAddProductDialog}
+        addProduct={addProduct}
       />
 
       <DeleteProductDialog
@@ -713,6 +809,13 @@ export default function KolEditor(props) {
         setDeleteProductDialog={setDeleteProductDialog}
         toDelete={toDelete}
         removeProduct={removeProduct}
+      />
+
+      <EditProductDialog
+        editProfitDialog={editProfitDialog}
+        setEditProfitDialog={setEditProfitDialog}
+        toEdit={toEdit}
+        editProfit={editProfit}
       />
     </div>
   );

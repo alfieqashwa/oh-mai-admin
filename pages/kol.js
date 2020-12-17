@@ -8,8 +8,8 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 
 import useSWR from "swr";
-import { kols, DELETE_KOL } from "../graphql/kol";
-import { fetcher, mutate } from "../lib/useSWR";
+import { kols, DELETE_KOL, KOL_USER_INFO } from "../graphql/kol";
+import { fetcher, fetcherargs, mutate } from "../lib/useSWR";
 import Link from "next/link";
 import useUser from "lib/useUser";
 
@@ -22,15 +22,69 @@ export default function KOL() {
   const [deleteKolDialog, setDeleteKolDialog] = useState(false);
   const [deleteKolsDialog, setDeleteKolsDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
+  const [kolsList, setKolsList] = useState([]);
+
   const toast = useRef(null);
   const dt = useRef(null);
 
   const { data: prod, error: prodErr } = useSWR(kols, fetcher);
   if (prodErr) console.log(prodErr);
 
-  if (!prod) return <></>;
+  React.useEffect(() => {
+    console.log(prod);
 
-  console.log(selectedSingle);
+    if (prod) {
+      let emptyKol = {
+        first_name: "",
+        last_name: "",
+        display_name: "",
+        email: "",
+        contact_number: null,
+        slug: "",
+        bank_details: {
+          bank: "",
+          bank_account_number: 0,
+          bank_code: 0,
+          bank_branch_code: 0,
+          swift_code: 0,
+        },
+        approved: false,
+        banner_image: "",
+        profile_image: "",
+        description: "",
+        social_medias: {
+          facebook: "",
+          twitter: "",
+          instagram: "",
+          youtube: "",
+        },
+        featured: false,
+        products: [],
+      };
+
+      let newList = [];
+      (async () => {
+        for (var i = 0; i < prod.kols.length; i++) {
+          var kol = prod.kols[i];
+          emptyKol = kol;
+
+          let a = await fetcherargs(KOL_USER_INFO, { id: kol.user_id });
+          console.log(a);
+          emptyKol.first_name = a.user.first_name;
+          emptyKol.last_name = a.user.last_name;
+          emptyKol.email = a.user.email;
+          emptyKol.contact_number = a.user.contact_number;
+
+          console.log(emptyKol);
+          newList.push(emptyKol);
+        }
+        setKolsList(newList);
+        console.log("done");
+      })();
+    }
+  }, [prod]);
+
+  if (!prod) return <></>;
 
   const hideDeleteKolDialog = () => {
     setDeleteKolDialog(false);
@@ -201,20 +255,28 @@ export default function KOL() {
   const bankDetailsTemplate = (rowData) => {
     return (
       <div>
-        <p>{rowData.bank}</p>
-        <p>{rowData.bank_account_name}</p>
-        <p>{rowData.bank_code}</p>
-        <p>{rowData.bank_branch_code}</p>
-        <p>{rowData.swift_code}</p>
+        <p>{rowData.bank_details?.bank}</p>
+        <p>{rowData.bank_details?.bank_account_number}</p>
+        <p>{rowData.bank_details?.bank_code}</p>
+        <p>{rowData.bank_details?.bank_branch_code}</p>
+        <p>{rowData.bank_details?.swift_code}</p>
       </div>
     );
   };
 
   const productsTemplate = (rowData) => {
+    console.log(rowData);
     return (
       <div>
-        {rowData?.product_name?.map((eaCat) => (
-          <p>{eaCat}</p>
+        {rowData?.products?.map((eaCat) => (
+          <div>
+            <p>
+              {"Name: " +
+                eaCat.product.product_name +
+                ", Profit: " +
+                eaCat.kol_profit}{" "}
+            </p>
+          </div>
         ))}
       </div>
     );
@@ -223,7 +285,7 @@ export default function KOL() {
   const actionBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <Link href={{ pathname: "/editKol", query: { slug: rowData.slug } }}>
+        <Link href={{ pathname: "/editkol", query: { slug: rowData.slug } }}>
           <Button
             icon="pi pi-pencil"
             className="p-button-rounded p-button-success p-mr-2"
@@ -284,7 +346,7 @@ export default function KOL() {
 
           <DataTable
             ref={dt}
-            value={prod?.kols}
+            value={kolsList}
             selection={selectedKols}
             onSelectionChange={(e) => setSelectedKols(e.value)}
             paginator
@@ -313,12 +375,6 @@ export default function KOL() {
               headerStyle={{ width: "150px" }}
             ></Column>
             <Column
-              field="display_name"
-              header="Display Name"
-              sortable
-              headerStyle={{ width: "150px" }}
-            ></Column>
-            <Column
               field="email"
               header="Email"
               sortable
@@ -327,6 +383,12 @@ export default function KOL() {
             <Column
               field="contact_number"
               header="Contact Number"
+              sortable
+              headerStyle={{ width: "200px" }}
+            ></Column>
+            <Column
+              field="display_name"
+              header="Display Name"
               sortable
               headerStyle={{ width: "150px" }}
             ></Column>
@@ -340,27 +402,31 @@ export default function KOL() {
               field="approved"
               header="Is KOL approved?"
               body={onsaleTemplate}
-              headerStyle={{ width: "150px" }}
+              headerStyle={{ width: "200px" }}
               sortable
             ></Column>
             <Column
               field="featured"
               header="Is KOL featured?"
               body={featuredTemplate}
-              headerStyle={{ width: "150px" }}
+              headerStyle={{ width: "200px" }}
               sortable
             ></Column>
             <Column
               header="Bank Details"
               body={bankDetailsTemplate}
-              headerStyle={{ width: "150px" }}
+              headerStyle={{ width: "200px" }}
               sortable
             ></Column>
             <Column
               header="Products"
               body={productsTemplate}
-              headerStyle={{ width: "150px" }}
+              headerStyle={{ width: "200px" }}
               sortable
+            ></Column>
+            <Column
+              body={actionBodyTemplate}
+              headerStyle={{ width: "150px" }}
             ></Column>
           </DataTable>
         </div>

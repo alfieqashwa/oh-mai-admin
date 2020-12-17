@@ -1,11 +1,7 @@
 export const kols = `{
   kols {
     id,
-    first_name,
-    last_name,
     display_name,
-    email,
-    contact_number,
     slug,
     bank_details{
       bank,
@@ -26,22 +22,47 @@ export const kols = `{
     },
     featured,
     products{
-      product_name,
-      slug,
-      current_price,
-      categories
+      product{
+        id,
+        product_name,
+        slug,
+        current_price,
+        categories,
+        kol_profit
+      },
+      kol_profit
     }
+    user_id,
   }
 }`;
+
+export const KOL_USER_INFO = `query getKOL($id: ID)
+{
+  user(id: $id){
+    id,
+    first_name,
+    last_name,
+    email,
+    contact_number
+  }
+}
+
+`;
+
+export const FIND_EXIST_USER = `query findExistingUser($email: String)
+{
+  user(email: $email){
+    id,
+    
+  }
+}
+
+`;
 
 export const GET_KOL_FROM_SLUG = `query getKOLFromSlug($filter: KOLFilter)
 {
   kols(filter: $filter) {
-    first_name,
-    last_name,
     display_name,
-    email,
-    contact_number,
     slug,
     bank_details{
       bank,
@@ -62,11 +83,17 @@ export const GET_KOL_FROM_SLUG = `query getKOLFromSlug($filter: KOLFilter)
     },
     featured,
     products{
-      product_name,
-      slug,
-      current_price,
-      categories
+      product{
+        id,
+        product_name,
+        slug,
+        current_price,
+        categories,
+        kol_profit
+      },
+      kol_profit
     }
+    user_id
   }
 }`;
 
@@ -75,6 +102,7 @@ export const CREATE_KOL = `mutation createKOL(
   $last_name: String
   $display_name: String
   $email: String
+  $password:String
   $contact_number: Int
   $slug: String
   $bank_details: BankDetailsInput
@@ -84,14 +112,15 @@ export const CREATE_KOL = `mutation createKOL(
   $featured: Boolean
   $social_medias: SocialMediaInput
   $new_banner_image: Upload
-      $new_profile_image: Upload
-  $products: [ID]
+  $new_profile_image: Upload
+  $product: [ProductInput]
   ){
     createKol(
       first_name: $first_name
       last_name: $last_name
       display_name: $display_name
       email: $email
+      password: $password
       contact_number: $contact_number
       slug: $slug
       bank_details: $bank_details
@@ -102,7 +131,7 @@ export const CREATE_KOL = `mutation createKOL(
       social_medias: $social_medias
       new_banner_image: $new_banner_image
       new_profile_image: $new_profile_image
-      products: $products
+      products: $product
     ){
       id
     }
@@ -122,9 +151,13 @@ export const UPDATE_KOL = `mutation updateKOL(
   $description: String
   $featured: Boolean
   $social_medias: SocialMediaInput
-  $products: [ID]
+  $new_banner_image: Upload
+  $new_profile_image: Upload
+  $product: [ProductInput]
+  $id: ID
   ){
     updateKol(
+      userID: $id
       first_name: $first_name
       last_name: $last_name
       display_name: $display_name
@@ -133,11 +166,12 @@ export const UPDATE_KOL = `mutation updateKOL(
       slug: $slug
       bank_details: $bank_details
       approved: $approved
-      
       description: $description
       featured: $featured
       social_medias: $social_medias
-      products: $products
+      new_banner_image: $new_banner_image
+      new_profile_image: $new_profile_image
+      products: $product
     ){
       id
     }
