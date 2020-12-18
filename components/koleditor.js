@@ -45,7 +45,7 @@ export default function KolEditor(props) {
     last_name: "",
     display_name: "",
     email: "",
-    contact_number: null,
+    contact_number: 0,
     slug: "",
     bank_details: {
       bank: "",
@@ -136,8 +136,22 @@ export default function KolEditor(props) {
         _kol.first_name = a.user.first_name;
         _kol.last_name = a.user.last_name;
         _kol.email = a.user.email;
-        _kol.contact_number = a.user.contact_number;
+        _kol.contact_number = parseInt(a.user.contact_number);
         _kol.id = a.user.id;
+
+        _kol.bank_details.bank_account_number = parseInt(
+          data.kols[0].bank_details.bank_account_number
+        );
+        _kol.bank_details.bank_code = parseInt(
+          data.kols[0].bank_details.bank_code
+        );
+        _kol.bank_details.bank_branch_code = parseInt(
+          data.kols[0].bank_details.bank_branch_code
+        );
+        _kol.bank_details.swift_code = parseInt(
+          data.kols[0].bank_details.swift_code
+        );
+        console.log(_kol);
         setKol(_kol);
       })();
     }
@@ -153,6 +167,15 @@ export default function KolEditor(props) {
       let _kol = { ...kol };
       if (bannerImage) _kol["new_banner_image"] = bannerImage;
       if (profileImage) _kol["new_profile_image"] = profileImage;
+
+      _kol.contact_number = kol.contact_number.toString();
+      _kol.bank_details.bank_account_number = kol.bank_details.bank_account_number.toString();
+
+      _kol.bank_details.bank_code = kol.bank_details.bank_code.toString();
+
+      _kol.bank_details.bank_branch_code = kol.bank_details.bank_branch_code.toString();
+
+      _kol.bank_details.swift_code = kol.bank_details.swift_code.toString();
 
       //console.log(_kol);
       _kol.product = [];
@@ -272,7 +295,7 @@ export default function KolEditor(props) {
   };
 
   const onBankDetailsNumberChange = (e, name) => {
-    const val = e.value || null;
+    const val = e.value || 0;
     let _kol = { ...kol };
     _kol["bank_details"][`${name}`] = val;
 

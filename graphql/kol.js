@@ -103,7 +103,7 @@ export const CREATE_KOL = `mutation createKOL(
   $display_name: String
   $email: String
   $password:String
-  $contact_number: Int
+  $contact_number: String
   $slug: String
   $bank_details: BankDetailsInput
   $approved: Boolean
@@ -143,7 +143,7 @@ export const UPDATE_KOL = `mutation updateKOL(
   $last_name: String
   $display_name: String
   $email: String
-  $contact_number: Int
+  $contact_number: String
   $slug: String
   $bank_details: BankDetailsInput
   $approved: Boolean
