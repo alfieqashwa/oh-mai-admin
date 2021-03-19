@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3004",
-    "build": "next build",
+    "build": "cross-env NODE_OPTIONS='--max-old-space-size=2048' next build",
     "start": "next start"
   },
   "dependencies": {
     "chart.js": "^2.9.4",
     "classnames": "^2.2.6",
+    "cross-env": "^7.0.3",
     "escape-html": "^1.0.3",
     "graphql": "^15.4.0",
     "graphql-request": "^3.3.0",
