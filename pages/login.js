@@ -3,14 +3,15 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { LOGIN_MUTATION } from "graphql/login";
-import { mutate, fetcherargs } from "../lib/useSWR";
+import { client } from "../lib/graphqlclient";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import useUser from "lib/useUser";
 import Cookies from "js-cookie";
+import PuffLoader from "react-spinners/PuffLoader";
 
 export default function Login() {
-  useUser({ redirectTo: "/", redirectIfFound: true });
+  //useUser({ redirectTo: "/", redirectIfFound: true });
   const [wrongField, setWrongField] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,19 +20,17 @@ export default function Login() {
   async function loginMutation(email, password) {
     try {
       console.log("run");
-      const a = await mutate(LOGIN_MUTATION, {
+      const a = await client.request(LOGIN_MUTATION, {
         email: email,
         password: password,
       });
 
-      if (email == "bayriffer") {
-        router.push("/bayriffer");
-      } else {
-        console.log(a);
-        Cookies.set("token", a.login.token);
+      console.log(a);
+      Cookies.set("token", a.login.token);
+      setHeader(Cookies.get("token"));
 
-        router.push("/");
-      }
+      router.push("/");
+
       console.log("pushed");
     } catch (err) {
       console.log(err.response?.errors[0].message);

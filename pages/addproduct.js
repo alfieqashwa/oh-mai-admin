@@ -1,17 +1,29 @@
-import ProductEditor from "components/producteditor";
+import React, { PureComponent } from "react";
 
+import ProductEditor from "components/producteditor";
+import PuffLoader from "react-spinners/PuffLoader";
 import useUser from "lib/useUser";
 
 export default function AddProduct() {
-  const person = useUser({ redirectTo: "/login" });
+  const { loggedOut, user } = useUser();
 
-  if (person) {
+  React.useEffect(() => {
+    if (loggedOut) {
+      router.replace("/login");
+      return <PuffLoader color={"#8A3EFF"} size={150} />;
+    }
+  }, [loggedOut]);
+
+  if (!user)
     return (
-      <>
-        <ProductEditor slug={""} />
-      </>
+      <div className="w-full flex items-center justify-center">
+        <PuffLoader color={"#8A3EFF"} size={150} />
+      </div>
     );
-  }
 
-  return <></>;
+  return (
+    <>
+      <ProductEditor slug={""} />
+    </>
+  );
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import useSWR from "swr";
 import { GET_KOL_FROM_SLUG } from "../graphql/kol";
-import { fetcherargs } from "../lib/useSWR";
+import { client } from "../lib/graphqlclient";
 import { Button } from "primereact/button";
 
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
@@ -22,10 +22,10 @@ export default function KOLProfile() {
   // const [products, setProducts] = useState(null);
   const [kol, setKOL] = useState(emptyKOL);
 
-  const { data, error } = useSWR(
-    [GET_KOL_FROM_SLUG, JSON.stringify({ slug: "debbie" })],
-    fetcherargs
-  );
+  const { data, error } = useSWR([
+    GET_KOL_FROM_SLUG,
+    JSON.stringify({ slug: "debbie" }),
+  ]);
 
   function renderHeader() {
     return (

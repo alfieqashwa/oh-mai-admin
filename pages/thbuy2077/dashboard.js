@@ -18,9 +18,10 @@ import useUser from "lib/useUser";
 import { TabView, TabPanel } from "primereact/tabview";
 import { InputNumber } from "primereact/inputnumber";
 import { BreadCrumb } from "primereact/breadcrumb";
+import PuffLoader from "react-spinners/PuffLoader";
 
 export default function THDashboard() {
-  const person = useUser({ redirectTo: "/login" });
+  const { loggedOut, user } = useUser();
 
   const [totalThaiNum, setTotalThaiNum] = useState(0);
   const [price, setPrice] = useState(0);
@@ -108,6 +109,13 @@ export default function THDashboard() {
   };
 
   React.useEffect(() => {
+    if (loggedOut) {
+      router.replace("/login");
+      return <PuffLoader color={"#8A3EFF"} size={150} />;
+    }
+  }, [loggedOut]);
+
+  React.useEffect(() => {
     if (window.innerWidth < 1024) setIsDesktop(false);
     fetchMetrics();
   }, []);
@@ -168,303 +176,303 @@ export default function THDashboard() {
 
   const home = { icon: "pi pi-home" };
 
-  if (person) {
+  if (!user)
     return (
-      <div className="p-grid p-fluid dashboard">
-        <div className="p-col-12">
-          <BreadCrumb model={items} home={home} />
-        </div>
-        <div className="p-col-12 p-lg-4">
-          <div className="card summary">
-            <div className="p-d-flex p-jc-between">
-              <div
-                className="p-d-flex p-flex-column"
-                style={{ paddingRight: "2%" }}
-              >
-                <div className="title">Revenue in Thai Baht</div>
-                <div className="detail"></div>
-              </div>
+      <div className="w-full flex items-center justify-center">
+        <PuffLoader color={"#8A3EFF"} size={150} />
+      </div>
+    );
 
-              <div className="p-d-flex p-ai-start p-jc-center">
-                <div className="count revenue">
-                  {new Intl.NumberFormat("th-TH", {
-                    style: "currency",
-                    currency: "THB",
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  }).format(price)}
-                </div>
+  return (
+    <div className="p-grid p-fluid dashboard">
+      <div className="p-col-12">
+        <BreadCrumb model={items} home={home} />
+      </div>
+      <div className="p-col-12 p-lg-4">
+        <div className="card summary">
+          <div className="p-d-flex p-jc-between">
+            <div
+              className="p-d-flex p-flex-column"
+              style={{ paddingRight: "2%" }}
+            >
+              <div className="title">Revenue in Thai Baht</div>
+              <div className="detail"></div>
+            </div>
+
+            <div className="p-d-flex p-ai-start p-jc-center">
+              <div className="count revenue">
+                {new Intl.NumberFormat("th-TH", {
+                  style: "currency",
+                  currency: "THB",
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                }).format(price)}
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="p-col-12 p-lg-4">
-          <div className="card summary">
-            <div className="p-d-flex p-jc-between">
-              <div
-                className="p-d-flex p-flex-column"
-                style={{ paddingRight: "2%" }}
-              >
-                <div className="title">Revenue in USD</div>
-                <div className="detail" style={{}}>
-                  Conversion rate: {rates.toFixed(3)}
-                </div>
-              </div>
-              <div className="p-d-flex p-ai-start p-jc-center">
-                <div className="count revenue">
-                  US
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(priceUSD)}
-                </div>
+      <div className="p-col-12 p-lg-4">
+        <div className="card summary">
+          <div className="p-d-flex p-jc-between">
+            <div
+              className="p-d-flex p-flex-column"
+              style={{ paddingRight: "2%" }}
+            >
+              <div className="title">Revenue in USD</div>
+              <div className="detail" style={{}}>
+                Conversion rate: {rates.toFixed(3)}
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="p-col-12 p-lg-4">
-          <div className="card summary">
-            <div className="p-d-flex p-jc-between">
-              <div
-                className="p-d-flex p-flex-column"
-                style={{ paddingRight: "2%" }}
-              >
-                <div className="title">Gross Profit</div>
-                <div className="detail">Gross Profit in USD</div>
-              </div>
-              <div className="p-d-flex p-ai-start p-jc-center">
-                <div className="count revenue">
-                  US
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(grossProfitUSD)}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-col-12 p-lg-4">
-          <div className="card summary">
-            <div className="p-d-flex p-jc-between">
-              <div
-                className="p-d-flex p-flex-column"
-                style={{ paddingRight: "2%" }}
-              >
-                <div className="title">KOL Comissions</div>
-                <div className="detail">
-                  <div className="p-inputgroup">
-                    <span className="p-inputgroup-addon">Per unit:</span>
-                    <InputNumber
-                      mode="currency"
-                      currency="USD"
-                      locale="en-US"
-                      value={initKOLFee}
-                      onValueChange={(e) => setInitKOLFee(e.value)}
-                      style={{ width: isDesktop ? "43%" : "43%" }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-d-flex p-ai-start p-jc-center">
-                <div className="count payment">
-                  US
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(initKOLFee * totalThaiNum)}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-col-12 p-lg-4">
-          <div className="card summary">
-            <div className="p-d-flex p-jc-between">
-              <div
-                className="p-d-flex p-flex-column"
-                style={{ paddingRight: "2%" }}
-              >
-                <div className="title">Domestic Fulfillment Cost</div>
-                <div className="detail">
-                  <div className="p-inputgroup">
-                    <span className="p-inputgroup-addon">
-                      <p>Per unit:</p>
-                    </span>
-                    <InputNumber
-                      mode="currency"
-                      currency="USD"
-                      locale="en-US"
-                      value={shippingCost}
-                      onValueChange={(e) => setShippingCost(e.value)}
-                      style={{ width: isDesktop ? "43%" : "43%" }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="p-d-flex p-ai-start p-jc-center">
-                <div className="count payment">
-                  US
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(shippingCost * totalThaiNum)}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-col-12 p-lg-4">
-          <div className="card summary">
-            <div className="p-d-flex p-jc-between">
-              <div
-                className="p-d-flex p-flex-column"
-                style={{ paddingRight: "2%" }}
-              >
-                <div className="title">Payment Gateway</div>
-                <div className="detail" style={{ minHeight: "35px" }}>
-                  Transaction Fee (3.65%)
-                </div>
-              </div>
-              <div className="p-d-flex p-ai-start p-jc-center">
-                <div className="count payment">
-                  US
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(omisePay)}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-col-12 p-lg-6">
-          <div className="card summary">
-            <div className="p-d-flex p-jc-between">
-              <div
-                className="p-d-flex p-flex-column"
-                style={{ paddingRight: "2%" }}
-              >
-                <div className="title">Successful Orders</div>
-                <div className="detail">Number of purchases</div>
-              </div>
-              <div className="count purchases  p-d-flex p-ai-center">
-                {totalThaiNum}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-col-12 p-lg-6">
-          <div className="card summary">
-            <div className="p-d-flex p-jc-between">
-              <div
-                className="p-d-flex p-flex-column"
-                style={{ paddingRight: "2%" }}
-              >
-                <div className="title">Net Profit</div>
-                <div className="detail">Net Profit in USD</div>
-              </div>
-              <div className="count visitors p-d-flex p-ai-center">
+            <div className="p-d-flex p-ai-start p-jc-center">
+              <div className="count revenue">
                 US
                 {new Intl.NumberFormat("en-US", {
                   style: "currency",
                   currency: "USD",
-                }).format(
-                  grossProfitUSD -
-                    initKOLFee * totalThaiNum -
-                    shippingCost * totalThaiNum -
-                    omisePay
-                )}
+                }).format(priceUSD)}
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* <div className="p-col-12 p-lg-12">
+      <div className="p-col-12 p-lg-4">
+        <div className="card summary">
+          <div className="p-d-flex p-jc-between">
+            <div
+              className="p-d-flex p-flex-column"
+              style={{ paddingRight: "2%" }}
+            >
+              <div className="title">Gross Profit</div>
+              <div className="detail">Gross Profit in USD</div>
+            </div>
+            <div className="p-d-flex p-ai-start p-jc-center">
+              <div className="count revenue">
+                US
+                {new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(grossProfitUSD)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-col-12 p-lg-4">
+        <div className="card summary">
+          <div className="p-d-flex p-jc-between">
+            <div
+              className="p-d-flex p-flex-column"
+              style={{ paddingRight: "2%" }}
+            >
+              <div className="title">KOL Comissions</div>
+              <div className="detail">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon">Per unit:</span>
+                  <InputNumber
+                    mode="currency"
+                    currency="USD"
+                    locale="en-US"
+                    value={initKOLFee}
+                    onValueChange={(e) => setInitKOLFee(e.value)}
+                    style={{ width: isDesktop ? "43%" : "43%" }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="p-d-flex p-ai-start p-jc-center">
+              <div className="count payment">
+                US
+                {new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(initKOLFee * totalThaiNum)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-col-12 p-lg-4">
+        <div className="card summary">
+          <div className="p-d-flex p-jc-between">
+            <div
+              className="p-d-flex p-flex-column"
+              style={{ paddingRight: "2%" }}
+            >
+              <div className="title">Domestic Fulfillment Cost</div>
+              <div className="detail">
+                <div className="p-inputgroup">
+                  <span className="p-inputgroup-addon">
+                    <p>Per unit:</p>
+                  </span>
+                  <InputNumber
+                    mode="currency"
+                    currency="USD"
+                    locale="en-US"
+                    value={shippingCost}
+                    onValueChange={(e) => setShippingCost(e.value)}
+                    style={{ width: isDesktop ? "43%" : "43%" }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="p-d-flex p-ai-start p-jc-center">
+              <div className="count payment">
+                US
+                {new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(shippingCost * totalThaiNum)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-col-12 p-lg-4">
+        <div className="card summary">
+          <div className="p-d-flex p-jc-between">
+            <div
+              className="p-d-flex p-flex-column"
+              style={{ paddingRight: "2%" }}
+            >
+              <div className="title">Payment Gateway</div>
+              <div className="detail" style={{ minHeight: "35px" }}>
+                Transaction Fee (3.65%)
+              </div>
+            </div>
+            <div className="p-d-flex p-ai-start p-jc-center">
+              <div className="count payment">
+                US
+                {new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(omisePay)}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-col-12 p-lg-6">
+        <div className="card summary">
+          <div className="p-d-flex p-jc-between">
+            <div
+              className="p-d-flex p-flex-column"
+              style={{ paddingRight: "2%" }}
+            >
+              <div className="title">Successful Orders</div>
+              <div className="detail">Number of purchases</div>
+            </div>
+            <div className="count purchases  p-d-flex p-ai-center">
+              {totalThaiNum}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-col-12 p-lg-6">
+        <div className="card summary">
+          <div className="p-d-flex p-jc-between">
+            <div
+              className="p-d-flex p-flex-column"
+              style={{ paddingRight: "2%" }}
+            >
+              <div className="title">Net Profit</div>
+              <div className="detail">Net Profit in USD</div>
+            </div>
+            <div className="count visitors p-d-flex p-ai-center">
+              US
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(
+                grossProfitUSD -
+                  initKOLFee * totalThaiNum -
+                  shippingCost * totalThaiNum -
+                  omisePay
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="p-col-12 p-lg-12">
           <Toolbar
             right={filterRightToolbarTemplate}
             left={filterLeftToolbarTemplate}
           ></Toolbar>
         </div> */}
 
-        <div className="p-col-12 ">
-          <div className="card" style={{ height: "100%" }}>
-            <TabView>
-              <TabPanel header="Copies sold">
-                <div className="p-d-flex p-jc-between">
-                  <h5>th.buy2077.co - Copies sold</h5>
-                  <span>{filterRightToolbarTemplate()}</span>
+      <div className="p-col-12 ">
+        <div className="card" style={{ height: "100%" }}>
+          <TabView>
+            <TabPanel header="Copies sold">
+              <div className="p-d-flex p-jc-between">
+                <h5>th.buy2077.co - Copies sold</h5>
+                <span>{filterRightToolbarTemplate()}</span>
+              </div>
+              <div className="chartsMid">
+                <div className="charts">
+                  <Chart
+                    type="bar"
+                    data={chartAllData}
+                    options={isDesktop ? chartOptions : chartMobileOptions}
+                  />
                 </div>
-                <div className="chartsMid">
-                  <div className="charts">
-                    <Chart
-                      type="bar"
-                      data={chartAllData}
-                      options={isDesktop ? chartOptions : chartMobileOptions}
-                    />
-                  </div>
+              </div>
+            </TabPanel>
+            <TabPanel header="Revenue">
+              <div className="p-d-flex p-jc-between">
+                <h5>th.buy2077.co - Revenue</h5>
+                <span>{filterRightToolbarTemplate()}</span>
+              </div>
+              <div className="chartsMid">
+                <div className="charts">
+                  <Chart
+                    type="bar"
+                    data={chartRevData}
+                    options={
+                      isDesktop ? chartPriceOptions : chartMobilePriceOptions
+                    }
+                  />
                 </div>
-              </TabPanel>
-              <TabPanel header="Revenue">
-                <div className="p-d-flex p-jc-between">
-                  <h5>th.buy2077.co - Revenue</h5>
-                  <span>{filterRightToolbarTemplate()}</span>
-                </div>
-                <div className="chartsMid">
-                  <div className="charts">
-                    <Chart
-                      type="bar"
-                      data={chartRevData}
-                      options={
-                        isDesktop ? chartPriceOptions : chartMobilePriceOptions
-                      }
-                    />
-                  </div>
-                </div>
-              </TabPanel>
+              </div>
+            </TabPanel>
 
-              <TabPanel header="Platform Breakdown">
-                <div className="p-d-flex p-jc-between">
-                  <h5>th.buy2077.co - Breakdown of Platforms</h5>
+            <TabPanel header="Platform Breakdown">
+              <div className="p-d-flex p-jc-between">
+                <h5>th.buy2077.co - Breakdown of Platforms</h5>
+              </div>
+              <div className="chartsMid">
+                <div className="charts">
+                  <Chart type="pie" data={chartPieData} options={pieOptions} />
                 </div>
-                <div className="chartsMid">
-                  <div className="charts">
-                    <Chart
-                      type="pie"
-                      data={chartPieData}
-                      options={pieOptions}
-                    />
-                  </div>
-                </div>
-              </TabPanel>
+              </div>
+            </TabPanel>
 
-              <TabPanel header="KOL Breakdown">
-                <div className="p-d-flex p-jc-between">
-                  <h5>th.buy2077.co - Breakdown of KOLs</h5>
+            <TabPanel header="KOL Breakdown">
+              <div className="p-d-flex p-jc-between">
+                <h5>th.buy2077.co - Breakdown of KOLs</h5>
+              </div>
+              <div className="chartsMid">
+                <div className="charts">
+                  <Chart
+                    type="bar"
+                    data={chartKOLData}
+                    options={isDesktop ? chartOptions : chartMobileOptions}
+                  />
                 </div>
-                <div className="chartsMid">
-                  <div className="charts">
-                    <Chart
-                      type="bar"
-                      data={chartKOLData}
-                      options={isDesktop ? chartOptions : chartMobileOptions}
-                    />
-                  </div>
-                </div>
-              </TabPanel>
-            </TabView>
-          </div>
+              </div>
+            </TabPanel>
+          </TabView>
         </div>
       </div>
-    );
-  }
-  return <></>;
+    </div>
+  );
 }

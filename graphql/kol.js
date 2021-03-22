@@ -59,6 +59,14 @@ export const FIND_EXIST_USER = `query findExistingUser($email: String)
 
 `;
 
+export const GET_KOL_BY_ID = `query kolDetail($id: ID)
+{
+  kolDetail(kol_id: $id) {
+    display_name,
+    
+  }
+}`;
+
 export const GET_KOL_FROM_SLUG = `query getKOLFromSlug($filter: KOLFilter)
 {
   kols(filter: $filter) {

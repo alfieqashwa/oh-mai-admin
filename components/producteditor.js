@@ -21,7 +21,6 @@ import {
   GET_PRODUCT_FROM_SLUG,
   UPDATE_PRODUCT,
 } from "graphql/product";
-import { mutate, fetcherargs } from "lib/useSWR";
 import Dropzone from "react-dropzone-uploader";
 import { ProgressSpinner } from "primereact/progressspinner";
 
@@ -87,12 +86,12 @@ export default function ProductEditor(props) {
 
   const toast = useRef(null);
 
-  const { data, error } = useSWR(
-    [GET_PRODUCT_FROM_SLUG, JSON.stringify({ filter: { slug: slug } })],
-    fetcherargs
-  );
+  const { data, error } = useSWR([
+    GET_PRODUCT_FROM_SLUG,
+    JSON.stringify({ filter: { slug: slug } }),
+  ]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // if this is edit product
     if (slug && data && data.products) {
       // infuse default data
@@ -120,9 +119,9 @@ export default function ProductEditor(props) {
     }
   }, [data]);
 
-  const productMutation = (variables) => {
-    if (slug) return mutate(UPDATE_PRODUCT, variables);
-    else return mutate(CREATE_PRODUCT, variables);
+  const productMutation = async (variables) => {
+    if (slug) return await client.request(UPDATE_PRODUCT, variables);
+    else return await client.request(CREATE_PRODUCT, variables);
   };
 
   async function uploadToDB(_product) {

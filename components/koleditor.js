@@ -28,7 +28,7 @@ import {
   KOL_USER_INFO,
   FIND_EXIST_USER,
 } from "graphql/kol";
-import { mutate, fetcherargs } from "lib/useSWR";
+import { client } from "lib/graphqlclient";
 import Dropzone from "react-dropzone-uploader";
 import { ProgressSpinner } from "primereact/progressspinner";
 
@@ -112,10 +112,10 @@ export default function KolEditor(props) {
 
   const toast = useRef(null);
 
-  const { data, error } = useSWR(
-    [GET_KOL_FROM_SLUG, JSON.stringify({ filter: { slug: slug } })],
-    fetcherargs
-  );
+  const { data, error } = useSWR([
+    GET_KOL_FROM_SLUG,
+    JSON.stringify({ filter: { slug: slug } }),
+  ]);
 
   React.useEffect(() => {
     console.log(data);
@@ -129,7 +129,9 @@ export default function KolEditor(props) {
       );
 
       (async () => {
-        let a = await fetcherargs(KOL_USER_INFO, { id: data.kols[0].user_id });
+        let a = await client.request(KOL_USER_INFO, {
+          id: data.kols[0].user_id,
+        });
 
         let _kol = { ...data.kols[0] };
 
@@ -157,9 +159,9 @@ export default function KolEditor(props) {
     }
   }, [data]);
 
-  const kolMutation = (variables) => {
-    if (slug) return mutate(UPDATE_KOL, variables);
-    else return mutate(CREATE_KOL, variables);
+  const kolMutation = async (variables) => {
+    if (slug) return await client.request(UPDATE_KOL, variables);
+    else return await client.request(CREATE_KOL, variables);
   };
 
   async function uploadToDB(_kol) {
@@ -192,7 +194,7 @@ export default function KolEditor(props) {
       _kol.password = "password";
 
       if (slug) {
-        let findUser = await fetcherargs(FIND_EXIST_USER, {
+        let findUser = await client.request(FIND_EXIST_USER, {
           email: _kol.email,
         });
         if (findUser.user.id != _kol.id) {

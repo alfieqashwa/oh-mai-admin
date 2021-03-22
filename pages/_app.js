@@ -17,6 +17,10 @@ import "primeflex/primeflex.css";
 import "../layout/flags/flags.css";
 import "../layout/layout.scss";
 import { useRouter } from "next/router";
+import { setHeader } from "lib/graphqlclient";
+import Cookies from "js-cookie";
+import { client } from "lib/graphqlclient";
+import useSWR, { SWRConfig } from "swr";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -39,6 +43,8 @@ function MyApp({ Component, pageProps }) {
     }
 
     if (window.innerWidth < 1024) setIsDesktop(false);
+
+    setHeader(Cookies.get("token"));
   }, []);
 
   const addClass = (element, className) => {
@@ -634,33 +640,45 @@ function MyApp({ Component, pageProps }) {
   };
 
   return (
-    <div className={wrapperClass} onClick={onWrapperClick}>
-      <AppTopbar onToggleMenu={onToggleMenu} />
-
-      <CSSTransition
-        classNames="layout-sidebar"
-        timeout={{ enter: 200, exit: 200 }}
-        in={isSidebarVisible()}
-        unmountOnExit
+    <>
+      <SWRConfig
+        value={{
+          fetcher: (query, args) => {
+            console.log(query, args);
+            return client.request(query, args);
+          },
+          dedupingInterval: 2000,
+        }}
       >
-        <div
-          ref={sidebar}
-          className={classNames("layout-sidebar", "layout-sidebar-dark")}
-          onClick={onSidebarClick}
-        >
-          <div className="layout-logo">
-            {/* <img alt="Logo" src={"/layout/images/logo-white.png"} /> */}
+        <div className={wrapperClass} onClick={onWrapperClick}>
+          <AppTopbar onToggleMenu={onToggleMenu} />
+
+          <CSSTransition
+            classNames="layout-sidebar"
+            timeout={{ enter: 200, exit: 200 }}
+            in={isSidebarVisible()}
+            unmountOnExit
+          >
+            <div
+              ref={sidebar}
+              className={classNames("layout-sidebar", "layout-sidebar-dark")}
+              onClick={onSidebarClick}
+            >
+              <div className="layout-logo">
+                {/* <img alt="Logo" src={"/layout/images/logo-white.png"} /> */}
+              </div>
+              <AppProfile />
+
+              <AppMenu model={menu} onMenuItemClick={onMenuItemClick} />
+            </div>
+          </CSSTransition>
+
+          <div className="layout-main">
+            <Component {...pageProps} />
           </div>
-          <AppProfile />
-
-          <AppMenu model={menu} onMenuItemClick={onMenuItemClick} />
         </div>
-      </CSSTransition>
-
-      <div className="layout-main">
-        <Component {...pageProps} />
-      </div>
-    </div>
+      </SWRConfig>
+    </>
   );
 }
 

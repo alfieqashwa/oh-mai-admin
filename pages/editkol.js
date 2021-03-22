@@ -1,18 +1,30 @@
+import React, { PureComponent } from "react";
 import KolEditor from "components/koleditor";
 import { useRouter } from "next/router";
 import useUser from "lib/useUser";
+import PuffLoader from "react-spinners/PuffLoader";
 
 export default function EditKOL() {
   const router = useRouter();
-  const person = useUser({ redirectTo: "/login" });
+  const { loggedOut, user } = useUser();
 
-  if (person) {
+  React.useEffect(() => {
+    if (loggedOut) {
+      router.replace("/login");
+      return <PuffLoader color={"#8A3EFF"} size={150} />;
+    }
+  }, [loggedOut]);
+
+  if (!user)
     return (
-      <>
-        <KolEditor slug={router.query.slug} />
-      </>
+      <div className="w-full flex items-center justify-center">
+        <PuffLoader color={"#8A3EFF"} size={150} />
+      </div>
     );
-  }
 
-  return <></>;
+  return (
+    <>
+      <KolEditor slug={router.query.slug} />
+    </>
+  );
 }

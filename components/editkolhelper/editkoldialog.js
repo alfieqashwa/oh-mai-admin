@@ -9,7 +9,7 @@ import { Toolbar } from "primereact/toolbar";
 import { Column } from "primereact/column";
 import useSWR from "swr";
 import { products, DELETE_PRODUCT } from "graphql/product";
-import { fetcher, mutate } from "lib/useSWR";
+import { client } from "lib/graphqlclient";
 import { InputNumber } from "primereact/inputnumber";
 
 export const DeleteProductDialog = (props) => {
@@ -63,7 +63,7 @@ export const DeleteProductDialog = (props) => {
 };
 
 export const AddProductDialog = (props) => {
-  const { data: prod, error: prodErr } = useSWR(products, fetcher);
+  const { data: prod, error: prodErr } = useSWR(products);
 
   const { addProductDialog, setAddProductDialog, addProduct } = props;
 

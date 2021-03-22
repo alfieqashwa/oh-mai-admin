@@ -1,17 +1,28 @@
+import React, { PureComponent } from "react";
 import KolEditor from "components/koleditor";
-
+import PuffLoader from "react-spinners/PuffLoader";
 import useUser from "lib/useUser";
 
 export default function AddKOL() {
-  const person = useUser({ redirectTo: "/login" });
+  const { loggedOut, user } = useUser();
 
-  if (person) {
+  React.useEffect(() => {
+    if (loggedOut) {
+      router.replace("/login");
+      return <PuffLoader color={"#8A3EFF"} size={150} />;
+    }
+  }, [loggedOut]);
+
+  if (!user)
     return (
-      <>
-        <KolEditor slug={""} />
-      </>
+      <div className="w-full flex items-center justify-center">
+        <PuffLoader color={"#8A3EFF"} size={150} />
+      </div>
     );
-  }
 
-  return <></>;
+  return (
+    <>
+      <KolEditor slug={""} />
+    </>
+  );
 }

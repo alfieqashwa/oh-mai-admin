@@ -6,15 +6,15 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-
+import { client } from "lib/graphqlclient";
 import useSWR from "swr";
 import { products, DELETE_PRODUCT } from "../graphql/product";
-import { fetcher, mutate } from "../lib/useSWR";
 import Link from "next/link";
 import useUser from "lib/useUser";
+import PuffLoader from "react-spinners/PuffLoader";
 
 export default function Products() {
-  const person = useUser({ redirectTo: "/login" });
+  const { loggedOut, user } = useUser();
 
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [selectedSingle, setSelectedSingle] = useState(null);
@@ -25,10 +25,22 @@ export default function Products() {
   const toast = useRef(null);
   const dt = useRef(null);
 
-  const { data: prod, error: prodErr } = useSWR(products, fetcher);
+  const { data: prod, error: prodErr } = useSWR(products);
   if (prodErr) console.log(prodErr);
 
-  if (!prod) return <></>;
+  React.useEffect(() => {
+    if (loggedOut) {
+      router.replace("/login");
+      return <PuffLoader color={"#8A3EFF"} size={150} />;
+    }
+  }, [loggedOut]);
+
+  if (!prod || !user)
+    return (
+      <div className="w-full flex items-center justify-center">
+        <PuffLoader color={"#8A3EFF"} size={150} />
+      </div>
+    );
 
   //console.log(selectedSingle);
 
@@ -46,11 +58,11 @@ export default function Products() {
   };
 
   async function deleteProductMutation(id) {
-    await mutate(DELETE_PRODUCT, { id: id });
+    await client.request(DELETE_PRODUCT, { id: id });
   }
   async function deleteProductsMutation(id) {
     for (var i = 0; i < id.length; i++) {
-      await mutate(DELETE_PRODUCT, { id: id[i] });
+      await client.request(DELETE_PRODUCT, { id: id[i] });
     }
   }
 
@@ -248,155 +260,149 @@ export default function Products() {
     </React.Fragment>
   );
 
-  if (person) {
-    return (
-      <div className="datatable-crud-demo">
-        <Toast ref={toast} />
-        <div className="card">
-          <Toolbar
-            className="p-mb-4"
-            left={leftToolbarTemplate}
-            right={rightToolbarTemplate}
-          ></Toolbar>
+  return (
+    <div className="datatable-crud-demo">
+      <Toast ref={toast} />
+      <div className="card">
+        <Toolbar
+          className="p-mb-4"
+          left={leftToolbarTemplate}
+          right={rightToolbarTemplate}
+        ></Toolbar>
 
-          <DataTable
-            ref={dt}
-            value={prod?.products}
-            selection={selectedProducts}
-            onSelectionChange={(e) => setSelectedProducts(e.value)}
-            paginator
-            rows={10}
-            rowsPerPageOptions={[5, 10, 25]}
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-            globalFilter={globalFilter}
-            header={header}
-            scrollable
-          >
-            <Column
-              selectionMode="multiple"
-              headerStyle={{ width: "3rem" }}
-            ></Column>
-            <Column
-              field="sku"
-              header="SKU"
-              sortable
-              headerStyle={{ width: "150px" }}
-            ></Column>
-            <Column
-              field="product_name"
-              header="Name"
-              sortable
-              headerStyle={{ width: "150px" }}
-            ></Column>
-            <Column
-              header="Featured Image"
-              body={imageBodyTemplate}
-              headerStyle={{ width: "150px" }}
-            ></Column>
-            <Column
-              field="current_price"
-              header="Current Price"
-              body={priceBodyTemplate}
-              sortable
-              headerStyle={{ width: "150px" }}
-            ></Column>
-            <Column
-              field="base_price"
-              header="Base Price"
-              body={priceBodyTemplate}
-              headerStyle={{ width: "150px" }}
-              sortable
-            ></Column>
-            <Column
-              field="sale_price"
-              header="Sale Price"
-              body={priceBodyTemplate}
-              headerStyle={{ width: "150px" }}
-              sortable
-            ></Column>
-            <Column
-              field="on_sale"
-              header="Is it on sale?"
-              body={onsaleTemplate}
-              headerStyle={{ width: "150px" }}
-              sortable
-            ></Column>
-            <Column
-              header="Category"
-              body={categoryTemplate}
-              headerStyle={{ width: "150px" }}
-            ></Column>
-            <Column
-              header="Tags"
-              body={tagsTemplate}
-              headerStyle={{ width: "150px" }}
-            ></Column>
-
-            <Column
-              field="stock_quantity"
-              header="Stock Quantity"
-              sortable
-              headerStyle={{ width: "150px" }}
-            ></Column>
-            <Column
-              field="stock_status"
-              header="Stock Status"
-              sortable
-              headerStyle={{ width: "150px" }}
-            ></Column>
-            <Column
-              body={actionBodyTemplate}
-              headerStyle={{ width: "150px" }}
-            ></Column>
-          </DataTable>
-        </div>
-
-        <Dialog
-          visible={deleteProductDialog}
-          style={{ width: "450px" }}
-          header="Confirm"
-          modal
-          footer={deleteProductDialogFooter}
-          onHide={hideDeleteProductDialog}
+        <DataTable
+          ref={dt}
+          value={prod?.products}
+          selection={selectedProducts}
+          onSelectionChange={(e) => setSelectedProducts(e.value)}
+          paginator
+          rows={10}
+          rowsPerPageOptions={[5, 10, 25]}
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+          globalFilter={globalFilter}
+          header={header}
+          scrollable
         >
-          <div className="confirmation-content">
-            <i
-              className="pi pi-exclamation-triangle p-mr-3"
-              style={{ fontSize: "2rem" }}
-            />
-            {selectedSingle && (
-              <span>
-                Are you sure you want to delete{" "}
-                <b>{selectedSingle.product_name}</b>?
-              </span>
-            )}
-          </div>
-        </Dialog>
+          <Column
+            selectionMode="multiple"
+            headerStyle={{ width: "3rem" }}
+          ></Column>
+          <Column
+            field="sku"
+            header="SKU"
+            sortable
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
+            field="product_name"
+            header="Name"
+            sortable
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
+            header="Featured Image"
+            body={imageBodyTemplate}
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
+            field="current_price"
+            header="Current Price"
+            body={priceBodyTemplate}
+            sortable
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
+            field="base_price"
+            header="Base Price"
+            body={priceBodyTemplate}
+            headerStyle={{ width: "150px" }}
+            sortable
+          ></Column>
+          <Column
+            field="sale_price"
+            header="Sale Price"
+            body={priceBodyTemplate}
+            headerStyle={{ width: "150px" }}
+            sortable
+          ></Column>
+          <Column
+            field="on_sale"
+            header="Is it on sale?"
+            body={onsaleTemplate}
+            headerStyle={{ width: "150px" }}
+            sortable
+          ></Column>
+          <Column
+            header="Category"
+            body={categoryTemplate}
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
+            header="Tags"
+            body={tagsTemplate}
+            headerStyle={{ width: "150px" }}
+          ></Column>
 
-        <Dialog
-          visible={deleteProductsDialog}
-          style={{ width: "450px" }}
-          header="Confirm"
-          modal
-          footer={deleteProductsDialogFooter}
-          onHide={hideDeleteProductsDialog}
-        >
-          <div className="confirmation-content">
-            <i
-              className="pi pi-exclamation-triangle p-mr-3"
-              style={{ fontSize: "2rem" }}
-            />
-            {selectedProducts && (
-              <span>
-                Are you sure you want to delete the selected products?
-              </span>
-            )}
-          </div>
-        </Dialog>
+          <Column
+            field="stock_quantity"
+            header="Stock Quantity"
+            sortable
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
+            field="stock_status"
+            header="Stock Status"
+            sortable
+            headerStyle={{ width: "150px" }}
+          ></Column>
+          <Column
+            body={actionBodyTemplate}
+            headerStyle={{ width: "150px" }}
+          ></Column>
+        </DataTable>
       </div>
-    );
-  }
 
-  return <></>;
+      <Dialog
+        visible={deleteProductDialog}
+        style={{ width: "450px" }}
+        header="Confirm"
+        modal
+        footer={deleteProductDialogFooter}
+        onHide={hideDeleteProductDialog}
+      >
+        <div className="confirmation-content">
+          <i
+            className="pi pi-exclamation-triangle p-mr-3"
+            style={{ fontSize: "2rem" }}
+          />
+          {selectedSingle && (
+            <span>
+              Are you sure you want to delete{" "}
+              <b>{selectedSingle.product_name}</b>?
+            </span>
+          )}
+        </div>
+      </Dialog>
+
+      <Dialog
+        visible={deleteProductsDialog}
+        style={{ width: "450px" }}
+        header="Confirm"
+        modal
+        footer={deleteProductsDialogFooter}
+        onHide={hideDeleteProductsDialog}
+      >
+        <div className="confirmation-content">
+          <i
+            className="pi pi-exclamation-triangle p-mr-3"
+            style={{ fontSize: "2rem" }}
+          />
+          {selectedProducts && (
+            <span>Are you sure you want to delete the selected products?</span>
+          )}
+        </div>
+      </Dialog>
+    </div>
+  );
 }

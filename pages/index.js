@@ -13,13 +13,27 @@ import {
 } from "components/chart/maindashboard/flatchart";
 
 import THDashboard from "pages/thbuy2077/dashboard";
-
+import PuffLoader from "react-spinners/PuffLoader";
+import { useRouter } from "next/router";
 import Bayriffer from "pages/bayriffer";
 
 export default function Index() {
-  const person = useUser({ redirectTo: "/login" });
+  const router = useRouter();
+  const { loggedOut, user } = useUser();
 
-  if (person?.email == "bayriffer") return <Bayriffer />;
-  else if (person) return <THDashboard />;
-  else return <></>;
+  React.useEffect(() => {
+    if (loggedOut) {
+      router.replace("/login");
+      return <PuffLoader color={"#8A3EFF"} size={150} />;
+    }
+  }, [loggedOut]);
+
+  if (!user)
+    return (
+      <div className="w-full flex items-center justify-center">
+        <PuffLoader color={"#8A3EFF"} size={150} />
+      </div>
+    );
+
+  return <THDashboard />;
 }

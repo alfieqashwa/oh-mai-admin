@@ -8,16 +8,24 @@ import { LOGOUT } from "graphql/login";
 
 import Cookies from "js-cookie";
 
-import { mutate, fetcherargs } from "../lib/useSWR";
 import useUser from "lib/useUser";
 
-export const AppTopbar = (props) => {
-  const person = useUser({ redirectTo: "/login" });
+import { client } from "lib/graphqlclient";
+import PuffLoader from "react-spinners/PuffLoader";
 
+export const AppTopbar = (props) => {
+  const { loggedOut, user } = useUser();
   const router = useRouter();
 
+  React.useEffect(() => {
+    if (loggedOut) {
+      router.replace("/login");
+      return <PuffLoader color={"#8A3EFF"} size={150} />;
+    }
+  }, [loggedOut]);
+
   async function logout() {
-    await mutate(LOGOUT);
+    await client.request(LOGOUT);
 
     router.push("/login");
   }
@@ -25,7 +33,7 @@ export const AppTopbar = (props) => {
   return (
     <div className="layout-topbar clearfix p-grid">
       <div className="p-col">
-        {router.pathname != "/login" && router.pathname != "/bayriffer" && (
+        {router.pathname != "/login" && (
           <button
             type="button"
             className="p-link layout-menu-button"
