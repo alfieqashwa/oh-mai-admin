@@ -1,39 +1,30 @@
-import React, { useState, useEffect } from "react";
-import SGBuy2077Dashboard from "components/sgbuy2077dashboard";
-import useUser from "lib/useUser";
+import React from "react";
+import Head from "next/head";
+import PropTypes from "prop-types";
+import CornersDiv from "components/cornersdiv";
+import { GlassDiv } from "components/glassdiv";
 
-import {
-  createDouChart,
-  douOptions,
-} from "components/chart/maindashboard/douchart";
-
-import {
-  createTotalChart,
-  createDailyChart,
-} from "components/chart/maindashboard/flatchart";
-
-import THDashboard from "pages/thbuy2077/dashboard";
-import PuffLoader from "react-spinners/PuffLoader";
-import { useRouter } from "next/router";
-import Bayriffer from "pages/bayriffer";
-
-export default function Index() {
-  const router = useRouter();
-  const { loggedOut, user } = useUser();
-
-  React.useEffect(() => {
-    if (loggedOut) {
-      router.replace("/login");
-      return <PuffLoader color={"#8A3EFF"} size={150} />;
-    }
-  }, [loggedOut]);
-
-  if (!user)
-    return (
-      <div className="w-full flex items-center justify-center">
-        <PuffLoader color={"#8A3EFF"} size={150} />
+function Index(props) {
+  return (
+    <div>
+      <Head>
+        <title>Create Next App</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div
+        className="bg-N800 w-screen h-screen flex flex-col justify-center items-center bg-center bg-cover"
+        style={{ backgroundImage: "url(/mainbg.png)" }}
+      >
+        <CornersDiv>
+          <GlassDiv>
+            <h1 className="pt-8">Admin Page Updating</h1>
+          </GlassDiv>
+        </CornersDiv>
       </div>
-    );
-
-  return <THDashboard />;
+    </div>
+  );
 }
+
+Index.propTypes = {};
+
+export default Index;

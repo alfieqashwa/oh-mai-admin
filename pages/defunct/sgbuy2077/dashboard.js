@@ -13,17 +13,17 @@ import { Dropdown } from "primereact/dropdown";
 import {
   createBarChart,
   stackedOptions,
-} from "components/chart/maindashboard/barchart";
+} from "components/defunct/chart/maindashboard/barchart";
 
 import {
   createDouChart,
   douOptions,
-} from "components/chart/maindashboard/douchart";
+} from "components/defunct/chart/maindashboard/douchart";
 
 import {
   createTotalChart,
   createDailyChart,
-} from "components/chart/maindashboard/flatchart";
+} from "components/defunct/chart/maindashboard/flatchart";
 
 export default function Dashboard() {
   const [totalNum, setTotalNum] = useState(0);

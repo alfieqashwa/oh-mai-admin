@@ -9,7 +9,7 @@ import { InputText } from "primereact/inputtext";
 import { InputSwitch } from "primereact/inputswitch";
 import RichEditor from "components/editproducthelper/richeditor";
 
-import { ProductDataTable } from "components/editkolhelper/datatabletemplate";
+import { ProductDataTable } from "components/defunct/editkolhelper/datatabletemplate";
 import {
   DeleteImageDialog,
   UploadImageDialog,
@@ -18,7 +18,7 @@ import {
   AddProductDialog,
   DeleteProductDialog,
   EditProductDialog,
-} from "components/editkolhelper/editkoldialog";
+} from "components/defunct/editkolhelper/editkoldialog";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import {
