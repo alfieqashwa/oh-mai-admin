@@ -24,10 +24,10 @@
     "react-icons": "^3.11.0",
     "react-spinners": "^0.10.6",
     "react-transition-group": "^4.4.1",
-    "slate": "^0.59.0",
+    "slate": "^0.62.0",
     "slate-history": "^0.59.0",
     "slate-hyperscript": "^0.59.0",
-    "slate-react": "^0.59.0",
+    "slate-react": "^0.62.0",
     "swr": "^0.5.4",
     "tailwindcss": "^2.1.1",
     "use-object-url": "^1.0.0"
