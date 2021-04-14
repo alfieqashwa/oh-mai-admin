@@ -1,13 +1,10 @@
-import { GlassDiv } from 'components/glassdiv';
-import Layout from 'components/dashboardAdminLayout'
+import DashboardLayout from 'components/dashboardAdminLayout'
 
 function Index(props) {
   return (
-    <Layout title="Admin Home">
-      <h3 className="text-N0">
-        Home Admin Dashboard
-      </h3>
-    </Layout>
+    <DashboardLayout title="Home">
+      <h3>Main Content</h3>
+    </DashboardLayout>
   );
 }
 
