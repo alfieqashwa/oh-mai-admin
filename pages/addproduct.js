@@ -1,27 +1,153 @@
-import React from "react";
-import Head from "next/head";
-import PropTypes from "prop-types";
-import CornersDiv from "components/cornersdiv";
+import DashboardLayout from 'components/dashboardAdminLayout'
 import { GlassDiv } from "components/glassdiv";
+import { GlassDefault } from 'components/glassDefault'
+import TextEditor from 'components/textEditor'
+
 
 function AddProduct(props) {
   return (
-    <div>
-      <Head>
-        <title>Add Product</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div
-        className="flex flex-col items-center justify-center w-screen h-screen bg-center bg-cover bg-N800"
-        style={{ backgroundImage: "url(/mainbg.png)" }}
-      >
-        <CornersDiv>
-          <GlassDiv>
-            <h1 className="pt-8">Add Product</h1>
-          </GlassDiv>
-        </CornersDiv>
+    <DashboardLayout title="Add Product">
+      <h3>Add Product</h3>
+      <div className="flex mt-4 space-x-6">
+        <div className="w-3/5 space-y-4">
+          <GlassDefault className="p-4">
+            <p className="w400">Title</p>
+            <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="title" id="title" placeholder="Enter title here" />
+            <p className="mt-6 w400">Description</p>
+            <GlassDiv className="mt-1 rounded-none"><TextEditor /></GlassDiv>
+          </GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+          <GlassDefault>Center</GlassDefault>
+        </div>
+
+        <div className="w-3/6 pr-6 space-y-4">
+          {/* Product Status */}
+          <GlassDefault className="p-4">
+            <p className="w400">Product Status</p>
+            <select className="w-full mt-3 rounded-md text-N0 bg-opacity-20 bg-N200">
+              <option>Active</option>
+              <option>Inactive</option>
+            </select>
+            <p className="mt-2 w350">This product is available on OhMai and KOL stores.</p>
+          </GlassDefault>
+
+          {/* Product Type */}
+          <GlassDefault className="p-4">
+            <p className="w400">Product Type</p>
+            <select className="w-full mt-3 rounded-md text-N0 bg-opacity-20 bg-N200">
+              <option>Variable Product</option>
+            </select>
+            <p className="mt-2 w350">This product is available on OhMai and KOL stores.</p>
+          </GlassDefault>
+
+          {/* Inventory */}
+          <div>
+            <GlassDefault className="p-4 rounded-b-none">
+              <p className="w400">Inventory</p>
+              <p className="mt-3 w350">SKU Number</p>
+              <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="Enter SKU number here" />
+            </GlassDefault>
+            <GlassDefault className="px-4 pt-1 pb-4 rounded-t-none">
+              <p className="mt-3 w350">Quantity</p>
+              <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="Enter quantity here" />
+            </GlassDefault>
+          </div>
+          {/* Price */}
+          <div>
+            <GlassDefault className="p-4 rounded-b-none">
+              <p className="w400">Price</p>
+              <p className="mt-3 w350">Current Price</p>
+              <input className="w-3/4 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="$" />
+              <p className="mt-3 w350">Tax</p>
+              <input className="w-3/4 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="%" />
+            </GlassDefault>
+            <GlassDefault className="px-4 pt-1 pb-4 rounded-t-none">
+              <div className="flex items-center justify-start mt-3 space-x-2">
+                <input type="checkbox" className="w-5 h-5 rounded bg-opacity-20 bg-N200" />
+                <p className="w350">This product is on sale.</p>
+              </div>
+              <p className="mt-3 w350">Sale Price</p>
+              <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="$" />
+            </GlassDefault>
+          </div>
+          {/* Shipping */}
+          <div>
+            <GlassDefault className="p-4 rounded-b-none">
+              <p className="w400">Shipping</p>
+              <div className="flex items-center justify-start mt-3 space-x-2">
+                <input type="checkbox" className="w-5 h-5 rounded bg-opacity-20 bg-N200" />
+                <p className="w350">This is a physical product</p>
+              </div>
+            </GlassDefault>
+            <GlassDefault className="p-4 rounded-none">
+              <p className="w350">Weight</p>
+              <p className="mt-2 w350">Shipping rates are automatically calculated at checkout and label prices.</p>
+              <div className="flex mt-1 space-x-4">
+                <input className="w-3/4 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="weight" id="weight" placeholder="Enter weight up to 1 decimal point" />
+                <select className="w-1/4 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku">
+                  <option>kg</option>
+                  <option>g</option>
+                </select>
+              </div>
+            </GlassDefault>
+            <GlassDefault className="p-4 rounded-t-none">
+              <p className="w350">Customs Information</p>
+              <p className="mt-2 w350">When shipping internationally, border officers use this to calculate duties. These are shown on customs forms you print during fulfillment.</p>
+              <p className="mt-4 w350">Country of Origin</p>
+              <select className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200">
+                <option>Select a country</option>
+              </select>
+              <p className="mt-4 w350">HS (Harmonised System) Code</p>
+              <div className="relative flex">
+                <svg xmlns="http://www.w3.org/2000/svg" className="absolute w-6 h-6 text-N0 left-3 top-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input className="w-full pl-12 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="Search by product keyword or HS code" />
+              </div>
+            </GlassDefault>
+          </div>
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }
 
