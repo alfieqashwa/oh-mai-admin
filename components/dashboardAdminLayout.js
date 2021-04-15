@@ -13,26 +13,26 @@ export default function DashboardLayout({ title, children }) {
         <title>{title}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex w-screen h-screen bg-center bg-cover bg-N800"
+      {/* <div className="w-screen min-h-screen bg-center bg-cover bg-N800"
         style={{ backgroundImage: "url(/mainbg.png)" }}
-      >
-        <SideBar />
-        {/* Discard Save Button on Top Menu */}
-        <GlassDefault className="fixed top-0 md:left-[256px] left-0 right-0 h-20 rounded-none">
-          <div className="flex items-center justify-between p-4">
-            <p className="w400">Unsaved product</p>
-            <div className="mr-4 space-x-4">
-              <button className="px-4 py-2 uppercase text-N800 bg-N100">discard</button>
-              <button className="px-6 py-2 uppercase bg-G400 text-N0">save</button>
-            </div>
+      > */}
+      {/* <div> */}
+      <SideBar />
+      {/* Discard Save Button on Top Menu */}
+      <GlassDefault className="fixed z-20 top-0 md:left-[256px] left-0 right-0 h-20 rounded-none">
+        <div className="flex items-center justify-between p-4">
+          <p className="w400">Unsaved product</p>
+          <div className="mr-4 space-x-4">
+            <button className="px-4 py-2 uppercase text-N800 bg-N100">discard</button>
+            <button className="px-6 py-2 uppercase bg-G400 text-N0">save</button>
           </div>
-        </GlassDefault>
-        <main className="mt-20 ml-0 md:ml-64">
-          <div className="p-4">
-            {children}
-          </div>
-        </main>
-      </div>
+        </div>
+      </GlassDefault>
+      <main className="mt-20 ml-0 md:ml-64">
+        <div className="p-6">
+          {children}
+        </div>
+      </main>
     </div>
   );
 }
