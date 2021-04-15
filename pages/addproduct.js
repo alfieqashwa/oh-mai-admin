@@ -1,7 +1,10 @@
+import { HiOutlinePencilAlt } from 'react-icons/hi'
+import { BiTrash } from 'react-icons/bi'
 import DashboardLayout from 'components/dashboardAdminLayout'
 import { GlassDiv } from "components/glassdiv";
 import { GlassDefault } from 'components/glassDefault'
 import TextEditor from 'components/textEditor'
+import { DropzoneUploader } from 'components/uploader'
 
 
 function AddProduct(props) {
@@ -9,55 +12,43 @@ function AddProduct(props) {
     <DashboardLayout title="Add Product">
       <h3>Add Product</h3>
       <div className="flex mt-4 space-x-6">
+
         <div className="w-3/5 space-y-4">
+          {/* Title */}
           <GlassDefault className="p-4">
             <p className="w400">Title</p>
             <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="title" id="title" placeholder="Enter title here" />
             <p className="mt-6 w400">Description</p>
             <GlassDiv className="mt-1 rounded-none"><TextEditor /></GlassDiv>
           </GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
-          <GlassDefault>Center</GlassDefault>
+
+          {/* Media */}
+          <GlassDefault className="p-4">
+            <p className="w400">Media</p>
+            <DropzoneUploader />
+          </GlassDefault>
+
+          {/* Product Variants */}
+          <GlassDefault className="p-4">
+            <div className="flex items-center justify-between">
+              <p className="w400">Product Variants</p>
+              <div className="space-x-4">
+                <button className="px-4 py-2 text-sm text-N800 bg-N200">auto-generate</button>
+                <button className="px-4 py-2 text-sm text-N0 bg-P900">add variants</button>
+              </div>
+            </div>
+            <div className="flex items-center justify-between mt-10">
+              <div className="flex items-center space-x-2">
+                <h5 className="mr-1 text-base">1</h5>
+                <p className="px-2 py-1 rounded-full w350 bg-N200 bg-opacity-20">Nintendo Switch</p>
+                <p className="px-2 py-1 rounded-full w350 bg-N200 bg-opacity-20">Japanese</p>
+              </div>
+              <div className="flex items-center space-x-4 text-N0">
+                <HiOutlinePencilAlt className="w-5 h-5" />
+                <BiTrash className="w-5 h-5" />
+              </div>
+            </div>
+          </GlassDefault>
         </div>
 
         <div className="w-3/6 pr-6 space-y-4">

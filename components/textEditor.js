@@ -4,7 +4,7 @@ import 'suneditor/dist/css/suneditor.min.css'
 
 const TextEditor = props => {
   return (
-    <div className="p-4">
+    <div className="p-2">
       <SunEditor />
     </div>
   )
