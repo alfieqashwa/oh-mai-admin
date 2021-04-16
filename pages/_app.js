@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/globals.css";
-import "react-dropzone-uploader/dist/styles.css";
+// import "react-dropzone-uploader/dist/styles.css";
 import { useRouter } from "next/router";
 import { setHeader } from "lib/graphqlclient";
 import Cookies from "js-cookie";

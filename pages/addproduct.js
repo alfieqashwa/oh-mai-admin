@@ -4,8 +4,7 @@ import DashboardLayout from 'components/dashboardAdminLayout'
 import { GlassDiv } from "components/glassdiv";
 import { GlassDefault } from 'components/glassDefault'
 import TextEditor from 'components/textEditor'
-import { DropzoneUploader } from 'components/uploader'
-
+import { UploadMedia } from 'components/uploadMedia'
 
 function AddProduct(props) {
   return (
@@ -25,7 +24,9 @@ function AddProduct(props) {
           {/* Media */}
           <GlassDefault className="p-4">
             <p className="w400">Media</p>
-            <DropzoneUploader />
+            <div>
+              <UploadMedia />
+            </div>
           </GlassDefault>
 
           {/* Product Variants */}
@@ -37,7 +38,7 @@ function AddProduct(props) {
                 <button className="px-4 py-2 text-sm text-N0 bg-P900">add variants</button>
               </div>
             </div>
-            <div className="flex items-center justify-between mt-10">
+            <div className="flex items-center justify-between mt-6">
               <div className="flex items-center space-x-2">
                 <h5 className="mr-1 text-base">1</h5>
                 <p className="px-2 py-1 rounded-full w350 bg-N200 bg-opacity-20">Nintendo Switch</p>
