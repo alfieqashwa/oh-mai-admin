@@ -1,6 +1,10 @@
+import { Header } from 'components/header'
 
 export default function Attributes() {
   return (
-    <div className="grid place-items-center">Attributes Page</div>
+    <>
+      <Header title="Add Product" />
+      <h3>Attributes</h3>
+    </>
   )
 }

@@ -1,5 +1,10 @@
+import { Header } from 'components/header'
+
 export default function PromoCodes() {
   return (
-    <div className="grid place-items-center">Promo Codes Page</div>
+    <>
+      <Header title="Add Product" />
+      <h3>Promo Codes</h3>
+    </>
   )
 }

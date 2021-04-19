@@ -34,19 +34,19 @@ const SideBar = () => {
   const router = useRouter()
 
   return (
-    <GlassDefault className="w-64 rounded-none">
+    <GlassDefault className="relative w-64 h-screen rounded-none">
       {/* Logo */}
       <h5 className="mt-8 text-center bg-Y400">Logo</h5>
       {/* Main Menu */}
       <div className="mt-20 space-y-5 text-N0">
         <ActiveLink href="/">
-          <div className={`flex items-center justify-start w-full pl-10 cursor-pointer space-x-7 ${router.pathname === "/" ? "text-P100" : ""}`}>
+          <div className={`flex items-center justify-start w-full pl-14 cursor-pointer space-x-7 ${router.pathname === "/" ? "text-P100" : ""}`}>
             <BiHomeAlt className="w-6 h-6" />
             <p className={`w400 ${router.pathname === "/" ? "text-P100" : ""}`}>Home</p>
           </div>
         </ActiveLink>
         <ActiveLink href="/">
-          <div className="flex items-center justify-start pl-10 cursor-pointer space-x-7">
+          <div className="flex items-center justify-start cursor-pointer pl-14 space-x-7">
             <SiGoogleanalytics className="w-6 h-6" />
             <p className="w400">Analytics</p>
           </div>
@@ -56,11 +56,12 @@ const SideBar = () => {
             <>
               <Menu.Button
                 as="div"
-                className={`focus:outline-none flex items-center justify-start pl-10 cursor-pointer space-x-7 ${open ? "text-P100" : ""}`}
+                className={`focus:outline-none flex items-center justify-start pl-14 cursor-pointer space-x-7 ${open ? "text-P100" : ""}`}
               >
                 <FiBox className="w-6 h-6" />
                 <p className={`w400 ${open ? "text-P100" : ""}`}>Products</p>
               </Menu.Button>
+
               <Transition
                 show={open}
                 enter="transition duration-100 ease-out"
@@ -70,35 +71,58 @@ const SideBar = () => {
                 leaveFrom="transform scale-100 opacity-100"
                 leaveTo="transform scale-95 opacity-0"
               >
-                <Menu.Items static className="focus:outline-none">
+                <Menu.Items as="div" static className="mr-4 -mt-2 focus:outline-none">
                   <Menu.Item>
-                    <ActiveLink href="/add-product">
-                      <a className={`block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/add-product" ? "bg-P900" : ""}`}>Add Product</a>
+                    <ActiveLink href="/products/add-product">
+                      <a
+                        className={
+                          `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/add-product" ? "bg-P900" : ""}`
+                        }>
+                        Add Product
+                      </a>
                     </ActiveLink>
                   </Menu.Item>
                   <Menu.Item>
-                    <ActiveLink href="/inventory">
-                      <a className={`block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/inventory" ? "bg-P900" : ""}`}>Inventory</a>
+                    <ActiveLink href="/products/inventory">
+                      <a className={
+                        `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/inventory" ? "bg-P900" : ""}`
+                      }>
+                        Inventory
+                      </a>
                     </ActiveLink>
                   </Menu.Item>
-                  {/* <Menu.Item as="div" className="mr-4 space-y-2 text-left">
+                  <Menu.Item>
                     <ActiveLink href="/products/promo-codes">
-                      <a className={`block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/promo-codes" ? "bg-P900" : ""}`}>Promo Codes</a>
+                      <a className={
+                        `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/promo-codes" ? "bg-P900" : ""}`
+                      }>
+                        Promo Codes
+                      </a>
                     </ActiveLink>
                   </Menu.Item>
-                  <Menu.Item as="div" className="mr-4 space-y-2 text-left">
+                  <Menu.Item>
                     <ActiveLink href="/products/attributes">
-                      <a className={`block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/attributes" ? "bg-P900" : ""}`}>Attributes</a>
+                      <a className={
+                        `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/attributes" ? "bg-P900" : ""}`
+                      }>
+                        Attributes
+                      </a>
                     </ActiveLink>
-                  </Menu.Item> */}
+                  </Menu.Item>
                 </Menu.Items>
               </Transition>
-              <div className="flex items-center justify-start pl-10 space-x-7"><FiTruck className="w-6 h-6" /><p className="w400">Orders</p></div>
             </>
           )}
         </Menu>
+
+        {/* Orders */}
+        <div className="flex items-center justify-start pl-14 space-x-7">
+          <FiTruck className="w-6 h-6" />
+          <p className="w400">Orders</p>
+        </div>
+
         {/* Settings */}
-        <div className="flex items-center justify-start pl-10 space-x-7 bottom-8">
+        <div className="absolute flex items-center justify-start pl-14 space-x-7 bottom-8">
           <FiSettings className="w-6 h-6" />
           <p className="w400">Settings</p>
         </div>
@@ -114,7 +138,6 @@ const ActiveLink = ({ href, children }) => {
   if (router.pathname === 'href') {
     className = `${className} selected`
   }
-
   return (
     <Link href={href}>{React.cloneElement(children, { className })}</Link>
   )
