@@ -1,37 +1,56 @@
+import { GlassDefault } from 'components/glassDefault';
 import { Header } from 'components/header';
-import { ProductStatus, Title } from 'components/products/addProduct';
+import { ConfirmationSavedButton, Title, Media, ProductStatus, ProductVariants, ProductType, Inventory, Price, Shipping } from 'components/products/addProduct';
 
 function AddProduct(props) {
   return (
     <>
       <Header title="Add Product" />
-      <h3>Add Product</h3>
 
-      <div className="flex w-full mt-4 space-x-8">
-        <div className="w-7/12 space-y-4">
-          {/* Title */}
-          <Title />
+      {/* Discard Save Button Confirmation (??) on top of the page */}
+      <ConfirmationSavedButton />
 
-          {/* Media */}
+      <div className="mx-6 mt-[114px]">
+
+        {/* Page Name */}
+        <h3>Add Product</h3>
+
+        <div className="flex w-full mt-4 space-x-6">
+
+          {/* Left Main Page */}
+          <div className="w-7/12 space-y-5">
+
+            {/* Title */}
+            <Title />
+
+            {/* Media */}
+            <Media />
+
+            {/* Product Variants */}
+            <ProductVariants />
+
+          </div>
+
+          {/* Right Main Page */}
+          <div className="w-6/12 pr-4 space-y-5">
+
+            {/* Product Status */}
+            <ProductStatus />
 
 
-          {/* Product Variants */}
-
-        </div>
-        <div className="w-5/12 space-y-4">
-          {/* Product Status */}
-          <ProductStatus />
+            {/* Product Type */}
+            <ProductType />
 
 
-          {/* Product Type */}
+            {/* Inventory */}
+            <Inventory />
 
+            {/* Price */}
+            <Price />
 
-          {/* Inventory */}
-
-          {/* Price */}
-
-          {/* Shipping */}
-
+            {/* Shipping */}
+            <Shipping />
+          </div>
         </div>
       </div>
     </>

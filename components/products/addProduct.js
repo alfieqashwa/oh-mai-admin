@@ -5,6 +5,19 @@ import { GlassDefault } from 'components/glassDefault'
 import TextEditor from 'components/textEditor'
 import { UploadMedia } from 'components/uploadMedia'
 
+// Confirmation Saved-Button
+export const ConfirmationSavedButton = () =>
+  <GlassDefault className="absolute top-0 right-0 w-full h-20 rounded-none">
+    <div className="flex items-center justify-between p-4">
+      <p className="w400">Unsaved product</p>
+      <div className="mr-4 space-x-4">
+        <button className="px-4 py-2 uppercase text-N800 bg-N100">discard</button>
+        <button className="px-6 py-2 uppercase bg-G400 text-N0">save</button>
+      </div>
+    </div>
+  </GlassDefault>
+
+
 // Left
 export const Title = () =>
   <GlassDefault className="p-4">
