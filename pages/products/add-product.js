@@ -10,12 +10,12 @@ function AddProduct(props) {
       {/* Discard Save Button Confirmation (??) on top of the page */}
       <ConfirmationSavedButton />
 
-      <div className="mx-6 mt-[114px]">
+      <div className="mx-6 mt-[110px]">
 
         {/* Page Name */}
         <h3>Add Product</h3>
 
-        <div className="flex w-full mt-4 space-x-6">
+        <div className="flex mt-4 space-x-6">
 
           {/* Left Main Page */}
           <div className="w-7/12 space-y-5">

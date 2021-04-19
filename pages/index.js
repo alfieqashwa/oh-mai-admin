@@ -2,9 +2,12 @@ import { Header } from 'components/header';
 
 function Index(props) {
   return (
-    <Header title="Home">
-      <h3 className="">Main Content</h3>
-    </Header>
+    <>
+      <Header title="Home" />
+      <div className="grid h-screen place-items-center">
+        <h1>Home Page</h1>
+      </div>
+    </>
   );
 }
 

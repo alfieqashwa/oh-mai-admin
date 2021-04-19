@@ -7,7 +7,7 @@ import { UploadMedia } from 'components/uploadMedia'
 
 // Confirmation Saved-Button
 export const ConfirmationSavedButton = () =>
-  <GlassDefault className="absolute top-0 right-0 w-full h-20 rounded-none">
+  <GlassDefault className="fixed z-20 top-0 left-[252px] right-0 h-20 rounded-none">
     <div className="flex items-center justify-between p-4">
       <p className="w400">Unsaved product</p>
       <div className="mr-4 space-x-4">
@@ -16,7 +16,6 @@ export const ConfirmationSavedButton = () =>
       </div>
     </div>
   </GlassDefault>
-
 
 // Left
 export const Title = () =>

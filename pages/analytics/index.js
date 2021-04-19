@@ -4,7 +4,9 @@ export default function AnalyticsPage() {
   return (
     <>
       <Header title="Analytics" />
-      <h3>Analytics Main Page</h3>
+      <div className="grid h-screen place-items-center">
+        <h1>Analytics Page</h1>
+      </div>
     </>
   )
 }
