@@ -1,10 +1,10 @@
-import DashboardLayout from 'components/dashboardAdminLayout'
+import { Header } from 'components/header';
 
 function Index(props) {
   return (
-    <DashboardLayout title="Home">
-      <h3>Main Content</h3>
-    </DashboardLayout>
+    <Header title="Home">
+      <h3 className="">Main Content</h3>
+    </Header>
   );
 }
 
