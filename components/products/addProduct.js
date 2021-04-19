@@ -77,28 +77,24 @@ export const ProductType = () =>
   </GlassDefault>
 
 export const Inventory = () =>
-  <div>
-    <GlassDefault className="p-4 rounded-b-none">
-      <p className="w400">Inventory</p>
-      <p className="mt-3 w350">SKU Number</p>
-      <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="Enter SKU number here" />
-    </GlassDefault>
-    <GlassDefault className="px-4 pt-1 pb-4 rounded-t-none">
-      <p className="mt-3 w350">Quantity</p>
-      <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="Enter quantity here" />
-    </GlassDefault>
-  </div>
+  <GlassDefault className="p-4">
+    <p className="w400">Inventory</p>
+    <p className="mt-3 w350">SKU Number</p>
+    <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="Enter SKU number here" />
+    <div className="my-6 -mx-4 border border-N0 border-opacity-30"></div>
+    <p className="mt-3 w350">Quantity</p>
+    <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="Enter quantity here" />
+  </GlassDefault>
 
 export const Price = () =>
   <div>
-    <GlassDefault className="p-4 rounded-b-none">
+    <GlassDefault className="p-4">
       <p className="w400">Price</p>
       <p className="mt-3 w350">Current Price</p>
       <input className="w-3/4 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="$" />
       <p className="mt-3 w350">Tax</p>
       <input className="w-3/4 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="%" />
-    </GlassDefault>
-    <GlassDefault className="px-4 pt-1 pb-4 rounded-t-none">
+      <div className="my-6 -mx-4 border border-N0 border-opacity-30"></div>
       <div className="flex items-center justify-start mt-3 space-x-2">
         <input type="checkbox" className="w-5 h-5 rounded bg-opacity-20 bg-N200" />
         <p className="w350">This product is on sale.</p>
@@ -116,8 +112,7 @@ export const Shipping = () =>
         <input type="checkbox" className="w-5 h-5 rounded bg-opacity-20 bg-N200" />
         <p className="w350">This is a physical product</p>
       </div>
-    </GlassDefault>
-    <GlassDefault className="p-4 rounded-none">
+      <div className="my-6 -mx-4 border border-N0 border-opacity-30"></div>
       <p className="w350">Weight</p>
       <p className="mt-2 w350">Shipping rates are automatically calculated at checkout and label prices.</p>
       <div className="flex mt-1 space-x-4">
@@ -127,8 +122,7 @@ export const Shipping = () =>
           <option>g</option>
         </select>
       </div>
-    </GlassDefault>
-    <GlassDefault className="p-4 rounded-t-none">
+      <div className="my-4 -mx-4 border border-N0 border-opacity-30"></div>
       <p className="w350">Customs Information</p>
       <p className="mt-2 w350">When shipping internationally, border officers use this to calculate duties. These are shown on customs forms you print during fulfillment.</p>
       <p className="mt-4 w350">Country of Origin</p>
