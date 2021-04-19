@@ -13,7 +13,13 @@ export const SideBar = () => {
   return (
     <GlassDefault className="fixed top-0 left-0 h-screen rounded-none w-[252px]">
       {/* Logo */}
-      <h5 className="mt-8 text-center bg-Y400">Logo</h5>
+      <div className="mt-4 ml-14">
+        <img
+          className="w-24"
+          src="/logo.png"
+          alt="OhMai-logo"
+        />
+      </div>
       {/* Main Menu */}
       <div className="mt-16 space-y-5 text-N0">
         <ActiveLink href="/">
