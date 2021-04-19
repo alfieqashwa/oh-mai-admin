@@ -21,7 +21,13 @@ export const ConfirmationSavedButton = () =>
 export const Title = () =>
   <GlassDefault className="p-4">
     <p className="w400">Title</p>
-    <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="title" id="title" placeholder="Enter title here" />
+    <input
+      className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200"
+      type="text"
+      name="title"
+      id="title"
+      placeholder="Enter title here"
+    />
     <p className="mt-6 w400">Description</p>
     <GlassDiv className="mt-1 rounded-none"><TextEditor /></GlassDiv>
   </GlassDefault>
@@ -80,10 +86,23 @@ export const Inventory = () =>
   <GlassDefault className="p-4">
     <p className="w400">Inventory</p>
     <p className="mt-3 w350">SKU Number</p>
-    <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="Enter SKU number here" />
+    <input
+      className="w-full mt-1 placeholder-opacity-50 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
+      type="number"
+      name="sku"
+      id="sku"
+      placeholder="Enter SKU number here"
+    />
     <div className="my-6 -mx-4 border border-N0 border-opacity-30"></div>
     <p className="mt-3 w350">Quantity</p>
-    <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="Enter quantity here" />
+    <input
+      className="w-full mt-1 placeholder-opacity-50 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
+      type="number"
+      step="any"
+      name="quantity"
+      id="quantity"
+      placeholder="Enter quantity here"
+    />
   </GlassDefault>
 
 export const Price = () =>
@@ -91,16 +110,38 @@ export const Price = () =>
     <GlassDefault className="p-4">
       <p className="w400">Price</p>
       <p className="mt-3 w350">Current Price</p>
-      <input className="w-3/4 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="$" />
+      <input
+        className="w-3/4 mt-1 placeholder-opacity-50 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
+        type="number"
+        name="currentPrice"
+        id="currentPrice"
+        placeholder="$"
+      />
       <p className="mt-3 w350">Tax</p>
-      <input className="w-3/4 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="%" />
+      <input
+        className="w-3/4 mt-1 placeholder-opacity-50 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
+        type="number"
+        step="any"
+        name="tax"
+        id="tax"
+        placeholder="%"
+      />
       <div className="my-6 -mx-4 border border-N0 border-opacity-30"></div>
       <div className="flex items-center justify-start mt-3 space-x-2">
-        <input type="checkbox" className="w-5 h-5 rounded bg-opacity-20 bg-N200" />
+        <input
+          type="checkbox"
+          className="w-5 h-5 rounded bg-opacity-20 bg-N200"
+        />
         <p className="w350">This product is on sale.</p>
       </div>
       <p className="mt-3 w350">Sale Price</p>
-      <input className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="$" />
+      <input
+        className="w-full mt-1 rounded-md text-N0 bg-opacity-20 bg-N200"
+        type="number"
+        name="salePrice"
+        id="salePrice"
+        placeholder="$"
+      />
     </GlassDefault>
   </div>
 
@@ -109,14 +150,24 @@ export const Shipping = () =>
     <GlassDefault className="p-4 rounded-b-none">
       <p className="w400">Shipping</p>
       <div className="flex items-center justify-start mt-3 space-x-2">
-        <input type="checkbox" className="w-5 h-5 rounded bg-opacity-20 bg-N200" />
+        <input
+          className="w-5 h-5 rounded bg-opacity-20 bg-N200"
+          type="checkbox"
+        />
         <p className="w350">This is a physical product</p>
       </div>
       <div className="my-6 -mx-4 border border-N0 border-opacity-30"></div>
       <p className="w350">Weight</p>
       <p className="mt-2 w350">Shipping rates are automatically calculated at checkout and label prices.</p>
       <div className="flex mt-1 space-x-4">
-        <input className="w-3/4 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="weight" id="weight" placeholder="Enter weight up to 1 decimal point" />
+        <input
+          className="w-3/4 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200"
+          type="number"
+          step="any"
+          name="weight"
+          id="weight"
+          placeholder="Enter weight up to 1 decimal point"
+        />
         <select className="w-1/4 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku">
           <option>kg</option>
           <option>g</option>
@@ -133,7 +184,13 @@ export const Shipping = () =>
       <div className="relative flex">
         <svg xmlns="http://www.w3.org/2000/svg" className="absolute w-6 h-6 text-N0 left-3 top-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <input className="w-full pl-12 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200" type="text" name="sku" id="sku" placeholder="Search by product keyword or HS code" />
+        <input
+          className="w-full pl-12 mt-1 rounded-md text-N0 bg-opacity-20 bg-N200"
+          type="number"
+          name="hsCode"
+          id="hsCode"
+          placeholder="Search by product keyword or HS code"
+        />
       </div>
     </GlassDefault>
   </div>
