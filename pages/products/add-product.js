@@ -1,4 +1,5 @@
 import { Header } from 'components/header';
+import { ProductStatus, Title } from 'components/products/addProduct';
 
 function AddProduct(props) {
   return (
@@ -6,36 +7,31 @@ function AddProduct(props) {
       <Header title="Add Product" />
       <h3>Add Product</h3>
 
-      <div className="flex mt-4 space-x-6">
-        <div>
+      <div className="flex w-full mt-4 space-x-8">
+        <div className="w-7/12 space-y-4">
+          {/* Title */}
+          <Title />
 
-          <div className="space-y-4">
-            {/* Title */}
-
-
-            {/* Media */}
+          {/* Media */}
 
 
-            {/* Product Variants */}
+          {/* Product Variants */}
 
-          </div>
-          <div>
-
-            <div className="pr-6 space-y-4">
-              {/* Product Status */}
-
-
-              {/* Product Type */}
+        </div>
+        <div className="w-5/12 space-y-4">
+          {/* Product Status */}
+          <ProductStatus />
 
 
-              {/* Inventory */}
+          {/* Product Type */}
 
-              {/* Price */}
 
-              {/* Shipping */}
+          {/* Inventory */}
 
-            </div>
-          </div>
+          {/* Price */}
+
+          {/* Shipping */}
+
         </div>
       </div>
     </>
