@@ -18,15 +18,16 @@ export default function Inventory() {
         {/* Inventory, Export, ADD PRODUCT */}
         <div className="flex items-center justify-between">
           <h3>Inventory</h3>
+
           <div className="space-x-8">
             <button className="text-sm bg-transparent text-N0">export</button>
             <button className="px-6 py-2 text-sm uppercase shadow-2xl bg-G400 text-N0">add product</button>
-
           </div>
         </div>
 
-        {/* Tabel (GlassDiv) */}
+        {/* Start Tabel (GlassDiv) */}
         <GlassDefault className="px-4 pt-2 pb-4 mt-4 border-2 rounded-none">
+
           {/* first row */}
           <div className="flex items-center justify-start space-x-2">
             <p className="mr-2 text-sm capitalize">view products</p>
@@ -35,6 +36,7 @@ export default function Inventory() {
             <button className="px-6 py-2 text-xs uppercase shadow-2xl text-N800 bg-N100">draft</button>
             <button className="px-6 py-2 text-xs uppercase shadow-2xl text-N800 bg-N100">archived</button>
           </div>
+
           {/* second row */}
           <div className="flex items-center justify-between mt-6 space-x-16">
             <input
@@ -54,11 +56,14 @@ export default function Inventory() {
                 <p className="text-xs text-N800">filter</p></button>
             </div>
           </div>
-          {/* // LIST of all PRODUCTS */}
+
+          {/* // PRODUCTS LIST*/}
           <div className="mt-4">
             <ProductListTable />
           </div>
+
         </GlassDefault>
+        {/* Ends Tabel (GlassDiv) */}
 
         {/* Pagination */}
         <div className="flex items-center justify-end pt-4 pb-8">
