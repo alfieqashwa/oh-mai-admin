@@ -177,79 +177,34 @@ export function ProductListTable() {
 }
 
 export const Pagination = props =>
-  <div className="flex items-center justify-end">
+  <div className="flex items-center justify-end pt-4 pb-8">
 
-    <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-end">
-      <nav className="relative z-0 inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-        <a
-          href="#"
-          className="relative inline-flex items-center px-2 py-2 text-sm font-medium text-N0"
-        >
-          <span className="sr-only">Previous</span>
-          <ChevronDoubleLeftIcon className="w-5 h-5" aria-hidden="true" />
-        </a>
-        <a
-          href="#"
-          className="relative inline-flex items-center px-2 py-2 text-sm font-medium text-N0"
-        >
-          <span className="sr-only">Previous</span>
-          <ChevronLeftIcon className="w-5 h-5" aria-hidden="true" />
-        </a>
-        <a
-          href="#"
-          className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-N0"
-        >
-          1
-            </a>
-        <a
-          href="#"
-          className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-N0"
-        >
-          2
-            </a>
-        <a
-          href="#"
-          className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-N0"
-        >
-          3
-            </a>
-        <span className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-N0">
-          ...
-            </span>
-        <a
-          href="#"
-          className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-N0"
-        >
-          12
-            </a>
-        <a
-          href="#"
-          className="relative inline-flex items-center px-2 py-2 text-sm font-medium text-N0"
-        >
-          <span className="sr-only">Next</span>
-          <ChevronRightIcon className="w-5 h-5" aria-hidden="true" />
-        </a>
-        <a
-          href="#"
-          className="relative inline-flex items-center px-2 py-2 text-sm font-medium text-N0"
-        >
-          <span className="sr-only">Previous</span>
-          <ChevronDoubleRightIcon className="w-5 h-5" aria-hidden="true" />
-        </a>
-      </nav>
-      <div className="bg-N300">
-        <p className="w350 text-N450">
-          Showing <span className="font-medium">1</span> to <span className="font-medium">5</span> of{' '}<span className="font-medium">60</span> products
-        </p>
-      </div>
+    <nav className="flex items-center space-x-6 text-N0">
+      <ChevronDoubleLeftIcon className="w-5 h-5" />
+      <ChevronLeftIcon className="w-5 h-5" />
+      <button className="px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out">1</button>
+      <button className="px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">2</button>
+      <button className="px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">3</button>
+      <a className="px-2.5 py-1 text-sm font-medium rounded bg-N800 hover:bg-P700">...</a>
+      <button className="px-2 text-sm font-medium bg-N800 hover:bg-P700">12</button>
+      <ChevronRightIcon className="w-5 h-5" />
+      <ChevronDoubleRightIcon className="w-5 h-5" />
+    </nav>
+
+    <div className="ml-6 mr-20">
+      <p className="w350 text-N300">Showing <span className="font-medium text-N0">1</span> to <span className="font-medium text-N0">5</span> of <span className="font-medium text-N0">60</span> products</p>
     </div>
 
-    {/* End Col */}
-    <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-end">
-      <p>Show</p>
-      <select>
+    <div className="flex items-center">
+      <p className="w350 text-N200">Show</p>
+      <select type="number" name="show" className="w-16 px-2 py-1 mx-2 rounded-md bg-N100">
         <option>10</option>
+        <option>20</option>
+        <option>30</option>
+        <option>40</option>
+        <option>50</option>
+        <option>60</option>
       </select>
-      <p>at a time</p>
+      <p className="w350 text-N200">at a time</p>
     </div>
   </div>

@@ -1,8 +1,6 @@
 import { BiTrash } from 'react-icons/bi'
 import { MdAddCircleOutline } from 'react-icons/md'
 import { FiFilter } from 'react-icons/fi'
-import { ChevronLeftIcon, ChevronRightIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/react/solid'
-
 
 import { GlassDefault } from 'components/glassDefault'
 import { Header } from 'components/header'
@@ -26,7 +24,7 @@ export default function Inventory() {
         </div>
 
         {/* Start Tabel (GlassDiv) */}
-        <GlassDefault className="px-4 pt-2 pb-4 mt-4 border-2 rounded-none">
+        <GlassDefault className="p-4 mt-4 border-2 rounded-none">
 
           {/* first row */}
           <div className="flex items-center justify-start space-x-2">
@@ -66,37 +64,8 @@ export default function Inventory() {
         {/* Ends Tabel (GlassDiv) */}
 
         {/* Pagination */}
-        <div className="flex items-center justify-end pt-4 pb-8">
+        <Pagination />
 
-          <nav className="flex items-center space-x-6 text-N0">
-            <ChevronDoubleLeftIcon className="w-5 h-5" />
-            <ChevronLeftIcon className="w-5 h-5" />
-            <button className="px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out">1</button>
-            <button className="px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">2</button>
-            <button className="px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">3</button>
-            <a className="px-2.5 py-1 text-sm font-medium rounded bg-N800 hover:bg-P700">...</a>
-            <button className="px-2 text-sm font-medium bg-N800 hover:bg-P700">12</button>
-            <ChevronRightIcon className="w-5 h-5" />
-            <ChevronDoubleRightIcon className="w-5 h-5" />
-          </nav>
-
-          <div className="ml-6 mr-20">
-            <p className="w350 text-N300">Showing <span className="font-medium">1</span> to <span className="font-medium">5</span> of{' '}<span className="font-medium">60</span> products</p>
-          </div>
-
-          <div className="flex items-center">
-            <p className="w350 text-N200">Show</p>
-            <select type="number" name="show" className="w-16 px-2 py-1 mx-2 rounded-md bg-N100">
-              <option>10</option>
-              <option>20</option>
-              <option>30</option>
-              <option>40</option>
-              <option>50</option>
-              <option>60</option>
-            </select>
-            <p className="w350 text-N200">at a time</p>
-          </div>
-        </div>
       </div>
     </>
   )
