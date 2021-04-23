@@ -10,7 +10,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head />
-        <body className="w-screen h-screen bg-center bg-cover bg-N800"
+        <body className="w-screen h-screen bg-center bg-cover"
           style={{ backgroundImage: "url(/mainbg.png)" }}
         >
           <Main />

@@ -1,5 +1,6 @@
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { BiTrash } from 'react-icons/bi'
+import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { GlassDiv } from "components/glassdiv";
 import { GlassDefault } from 'components/glassDefault'
 import TextEditor from 'components/textEditor'
@@ -7,15 +8,18 @@ import { UploadMedia } from 'components/uploadMedia'
 
 // Confirmation Saved-Button
 export const ConfirmationSavedButton = () =>
-  <GlassDefault className="fixed z-20 top-0 left-[252px] right-0 h-20 rounded-none">
-    <div className="flex items-center justify-between p-4">
-      <p className="w400">Unsaved product</p>
-      <div className="mr-4 space-x-4">
-        <button className="px-4 py-2 uppercase text-N800 bg-N100">discard</button>
-        <button className="px-6 py-2 uppercase bg-G400 text-N0">save</button>
+  <GlassDefault className="fixed z-20 top-0 left-0 md:left-[252px] right-0 h-16 rounded-none">
+    <div className="flex items-center justify-between px-4 py-3 x-4">
+      <div className="flex items-center">
+        <AiOutlineArrowLeft className="w-6 h-6 md:hidden text-N0" />
+        <p className="ml-4 text-sm">Unsaved Product</p>
+      </div>
+      <div className="flex space-x-4">
+        <button className="px-2 py-2 text-sm uppercase md:px-4 text-N800 bg-N100">discard</button>
+        <button className="px-5 py-2 text-sm uppercase md:px-6 bg-G400 text-N0">save</button>
       </div>
     </div>
-  </GlassDefault>
+  </GlassDefault >
 
 // Left
 export const Title = () =>
@@ -42,14 +46,18 @@ export const Media = () =>
 
 export const ProductVariants = () =>
   <GlassDefault className="p-4">
-    <div className="flex items-center justify-between">
+    <div className="md:flex md:justify-between md:items-center">
       <p className="w400">Product Variants</p>
-      <div className="space-x-4">
-        <button className="px-4 py-2 text-sm text-N800 bg-N200">auto-generate</button>
-        <button className="px-4 py-2 text-sm text-N0 bg-P900">add variants</button>
+      <div className="flex flex-col-reverse md:flex-row md:items-center md:space-x-2">
+        <div className="mt-4 md:mt-0">
+          <button className="w-full px-4 py-2 text-xs text-N800 bg-N200">auto-generate</button>
+        </div>
+        <div className="mt-6 md:mt-0">
+          <button className="w-full px-4 py-2 text-xs text-N0 bg-P900">add variants</button>
+        </div>
       </div>
     </div>
-    <div className="flex items-center justify-between mt-6">
+    <div className="items-center justify-between hidden mt-6 md:flex">
       <div className="flex items-center space-x-2">
         <h5 className="mr-1 text-base">1</h5>
         <p className="px-2 py-1 rounded-full w350 bg-N200 bg-opacity-20">Nintendo Switch</p>
@@ -64,7 +72,7 @@ export const ProductVariants = () =>
 
 // Right
 export const ProductStatus = () =>
-  <GlassDefault className="p-4">
+  <GlassDefault className="hidden w-full p-4 md:block">
     <p className="w400">Product Status</p>
     <select className="w-full mt-3 rounded-md text-N0 bg-opacity-20 bg-N200">
       <option>Active</option>
@@ -73,13 +81,13 @@ export const ProductStatus = () =>
     <p className="mt-2 w350">This product is available on OhMai and KOL stores.</p>
   </GlassDefault>
 
-export const ProductType = () =>
+export const ProductType = ({ children }) =>
   <GlassDefault className="p-4">
     <p className="w400">Product Type</p>
     <select className="w-full mt-3 rounded-md text-N0 bg-opacity-20 bg-N200">
       <option>Variable Product</option>
     </select>
-    <p className="mt-2 w350">This product is available on OhMai and KOL stores.</p>
+    {children}
   </GlassDefault>
 
 export const Inventory = () =>

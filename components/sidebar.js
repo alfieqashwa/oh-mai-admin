@@ -11,7 +11,7 @@ export const SideBar = () => {
   const router = useRouter()
 
   return (
-    <GlassDefault className="fixed top-0 left-0 h-screen rounded-none w-[252px]">
+    <GlassDefault className="hidden md:block fixed top-0 left-0 h-screen rounded-none w-[252px]">
       {/* Logo */}
       <div className="mt-4 ml-14">
         <img
@@ -77,9 +77,9 @@ export const SideBar = () => {
                     </ActiveLink>
                   </Menu.Item>
                   <Menu.Item>
-                    <ActiveLink href="/products/promo-codes">
+                    <ActiveLink href="/products/promo-code">
                       <a className={
-                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/promo-codes" ? "bg-P900" : ""}`
+                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/promo-code" ? "bg-P900" : ""}`
                       }>
                         Promo Codes
                       </a>
