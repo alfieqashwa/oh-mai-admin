@@ -10,7 +10,7 @@ function AddProduct(props) {
       {/* Discard Save Button Confirmation (??) on top of the page */}
       <ConfirmationSavedButton />
 
-      <div className="mt-16 md:mt-[110px]">
+      <div className="mx-4 mt-16 md:mt-24">
 
         {/* Page Name */}
         <h3 className="hidden md:block">Add Product</h3>
@@ -28,7 +28,7 @@ function AddProduct(props) {
         <div className="mt-2 md:space-x-6 md:flex">
 
           {/* Left Main Page */}
-          <div className="space-y-5 md:max-w-md md:w-7/12">
+          <div className="space-y-5 md:space-y-reverse md:w-7/12">
 
             {/* Mobile View Only */}
             <div className="md:hidden">
@@ -50,17 +50,19 @@ function AddProduct(props) {
           </div>
 
           {/* Right Main Page */}
-          <div className="space-y-5 md:pr-4 md:w-6/12">
+          <div className="space-y-5 md:pr-4 md:w-5/12">
 
             {/* Product Status */}
-            <ProductStatus />
-
+            <div className="hidden md:block">
+              <ProductStatus />
+            </div>
 
             {/* Product Type */}
-            <ProductType>
-              <p className="mt-2 w350">This product is available on OhMai and KOL stores.</p>
-            </ProductType>
-
+            <div className="hidden md:block">
+              <ProductType>
+                <p className="hidden mt-2 md:block w350">This product is available on OhMai and KOL stores.</p>
+              </ProductType>
+            </div>
 
             {/* Inventory */}
             <Inventory />

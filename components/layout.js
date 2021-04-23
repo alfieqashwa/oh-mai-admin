@@ -4,7 +4,7 @@ export default function Layout({ title, children }) {
   return (
     <>
       <SideBar />
-      <main className="md:ml-[252px] -mr-4 ml-4 bg-N450">
+      <main className="md:ml-[252px]">
         {children}
       </main>
     </>
