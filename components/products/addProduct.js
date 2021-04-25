@@ -119,7 +119,7 @@ export const Price = () =>
       <p className="">Price</p>
       <p className="mt-6 w350">Current Price</p>
       <input
-        className="w-3/4 mt-2 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
+        className="w-full mt-2 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
         type="number"
         name="currentPrice"
         id="currentPrice"
@@ -127,7 +127,7 @@ export const Price = () =>
       />
       <p className="mt-6 w350">Cost Price</p>
       <input
-        className="w-3/4 mt-2 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
+        className="w-full mt-2 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
         type="number"
         name="costPrice"
         id="costPrice"
@@ -135,7 +135,7 @@ export const Price = () =>
       />
       <p className="mt-6 w350">Tax</p>
       <input
-        className="w-3/4 mt-2 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
+        className="w-full mt-2 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
         type="number"
         step="any"
         name="tax"
