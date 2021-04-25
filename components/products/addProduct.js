@@ -125,6 +125,13 @@ export const Price = () =>
         id="currentPrice"
         placeholder="$"
       />
+      <input
+        className="w-3/4 mt-2 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
+        type="number"
+        name="costPrice"
+        id="costPrice"
+        placeholder="$"
+      />
       <p className="mt-6 w350">Tax</p>
       <input
         className="w-3/4 mt-2 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
