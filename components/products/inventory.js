@@ -174,9 +174,9 @@ export function ProductListTable() {
 }
 
 export const Pagination = props =>
-  <div className="flex items-center justify-end pt-4 pb-8">
+  <div className="block pt-4 pb-8 md:items-center md:justify-end md:flex">
 
-    <nav className="flex items-center space-x-6 text-N0">
+    <nav className="flex items-center justify-center space-x-6 text-N0">
       <ChevronDoubleLeftIcon className="w-5 h-5" />
       <ChevronLeftIcon className="w-5 h-5" />
       <button className="px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out">1</button>
@@ -188,11 +188,11 @@ export const Pagination = props =>
       <ChevronDoubleRightIcon className="w-5 h-5" />
     </nav>
 
-    <div className="ml-6 mr-20">
-      <p className="w350 text-N300">Showing <span className="font-medium text-N0">1</span> to <span className="font-medium text-N0">5</span> of <span className="font-medium text-N0">60</span> products</p>
+    <div className="mt-2 text-center lg:mt-0 lg:text-none lg:ml-6">
+      <p className="w350 text-N300 whitespace-nowrap">Showing <span className="font-medium text-N0">1</span> to <span className="font-medium text-N0">5</span> of <span className="font-medium text-N0">60</span> products</p>
     </div>
 
-    <div className="flex items-center">
+    <div className="items-center hidden lg:flex whitespace-nowrap">
       <p className="w350 text-N200">Show</p>
       <select type="number" name="show" className="w-16 px-2 py-1 mx-2 rounded-md bg-N100">
         <option>10</option>
@@ -204,9 +204,4 @@ export const Pagination = props =>
       </select>
       <p className="w350 text-N200">at a time</p>
     </div>
-  </div>
-
-export const InventoryMobileView = () =>
-  <div className="md:hidden">
-    <h1>Hello</h1>
   </div>
