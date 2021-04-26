@@ -188,7 +188,7 @@ export const Pagination = props =>
       <ChevronDoubleRightIcon className="w-5 h-5" />
     </nav>
 
-    <div className="mt-2 text-center lg:mt-0 lg:text-none lg:ml-6">
+    <div className="mt-2 text-center lg:mt-0 lg:text-none lg:mx-6">
       <p className="w350 text-N300 whitespace-nowrap">Showing <span className="font-medium text-N0">1</span> to <span className="font-medium text-N0">5</span> of <span className="font-medium text-N0">60</span> products</p>
     </div>
 
