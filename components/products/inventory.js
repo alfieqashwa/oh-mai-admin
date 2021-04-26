@@ -161,7 +161,7 @@ export function ProductListTable() {
             <td className="hidden p-4 text-sm md:table-cell text-N0 whitespace-nowrap">{p.salePrice}</td>
             <td className="hidden p-4 text-sm md:table-cell text-N0 whitespace-nowrap">{p.category}</td>
             <td className="hidden p-4 text-sm md:table-cell text-N0 whitespace-nowrap">{p.quantity}</td>
-            <td className="hidden py-4 pr-4 md:table-cell">
+            <td className="py-4 pr-4">
               <a href="#" className="transition duration-200 ease-in-out text-N0 hover:text-opacity-75">
                 <HiOutlinePencilAlt className="w-6 h-6" />
               </a>
