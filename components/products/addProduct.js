@@ -5,6 +5,7 @@ import { GlassDiv } from "components/glassdiv";
 import { GlassDefault } from 'components/glassDefault'
 import TextEditor from 'components/textEditor'
 import { UploadMedia } from 'components/uploadMedia'
+import { useEffect, useState } from 'react';
 
 // Confirmation Saved-Button
 export const ConfirmationSavedButton = () =>
@@ -22,19 +23,49 @@ export const ConfirmationSavedButton = () =>
   </GlassDefault >
 
 // Left
-export const Title = () =>
-  <GlassDefault className="p-4">
-    <p className="w400">Title</p>
-    <input
-      className="w-full mt-2 rounded-md text-N0 bg-opacity-20 bg-N200"
-      type="text"
-      name="title"
-      id="title"
-      placeholder="Enter title here"
-    />
-    <p className="my-4 w400">Description</p>
-    <GlassDiv className="rounded-none"><TextEditor /></GlassDiv>
-  </GlassDefault>
+export const Title = ({ valTitle, valDescription }) => {
+  const [title, setTitle] = useState('')
+  const [desc, setDesc] = useState('')
+  // console.log("Title valt", valTitle)
+  // console.log("Title vald", valDescription)
+
+  useEffect(() => {
+    console.log("Edit Product/ Title valt", valTitle)
+    console.log("Edit Product/ Title vald", valDescription)
+
+    if (valTitle)
+      setTitle(valTitle)
+
+    if (valDescription)
+      setDesc(valDescription)
+
+  }, [valTitle, valDescription])
+
+  useEffect(() => {
+    console.log("Title valt", valTitle)
+    console.log("Title vald", valDescription)
+
+  }, [])
+
+  return (
+    <GlassDefault className="p-4">
+      <p className="w400">Title</p>
+      <input
+        className="w-full mt-2 rounded-md text-N0 bg-opacity-20 bg-N200"
+        type="text"
+        name="title"
+        id="title"
+        defaultValue={title || ""}
+        placeholder="Enter title here"
+      />
+      <p className="my-4 w400">Description</p>
+      <GlassDiv className="rounded-none">
+        <TextEditor defaultValue={desc || ""} />
+      </GlassDiv>
+    </GlassDefault>
+  )
+}
+
 
 export const Media = () =>
   <GlassDefault className="p-4">
@@ -90,14 +121,18 @@ export const ProductType = ({ children }) =>
     {children}
   </GlassDefault>
 
-export const Inventory = () =>
+export const Inventory = ({ sku, quantity }) =>
   <GlassDefault className="p-4">
+    {/* <p className="">SKU {sku}</p>
+    <p className="">Qty {quantity}</p> */}
+
     <p className="">Inventory</p>
     <p className="mt-4 w350">SKU Number</p>
     <input
       className="w-full mt-2 placeholder-opacity-50 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
-      type="number"
+      type="text"
       name="sku"
+      value={sku}
       id="sku"
       placeholder="Enter SKU number here"
     />
@@ -109,11 +144,12 @@ export const Inventory = () =>
       step="any"
       name="quantity"
       id="quantity"
+      value={quantity}
       placeholder="Enter quantity here"
     />
   </GlassDefault>
 
-export const Price = () =>
+export const Price = ({currentPrice, costPrice, salePrice, isOnSale}) =>
   <div>
     <GlassDefault className="p-4">
       <p className="">Price</p>
@@ -123,6 +159,7 @@ export const Price = () =>
         type="number"
         name="currentPrice"
         id="currentPrice"
+        value={currentPrice}
         placeholder="$"
       />
       <p className="mt-6 w350">Cost Price</p>
@@ -131,6 +168,7 @@ export const Price = () =>
         type="number"
         name="costPrice"
         id="costPrice"
+        value={costPrice}
         placeholder="$"
       />
       <p className="mt-6 w350">Tax</p>
@@ -147,6 +185,7 @@ export const Price = () =>
         <input
           type="checkbox"
           className="w-6 h-6 rounded bg-opacity-20 bg-N200"
+          checked={isOnSale}
         />
         <p className="text-sm tracking-wider">This product is on sale.</p>
       </div>
@@ -156,6 +195,7 @@ export const Price = () =>
         type="number"
         name="salePrice"
         id="salePrice"
+        value={salePrice}
         placeholder="$"
       />
     </GlassDefault>

@@ -1,3 +1,5 @@
+import { gql } from "graphql-request";
+
 export const products = `{
     products {
       id,
@@ -121,3 +123,26 @@ export const DELETE_PRODUCT = `mutation deleteProduct(
     deleteProduct(id: $id)
   }
   `;
+
+export const GET_PRODUCT_GQL = gql`
+  query getProductByID($id: ID)
+  {
+    getProductByID(id: $id) {
+      id
+      sku
+      product_name
+      featured_image
+      images
+      base_price
+      sale_price
+      current_price
+      slug
+      description
+      on_sale
+      stock_quantity
+      stock_status
+      categories
+      tags
+      kol_profit
+    }
+  }`
