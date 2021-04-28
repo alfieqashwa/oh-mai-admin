@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
 
 import { ActiveLink } from 'components/activeLink'
@@ -41,10 +42,15 @@ export const SideBar = () => {
             <>
               <Menu.Button
                 as="div"
-                className={`focus:outline-none flex items-center justify-start pl-12 cursor-pointer space-x-6 ${open ? "text-P100" : ""}`}
               >
-                <FiBox className="w-6 h-6" />
-                <p className={`w400 ${open ? "text-P100" : ""}`}>Products</p>
+                <Link href="/products/add-product">
+                  <a
+                    className={`focus:outline-none flex items-center justify-start pl-12 cursor-pointer space-x-6 ${open ? "text-P100" : ""}`}
+                  >
+                    <FiBox className="w-6 h-6" />
+                    <p className={`w400 ${open ? "text-P100" : ""}`}>Products</p>
+                  </a>
+                </Link>
               </Menu.Button>
 
               <Transition
