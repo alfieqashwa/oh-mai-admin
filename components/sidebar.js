@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { Menu, Transition } from '@headlessui/react'
+import { Disclosure, Transition } from '@headlessui/react'
 
 import { ActiveLink } from 'components/activeLink'
 import { GlassDefault } from 'components/glassDefault'
@@ -29,29 +29,24 @@ export const SideBar = () => {
             <p className={`w400 ${router.pathname === "/" ? "text-P100" : ""}`}>Home</p>
           </div>
         </ActiveLink>
-        <ActiveLink href="/analytics">
-          <div className={`flex items-center justify-start cursor-pointer pl-12 space-x-6 ${router.pathname === "/analytics" ? "text-P100" : ""}`}>
-            <SiGoogleanalytics className="w-6 h-6" />
-            <p className={`w400 ${router.pathname === "/analytics" ? "text-P100" : ""}`}>Analytics</p>
-          </div>
-        </ActiveLink>
 
-        {/* Products */}
-        <Menu>
+
+        {/* Analytics */}
+        <Disclosure>
           {({ open }) => (
             <>
-              <Menu.Button
+              <Disclosure.Button
                 as="div"
               >
-                <Link href="/products/add-product">
+                <Link href="/analytics/summary">
                   <a
                     className={`focus:outline-none flex items-center justify-start pl-12 cursor-pointer space-x-6 ${open ? "text-P100" : ""}`}
                   >
-                    <FiBox className="w-6 h-6" />
-                    <p className={`w400 ${open ? "text-P100" : ""}`}>Products</p>
+                    <SiGoogleanalytics className="w-6 h-6" />
+                    <p className={`w400 ${open ? "text-P100" : ""}`}>Analytics</p>
                   </a>
                 </Link>
-              </Menu.Button>
+              </Disclosure.Button>
 
               <Transition
                 show={open}
@@ -62,8 +57,97 @@ export const SideBar = () => {
                 leaveFrom="transform scale-100 opacity-100"
                 leaveTo="transform scale-95 opacity-0"
               >
-                <Menu.Items as="div" static className="mr-5 -mt-2 focus:outline-none">
-                  <Menu.Item>
+                <Disclosure.Panel as="div" static className="mr-5 -mt-2 focus:outline-none">
+                  <div>
+                    <ActiveLink href="/analytics/summary">
+                      <a
+                        className={
+                          `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/summary" ? "bg-P900" : ""}`
+                        }>
+                        Summary
+                      </a>
+                    </ActiveLink>
+                  </div>
+                  <div>
+                    <ActiveLink href="/analytics/orders">
+                      <a className={
+                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/orders" ? "bg-P900" : ""}`
+                      }>
+                        Orders
+                      </a>
+                    </ActiveLink>
+                  </div>
+                  <div>
+                    <ActiveLink href="/analytics/products">
+                      <a className={
+                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/products" ? "bg-P900" : ""}`
+                      }>
+                        Products
+                      </a>
+                    </ActiveLink>
+                  </div>
+                  <div>
+                    <ActiveLink href="/analytics/kol">
+                      <a className={
+                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/kol" ? "bg-P900" : ""}`
+                      }>
+                        KOL
+                      </a>
+                    </ActiveLink>
+                  </div>
+                  <div>
+                    <ActiveLink href="/analytics/customer">
+                      <a className={
+                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/customer" ? "bg-P900" : ""}`
+                      }>
+                        Customer
+                      </a>
+                    </ActiveLink>
+                  </div>
+                  <div>
+                    <ActiveLink href="/analytics/promo">
+                      <a className={
+                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/promo" ? "bg-P900" : ""}`
+                      }>
+                        Promo
+                      </a>
+                    </ActiveLink>
+                  </div>
+                </Disclosure.Panel>
+              </Transition>
+            </>
+          )}
+        </Disclosure>
+
+
+        {/* Products */}
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <Disclosure.Button
+                as="div"
+              >
+                <Link href="/products/add-product">
+                  <a
+                    className={`focus:outline-none flex items-center justify-start pl-12 cursor-pointer space-x-6 ${open ? "text-P100" : ""}`}
+                  >
+                    <FiBox className="w-6 h-6" />
+                    <p className={`w400 ${open ? "text-P100" : ""}`}>Products</p>
+                  </a>
+                </Link>
+              </Disclosure.Button>
+
+              <Transition
+                show={open}
+                enter="transition duration-200 ease-out"
+                enterFrom="transform scale-95 opacity-0"
+                enterTo="transform scale-100 opacity-100"
+                leave="transition duration-75 ease-out"
+                leaveFrom="transform scale-100 opacity-100"
+                leaveTo="transform scale-95 opacity-0"
+              >
+                <Disclosure.Panel as="div" static className="mr-5 -mt-2 focus:outline-none">
+                  <div>
                     <ActiveLink href="/products/add-product">
                       <a
                         className={
@@ -72,8 +156,8 @@ export const SideBar = () => {
                         Add Product
                       </a>
                     </ActiveLink>
-                  </Menu.Item>
-                  <Menu.Item>
+                  </div>
+                  <div>
                     <ActiveLink href="/products/inventory">
                       <a className={
                         `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/inventory" ? "bg-P900" : ""}`
@@ -81,8 +165,8 @@ export const SideBar = () => {
                         Inventory
                       </a>
                     </ActiveLink>
-                  </Menu.Item>
-                  <Menu.Item>
+                  </div>
+                  <div>
                     <ActiveLink href="/products/promo-code">
                       <a className={
                         `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/promo-code" ? "bg-P900" : ""}`
@@ -90,8 +174,8 @@ export const SideBar = () => {
                         Promo Codes
                       </a>
                     </ActiveLink>
-                  </Menu.Item>
-                  <Menu.Item>
+                  </div>
+                  <div>
                     <ActiveLink href="/products/attributes">
                       <a className={
                         `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/attributes" ? "bg-P900" : ""}`
@@ -99,12 +183,12 @@ export const SideBar = () => {
                         Attributes
                       </a>
                     </ActiveLink>
-                  </Menu.Item>
-                </Menu.Items>
+                  </div>
+                </Disclosure.Panel>
               </Transition>
             </>
           )}
-        </Menu>
+        </Disclosure>
 
         {/* Orders */}
         <ActiveLink href="/orders">

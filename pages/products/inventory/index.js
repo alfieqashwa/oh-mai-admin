@@ -12,7 +12,7 @@ import { Pagination, ProductListTable, InventoryMobileView } from 'components/pr
 export default function Inventory() {
   return (
     <>
-      <Header title="Inventory" />
+      <Header title="Products - Inventory" />
 
       {/* Starts ROOT */}
       <div className="mx-4 md:mt-8 md:ml-6 md:mr-16 md:block">

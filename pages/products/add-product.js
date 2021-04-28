@@ -5,7 +5,7 @@ import { ConfirmationSavedButton, Title, Media, ProductStatus, ProductVariants, 
 function AddProduct(props) {
   return (
     <>
-      <Header title="Add Product" />
+      <Header title="Products - Add Product" />
 
       {/* Discard Save Button Confirmation (??) on top of the page */}
       <ConfirmationSavedButton />
