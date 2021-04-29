@@ -1,7 +1,8 @@
 import { useState, Fragment } from 'react'
-import { Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
+import { Listbox, Menu, Transition } from '@headlessui/react'
+import { CheckIcon, SelectorIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { BsThreeDotsVertical } from 'react-icons/bs'
+import { SiGoogleanalytics } from 'react-icons/si'
 
 import { Header } from 'components/header'
 
@@ -27,8 +28,8 @@ export default function Summary() {
                     <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left rounded-lg shadow-md cursor-default bg-N200 bg-opacity-20 text-N0 focus:outline-none focus:ring-2 focus:ring-opacity-75 focus:ring-P900 focus:ring-offset-P900 focus-visible:ring-offset-2 focus:border-P900 sm:text-sm">
                       <span className="block truncate">{selectedCurrent.name}</span>
                       <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                        <SelectorIcon
-                          className="w-5 h-5 text-gray-400"
+                        <ChevronDownIcon
+                          className="w-6 h-6 text-gray-400"
                           aria-hidden="true"
                         />
                       </span>
@@ -96,8 +97,8 @@ export default function Summary() {
                     <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left rounded-lg shadow-md cursor-default bg-N200 bg-opacity-20 text-N0 focus:outline-none focus:ring-2 focus:ring-opacity-75 focus:ring-P900 focus:ring-offset-P900 focus-visible:ring-offset-2 focus:border-P900 sm:text-sm">
                       <span className="block truncate">{selectedPrevious.name}</span>
                       <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                        <SelectorIcon
-                          className="w-5 h-5 text-gray-400"
+                        <ChevronDownIcon
+                          className="w-6 h-6 text-gray-400"
                           aria-hidden="true"
                         />
                       </span>
@@ -162,27 +163,68 @@ export default function Summary() {
         <div className="flex items-center justify-between my-4">
           <h4 className="w600">Leaderboard</h4>
           <div className="w-full mx-5 border border-N0 border-opacity-30"></div>
-          <BsThreeDotsVertical className="w-5 h-5 mr-2 text-N0" />
+          <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
 
 
-        <div>
-          <h4>Cards</h4>
-          <h4>Cards</h4>
-          <h4>Cards</h4>
+        {/* Leaderboard's Cards */}
+        <div className="grid grid-cols-3">
+          {leaderBoardCards.map((card, i) => (
+            <div key={i} className="relative px-5 bg-[#E0E0F24D] h-52 bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]">
+              <Menu>
+                {({ open }) => (
+                  <>
+                    <Menu.Button className={`absolute bg-transparent top-4 right-3 focus:outline-none ${open ? "text-P400" : "text-N0"}`}>
+                      <BsThreeDotsVertical className="w-6 h-6" />
+                    </Menu.Button>
+                    <Transition
+                      show={open}
+                      as={Fragment}
+                      enter="transition ease-out duration-200"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items static className="absolute shadow-xl top-16 right-4 focus:outline-none">
+                        <Menu.Item as="button" className="flex items-center justify-between w-full px-4 py-2 focus:outline-none bg-N0">
+                          <SiGoogleanalytics className="w-6 h-6" />
+                          <h4 className="pl-8 w250 text-N900">view leaderboard</h4>
+                        </Menu.Item>
+                      </Menu.Items>
+                    </Transition>
+                  </>
+                )}
+              </Menu>
+
+              <h5 className="mt-5 text-opacity-50 w250 text-N0">{card.category}</h5>
+              <h4 className="mt-3 w600 text-N0">{card.product}</h4>
+              <div className="flex justify-start mt-3 space-x-3">
+                <div className="w-[156px]">
+                  <p className="text-opacity-50 w400 text-N0">Total Orders</p>
+                  <p className="w400 text-N0">{card.totalOrdersValue}</p>
+                </div>
+                <div className="w-[156px]">
+                  <p className="text-opacity-50 w400 text-N0">Net Sales</p>
+                  <p className="w400 text-N0">{card.netSalesValue}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Performance */}
-        <div className="flex items-center justify-between my-4">
+        <div className="flex items-center justify-between my-4" >
           <h4 className="w600">Performance</h4>
           <div className="w-full mx-5 border border-N0 border-opacity-30"></div>
           <BsThreeDotsVertical className="w-5 h-5 mr-2 text-N0" />
         </div>
 
         <div>
-          <h4>Cards</h4>
-          <h4>Cards</h4>
-          <h4>Cards</h4>
+          <h4>TODOS: Cards</h4>
+          <h4>TODOS: Cards</h4>
+          <h4>TODOS: Cards</h4>
         </div>
       </div>
     </>
@@ -192,4 +234,10 @@ export default function Summary() {
 const dates = [
   { name: "Current Year (Jan 1 - Dec 31, 2021)" },
   { name: "Previous Year (Jan 1 - Dec 31, 2020)" }
+]
+
+const leaderBoardCards = [
+  { category: "best selling product", product: "Zelda: Breath of the Wild", totalOrdersValue: "291", netSalesValue: "18,000.00" },
+  { category: "top kol", product: "Lice Wang", totalOrdersValue: "135", netSalesValue: "10,000.00" },
+  { category: "top customer", product: "Fan Leng Leng", totalOrdersValue: "5", netSalesValue: "1,800.00" }
 ]
