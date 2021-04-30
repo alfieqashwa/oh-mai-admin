@@ -3,6 +3,7 @@ import { Listbox, Menu, Transition } from '@headlessui/react'
 import { CheckIcon, SelectorIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { SiGoogleanalytics } from 'react-icons/si'
+import { FiArrowDownRight, FiArrowUpRight, FiArrowRight } from 'react-icons/fi'
 
 import { Header } from 'components/header'
 
@@ -207,7 +208,7 @@ export default function Summary() {
                 </div>
                 <div className="w-[156px]">
                   <p className="text-opacity-50 w400 text-N0">Net Sales</p>
-                  <p className="w400 text-N0">{card.netSalesValue}</p>
+                  <p className="w400 text-N0">${card.netSalesValue}</p>
                 </div>
               </div>
             </div>
@@ -221,10 +222,27 @@ export default function Summary() {
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
 
-        <div>
-          <h4>TODOS: Cards</h4>
-          <h4>TODOS: Cards</h4>
-          <h4>TODOS: Cards</h4>
+        {/* Performance's Cards */}
+        <div className="grid grid-cols-3">
+          {performanceCards.map((c, i) => {
+            return (
+
+              <div key={i} className="relative px-5 bg-[#E0E0F24D] bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]">
+                <h5 className="mt-5 text-opacity-50 w250 text-N0">{c.category}</h5>
+                <div className="mt-3">
+                  <h3 className="w700 N0">${c.amount}</h3>
+                  <div className="flex items-center space-x-1">
+                    <FiArrowUpRight className="w-5 h-5 text-G400" />
+                    <h5 className="w250 text-G400">{c.percentage}%</h5>
+                  </div>
+                </div>
+                <div className="my-4">
+                  <p className="text-opacity-50 w400 text-N0">Previous Year</p>
+                  <p className="w400 text-N0">${c.previousYear}</p>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </>
@@ -240,4 +258,13 @@ const leaderBoardCards = [
   { category: "best selling product", product: "Zelda: Breath of the Wild", totalOrdersValue: "291", netSalesValue: "18,000.00" },
   { category: "top kol", product: "Lice Wang", totalOrdersValue: "135", netSalesValue: "10,000.00" },
   { category: "top customer", product: "Fan Leng Leng", totalOrdersValue: "5", netSalesValue: "1,800.00" }
+]
+
+const performanceCards = [
+  { category: "gross sales", amount: "500.00", percentage: "50", previousYear: "250.00" },
+  { category: "net sales", amount: "500.00", percentage: "50", previousYear: "250.00" },
+  { category: "orders", amount: "100", percentage: "50", previousYear: "200" },
+  { category: "average order value", amount: "5.00", percentage: "400", previousYear: "250.00" },
+  { category: "refunds", amount: "0.00", percentage: "-", previousYear: "50.00" },
+  { category: "gross profit", amount: "500.00", percentage: "50", previousYear: "150.00" },
 ]
