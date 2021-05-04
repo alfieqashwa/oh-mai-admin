@@ -1,11 +1,11 @@
 import { useState, Fragment } from 'react'
 import { Listbox, Menu, Transition } from '@headlessui/react'
-import { CheckIcon, SelectorIcon, ChevronDownIcon } from "@heroicons/react/solid";
+import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { SiGoogleanalytics } from 'react-icons/si'
-import { FiArrowDownRight, FiArrowUpRight, FiArrowRight } from 'react-icons/fi'
 
 import { Header } from 'components/header'
+import { PerformanceBorder, PerformanceCard } from 'components/analytics/performance';
 
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
@@ -202,11 +202,11 @@ export default function Summary() {
               <h5 className="mt-5 text-opacity-50 w250 text-N0">{card.category}</h5>
               <h4 className="mt-3 w600 text-N0">{card.product}</h4>
               <div className="flex justify-start mt-3 space-x-3">
-                <div className="w-[156px]">
+                <div className="w-40">
                   <p className="text-opacity-50 w400 text-N0">Total Orders</p>
                   <p className="w400 text-N0">{card.totalOrdersValue}</p>
                 </div>
-                <div className="w-[156px]">
+                <div className="w-40">
                   <p className="text-opacity-50 w400 text-N0">Net Sales</p>
                   <p className="w400 text-N0">${card.netSalesValue}</p>
                 </div>
@@ -216,34 +216,11 @@ export default function Summary() {
         </div>
 
         {/* Performance */}
-        <div className="flex items-center justify-between my-4" >
-          <h4 className="w600">Performance</h4>
-          <div className="w-full mx-5 border border-N0 border-opacity-30"></div>
-          <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
-        </div>
+        <PerformanceBorder />
 
         {/* Performance's Cards */}
-        <div className="grid grid-cols-3">
-          {performanceCards.map((c, i) => {
-            return (
+        <PerformanceCard />
 
-              <div key={i} className="relative px-5 bg-[#E0E0F24D] bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]">
-                <h5 className="mt-5 text-opacity-50 w250 text-N0">{c.category}</h5>
-                <div className="mt-3">
-                  <h3 className="w700 N0">${c.amount}</h3>
-                  <div className="flex items-center space-x-1">
-                    <FiArrowUpRight className="w-5 h-5 text-G400" />
-                    <h5 className="w250 text-G400">{c.percentage}%</h5>
-                  </div>
-                </div>
-                <div className="my-4">
-                  <p className="text-opacity-50 w400 text-N0">Previous Year</p>
-                  <p className="w400 text-N0">${c.previousYear}</p>
-                </div>
-              </div>
-            )
-          })}
-        </div>
       </div>
     </>
   )
@@ -260,11 +237,3 @@ const leaderBoardCards = [
   { category: "top customer", product: "Fan Leng Leng", totalOrdersValue: "5", netSalesValue: "1,800.00" }
 ]
 
-const performanceCards = [
-  { category: "gross sales", amount: "500.00", percentage: "50", previousYear: "250.00" },
-  { category: "net sales", amount: "500.00", percentage: "50", previousYear: "250.00" },
-  { category: "orders", amount: "100", percentage: "50", previousYear: "200" },
-  { category: "average order value", amount: "5.00", percentage: "400", previousYear: "250.00" },
-  { category: "refunds", amount: "0.00", percentage: "-", previousYear: "50.00" },
-  { category: "gross profit", amount: "500.00", percentage: "50", previousYear: "150.00" },
-]
