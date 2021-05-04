@@ -39,8 +39,26 @@ export const PerformanceCard = () => {
                 <div className="mt-3">
                   <h3 className={`w700 ${checked ? "text-N800" : "text-N0"}`}>${c.amount}</h3>
                   <div className="flex items-center space-x-1">
-                    <FiArrowUpRight className="w-5 h-5 text-G400" />
-                    <h5 className="w250 text-G400">{c.percentage}%</h5>
+                    {/* temporary logic */}
+                    {c.percentage === '-'
+                      ?
+                      <>
+                        <FiArrowRight className={`w-5 h-5 ${checked ? "text-N800" : "text-N0"}`} />
+                        <h5 className={`w250 ${checked ? "text-N800" : "text-N0"}`}>{c.percentage}</h5>
+                      </>
+                      :
+                      c.category === 'orders'
+                        ?
+                        <>
+                          <FiArrowDownRight className="w-5 h-5 text-R600" />
+                          <h5 className="w250 text-R600">{c.percentage}%</h5>
+                        </>
+                        :
+                        <>
+                          <FiArrowUpRight className="w-5 h-5 text-G400" />
+                          <h5 className="w250 text-G400">{c.percentage}%</h5>
+                        </>
+                    }
                   </div>
                 </div>
                 <div className="my-4">
