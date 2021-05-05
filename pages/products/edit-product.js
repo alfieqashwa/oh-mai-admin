@@ -1,7 +1,7 @@
 import { GlassDefault } from 'components/glassDefault';
 import { Header } from 'components/header';
 import { ConfirmationSavedButton, Title, Media, ProductStatus, ProductVariants, ProductType, Inventory, Price, Shipping } from 'components/products/addProduct';
-import { GET_PRODUCT_FROM_SLUG, GET_PRODUCT_GQL } from 'graphql/product';
+import { GET_PRODUCT_FROM_SLUG, GET_PRODUCT_GQL, UPDATE_PRODUCT_GQL } from 'graphql/product';
 import { client } from 'lib/graphqlclient';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
@@ -66,12 +66,42 @@ const EditProduct = (props) => {
     console.log("Edit Product/ Product", product)
   }, [product])
 
+  const update = () => {
+    console.log("Update...")
+    client.request(UPDATE_PRODUCT_GQL, product).then((data) => {
+      console.log("Update success", data)
+      setProduct(data.updateProduct)
+    }).catch(err => console.log("error product", err))
+  }
+
+  const handleChange = (e) => {
+    console.log("handleChange: product before update", product)
+    const {id , value} = e.target   
+    console.log("handleChange: id", id)
+    console.log("handleChange: value", value)
+
+    let val = null
+    
+    if (value === 'true') {
+      val = true
+    } else if (value === 'false') {
+      val = false
+    } else {
+      val = value
+    }
+
+    setProduct(prevState => ({
+        ...prevState,
+        [id] : val
+    }))
+}
+
   return (
     <>
       <Header title="Edit Product" />
 
       {/* Discard Save Button Confirmation (??) on top of the page */}
-      <ConfirmationSavedButton />
+      <ConfirmationSavedButton update={update} />
 
       <div className="mx-4 mt-16 md:mt-24">
 
@@ -89,10 +119,8 @@ const EditProduct = (props) => {
         </div>
 
         <div className="mt-2 md:space-x-6 md:flex">
-
           {/* Left Main Page */}
           <div className="space-y-5 md:space-y-reverse md:w-7/12">
-
             {/* Mobile View Only */}
             <div className="md:hidden">
               <ProductType>
@@ -102,13 +130,14 @@ const EditProduct = (props) => {
             {/* Mobile View Only */}
 
             {/* Title */}
-            <Title valDescription={product?.description} valTitle={product?.product_name}  />
+            <Title valDescription={product?.description} valTitle={product?.product_name} 
+              onChange={handleChange} />
 
             {/* Media */}
             <Media />
 
             {/* Product Variants */}
-            <ProductVariants />
+            <ProductVariants variants={product?.variations}/>
 
           </div>
 
@@ -117,7 +146,7 @@ const EditProduct = (props) => {
 
             {/* Product Status */}
             <div className="hidden md:block">
-              <ProductStatus />
+              <ProductStatus onChange={handleChange} value={product?.active_status} />
             </div>
 
             {/* Product Type */}
@@ -128,14 +157,17 @@ const EditProduct = (props) => {
             </div>
 
             {/* Inventory */}
-            <Inventory sku={product?.sku} quantity={product?.stock_quantity} />
+            <Inventory sku={product?.sku} quantity={product?.stock_quantity} onChange={handleChange} />
 
             {/* Price */}
-            <Price currentPrice={product?.current_price} costPrice={product?.base_price} salePrice={product?.sale_price}
-              isOnSale={product?.on_sale} />
+            <Price currentPrice={product?.current_price} costPrice={product?.base_price} 
+              salePrice={product?.sale_price}
+              isOnSale={product?.on_sale}
+              onChange={handleChange}
+              />
 
             {/* Shipping */}
-            <Shipping />
+            <Shipping isPhysical={product?.is_physical} onChange={handleChange} weight={product?.weight}/>
           </div>
         </div>
       </div>
