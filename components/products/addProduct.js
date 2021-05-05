@@ -144,20 +144,6 @@ export const ProductType = ({ children }) =>
   </GlassDefault>
 
 export const Inventory = ({ sku, quantity, onChange }) => {
-  const [valSku, setValSku] = useState(sku)
-  const [valQty, setValQty] = useState(quantity)
-
-  useEffect(() => {
-    console.log("quantity...." + quantity)
-
-    if (sku)
-      setValSku(sku)
-
-    if (quantity)
-      setValQty(quantity)
-
-  }, [sku, quantity])
-
   return (
     <GlassDefault className="p-4">
       {/* <p className="">SKU {sku}</p>
@@ -169,7 +155,7 @@ export const Inventory = ({ sku, quantity, onChange }) => {
         className="w-full mt-2 placeholder-opacity-50 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
         type="text"
         name="sku"
-        value={valSku}
+        value={sku}
         id="sku"
         placeholder="Enter SKU number here"
         onChange={onChange}
@@ -181,7 +167,7 @@ export const Inventory = ({ sku, quantity, onChange }) => {
         type="text"
         name="quantity"
         id="stock_quantity"
-        value={valQty}
+        value={quantity}
         onChange={onChange}
         placeholder="Enter quantity here"
       />
