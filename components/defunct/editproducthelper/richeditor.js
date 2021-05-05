@@ -159,7 +159,7 @@ export default function RichEditor(props) {
         updateDesc(serialize(editor));
       }}
     >
-      <div style={{ margin: " 10px 0px" }}>
+      <div style={{ margin: "10px 0px h-32", display: "flex", alignContent: "space-evenly" }} className="overflow-x-scroll">
         <MarkButton format="bold" icon={<FaBold />} />
         <MarkButton format="italic" icon={<FaItalic />} />
         <MarkButton format="underline" icon={<FaUnderline />} />
