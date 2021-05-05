@@ -94,7 +94,7 @@ const EditProduct = (props) => {
         ...prevState,
         [id] : val
     }))
-}
+  }
 
   return (
     <>
@@ -160,7 +160,7 @@ const EditProduct = (props) => {
             <Inventory sku={product?.sku} quantity={product?.stock_quantity} onChange={handleChange} />
 
             {/* Price */}
-            <Price currentPrice={product?.current_price} costPrice={product?.base_price} 
+            <Price basePrice={product?.base_price} costPrice={product?.cost_price} 
               salePrice={product?.sale_price}
               isOnSale={product?.on_sale}
               onChange={handleChange}

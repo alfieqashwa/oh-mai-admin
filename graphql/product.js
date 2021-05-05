@@ -135,7 +135,6 @@ export const GET_PRODUCT_GQL = gql`
       images
       base_price
       sale_price
-      current_price
       slug
       description
       on_sale
@@ -156,7 +155,6 @@ mutation updateProduct(
   $product_name: String
   $base_price: Float
   $sale_price: Float
-  $current_price: Float
   $slug: String
   $description: String
   $on_sale: Boolean
@@ -170,6 +168,7 @@ mutation updateProduct(
   $company_profit: Int
   $is_physical: Boolean
   $weight: Float
+  $active_status: Boolean
 )
 {
   updateProduct(
@@ -177,7 +176,6 @@ mutation updateProduct(
     product_name: $product_name
     base_price: $base_price
     sale_price: $sale_price
-    current_price: $current_price
     slug: $slug
     description: $description
     on_sale: $on_sale
@@ -191,12 +189,13 @@ mutation updateProduct(
     company_profit: $company_profit
     is_physical: $is_physical
     weight: $weight
+    active_status: $active_status
   ) {
     sku
     product_name
     base_price
     sale_price
-    current_price
+    cost_price
     slug
     description
     on_sale
@@ -208,5 +207,6 @@ mutation updateProduct(
     company_profit
     is_physical
     weight
+    active_status
   }
 }`

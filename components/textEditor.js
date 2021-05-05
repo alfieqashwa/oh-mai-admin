@@ -28,7 +28,7 @@ const TextEditor = props => {
   const [description, setDescription] = useState("abc")
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState([])
-  const [html, setHtml] = React.useState('my <b>HTML</b>');
+  const [html, setHtml] = React.useState('');
 
 
   useEffect(() => {

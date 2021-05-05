@@ -175,17 +175,17 @@ export const Inventory = ({ sku, quantity, onChange }) => {
   )
 }
 
-export const Price = ({ currentPrice, costPrice, salePrice, isOnSale, onChange }) =>
+export const Price = ({ basePrice, costPrice, salePrice, isOnSale, onChange }) =>
   <div>
     <GlassDefault className="p-4">
       <p className="">Price</p>
-      <p className="mt-6 w350">Current Price</p>
+      <p className="mt-6 w350">Base Price</p>
       <input
         className="w-full mt-2 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
         type="number"
         name="currentPrice"
         id="current_price"
-        value={currentPrice}
+        value={basePrice}
         onChange={onChange}
         placeholder="$"
       />
