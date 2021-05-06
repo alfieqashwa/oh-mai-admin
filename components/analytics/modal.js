@@ -1,7 +1,8 @@
 import { Fragment, useState } from 'react'
-import { Dialog, Switch, Transition } from '@headlessui/react'
-import { XIcon, CheckIcon } from '@heroicons/react/outline'
+import { Dialog, Transition } from '@headlessui/react'
+import { XIcon } from '@heroicons/react/outline'
 
+import { AddCategoryContent } from './categoryModalContent'
 import { GlassDiv } from 'components/glassdiv'
 
 export function AddCategoryModal({ isOpen, setIsOpen }) {
@@ -37,7 +38,7 @@ export function AddCategoryModal({ isOpen, setIsOpen }) {
               leaveFrom="translate-x-0"
               leaveTo="translate-x-full"
             >
-              <div className="relative w-screen max-w-md">
+              <div className="relative w-screen max-w-xl">
                 <GlassDiv className="flex flex-col h-full py-6 overflow-y-scroll rounded-none shadow-xl ">
                   <div className="flex items-center justify-between px-4 sm:px-6">
                     <Dialog.Title className="text-2xl font-medium text-N0">Add Category</Dialog.Title>
@@ -53,12 +54,7 @@ export function AddCategoryModal({ isOpen, setIsOpen }) {
                     <div className="absolute inset-0 px-4 sm:px-6">
                       <div className="h-full border border-N350" aria-hidden="true" />
                       {/* Replace with your content */}
-                      <div className="mt-8">
-                        <div className="flex items-center justify-between">
-                          <h5 className="uppercase text-N0 w250">orders</h5>
-                          <SwitchTest />
-                        </div>
-                      </div>
+                      <AddCategoryContent />
                     </div>
 
                     {/* /End replace */}
@@ -72,29 +68,4 @@ export function AddCategoryModal({ isOpen, setIsOpen }) {
       </Dialog >
     </Transition.Root >
   )
-}
-
-function SwitchTest() {
-  const [enabled, setEnabled] = useState(false);
-
-  return (
-    <Switch
-      checked={enabled}
-      onChange={setEnabled}
-      className={`${enabled ? "bg-G400" : "bg-N400"}
-         inline-flex flex-shrink-0 h-[36px] w-[82px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-N0 focus-visible:ring-opacity-75`}
-    >
-      <span className="sr-only">Use setting</span>
-      <span
-        aria-hidden="true"
-        className={`${enabled ? "translate-x-11" : "translate-x-0"}
-            pointer-events-none flex items-center justify-center h-[24px] w-[24px] rounded-full bg-N0 shadow-lg transform ring-0 transition ease-in-out duration-500`}
-      >
-        {enabled
-          ? <CheckIcon className="w-5 h-5 text-G400" />
-          : <XIcon className="w-5 h-5 text-N400" />
-        }
-      </span>
-    </Switch>
-  );
 }
