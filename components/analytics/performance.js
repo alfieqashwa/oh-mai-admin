@@ -4,51 +4,64 @@ import { PlusCircleIcon } from '@heroicons/react/solid'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDollarSign, FiDownloadCloud, FiArrowDownRight, FiArrowUpRight, FiArrowRight } from 'react-icons/fi'
 
-export const PerformanceBorder = () => (
-  <div className="flex items-center justify-between my-4" >
-    <h4 className="w600">Performance</h4>
-    <div className="w-full mx-5 border border-N0 border-opacity-30"></div>
+import { AddCategoryModal } from './modal'
 
-    <Menu as="div" className="relative">
-      {({ open }) => (
-        <>
-          <Menu.Button className={`bg-transparent focus:outline-none ${open ? "text-P400" : "text-N0"}`}>
-            <BsThreeDotsVertical className="w-6 h-6" />
-          </Menu.Button>
-          <Transition
-            show={open}
-            as={Fragment}
-            enter="transition ease-out duration-200"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
-          >
-            <Menu.Items
-              static
-              className="absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none"
+export const PerformanceBorder = () => {
+  const [isOpen, setIsOpen] = useState(true)
+
+  return (
+    <div className="flex items-center justify-between my-4" >
+      <h4 className="w600">Performance</h4>
+      <div className="w-full mx-5 border border-N0 border-opacity-30"></div>
+
+      <Menu as="div" className="relative">
+        {({ open }) => (
+          <>
+            <Menu.Button className={`bg-transparent focus:outline-none ${open ? "text-P400" : "text-N0"}`}>
+              <BsThreeDotsVertical className="w-6 h-6" />
+            </Menu.Button>
+            <Transition
+              show={open}
+              as={Fragment}
+              enter="transition ease-out duration-200"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Item as="button" className="flex items-center justify-between px-4 py-2 space-x-4 bg-N0 whitespace-nowrap focus:outline-none">
-                <PlusCircleIcon className="w-6 h-6" />
-                <h4 className="w250 text-N900">Add Category</h4>
-              </Menu.Item>
-              <Menu.Item as="button" className="flex items-center justify-between px-4 py-2 space-x-4 bg-N0 whitespace-nowrap focus:outline-none">
-                <FiDollarSign className="w-6 h-6" />
-                <h4 className="w250 text-N900">Edit Currency</h4>
-              </Menu.Item>
-              <Menu.Item as="button" className="flex items-center justify-between px-4 py-2 space-x-4 bg-N0 whitespace-nowrap focus:outline-none">
-                <FiDownloadCloud className="w-6 h-6" />
-                <h4 className="w250 text-N900">Export</h4>
-              </Menu.Item>
-            </Menu.Items>
-          </Transition>
-        </>
-      )}
-    </Menu>
+              <Menu.Items
+                static
+                className="absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none"
+              >
+                {/* Open Dialog */}
+                <Menu.Item
+                  as="button"
+                  onClick={() => setIsOpen(true)}
+                  className="flex items-center justify-between px-4 py-2 space-x-4 bg-N0 whitespace-nowrap focus:outline-none"
+                >
+                  <PlusCircleIcon className="w-6 h-6" />
+                  <h4 className="w250 text-N900">Add Category</h4>
+                </Menu.Item>
 
-  </div>
-)
+                <Menu.Item as="button" className="flex items-center justify-between px-4 py-2 space-x-4 bg-N0 whitespace-nowrap focus:outline-none">
+                  <FiDollarSign className="w-6 h-6" />
+                  <h4 className="w250 text-N900">Edit Currency</h4>
+                </Menu.Item>
+                <Menu.Item as="button" className="flex items-center justify-between px-4 py-2 space-x-4 bg-N0 whitespace-nowrap focus:outline-none">
+                  <FiDownloadCloud className="w-6 h-6" />
+                  <h4 className="w250 text-N900">Export</h4>
+                </Menu.Item>
+              </Menu.Items>
+            </Transition>
+          </>
+        )}
+      </Menu>
+
+      <AddCategoryModal isOpen={isOpen} setIsOpen={setIsOpen} />
+    </div>
+  )
+}
 
 export const PerformanceCard = () => {
   const [selected, setSelected] = useState(performanceCards[0])
