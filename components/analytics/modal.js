@@ -1,7 +1,6 @@
 import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XIcon } from '@heroicons/react/outline'
-import { PlusCircleIcon } from '@heroicons/react/solid'
+import { Dialog, Switch, Transition } from '@headlessui/react'
+import { XIcon, CheckIcon } from '@heroicons/react/outline'
 
 import { GlassDiv } from 'components/glassdiv'
 
@@ -39,51 +38,63 @@ export function AddCategoryModal({ isOpen, setIsOpen }) {
               leaveTo="translate-x-full"
             >
               <div className="relative w-screen max-w-md">
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-in-out duration-500"
-                  enterFrom="opacity-0"
-                  enterTo="opacity-100"
-                  leave="ease-in-out duration-500"
-                  leaveFrom="opacity-100"
-                  leaveTo="opacity-0"
-                >
-                  <div className="absolute top-0 left-0 flex pt-4 pr-2 -ml-8 sm:-ml-10 sm:pr-4">
+                <GlassDiv className="flex flex-col h-full py-6 overflow-y-scroll rounded-none shadow-xl ">
+                  <div className="flex items-center justify-between px-4 sm:px-6">
+                    <Dialog.Title className="text-2xl font-medium text-N0">Add Category</Dialog.Title>
                     <button
-                      className="text-gray-300 rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                      className="text-gray-300 transition duration-200 ease-in-out bg-transparent rounded-md text-N0 hover:text-N300 focus:outline-none focus:ring-2 focus:ring-N0"
                       onClick={() => setIsOpen(false)}
                     >
+                      <XIcon className="w-8 h-8" aria-hidden="true" />
                       <span className="sr-only">Close panel</span>
-                      <XIcon className="w-6 h-6" aria-hidden="true" />
                     </button>
                   </div>
-                </Transition.Child>
-                <div className="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl">
-                  <div className="px-4 sm:px-6">
-                    <Dialog.Title className="text-lg font-medium text-gray-900">Panel title</Dialog.Title>
-                  </div>
-                  <div className="relative flex-1 px-4 mt-6 sm:px-6">
-                    {/* Replace with your content */}
+                  <div className="relative flex-1 px-4 mt-4 sm:px-6">
                     <div className="absolute inset-0 px-4 sm:px-6">
-                      <div className="h-full border-2 border-gray-200 border-dashed" aria-hidden="true" />
+                      <div className="h-full border border-N350" aria-hidden="true" />
+                      {/* Replace with your content */}
+                      <div className="mt-8">
+                        <div className="flex items-center justify-between">
+                          <h5 className="uppercase text-N0 w250">orders</h5>
+                          <SwitchTest />
+                        </div>
+                      </div>
                     </div>
+
                     {/* /End replace */}
+
                   </div>
-                </div>
+                </GlassDiv>
               </div>
             </Transition.Child>
           </div>
         </div>
-      </Dialog>
-    </Transition.Root>
+      </Dialog >
+    </Transition.Root >
   )
 }
 
-      // <button
-      //   type="button"
-      //   onClick={() => setIsOpen(true)}
-      //   className="flex items-center justify-between px-4 py-2 space-x-4 bg-N0 whitespace-nowrap focus:outline-none"
-      // >
-      //   <PlusCircleIcon className="w-6 h-6" />
-      //   <h4 className="w250 text-N900">Add Category</h4>
-      // </button>
+function SwitchTest() {
+  const [enabled, setEnabled] = useState(false);
+
+  return (
+    <Switch
+      checked={enabled}
+      onChange={setEnabled}
+      className={`${enabled ? "bg-G400" : "bg-N400"}
+         inline-flex flex-shrink-0 h-[36px] w-[82px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-N0 focus-visible:ring-opacity-75`}
+    >
+      <span className="sr-only">Use setting</span>
+      <span
+        aria-hidden="true"
+        className={`${enabled ? "translate-x-11" : "translate-x-0"}
+            pointer-events-none flex items-center justify-center h-[24px] w-[24px] rounded-full bg-N0 shadow-lg transform ring-0 transition ease-in-out duration-500`}
+      >
+        {enabled
+          ? <CheckIcon className="w-5 h-5 text-G400" />
+          : <XIcon className="w-5 h-5 text-N400" />
+        }
+      </span>
+    </Switch>
+  );
+}
