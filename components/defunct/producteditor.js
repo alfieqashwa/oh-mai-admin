@@ -92,6 +92,7 @@ export default function ProductEditor(props) {
   ]);
 
   useEffect(() => {
+    console.log("Product slug", slug)
     // if this is edit product
     if (slug && data && data.products) {
       // infuse default data
