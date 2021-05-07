@@ -34,21 +34,21 @@ export const PerformanceBorder = () => {
                 static
                 className="absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none"
               >
-                {/* Open Dialog */}
+                {/* When is clicked, then open the AddCategoryModal Component */}
                 <Menu.Item
                   as="button"
                   onClick={() => setIsOpen(true)}
-                  className="flex items-center justify-between px-4 py-2 space-x-4 bg-N0 whitespace-nowrap focus:outline-none"
+                  className="flex items-center justify-between w-full px-4 py-2 space-x-4 transition duration-300 ease-in-out hover:bg-N300 bg-N0 whitespace-nowrap focus:outline-none"
                 >
                   <PlusCircleIcon className="w-6 h-6" />
                   <h4 className="w250 text-N900">Add Category</h4>
                 </Menu.Item>
 
-                <Menu.Item as="button" className="flex items-center justify-between px-4 py-2 space-x-4 bg-N0 whitespace-nowrap focus:outline-none">
+                <Menu.Item as="button" className="flex items-center justify-between w-full px-4 py-2 space-x-4 transition duration-300 ease-in-out hover:bg-N300 bg-N0 whitespace-nowrap focus:outline-none">
                   <FiDollarSign className="w-6 h-6" />
                   <h4 className="w250 text-N900">Edit Currency</h4>
                 </Menu.Item>
-                <Menu.Item as="button" className="flex items-center justify-between px-4 py-2 space-x-4 bg-N0 whitespace-nowrap focus:outline-none">
+                <Menu.Item as="button" className="flex items-center justify-between w-full px-4 py-2 space-x-4 transition duration-300 ease-in-out bg-N0 whitespace-nowrap hover:bg-N300 focus:outline-none">
                   <FiDownloadCloud className="w-6 h-6" />
                   <h4 className="w250 text-N900">Export</h4>
                 </Menu.Item>
