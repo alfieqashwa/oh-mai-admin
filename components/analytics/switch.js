@@ -11,7 +11,7 @@ export function SwitchOnOff(props) {
       checked={enabled}
       onChange={setEnabled}
       className={`${enabled ? "bg-G400" : "bg-N400"}
-         inline-flex flex-shrink-0 h-[36px] w-[82px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-N0 focus-visible:ring-opacity-75`}
+        inline-flex flex-shrink-0 h-[36px] w-[82px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-N0 focus-visible:ring-opacity-75`}
     >
       <span className="sr-only">{props.title}</span>
       <span

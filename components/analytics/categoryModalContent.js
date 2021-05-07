@@ -5,7 +5,7 @@ export function AddCategoryContent() {
   return (
     <div className="py-8">
       {categories.map(c => (
-        <div key={c.id} className="flex items-center justify-between mt-4">
+        <div key={c.id} className="flex items-center justify-between w-full py-2">
           <h5 className="uppercase whitespace-nowrap text-N0 w250">{c.name}</h5>
           <SwitchOnOff title="Category Setting" isEnabled={c.isEnabled} />
         </div>
