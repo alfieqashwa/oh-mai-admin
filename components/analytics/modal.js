@@ -39,11 +39,11 @@ export function AddCategoryModal({ isOpen, setIsOpen }) {
               leaveTo="translate-x-full"
             >
               <div className="relative w-screen max-w-xl">
-                <GlassDiv className="flex flex-col h-full py-6 overflow-y-scroll rounded-none shadow-xl ">
+                <GlassDiv className="flex flex-col h-full py-12 overflow-y-scroll rounded-none shadow-xl ">
                   <div className="flex items-center justify-between px-4 sm:px-6">
                     <Dialog.Title className="text-2xl font-medium text-N0">Add Category</Dialog.Title>
                     <button
-                      className="text-gray-300 transition duration-200 ease-in-out bg-transparent rounded-md text-N0 hover:text-N300 focus:outline-none focus:ring-2 focus:ring-N0"
+                      className="transition duration-200 ease-in-out bg-transparent rounded-md text-N0 hover:text-N300 focus:text-300 focus:outline-none focus:ring-2 focus:ring-N300"
                       onClick={() => setIsOpen(false)}
                     >
                       <XIcon className="w-8 h-8" aria-hidden="true" />

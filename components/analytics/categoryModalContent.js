@@ -3,7 +3,7 @@ import { SwitchOnOff } from './switch'
 export function AddCategoryContent() {
 
   return (
-    <div className="mt-12">
+    <div className="py-8">
       {categories.map(c => (
         <div key={c.id} className="flex items-center justify-between mt-4">
           <h5 className="uppercase whitespace-nowrap text-N0 w250">{c.name}</h5>
