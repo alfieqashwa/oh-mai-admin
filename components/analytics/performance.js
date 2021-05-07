@@ -23,18 +23,21 @@ export const PerformanceBorder = () => {
             <Transition
               show={open}
               as={Fragment}
-              enter="transition ease-out duration-200"
+              enter="transition ease-out duration-100"
               enterFrom="transform opacity-0 scale-95"
               enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
+              leave="transition ease-in duration-700"
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
               <Menu.Items
                 static
-                className="absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none"
+                className={`
+                  ${!open ? "motion-safe:animate-bounce transition duration-200 ease-in-out" : ""}
+                  absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
+                `}
               >
-                {/* When is clicked, then open the AddCategoryModal Component */}
+                {/* When it's clicked, then it will open the AddCategoryModal Component */}
                 <Menu.Item
                   as="button"
                   onClick={() => setIsOpen(true)}
