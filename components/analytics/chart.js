@@ -34,8 +34,8 @@ export function ChartView() {
         </div>
         <div className="flex items-center justify-between space-x-10">
           <div>
-            <select name="date-range" className="bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-P700 focus:outline-none">-mdrounded focus:ring-1 ring-P700 focborder-none-none bo
-            <option>By day</option>
+            <select name="date-range" className="bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-P700 focus:outline-none">
+              <option>By day</option>
               <option>By month</option>
             </select>
           </div>
@@ -55,9 +55,9 @@ export function ChartView() {
           </div>
         </div>
       </div>
-      <div className="grid w-full py-32 h-1/2 place-items-center">
-        <h1 className=" text-N0">
-          Graph Bar Chart
+      <div className="grid w-full py-32 rounded-b bg-G400 h-1/2 place-items-center">
+        <h1 className="text-N0">
+          Bar / Line Chart
         </h1>
       </div>
     </>
