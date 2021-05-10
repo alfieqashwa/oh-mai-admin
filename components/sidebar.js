@@ -12,7 +12,7 @@ export const SideBar = () => {
   const router = useRouter()
 
   return (
-    <GlassDefault className="hidden md:block fixed top-0 left-0 h-screen rounded-none w-[252px]">
+    <GlassDefault className="hidden md:block fixed top-0 left-0 min-h-screen rounded-none w-[252px]">
       {/* Logo */}
       <div className="mt-4 ml-14">
         <img
@@ -21,10 +21,11 @@ export const SideBar = () => {
           alt="OhMai-logo"
         />
       </div>
-      {/* Main Menu */}
+
+      {/* Home */}
       <div className="mt-16 space-y-5 text-N0">
         <ActiveLink href="/">
-          <div className={`flex items-center justify-start w-full pl-12 cursor-pointer space-x-6 ${router.pathname === "/" ? "text-P100" : ""}`}>
+          <div className={`flex items-center justify-start w-full pl-16 cursor-pointer space-x-6 ${router.pathname === "/" ? "text-P100" : ""}`}>
             <BiHomeAlt className="w-6 h-6" />
             <p className={`w400 ${router.pathname === "/" ? "text-P100" : ""}`}>Home</p>
           </div>
@@ -40,7 +41,7 @@ export const SideBar = () => {
               >
                 <Link href="/analytics/summary">
                   <a
-                    className={`focus:outline-none flex items-center justify-start pl-12 cursor-pointer space-x-6 ${open ? "text-P100" : ""}`}
+                    className={`focus:outline-none flex items-center justify-start pl-16 cursor-pointer space-x-6 ${open ? "text-P100" : ""}`}
                   >
                     <SiGoogleanalytics className="w-6 h-6" />
                     <p className={`w400 ${open ? "text-P100" : ""}`}>Analytics</p>
@@ -62,7 +63,7 @@ export const SideBar = () => {
                     <ActiveLink href="/analytics/summary">
                       <a
                         className={
-                          `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/summary" ? "bg-P900" : ""}`
+                          `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/summary" ? "bg-P900" : ""}`
                         }>
                         Summary
                       </a>
@@ -71,7 +72,7 @@ export const SideBar = () => {
                   <div>
                     <ActiveLink href="/analytics/orders">
                       <a className={
-                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/orders" ? "bg-P900" : ""}`
+                        `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/orders" ? "bg-P900" : ""}`
                       }>
                         Orders
                       </a>
@@ -80,7 +81,7 @@ export const SideBar = () => {
                   <div>
                     <ActiveLink href="/analytics/products">
                       <a className={
-                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/products" ? "bg-P900" : ""}`
+                        `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/products" ? "bg-P900" : ""}`
                       }>
                         Products
                       </a>
@@ -89,7 +90,7 @@ export const SideBar = () => {
                   <div>
                     <ActiveLink href="/analytics/kol">
                       <a className={
-                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/kol" ? "bg-P900" : ""}`
+                        `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/kol" ? "bg-P900" : ""}`
                       }>
                         KOL
                       </a>
@@ -98,7 +99,7 @@ export const SideBar = () => {
                   <div>
                     <ActiveLink href="/analytics/customer">
                       <a className={
-                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/customer" ? "bg-P900" : ""}`
+                        `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/customer" ? "bg-P900" : ""}`
                       }>
                         Customer
                       </a>
@@ -107,7 +108,7 @@ export const SideBar = () => {
                   <div>
                     <ActiveLink href="/analytics/promo">
                       <a className={
-                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/promo" ? "bg-P900" : ""}`
+                        `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/analytics/promo" ? "bg-P900" : ""}`
                       }>
                         Promo
                       </a>
@@ -129,7 +130,7 @@ export const SideBar = () => {
               >
                 <Link href="/products/add-product">
                   <a
-                    className={`focus:outline-none flex items-center justify-start pl-12 cursor-pointer space-x-6 ${open ? "text-P100" : ""}`}
+                    className={`focus:outline-none flex items-center justify-start pl-16 cursor-pointer space-x-6 ${open ? "text-P100" : ""}`}
                   >
                     <FiBox className="w-6 h-6" />
                     <p className={`w400 ${open ? "text-P100" : ""}`}>Products</p>
@@ -151,7 +152,7 @@ export const SideBar = () => {
                     <ActiveLink href="/products/add-product">
                       <a
                         className={
-                          `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/add-product" ? "bg-P900" : ""}`
+                          `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/add-product" ? "bg-P900" : ""}`
                         }>
                         Add Product
                       </a>
@@ -160,7 +161,7 @@ export const SideBar = () => {
                   <div>
                     <ActiveLink href="/products/inventory">
                       <a className={
-                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/inventory" ? "bg-P900" : ""}`
+                        `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/inventory" ? "bg-P900" : ""}`
                       }>
                         Inventory
                       </a>
@@ -169,7 +170,7 @@ export const SideBar = () => {
                   <div>
                     <ActiveLink href="/products/promo-code">
                       <a className={
-                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/promo-code" ? "bg-P900" : ""}`
+                        `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/promo-code" ? "bg-P900" : ""}`
                       }>
                         Promo Codes
                       </a>
@@ -178,7 +179,7 @@ export const SideBar = () => {
                   <div>
                     <ActiveLink href="/products/attributes">
                       <a className={
-                        `block w-full py-2 pl-24 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/attributes" ? "bg-P900" : ""}`
+                        `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === "/products/attributes" ? "bg-P900" : ""}`
                       }>
                         Attributes
                       </a>
@@ -192,18 +193,18 @@ export const SideBar = () => {
 
         {/* Orders */}
         <ActiveLink href="/orders">
-          <div className={`flex items-center justify-start cursor-pointer pl-12 space-x-6 ${router.pathname === "/orders" ? "text-P100" : ""}`}>
+          <div className={`flex items-center justify-start cursor-pointer pl-16 space-x-6 ${router.pathname === "/orders" ? "text-P100" : ""}`}>
             <FiTruck className="w-6 h-6" />
             <p className={`w400 ${router.pathname === "/orders" ? "text-P100" : ""}`}>Orders</p>
           </div>
         </ActiveLink>
 
         {/* Settings */}
-        <div className="absolute flex items-center justify-start pl-12 space-x-6 bottom-12">
+        <div className="flex items-center justify-start pl-16 space-x-6 pt-72">
           <FiSettings className="w-6 h-6" />
           <p className="w400">Settings</p>
         </div>
       </div>
-    </GlassDefault >
+    </GlassDefault>
   )
 }
