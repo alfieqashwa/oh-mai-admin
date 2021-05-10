@@ -7,13 +7,14 @@ import { SiGoogleanalytics } from 'react-icons/si'
 import { Header } from 'components/header'
 import { PerformanceBorder, PerformanceCard } from 'components/analytics/performance';
 import { ChartView } from 'components/analytics/chart'
+import { TableSummary } from 'components/analytics/table';
 
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
 
   return (
-    <>
+    <div className="pb-4">
       <Header title="Analytics - Summary" />
       <div className="my-8 ml-6 mr-12">
         {/* header */}
@@ -224,8 +225,11 @@ export default function Summary() {
 
         {/* Chart View */}
         <ChartView />
+
+        {/* Table View */}
+        <TableSummary />
       </div>
-    </>
+    </div>
   )
 }
 
