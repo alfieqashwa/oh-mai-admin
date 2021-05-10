@@ -60,7 +60,6 @@ export const Title = ({ valTitle, valDescription, onChange }) => {
         type="text"
         name="title"
         id="product_name"
-        defaultValue={title || ""}
         value={title}
         placeholder="Enter title here"
         onChange={_onChange}

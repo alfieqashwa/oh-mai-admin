@@ -2,74 +2,34 @@ import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/react/solid'
 import { white } from 'tailwindcss/colors'
 import { BiTrash } from 'react-icons/bi'
+import { useEffect, useState } from 'react'
+import { GET_LIST_ORDER_GQL } from 'graphql/order'
+import { client } from 'lib/graphqlclient';
+import moment from 'moment'
 
-const products = [
-  {
-    product: 'Monster Hunter: Rise',
-    status: 'Active',
-    sku: 'ASD12938012',
-    price: '10.00',
-    salePrice: '10.00',
-    category: 'Games',
-    quantity: '1290',
-    image:
-      '/monster_hunter_rise_cover.jpg',
-  },
-  {
-    product: 'Monster Hunter: Rise',
-    status: 'Active',
-    sku: 'ASD12938012',
-    price: '10.00',
-    salePrice: '10.00',
-    category: 'Games',
-    quantity: '1290',
-    image:
-      '/monster_hunter_rise_cover.jpg',
-  },
-  {
-    product: 'Monster Hunter: Rise',
-    status: 'Active',
-    sku: 'ASD12938012',
-    price: '10.00',
-    salePrice: '10.00',
-    category: 'Games',
-    quantity: '1290',
-    image:
-      '/monster_hunter_rise_cover.jpg',
-  },
-  {
-    product: 'Monster Hunter: Rise',
-    status: 'Active',
-    sku: 'ASD12938012',
-    price: '10.00',
-    salePrice: '10.00',
-    category: 'Games',
-    quantity: '1290',
-    image:
-      '/monster_hunter_rise_cover.jpg',
-  },
-  {
-    product: 'Monster Hunter: Rise',
-    status: 'Active',
-    sku: 'ASD12938012',
-    price: '10.00',
-    salePrice: '10.00',
-    category: 'Games',
-    quantity: '1290',
-    image:
-      '/monster_hunter_rise_cover.jpg',
-  },
-]
-
-{/* <p>S/N</p>
-                    <p>Order No.</p>
-                    <p>Date & Time</p>
-                    <p>Status</p>
-                    <p>Billing</p>
-                    <p>Total</p>
-                    <p>Actions</p> */}
 
 export function OrderList() {
+
+  const [orders, setOrders] = useState([])
+  const moneyFormat = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'TWD',
+  });
+
+  useEffect(() => {
+    client.request(GET_LIST_ORDER_GQL).then((data) => {
+      console.log("Get list order success", data.orders)
+      setOrders(data.orders)
+    }).catch(err => console.log("Get list order error", err))
+  }, [])
+
+  const parseAddress = (order) => {
+    const txtAddr = `${order.consumer.user.first_name} ${order.consumer.user.last_name}, ${order.shipping_address.line1}, 
+    ${order.shipping_address.line2} ${order.shipping_address.city} ${order.shipping_address.state} ${order.shipping_address.country}`
+
+    return txtAddr
+  }
+
   return (
     <table className="md:min-w-full w-full">
       <thead className="bg-N0 bg-opacity-30">
@@ -110,26 +70,26 @@ export function OrderList() {
         </tr>
       </thead>
       <tbody className="">
-        {products.map((p, i) => (
+        {orders.map((o, i) => (
           <tr key={i}>
             <td className="hidden py-4 px-4 whitespace-nowrap md:table-cell text-N0">
               {i + 1}
             </td>
             <td className="p-4 whitespace-nowrap">
-              <div className="text-sm text-N0">ORD0000A</div>
+              <div className="text-sm text-N0">{o.order_number}</div>
             </td>
             <td className="p-4 whitespace-nowrap">
-              <div className="text-sm text-G400">13/05/2021 14:30:23</div>
+              <div className="text-sm text-G400">{moment(o.order_datetime).format("DD/MM/YYYY HH:mm:ss")}</div>
             </td>
             <td className="p-4 md:table-cell whitespace-nowrap">
-              <button className="text-xs bg-Y001">PENDING</button>
+              <button className="text-xs bg-Y001">{o.order_status_payment}</button>
             </td>
             <td className="hidden p-4 text-sm md:table-cell text-N0">
-              <p className="text-N0 text-xs">First Name Last Name, Billing Address, Billing Address, Billing Address, Billing Addr...</p>
+              <p className="text-N0 text-xs">{parseAddress(o)}</p>
               <p className="text-N0 opacity-70 text-sm">via Credit Card (ECPay)</p>
             </td>
-            <td className="hidden p-4 text-sm md:table-cell text-N0 whitespace-nowrap">NT$1500.00</td>
-            <td className="hidden content-center align-middle p-4 whitespace-nowrap flex flex-row content-between md:visible">
+            <td className="hidden p-4 text-sm md:table-cell text-N0 whitespace-nowrap">{moneyFormat.format(o.total_price)}</td>
+            <td className="hidden content-center align-middle p-4 whitespace-nowrap flex flex-row content-between md:flex">
               <a href="#" className="transition duration-200 ease-in-out text-N0 hover:text-opacity-75">
                 <HiOutlinePencilAlt className="w-5 h-5" />
               </a>
