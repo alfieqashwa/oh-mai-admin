@@ -6,6 +6,7 @@ import { SiGoogleanalytics } from 'react-icons/si'
 
 import { Header } from 'components/header'
 import { PerformanceBorder, PerformanceCard } from 'components/analytics/performance';
+import { ChartView } from 'components/analytics/chart'
 
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
@@ -221,6 +222,8 @@ export default function Summary() {
         {/* Performance's Cards */}
         <PerformanceCard />
 
+        {/* Chart View */}
+        <ChartView />
       </div>
     </>
   )
