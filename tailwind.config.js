@@ -40,7 +40,8 @@ module.exports = {
       G400: "#2EC09D",
       Y400: "#F4C82B",
       R600: "#C02E2E",
-
+      WHITE_D1: "#D2D2D3",
+      Y001: "#F4C82B",
       GradientEnd: "#E92F94",
     },
 
