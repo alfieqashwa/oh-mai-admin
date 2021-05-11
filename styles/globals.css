@@ -75,7 +75,7 @@
   }
 }
 @layer utilities {
-  @variants responsive {
+  @variants {
     .subtitle {
       @apply font-secondary;
       @apply text-base;

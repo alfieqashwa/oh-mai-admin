@@ -6,33 +6,29 @@ export function ChartView() {
     <>
       <div className="flex items-center justify-between px-6 py-4 bg-N200">
         <h3 className="text-black w250">Chart</h3>
-        <div className="flex items-center justify-start space-x-3">
-          <div>
-            <input
-              type="checkbox"
-              name="current"
-              className="w-6 h-6 rounded bg-P700 focus:outline-none focus:ring checked:text-P700 focus:ring-P700"
-            />
-          </div>
+        <div className="flex items-center justify-start pl-12 space-x-3">
+          <input
+            type="checkbox"
+            name="current"
+            className="w-6 h-6 rounded bg-P700 focus:outline-none focus:ring checked:text-P700 focus:ring-P700"
+          />
           <div>
             <p className="text-black w350">Current Year (Jan 1 - Dec 31, 2021)</p>
-            <h5 className="text-black w250-m">10</h5>
+            <h5 className="text-black w250-m">$10.00</h5>
           </div>
         </div>
         <div className="flex items-center justify-start space-x-3">
-          <div className="">
-            <input
-              type="checkbox"
-              name="current"
-              className="w-6 h-6 rounded bg-G400 focus:outline-none focus:ring checked:text-G400 focus:ring-G400"
-            />
-          </div>
+          <input
+            type="checkbox"
+            name="current"
+            className="w-6 h-6 rounded bg-G400 focus:outline-none focus:ring checked:text-G400 focus:ring-G400"
+          />
           <div>
             <p className="text-black w350">Previous Year (Jan 1 - Dec 31, 2021)</p>
-            <h5 className="text-black w250-m">0</h5>
+            <h5 className="text-black w250-m">$0.00</h5>
           </div>
         </div>
-        <div className="flex items-center justify-between space-x-10">
+        <div className="flex items-center justify-between space-x-1">
           <div>
             <select name="date-range" className="bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-P700 focus:outline-none">
               <option>By day</option>
