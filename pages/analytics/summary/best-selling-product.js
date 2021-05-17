@@ -1,13 +1,13 @@
 import { useState, Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 
 import { Header } from 'components/header'
 import { GlassHeader } from 'components/glassHeader'
-import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'
-import Link from 'next/link'
+import { TitleWithBackButton } from 'components/titleWithBackButton'
+import { LeaderBoardBorder } from 'components/analytics/summary'
+import { PaginationSummary } from 'components/analytics/summary'
 
 export default function BestSellingProduct() {
   return (
@@ -22,20 +22,10 @@ export default function BestSellingProduct() {
       </GlassHeader>
 
       {/* Title */}
-      <div className="flex items-center mt-20">
-        <Link href="/analytics/summary">
-          <a>
-            <AiOutlineArrowLeft className="w-6 h-6 transition duration-1000 ease-in-out text-N0 hover:text-P400 hover:animate-bounce" />
-          </a>
-        </Link>
-        <h3 className="ml-4 capitalize w700">best selling product</h3>
-      </div>
+      <TitleWithBackButton path="/analytics/summary" title="best selling product" />
 
       {/* Leaderboard Border */}
-      <div className="flex items-center mt-5 space-x-5">
-        <h4 className="capitalize w600">leaderboard</h4>
-        <div className="w-full border border-N0 border-opacity-30"></div>
-      </div>
+      <LeaderBoardBorder />
 
       {/* Table */}
       <div className="mt-8">
@@ -130,60 +120,8 @@ export default function BestSellingProduct() {
       </div>
 
       {/* Pagination */}
-      <Pagination />
+      <PaginationSummary />
     </div>
-  )
-}
-
-const Pagination = () => {
-  const options = [
-    { label: "1", value: 1 },
-    { label: "2", value: 2 },
-    { label: "3", value: 3 },
-    { label: "4", value: 4 },
-    { label: "5", value: 5 },
-    { label: "6", value: 6 },
-    { label: "7", value: 7 },
-    { label: "8", value: 8 },
-    { label: "9", value: 9 },
-    { label: "10", value: 10 },
-  ];
-
-  return (
-    <div className="block pt-20 pb-8 md:items-center md:justify-end md:flex">
-      <nav className="flex items-center justify-center space-x-6 text-N0">
-        <ChevronDoubleLeftIcon className="w-5 h-5" />
-        <ChevronLeftIcon className="w-5 h-5" />
-        <button className="px-2.5 text-sm border font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out">1</button>
-        <button className="px-2.5 text-sm border font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">2</button>
-        <button className="px-2.5 text-sm border font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">3</button>
-        <a className="px-2.5 py-1 text-sm border font-medium rounded bg-N800 hover:bg-P700">...</a>
-        <button className="px-2 text-sm font-medium border bg-N800 hover:bg-P700">99</button>
-        <ChevronRightIcon className="w-5 h-5" />
-        <ChevronDoubleRightIcon className="w-5 h-5" />
-      </nav>
-
-      <div className="pr-10 mt-2 text-center lg:mt-0 lg:text-none lg:mx-6">
-        <p className="w350 text-N450 whitespace-nowrap">Showing<span className="px-1.5 font-medium text-N0">1</span>to<span className="px-1.5 font-medium text-N0">4</span>of<span className="px-1.5 font-medium text-N0">60</span>products</p>
-      </div>
-
-      <div className="items-center hidden lg:flex whitespace-nowrap">
-        <p className="px-2 w350 text-N200">Show</p>
-        <select
-          type="number"
-          name="show"
-          defaultValue={4}
-          className="w-16 px-2 py-1 mx-2 rounded-md bg-N100">
-
-          {options.map((o, i) => (
-            <option key={i} value={o.value}>{o.label}</option>
-          ))
-          }
-
-        </select>
-        <p className="px-2 w350 text-N200">at a time</p>
-      </div>
-    </div >
   )
 }
 
