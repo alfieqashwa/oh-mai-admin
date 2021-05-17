@@ -7,6 +7,7 @@ import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { Header } from 'components/header'
 import { GlassHeader } from 'components/glassHeader'
 import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'
+import Link from 'next/link'
 
 export default function BestSellingProduct() {
   return (
@@ -22,7 +23,11 @@ export default function BestSellingProduct() {
 
       {/* Title */}
       <div className="flex items-center mt-20">
-        <AiOutlineArrowLeft className="w-6 h-6 text-N0" />
+        <Link href="/analytics/summary">
+          <a>
+            <AiOutlineArrowLeft className="w-6 h-6 transition duration-1000 ease-in-out text-N0 hover:text-P400 hover:animate-bounce" />
+          </a>
+        </Link>
         <h3 className="ml-4 capitalize w700">best selling product</h3>
       </div>
 
