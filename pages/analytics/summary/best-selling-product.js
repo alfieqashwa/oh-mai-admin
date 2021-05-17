@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { useState, Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -6,6 +6,7 @@ import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 
 import { Header } from 'components/header'
 import { GlassHeader } from 'components/glassHeader'
+import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'
 
 export default function BestSellingProduct() {
   return (
@@ -32,7 +33,7 @@ export default function BestSellingProduct() {
       </div>
 
       {/* Table */}
-      <div className="my-10">
+      <div className="mt-8">
         <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
           <h2 className="w250 text-N900">sort by</h2>
           <div className="px-4">
@@ -90,9 +91,10 @@ export default function BestSellingProduct() {
           </div>
         </header>
 
+        {/* Table Header */}
         <table className="md:min-w-full text-N0">
           <thead className="bg-N200 bg-opacity-30">
-            <tr className="bg-G400">
+            <tr>
               <th scope="col" className="px-2 py-4 text-center capitalize w400 whitespace-nowrap">s/n</th>
               <th scope="col" className="w-1/6 py-4 pl-4 text-left capitalize w400 whitespace-nowrap">product title</th>
               <th scope="col" className="w-1/6 py-4 text-right capitalize w400 whitespace-nowrap">SKU</th>
@@ -103,12 +105,11 @@ export default function BestSellingProduct() {
               <th scope="col" className="p-4 text-center capitalize w400 whitespace-nowrap">status</th>
             </tr>
           </thead>
+
+          {/* Table Content */}
           <tbody className="bg-N700 text-N0">
             {tableBody.map(t => (
-              <tr
-                key={t.id}
-                className=""
-              >
+              <tr key={t.id}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">{t.sn}</td>
                 <td className="w-1/6 py-4 pl-4 text-left underline w400">{t.productTitle}</td>
                 <td className="w-1/6 py-4 text-right w400 whitespace-nowrap">{t.sku}</td>
@@ -122,12 +123,66 @@ export default function BestSellingProduct() {
           </tbody>
         </table>
       </div>
+
+      {/* Pagination */}
+      <Pagination />
     </div>
   )
 }
 
-// Best Selling Product List Dummy Data
+const Pagination = () => {
+  const options = [
+    { label: "1", value: 1 },
+    { label: "2", value: 2 },
+    { label: "3", value: 3 },
+    { label: "4", value: 4 },
+    { label: "5", value: 5 },
+    { label: "6", value: 6 },
+    { label: "7", value: 7 },
+    { label: "8", value: 8 },
+    { label: "9", value: 9 },
+    { label: "10", value: 10 },
+  ];
 
+  return (
+    <div className="block pt-20 pb-8 md:items-center md:justify-end md:flex">
+      <nav className="flex items-center justify-center space-x-6 text-N0">
+        <ChevronDoubleLeftIcon className="w-5 h-5" />
+        <ChevronLeftIcon className="w-5 h-5" />
+        <button className="px-2.5 text-sm border font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out">1</button>
+        <button className="px-2.5 text-sm border font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">2</button>
+        <button className="px-2.5 text-sm border font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">3</button>
+        <a className="px-2.5 py-1 text-sm border font-medium rounded bg-N800 hover:bg-P700">...</a>
+        <button className="px-2 text-sm font-medium border bg-N800 hover:bg-P700">99</button>
+        <ChevronRightIcon className="w-5 h-5" />
+        <ChevronDoubleRightIcon className="w-5 h-5" />
+      </nav>
+
+      <div className="pr-10 mt-2 text-center lg:mt-0 lg:text-none lg:mx-6">
+        <p className="w350 text-N450 whitespace-nowrap">Showing<span className="px-1.5 font-medium text-N0">1</span>to<span className="px-1.5 font-medium text-N0">4</span>of<span className="px-1.5 font-medium text-N0">60</span>products</p>
+      </div>
+
+      <div className="items-center hidden lg:flex whitespace-nowrap">
+        <p className="px-2 w350 text-N200">Show</p>
+        <select
+          type="number"
+          name="show"
+          defaultValue={4}
+          className="w-16 px-2 py-1 mx-2 rounded-md bg-N100">
+
+          {options.map((o, i) => (
+            <option key={i} value={o.value}>{o.label}</option>
+          ))
+          }
+
+        </select>
+        <p className="px-2 w350 text-N200">at a time</p>
+      </div>
+    </div >
+  )
+}
+
+// Best Selling Product List Dummy Data
 const tableBody = [
   { id: 1, sn: '1', productTitle: 'Zelta: Breath of the Wild', sku: '128SKXUM-CI', itemsSold: 100, netSales: 1000.00, orders: 10, category: 'Games', status: 'Active' },
   { id: 2, sn: '2', productTitle: 'Persona 5', sku: 'PERS9290S-XL', itemsSold: 24, netSales: 400.00, orders: 10, category: 'Games', status: 'Active' },
