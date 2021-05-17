@@ -30,7 +30,7 @@ export default function TopKOL() {
         <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
           <h2 className="w250 text-N900">sort by</h2>
           <div className="px-4">
-            <select name="date-range" className="px-8 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none">
+            <select name="date-range" className="px-10 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none">
               <option>Ascending</option>
               <option>Descending</option>
             </select>
@@ -88,12 +88,12 @@ export default function TopKOL() {
         <table className="md:min-w-full text-N0">
           <thead className="bg-N200 bg-opacity-30">
             <tr>
-              <th scope="col" className="px-2 py-4 text-center capitalize w400 whitespace-nowrap">s/n</th>
-              <th scope="col" className="w-1/6 py-4 pl-4 text-left capitalize w400 whitespace-nowrap">kol</th>
+              <th scope="col" className="py-4 text-center capitalize w400 whitespace-nowrap">s/n</th>
+              <th scope="col" className="py-4 pl-4 text-left capitalize w400 whitespace-nowrap">kol</th>
               <th scope="col" className="py-4 text-right capitalize w400 whitespace-nowrap">items sold</th>
-              <th scope="col" className="w-1/6 py-4 text-right capitalize w400 whitespace-nowrap">net sales</th>
+              <th scope="col" className="py-4 text-right capitalize w400 whitespace-nowrap">net sales</th>
               <th scope="col" className="py-4 text-right capitalize w400 whitespace-nowrap">orders</th>
-              <th scope="col" className="p-4 text-center capitalize w400 whitespace-nowrap">total commissions</th>
+              <th scope="col" className="py-4 pr-10 text-right capitalize w400 whitespace-nowrap">total commissions</th>
             </tr>
           </thead>
 
@@ -102,11 +102,11 @@ export default function TopKOL() {
             {tableBody.map(t => (
               <tr key={t.id}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">{t.sn}</td>
-                <td className="w-1/6 py-4 pl-4 text-left underline w400">{t.kol}</td>
+                <td className="py-4 pl-4 text-left underline w400">{t.kol}</td>
                 <td className="py-4 text-right w400 whitespace-nowrap">{t.itemsSold}</td>
-                <td className="w-1/6 py-4 text-right w400 whitespace-nowrap">${t.netSales.toFixed(2)}</td>
+                <td className="py-4 text-right w400 whitespace-nowrap">${t.netSales.toFixed(2)}</td>
                 <td className="py-4 text-right underline w400 whitespace-nowrap">{t.orders}</td>
-                <td className="px-4 py-4 text-center w400 whitespace-nowrap">{t.totalCommission.toFixed(2)}</td>
+                <td className="py-4 pr-10 text-right w400 whitespace-nowrap">${t.totalCommission.toFixed(2)}</td>
               </tr>
             ))}
           </tbody>

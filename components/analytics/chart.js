@@ -18,7 +18,7 @@ export function ChartView() {
   const [plan, setPlan] = useState('bar')
   return (
     <>
-      <div className="flex items-center justify-between px-6 py-4 bg-N200">
+      <div className="flex items-center justify-between px-6 py-4 mb-12 bg-N200">
         <h3 className="text-black w250">Chart</h3>
         <div className="flex items-center justify-start pl-12 space-x-3">
           <input

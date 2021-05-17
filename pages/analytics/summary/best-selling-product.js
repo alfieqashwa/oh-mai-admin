@@ -31,7 +31,7 @@ export default function BestSellingProduct() {
         <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
           <h2 className="w250 text-N900">sort by</h2>
           <div className="px-4">
-            <select name="date-range" className="px-8 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none">
+            <select name="date-range" className="px-10 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none">
               <option>Ascending</option>
               <option>Descending</option>
             </select>
@@ -111,7 +111,14 @@ export default function BestSellingProduct() {
                 <td className="w-1/6 py-4 text-right w400 whitespace-nowrap">${t.netSales.toFixed(2)}</td>
                 <td className="py-4 text-right underline w400 whitespace-nowrap">{t.orders}</td>
                 <td className="w-8 py-4 pl-8 text-right w400">{t.category}</td>
-                <td className="px-4 py-4 text-center w400 whitespace-nowrap">{t.status}</td>
+                <td
+                  className={`
+                  ${t.status === 'Active' ? "text-G400" : "text-R600"}
+                  x-4 py-4 text-center w400 whitespace-nowrap
+                  `}
+                >
+                  {t.status}
+                </td>
               </tr>
             ))}
           </tbody>
