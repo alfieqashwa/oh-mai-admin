@@ -1,25 +1,9 @@
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { BiTrash } from 'react-icons/bi'
-import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { GlassDiv } from "components/glassdiv";
 import { GlassDefault } from 'components/glassDefault'
 import TextEditor from 'components/textEditor'
 import { UploadMedia } from 'components/uploadMedia'
-
-// Confirmation Saved-Button
-export const ConfirmationSavedButton = () =>
-  <GlassDefault className="fixed right-0 z-20 top-0 left-0 md:left-[252px] h-16 rounded-none">
-    <div className="flex items-center justify-between px-4 py-3 x-4">
-      <div className="flex items-center">
-        <AiOutlineArrowLeft className="w-6 h-6 md:hidden text-N0" />
-        <p className="ml-4 text-sm">Unsaved Product</p>
-      </div>
-      <div className="flex space-x-4">
-        <button className="px-2 py-2 text-sm uppercase md:px-4 text-N800 bg-N100">discard</button>
-        <button className="px-5 py-2 text-sm uppercase md:px-6 bg-G400 text-N0">save</button>
-      </div>
-    </div>
-  </GlassDefault >
 
 // Left
 export const Title = () =>
