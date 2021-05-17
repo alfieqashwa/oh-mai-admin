@@ -6,8 +6,7 @@ import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { Header } from 'components/header'
 import { GlassHeader } from 'components/glassHeader'
 import { TitleWithBackButton } from 'components/titleWithBackButton'
-import { LeaderBoardBorder } from 'components/analytics/summary'
-import { PaginationSummary } from 'components/analytics/summary'
+import { LeaderBoardBorder, PaginationSummary } from 'components/analytics/summary'
 
 export default function BestSellingProduct() {
   return (
