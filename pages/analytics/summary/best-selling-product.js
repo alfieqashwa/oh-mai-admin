@@ -13,7 +13,7 @@ export default function BestSellingProduct() {
     <div className="pr-12 pl-7">
 
       {/* Header? */}
-      <Header title="Analytics - Summary - Best Selling Product" />
+      <Header title="Summary - Best Selling Product" />
       <GlassHeader title="best selling product">
         <div className="flex space-x-4">
           <button className="px-5 py-2 uppercase bg-transparent border w250-m text-N0">export</button>

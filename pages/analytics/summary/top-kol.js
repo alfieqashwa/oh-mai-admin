@@ -12,7 +12,7 @@ export default function TopKOL() {
   return (
     <div className="pr-12 pl-7">
       {/* Header? */}
-      <Header title="Analytics - Summary - Top KOL" />
+      <Header title="Summary - Top KOL" />
       <GlassHeader title="top KOL">
         <div className="flex space-x-4">
           <button className="px-5 py-2 uppercase bg-transparent border w250-m text-N0">export</button>
