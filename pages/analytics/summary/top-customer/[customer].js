@@ -9,6 +9,7 @@ import { TitleWithBackButton } from 'components/titleWithBackButton'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { Menu, Transition } from '@headlessui/react'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
+import { GlassDefault } from 'components/glassDefault'
 
 const fetcher = async (url) => {
   const res = await fetch(url)
@@ -32,7 +33,7 @@ export default function Customer() {
   // console.log(data)
 
   return (
-    <div className="pr-12 pl-7">
+    <div className="pb-12 pr-12 pl-7">
       <Header title={`Top Customer ${data.customer}`} />
       <GlassHeader title={data.customer}>
         <div className="flex space-x-4">
@@ -41,8 +42,52 @@ export default function Customer() {
       </GlassHeader>
       <TitleWithBackButton path="/analytics/summary/top-customer" title={data.customer} />
 
+      {/* General Card */}
+      <GlassDefault className="mt-5 shadow-xl">
+        <h5 className="px-6 py-4 capitalize w500">general</h5>
+        <main className="grid grid-cols-5 px-6 py-5 bg-N700 gap-y-8 ">
+          <section>
+            <p className="capitalize opacity-50 w350">total orders</p>
+            <p className="w400">{data.general[0].totalOrders}</p>
+          </section>
+          <section>
+            <p className="capitalize opacity-50 w350">total refunds</p>
+            <p className="w400">{data.general[0].totalRefunds}</p>
+          </section>
+          <section>
+            <p className="capitalize opacity-50 w350">items bought</p>
+            <p className="w400">{data.general[0].itemsBought}</p>
+          </section>
+          <section>
+            <p className="capitalize opacity-50 w350">KOL orders</p>
+            <p className="w400">{data.general[0].kolOrders}</p>
+          </section>
+          <section>
+            <p className="capitalize opacity-50 w350">KOL most frequently bought from</p>
+            <p className="capitalize w400">{data.general[0].kolMFBF}</p>
+          </section>
+          <section>
+            <p className="capitalize opacity-50 w350">gross sales</p>
+            <p className="w400">NT${data.general[0].grossSales}</p>
+          </section>
+          <section>
+            <p className="capitalize opacity-50 w350">net sales</p>
+            <p className="w400">NT${data.general[0].netSales}</p>
+          </section>
+          <section>
+            <p className="capitalize opacity-50 w350">average order value</p>
+            <p className="w400">${data.general[0].averageOrderValue}</p>
+          </section>
+          <section>
+            <p className="capitalize opacity-50 w350">non-KOL orders</p>
+            <p className="w400">{data.general[0].nonKolOrders}</p>
+          </section>
+
+        </main>
+      </GlassDefault>
+
       {/* Border */}
-      <div className="flex items-center mt-5 space-x-5">
+      <div className="flex items-center mt-8 space-x-5">
         <h4 className="capitalize w600 whitespace-nowrap">order history</h4>
         <div className="w-full border border-N0 border-opacity-30"></div>
       </div>
