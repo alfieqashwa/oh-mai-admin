@@ -1,4 +1,5 @@
 import { useState, Fragment } from 'react'
+import Link from 'next/link';
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
@@ -12,7 +13,7 @@ export default function TopCustomer() {
   return (
     <div className="pr-12 pl-7">
       {/* Header? */}
-      <Header title="Analytics - Summary - Top Customer" />
+      <Header title="Summary - Top Customer" />
       <GlassHeader title="top customer">
         <div className="flex space-x-4">
           <button className="px-5 py-2 uppercase bg-transparent border w250-m text-N0">export</button>
@@ -25,7 +26,6 @@ export default function TopCustomer() {
       {/* Leaderboard Border */}
       <LeaderBoardBorder />
 
-      {/* Table */}
       {/* Table */}
       <div className="mt-8">
         <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
@@ -101,10 +101,14 @@ export default function TopCustomer() {
 
           {/* Table Content */}
           <tbody className="bg-N700 text-N0">
-            {tableBody.map(t => (
+            {topCustomer.map(t => (
               <tr key={t.id}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">{t.sn}</td>
-                <td className="py-4 pl-4 text-left underline w400">{t.customer}</td>
+                <Link href={`/analytics/summary/top-customer/${t.customer.toLowerCase().replace(/\s/g, '-')}`}>
+                  <a>
+                    <td className="py-4 pl-4 text-left underline w400">{t.customer}</td>
+                  </a>
+                </Link>
                 <td className="py-4 text-right w400 whitespace-nowrap">{t.ordersMade}</td>
                 <td className="py-4 text-right w400 whitespace-nowrap">${t.averageOrderValue.toFixed(2)}</td>
                 <td className="py-4 text-right w400 whitespace-nowrap">{t.itemsBought}</td>
@@ -124,7 +128,7 @@ export default function TopCustomer() {
 }
 
 // Top Customer List Dummy Data
-const tableBody = [
+export const topCustomer = [
   { id: 1, sn: '1', customer: 'Fan Leng Leng', ordersMade: 100, averageOrderValue: 24.64, itemsBought: 90, grossSales: 150.00, netSales: 120.00 },
   { id: 2, sn: '2', customer: 'Mei You Yong', ordersMade: 24, averageOrderValue: 5.90, itemsBought: 67, grossSales: 150.00, netSales: 40.00 },
   { id: 3, sn: '3', customer: 'You Zong Xian', ordersMade: 2, averageOrderValue: 3.67, itemsBought: 35, grossSales: 150.00, netSales: 30.00 },
