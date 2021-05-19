@@ -3,7 +3,6 @@ import { topCustomer } from 'dummy-data'
 export default function handler({ query: { customer } }, res) {
   const f = topCustomer.filter((c) => c.customer.toLowerCase().replace(/\s/g, "-") === customer)
 
-  // User with id exists
   if (f.length > 0) {
     res.status(200).json(f[0])
   } else {

@@ -28,13 +28,13 @@ export default function Customer() {
     fetcher
   )
 
-  if (error) return <div className="grid h-screen text-5xl place-items-center"><p className="text-N0">{error.message}</p></div>
-  if (!data) return <div className="grid h-screen text-5xl place-items-center"><p className="text-N0">loading...</p></div>
+  if (error) return <div className="grid h-screen text-5xl place-items-center"><p className="text-2xl text-N0">{error.message}</p></div>
+  if (!data) return <div className="grid h-screen text-5xl place-items-center"><p className="text-2xl text-N0">loading...</p></div>
   // console.log(data)
 
   return (
     <div className="pb-12 pr-12 pl-7">
-      <Header title={`Top Customer ${data.customer}`} />
+      <Header title={`Top Customer - ${data.customer}`} />
       <GlassHeader title={data.customer}>
         <div className="flex space-x-4">
           <button className="px-5 py-2 uppercase bg-transparent border w250-m text-N0">export</button>

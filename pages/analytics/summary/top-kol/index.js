@@ -1,4 +1,5 @@
 import { useState, Fragment } from 'react'
+import Link from 'next/link';
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
@@ -102,7 +103,13 @@ export default function TopKOL() {
             {tableBody.map(t => (
               <tr key={t.id}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">{t.sn}</td>
-                <td className="py-4 pl-4 text-left underline w400">{t.kol}</td>
+                <td className="py-4 pl-4 text-left underline w400">
+                  <Link href={`/analytics/summary/top-kol/${t.kol.toLowerCase().replace(/\s/g, '-')}`}>
+                    <a>
+                      {t.kol}
+                    </a>
+                  </Link>
+                </td>
                 <td className="py-4 text-right w400 whitespace-nowrap">{t.itemsSold}</td>
                 <td className="py-4 text-right w400 whitespace-nowrap">${t.netSales.toFixed(2)}</td>
                 <td className="py-4 text-right underline w400 whitespace-nowrap">{t.orders}</td>

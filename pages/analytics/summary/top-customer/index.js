@@ -104,11 +104,11 @@ export default function TopCustomer() {
             {topCustomer.map(t => (
               <tr key={t.id}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">{t.sn}</td>
-                <Link href={`/analytics/summary/top-customer/${t.customer.toLowerCase().replace(/\s/g, '-')}`}>
-                  <a>
-                    <td className="py-4 pl-4 text-left underline w400">{t.customer}</td>
-                  </a>
-                </Link>
+                <td className="py-4 pl-4 text-left underline w400">
+                  <Link href={`/analytics/summary/top-customer/${t.customer.toLowerCase().replace(/\s/g, '-')}`}>
+                    <a>{t.customer}</a>
+                  </Link>
+                </td>
                 <td className="py-4 text-right w400 whitespace-nowrap">{t.ordersMade}</td>
                 <td className="py-4 text-right w400 whitespace-nowrap">${t.averageOrderValue.toFixed(2)}</td>
                 <td className="py-4 text-right w400 whitespace-nowrap">{t.itemsBought}</td>
