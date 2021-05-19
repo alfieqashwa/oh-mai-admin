@@ -10,6 +10,8 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import { Menu, Transition } from '@headlessui/react'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { GlassDefault } from 'components/glassDefault'
+import { ErrorStatus } from 'components/error-status'
+import { LoadingStatus } from 'components/loading-status'
 
 const fetcher = async (url) => {
   const res = await fetch(url)
@@ -28,8 +30,8 @@ export default function Customer() {
     fetcher
   )
 
-  if (error) return <div className="grid h-screen text-5xl place-items-center"><p className="text-2xl text-N0">{error.message}</p></div>
-  if (!data) return <div className="grid h-screen text-5xl place-items-center"><p className="text-2xl text-N0">loading...</p></div>
+  if (error) return <ErrorStatus message={error.message} />
+  if (!data) return <LoadingStatus />
   // console.log(data)
 
   return (

@@ -9,14 +9,16 @@ import { GlassHeader } from 'components/glassHeader';
 import { Header } from 'components/header';
 import { TitleWithBackButton } from 'components/titleWithBackButton';
 import { LeaderBoardBorder, PaginationSummary } from 'components/analytics/summary';
+import { ErrorStatus } from 'components/error-status';
+import { LoadingStatus } from 'components/loading-status';
 
 const fetcher = url => fetch(url).then(res => res.json())
 
 export default function TopCustomer() {
   const { error, data } = useSWR('/api/analytics/summary/top-customer', fetcher)
 
-  if (error) return <div className="grid h-screen text-5xl place-items-center"><p className="text-2xl text-N0">{error.message}</p></div>
-  if (!data) return <div className="grid h-screen text-5xl place-items-center"><p className="text-2xl text-N0">loading...</p></div>
+  if (error) return <ErrorStatus message={error.message} />
+  if (!data) return <LoadingStatus />
 
   return (
     <div className="pr-12 pl-7">
