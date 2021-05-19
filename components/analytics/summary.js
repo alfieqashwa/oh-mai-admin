@@ -10,7 +10,7 @@ export const LeaderBoardBorder = () => (
 // dummy pagination
 export const PaginationSummary = () => {
   return (
-    <div className="block pt-20 pb-8 md:items-center md:justify-end md:flex">
+    <div className="block pt-16 pb-8 md:items-center md:justify-end md:flex">
       <nav className="flex items-center justify-center space-x-6 text-N0">
         <ChevronDoubleLeftIcon className="w-5 h-5 cursor-pointer" />
         <ChevronLeftIcon className="w-5 h-5 cursor-pointer" />
