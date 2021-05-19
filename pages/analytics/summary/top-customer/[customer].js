@@ -69,15 +69,15 @@ export default function Customer() {
           </section>
           <section>
             <p className="capitalize opacity-50 w350">gross sales</p>
-            <p className="w400">NT${data.general[0].grossSales}</p>
+            <p className="w400">NT${numberWithCommas(data.general[0].grossSales)}</p>
           </section>
           <section>
             <p className="capitalize opacity-50 w350">net sales</p>
-            <p className="w400">NT${data.general[0].netSales}</p>
+            <p className="w400">NT${numberWithCommas(data.general[0].netSales)}</p>
           </section>
           <section>
             <p className="capitalize opacity-50 w350">average order value</p>
-            <p className="w400">${data.general[0].averageOrderValue}</p>
+            <p className="w400">${numberWithCommas(data.general[0].averageOrderValue)}</p>
           </section>
           <section>
             <p className="capitalize opacity-50 w350">non-KOL orders</p>
@@ -182,4 +182,12 @@ export default function Customer() {
       </div>
     </div >
   )
+}
+
+
+// source:
+// https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
