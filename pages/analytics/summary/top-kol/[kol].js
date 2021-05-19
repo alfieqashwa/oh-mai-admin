@@ -1,17 +1,16 @@
 import { Fragment } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import { Menu, Transition } from '@headlessui/react'
+import { BsThreeDotsVertical } from 'react-icons/bs'
+import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 
 import { Header } from 'components/header'
 import { GlassHeader } from 'components/glassHeader'
 import { TitleWithBackButton } from 'components/titleWithBackButton'
-
-import { BsThreeDotsVertical } from 'react-icons/bs'
-import { Menu, Transition } from '@headlessui/react'
-import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
-import { PaginationSummary } from 'components/analytics/summary'
 import { ErrorStatus } from 'components/error-status'
 import { LoadingStatus } from 'components/loading-status'
+import { PaginationSummary } from 'components/analytics/summary'
 
 const fetcher = async (url) => {
   const res = await fetch(url)

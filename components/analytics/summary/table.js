@@ -6,7 +6,7 @@ import { FiDownloadCloud } from 'react-icons/fi'
 
 // Table on Summary Main Page
 export function TableSummary() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [_isOpen, _setIsOpen] = useState(false)
   return (
     <div className="my-10">
       <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">

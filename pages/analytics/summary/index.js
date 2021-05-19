@@ -6,9 +6,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import { SiGoogleanalytics } from 'react-icons/si'
 
 import { Header } from 'components/header'
-import { PerformanceBorder, PerformanceCard } from 'components/analytics/performance';
-import { ChartView } from 'components/analytics/chart'
-import { TableSummary } from 'components/analytics/table';
+import { ChartView, PerformanceBorder, PerformanceCard, TableSummary } from 'components/analytics/summary';
 
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
@@ -18,6 +16,7 @@ export default function Summary() {
     <div className="pb-4">
       <Header title="Analytics - Summary" />
       <div className="my-8 ml-6 mr-12">
+
         {/* header */}
         <h2 className="w800">Analytics</h2>
 

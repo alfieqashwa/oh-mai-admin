@@ -8,9 +8,9 @@ import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { GlassHeader } from 'components/glassHeader';
 import { Header } from 'components/header';
 import { TitleWithBackButton } from 'components/titleWithBackButton';
-import { LeaderBoardBorder, PaginationSummary } from 'components/analytics/summary';
 import { ErrorStatus } from 'components/error-status';
 import { LoadingStatus } from 'components/loading-status';
+import { LeaderBoardBorder, PaginationSummary } from 'components/analytics/summary';
 
 const fetcher = url => fetch(url).then(res => res.json())
 
@@ -22,6 +22,7 @@ export default function TopKOL() {
 
   return (
     <div className="pr-12 pl-7">
+
       {/* Header? */}
       <Header title="Summary - Top KOL" />
       <GlassHeader title="top KOL">
