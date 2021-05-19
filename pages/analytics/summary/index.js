@@ -196,7 +196,7 @@ export default function Summary() {
                           <a>
                             <Menu.Item as="button" className="flex items-center justify-between w-full px-4 py-2 transition duration-300 ease-in-out rounded focus:outline-none bg-N0 hover:bg-N300">
                               <SiGoogleanalytics className="w-6 h-6" />
-                              <h4 className="pl-8 w250 text-N900">view leaderboard</h4>
+                              <h4 className="pl-8 w250 text-N900 whitespace-nowrap">view leaderboard</h4>
                             </Menu.Item>
                           </a>
                         </Link>
