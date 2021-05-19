@@ -24,7 +24,7 @@ const fetcher = async (url) => {
 export default function Kol() {
   const { query } = useRouter()
   const { data, error } = useSWR(
-    () => query.kol && `/api/top-kol/${query.kol}`,
+    () => query.kol && `/api/analytics/summary/top-kol/${query.kol}`,
     fetcher
   )
 

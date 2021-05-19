@@ -1,5 +1,6 @@
 import { useState, Fragment } from 'react'
 import Link from 'next/link';
+import useSWR from 'swr'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
@@ -9,7 +10,14 @@ import { Header } from 'components/header';
 import { TitleWithBackButton } from 'components/titleWithBackButton';
 import { LeaderBoardBorder, PaginationSummary } from 'components/analytics/summary';
 
+const fetcher = url => fetch(url).then(res => res.json())
+
 export default function TopCustomer() {
+  const { error, data } = useSWR('/api/analytics/summary/top-customer', fetcher)
+
+  if (error) return <div className="grid h-screen text-5xl place-items-center"><p className="text-2xl text-N0">{error.message}</p></div>
+  if (!data) return <div className="grid h-screen text-5xl place-items-center"><p className="text-2xl text-N0">loading...</p></div>
+
   return (
     <div className="pr-12 pl-7">
       {/* Header? */}
@@ -101,7 +109,7 @@ export default function TopCustomer() {
 
           {/* Table Content */}
           <tbody className="bg-N700 text-N0">
-            {topCustomer.map(t => (
+            {data.map(t => (
               <tr key={t.id}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">{t.sn}</td>
                 <td className="py-4 pl-4 text-left underline w400">
@@ -126,11 +134,3 @@ export default function TopCustomer() {
     </div>
   )
 }
-
-// Top Customer List Dummy Data
-export const topCustomer = [
-  { id: 1, sn: '1', customer: 'Fan Leng Leng', ordersMade: 100, averageOrderValue: 24.64, itemsBought: 90, grossSales: 150.00, netSales: 120.00 },
-  { id: 2, sn: '2', customer: 'Mei You Yong', ordersMade: 24, averageOrderValue: 5.90, itemsBought: 67, grossSales: 150.00, netSales: 40.00 },
-  { id: 3, sn: '3', customer: 'You Zong Xian', ordersMade: 2, averageOrderValue: 3.67, itemsBought: 35, grossSales: 150.00, netSales: 30.00 },
-  { id: 4, sn: '4', customer: 'Wei He', ordersMade: 1, averageOrderValue: 15.30, itemsBought: 15, grossSales: 150.00, netSales: 0.05 },
-]

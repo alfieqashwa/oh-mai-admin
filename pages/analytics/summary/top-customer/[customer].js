@@ -24,7 +24,7 @@ const fetcher = async (url) => {
 export default function Customer() {
   const { query } = useRouter()
   const { data, error } = useSWR(
-    () => query.customer && `/api/top-customer/${query.customer}`,
+    () => query.customer && `/api/analytics/summary/top-customer/${query.customer}`,
     fetcher
   )
 

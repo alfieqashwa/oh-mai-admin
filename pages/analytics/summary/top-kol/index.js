@@ -1,5 +1,6 @@
 import { useState, Fragment } from 'react'
 import Link from 'next/link';
+import useSWR from 'swr'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
@@ -9,7 +10,14 @@ import { Header } from 'components/header';
 import { TitleWithBackButton } from 'components/titleWithBackButton';
 import { LeaderBoardBorder, PaginationSummary } from 'components/analytics/summary';
 
+const fetcher = url => fetch(url).then(res => res.json())
+
 export default function TopKOL() {
+  const { error, data } = useSWR('/api/analytics/summary/top-kol', fetcher)
+
+  if (error) return <div className="grid h-screen text-5xl place-items-center"><p className="text-2xl text-N0">{error.message}</p></div>
+  if (!data) return <div className="grid h-screen text-5xl place-items-center"><p className="text-2xl text-N0">loading...</p></div>
+
   return (
     <div className="pr-12 pl-7">
       {/* Header? */}
@@ -100,7 +108,7 @@ export default function TopKOL() {
 
           {/* Table Content */}
           <tbody className="bg-N700 text-N0">
-            {tableBody.map(t => (
+            {data.map(t => (
               <tr key={t.id}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">{t.sn}</td>
                 <td className="py-4 pl-4 text-left underline w400">
@@ -126,11 +134,3 @@ export default function TopKOL() {
     </div>
   )
 }
-
-// Top KOL List Dummy Data
-const tableBody = [
-  { id: 1, sn: '1', kol: 'Charlene Yue', itemsSold: 100, netSales: 1000.00, orders: 10, totalCommission: 120.00 },
-  { id: 2, sn: '2', kol: 'Lice Wang', itemsSold: 24, netSales: 400.00, orders: 10, totalCommission: 40.00 },
-  { id: 3, sn: '3', kol: 'Sky Game', itemsSold: 2, netSales: 200.00, orders: 1, totalCommission: 30.00 },
-  { id: 4, sn: '4', kol: 'Molly', itemsSold: 1, netSales: 10.00, orders: 1, totalCommission: 0.05 },
-]
