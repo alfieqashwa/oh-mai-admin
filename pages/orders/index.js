@@ -7,10 +7,60 @@ import { AiOutlineArrowLeft } from 'react-icons/ai'
 
 import { GlassDefault } from 'components/glassDefault'
 import { Header } from 'components/header'
-import { Pagination, ProductListTable, InventoryMobileView } from 'components/products/inventory'
+import { ProductListTable, InventoryMobileView } from 'components/products/inventory'
 import { OrderList } from 'components/orders/order_list'
+import { useState } from 'react'
+import { Pagination } from 'components/widgets/pagination'
 
 export default function OrdersPage() {
+  const [totalPage, setTotalPage] = useState(0)
+  const [filter, setFilter] = useState({max_row: 10})
+
+  const handleChange = (e) => {
+    console.log("handleChange: filter before update", filter)
+    const { id, value } = e.target
+    console.log("handleChange: id", id)
+    console.log("handleChange: value", value)
+
+    // let val = null
+
+    // if (value === 'true') {
+    //   val = true
+    // } else if (value === 'false') {
+    //   val = false
+    // } else {
+    //   val = value
+    // }
+
+    setFilter(prevState => ({
+      ...prevState,
+      [id]: value
+    }))
+  }
+
+  const download = () => {
+    const requestOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    };
+
+    fetch('http://localhost:3002/order/download/4erp?page=1', requestOptions)
+      .then((res) => {
+        return res.blob();
+      })
+      .then((blob) => {
+        const href = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = href;
+        link.setAttribute('download', 'orders.xlsx'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((err) => {
+        return Promise.reject({ Error: 'Something Went Wrong', err });
+      })
+  }
+
   return (
     <>
       <Header title="Orders" />
@@ -24,7 +74,8 @@ export default function OrdersPage() {
             </div>
 
             <div className="space-x-8">
-              <button className="text-sm bg-transparent text-N0">export</button>
+              <button className="text-sm bg-transparent text-N0" onClick={download}>export for erp</button>
+              <button className="text-sm bg-transparent text-N0">export for logistic</button>
             </div>
           </div>
         </div>
@@ -70,6 +121,7 @@ export default function OrdersPage() {
                     {/* <h4 className="capitalize">Sort by</h4> */}
                     <div className="px-4 py-3 font-normal text-left text-BLACK uppercase">Sort By</div>
                     <select className="px-8 py-3 text-BLACK bg-opacity-0 bg-N200 border-0"
+                      onChange={handleChange}
                       id="sort_by">
                       <option value="asc">Ascending</option>
                       <option value="des">Descending</option>
@@ -79,7 +131,10 @@ export default function OrdersPage() {
                       </svg>
                       <input
                         className="flex-auto w-full pl-10 text-sm placeholder-opacity-50 rounded-md text-BLACK bg-opacity-20 bg-N200 placeholder-BLACK"
-                        type="text" name="search" placeholder="Search for a product" />
+                        type="text" name="search" placeholder="Search for order"
+                        defaultValue={filter.keyword || ""}
+                        id="keyword"
+                        onChange={handleChange} />
                     </div>
                   </div>
                   {/* Ends first row Desktop */}
@@ -90,7 +145,8 @@ export default function OrdersPage() {
 
                       <div className="py-4">
                         <select className="px-8 py-3 text-BLACK bg-opacity-0 bg-N200 border-0 text-N0"
-                          id="sort_by">
+                          id="sort_by"
+                          onChange={handleChange}>
                           <option value="asc">Ascending</option>
                           <option value="des">Descending</option>
                         </select>
@@ -100,16 +156,19 @@ export default function OrdersPage() {
                         </svg>
                         <input
                           className="w-full pl-10 placeholder-opacity-50 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
-                          type="text" name="search" placeholder="Search for a product" />
+                          type="text" name="search" placeholder="Search for order"
+                          defaultValue={filter.keyword || ""}
+                          id="keyword"
+                          onChange={handleChange} />
                       </div>
-                      
+
                     </div>
                   </div>
                   {/* Ends of second row: Mobile */}
 
                   {/* // PRODUCTS LIST*/}
                   <div className="">
-                    <OrderList />
+                    <OrderList setTotalPage={setTotalPage} filter={filter} />
                   </div>
                 </div>
               </div>
@@ -121,7 +180,7 @@ export default function OrdersPage() {
         {/* Ends Tabel (GlassDiv) */}
 
         {/* Pagination */}
-        <Pagination />
+        <Pagination total={totalPage} forDispatch={{ type: 'order/list' }} onChangeInput={handleChange} />
 
       </div>
     </>
