@@ -3,13 +3,13 @@ import { ChevronLeftIcon, ChevronRightIcon, ChevronDoubleLeftIcon, ChevronDouble
 import { white } from 'tailwindcss/colors'
 import { BiTrash } from 'react-icons/bi'
 import { useEffect, useState } from 'react'
-import { GET_LIST_ORDER_GQL } from 'graphql/order'
-import { client } from 'lib/graphqlclient';
 import moment from 'moment'
+import { useStore } from 'react-redux'
+import { order } from 'tailwindcss/defaultTheme'
 
-
-export function OrderList() {
-
+export function OrderList({ filter, page }) {
+  console.log("/components/widget/pagination:filter", filter)
+  const store = useStore()
   const [orders, setOrders] = useState([])
   const moneyFormat = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -17,10 +17,6 @@ export function OrderList() {
   });
 
   useEffect(() => {
-    client.request(GET_LIST_ORDER_GQL).then((data) => {
-      console.log("Get list order success", data.orders)
-      setOrders(data.orders)
-    }).catch(err => console.log("Get list order error", err))
   }, [])
 
   const parseAddress = (order) => {
@@ -29,6 +25,14 @@ export function OrderList() {
 
     return txtAddr
   }
+
+  store.subscribe(async () => {
+    const state = await store.getState()
+    console.log("order_list/State change", state)
+
+    const orders = state.value.data
+    setOrders(orders)
+  });
 
   return (
     <table className="md:min-w-full w-full">
@@ -71,9 +75,9 @@ export function OrderList() {
       </thead>
       <tbody className="">
         {orders.map((o, i) => (
-          <tr key={i}>
+          <tr key={o.order_number}>
             <td className="hidden py-4 px-4 whitespace-nowrap md:table-cell text-N0">
-              {i + 1}
+              { i + 1}
             </td>
             <td className="p-4 whitespace-nowrap">
               <div className="text-sm text-N0">{o.order_number}</div>
@@ -103,36 +107,3 @@ export function OrderList() {
     </table>
   )
 }
-
-export const Pagination = props =>
-  <div className="block pt-4 pb-8 md:items-center md:justify-end md:flex">
-
-    <nav className="flex items-center justify-center space-x-6 text-N0">
-      <ChevronDoubleLeftIcon className="w-5 h-5" />
-      <ChevronLeftIcon className="w-5 h-5" />
-      <button className="px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out">1</button>
-      <button className="px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">2</button>
-      <button className="px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">3</button>
-      <a className="px-2.5 py-1 text-sm font-medium rounded bg-N800 hover:bg-P700">...</a>
-      <button className="px-2 text-sm font-medium bg-N800 hover:bg-P700">12</button>
-      <ChevronRightIcon className="w-5 h-5" />
-      <ChevronDoubleRightIcon className="w-5 h-5" />
-    </nav>
-
-    <div className="mt-2 text-center lg:mt-0 lg:text-none lg:mx-6">
-      <p className="w350 text-N300 whitespace-nowrap">Showing <span className="font-medium text-N0">1</span> to <span className="font-medium text-N0">5</span> of <span className="font-medium text-N0">60</span> products</p>
-    </div>
-
-    <div className="items-center hidden lg:flex whitespace-nowrap">
-      <p className="w350 text-N200">Show</p>
-      <select type="number" name="show" className="w-16 px-2 py-1 mx-2 rounded-md bg-N100">
-        <option>10</option>
-        <option>20</option>
-        <option>30</option>
-        <option>40</option>
-        <option>50</option>
-        <option>60</option>
-      </select>
-      <p className="w350 text-N200">at a time</p>
-    </div>
-  </div>

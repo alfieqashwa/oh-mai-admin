@@ -1,8 +1,8 @@
 import { gql } from "graphql-request";
 
 export const GET_LIST_ORDER_GQL = gql`
-  query {
-  orders{
+  query listOrder($filter: OrdersFilter, $paging: Paging){
+  listOrder(filter: $filter, paging: $paging){
     order_number
     consumer{
       user{
@@ -23,6 +23,7 @@ export const GET_LIST_ORDER_GQL = gql`
     total_price
     payment_date
     payment_type_charge_fee
+    total_count
   }
 }
 `
