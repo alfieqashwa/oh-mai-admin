@@ -1,6 +1,5 @@
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { BiTrash } from 'react-icons/bi'
-import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { GlassDiv } from "components/glassdiv";
 import { GlassDefault } from 'components/glassDefault'
 import TextEditor from 'components/textEditor'

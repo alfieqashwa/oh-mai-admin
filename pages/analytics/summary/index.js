@@ -1,21 +1,22 @@
 import { useState, Fragment } from 'react'
+import Link from 'next/link';
 import { Listbox, Menu, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { SiGoogleanalytics } from 'react-icons/si'
 
 import { Header } from 'components/header'
-import { PerformanceBorder, PerformanceCard } from 'components/analytics/performance';
-import { ChartView } from 'components/analytics/chart'
+import { ChartView, PerformanceBorder, PerformanceCard, TableSummary } from 'components/analytics/summary';
 
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
 
   return (
-    <>
+    <div className="pb-4">
       <Header title="Analytics - Summary" />
       <div className="my-8 ml-6 mr-12">
+
         {/* header */}
         <h2 className="w800">Analytics</h2>
 
@@ -162,7 +163,7 @@ export default function Summary() {
         </div>
 
         {/* Leaderboard */}
-        <div className="flex items-center justify-between my-4">
+        <div className="flex items-center justify-between mt-6 mb-4">
           <h4 className="w600">Leaderboard</h4>
           <div className="w-full mx-5 border border-N0 border-opacity-30"></div>
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
@@ -190,10 +191,14 @@ export default function Summary() {
                       leaveTo="transform opacity-0 scale-95"
                     >
                       <Menu.Items static className="absolute shadow-xl top-16 right-4 focus:outline-none">
-                        <Menu.Item as="button" className="flex items-center justify-between w-full px-4 py-2 focus:outline-none bg-N0">
-                          <SiGoogleanalytics className="w-6 h-6" />
-                          <h4 className="pl-8 w250 text-N900">view leaderboard</h4>
-                        </Menu.Item>
+                        <Link href={card.url}>
+                          <a>
+                            <Menu.Item as="button" className="flex items-center justify-between w-full px-4 py-2 transition duration-300 ease-in-out rounded focus:outline-none bg-N0 hover:bg-N300">
+                              <SiGoogleanalytics className="w-6 h-6" />
+                              <h4 className="pl-8 w250 text-N900 whitespace-nowrap">view leaderboard</h4>
+                            </Menu.Item>
+                          </a>
+                        </Link>
                       </Menu.Items>
                     </Transition>
                   </>
@@ -224,8 +229,11 @@ export default function Summary() {
 
         {/* Chart View */}
         <ChartView />
+
+        {/* Table View */}
+        <TableSummary />
       </div>
-    </>
+    </div>
   )
 }
 
@@ -235,8 +243,8 @@ const dates = [
 ]
 
 const leaderBoardCards = [
-  { category: "best selling product", product: "Zelda: Breath of the Wild", totalOrdersValue: "291", netSalesValue: "18,000.00" },
-  { category: "top kol", product: "Lice Wang", totalOrdersValue: "135", netSalesValue: "10,000.00" },
-  { category: "top customer", product: "Fan Leng Leng", totalOrdersValue: "5", netSalesValue: "1,800.00" }
+  { url: '/analytics/summary/best-selling-product', category: "best selling product", product: "Zelda: Breath of the Wild", totalOrdersValue: "291", netSalesValue: "18,000.00" },
+  { url: '/analytics/summary/top-kol', category: "top kol", product: "Lice Wang", totalOrdersValue: "135", netSalesValue: "10,000.00" },
+  { url: '/analytics/summary/top-customer', category: "top customer", product: "Fan Leng Leng", totalOrdersValue: "5", netSalesValue: "1,800.00" }
 ]
 

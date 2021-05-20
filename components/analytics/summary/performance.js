@@ -10,7 +10,7 @@ export const PerformanceBorder = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="flex items-center justify-between my-4" >
+    <div className="flex items-center justify-between mt-6 mb-4" >
       <h4 className="w600">Performance</h4>
       <div className="w-full mx-5 border border-N0 border-opacity-30"></div>
 

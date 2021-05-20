@@ -1,6 +1,6 @@
-import { GlassDefault } from 'components/glassDefault';
 import { Header } from 'components/header';
-import { ConfirmationSavedButton, Title, Media, ProductStatus, ProductVariants, ProductType, Inventory, Price, Shipping } from 'components/products/addProduct';
+import { GlassHeader } from 'components/glassHeader'
+import { Title, Media, ProductStatus, ProductVariants, ProductType, Inventory, Price, Shipping } from 'components/products/addProduct';
 
 function AddProduct(props) {
   return (
@@ -8,7 +8,12 @@ function AddProduct(props) {
       <Header title="Products - Add Product" />
 
       {/* Discard Save Button Confirmation (??) on top of the page */}
-      <ConfirmationSavedButton />
+      <GlassHeader title="unsaved product">
+        <div className="flex space-x-4">
+          <button className="px-2 py-2 text-sm uppercase md:px-4 text-N800 bg-N100">discard</button>
+          <button className="px-5 py-2 text-sm uppercase md:px-6 bg-G400 text-N0">save</button>
+        </div>
+      </GlassHeader>
 
       <div className="mx-4 mt-16 md:mt-24">
 
