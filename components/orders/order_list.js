@@ -20,7 +20,7 @@ export function OrderList({ filter, page }) {
   }, [])
 
   const parseAddress = (order) => {
-    const txtAddr = `${order.consumer.user.first_name} ${order.consumer.user.last_name}, ${order.shipping_address.line1}, 
+    const txtAddr = `${order.person_name}, ${order.shipping_address.line1}, 
     ${order.shipping_address.line2} ${order.shipping_address.city} ${order.shipping_address.state} ${order.shipping_address.country}`
 
     return txtAddr
@@ -30,8 +30,8 @@ export function OrderList({ filter, page }) {
     const state = await store.getState()
     console.log("order_list/State change", state)
 
-    const orders = state.value.data
-    setOrders(orders)
+    const listOrders = state.value.data
+    setOrders(listOrders)
   });
 
   return (

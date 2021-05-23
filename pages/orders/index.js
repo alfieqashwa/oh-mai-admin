@@ -11,10 +11,13 @@ import { ProductListTable, InventoryMobileView } from 'components/products/inven
 import { OrderList } from 'components/orders/order_list'
 import { useState } from 'react'
 import { Pagination } from 'components/widgets/pagination'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
 export default function OrdersPage() {
   const [totalPage, setTotalPage] = useState(0)
-  const [filter, setFilter] = useState({max_row: 10})
+  const [filter, setFilter] = useState({max_row: 10, keyword: ""})
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
     console.log("handleChange: filter before update", filter)
@@ -37,6 +40,44 @@ export default function OrdersPage() {
       [id]: value
     }))
   }
+
+  useEffect(() => {
+    // search for keyword more than 3 chars, and serch all if keyword is empty chars is 0
+    if ((filter.keyword.length > 3) || (filter.keyword.length == 0)) {
+      dispatch({
+        type: 'order/list',
+        payload: {
+          paging: {
+            limit: 10,
+            offset: 0,
+            sort: filter.sort_by
+          },
+          filter: {
+            order_number: filter.keyword,
+            person_name: filter.keyword,
+          }
+        }
+      })
+    }
+  }, [filter.keyword])
+
+  useEffect(() => {
+    console.log("sort by", filter.sort_by)
+    dispatch({
+      type: 'order/list',
+      payload: {
+        paging: {
+          limit: 10,
+          offset: 0,
+          sort: filter.sort_by
+        },
+        filter: {
+          order_number: filter.keyword,
+          person_name: filter.keyword,
+        }
+      }
+    })
+  }, [filter.sort_by])
 
   const download = () => {
     const requestOptions = {
@@ -123,8 +164,8 @@ export default function OrdersPage() {
                     <select className="px-8 py-3 text-BLACK bg-opacity-0 bg-N200 border-0"
                       onChange={handleChange}
                       id="sort_by">
-                      <option value="asc">Ascending</option>
-                      <option value="des">Descending</option>
+                      <option value={1}>Ascending</option>
+                      <option value={0}>Descending</option>
                     </select>
                     <div className="relative w-2/3">
                       <svg xmlns="http://www.w3.org/2000/svg" className="absolute w-6 h-6 text-N0 left-3 top-2" fill="none" viewBox="0 0 24 24" stroke="black"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -147,8 +188,8 @@ export default function OrdersPage() {
                         <select className="px-8 py-3 text-BLACK bg-opacity-0 bg-N200 border-0 text-N0"
                           id="sort_by"
                           onChange={handleChange}>
-                          <option value="asc">Ascending</option>
-                          <option value="des">Descending</option>
+                          <option value={1}>Ascending</option>
+                          <option value={0}>Descending</option>
                         </select>
                       </div>
                       <div className="relative py-4 pr-2 w-full">

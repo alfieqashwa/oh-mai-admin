@@ -24,6 +24,7 @@ export const GET_LIST_ORDER_GQL = gql`
     payment_date
     payment_type_charge_fee
     total_count
+    person_name
   }
 }
 `
