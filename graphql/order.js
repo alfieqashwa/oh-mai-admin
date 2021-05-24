@@ -28,3 +28,11 @@ export const GET_LIST_ORDER_GQL = gql`
   }
 }
 `
+
+export const DELETE_ORDER_GQL = gql`
+  mutation deleteOrder($order_number: String){
+    deleteOrder(order_number: $order_number){
+      order_id
+    }
+  }
+`
