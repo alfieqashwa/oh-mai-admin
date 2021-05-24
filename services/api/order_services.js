@@ -33,9 +33,15 @@ export const deleteOrders = async ({ order_number }) => {
       order_number: order_number
     })
 
-    return "Order has been deleted"
+    return {
+      strResult: "Order has been deleted",
+      isSuccess: true
+    }
   } catch (error) {
     console.log("Delete order error", error)
-    return "Failed to delete"
+    return {
+      strResult: "Failed to delete",
+      isSuccess: false
+    }
   }
 }

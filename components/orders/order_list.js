@@ -46,8 +46,13 @@ export function OrderList({ filter, page }) {
 
   const doDeleteData = async () => {
     // put loader dialog while waiting
-    const strResult = await deleteOrders({order_number: selectedDeleteOrder})
+    const {strResult, isSuccess} = await deleteOrders({order_number: selectedDeleteOrder})
     alert(strResult)
+
+    if (isSuccess) {
+      let newOrder = orders.filter(item => item.order_number !== selectedDeleteOrder)
+      setOrders(newOrder)
+    }
   }
 
   useEffect(() => {
