@@ -11,10 +11,14 @@ import { ProductListTable, InventoryMobileView } from 'components/products/inven
 import { OrderList } from 'components/orders/order_list'
 import { useState } from 'react'
 import { Pagination } from 'components/widgets/pagination'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { BASE_URL } from 'etc/constants'
 
 export default function OrdersPage() {
   const [totalPage, setTotalPage] = useState(0)
-  const [filter, setFilter] = useState({max_row: 10})
+  const [filter, setFilter] = useState({ max_row: 10, keyword: "" })
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
     console.log("handleChange: filter before update", filter)
@@ -38,13 +42,55 @@ export default function OrdersPage() {
     }))
   }
 
-  const download = () => {
+  useEffect(() => {
+    // search for keyword more than 3 chars, and serch all if keyword is empty chars is 0
+    if ((filter.keyword.length > 3) || (filter.keyword.length == 0)) {
+      dispatch({
+        type: 'order/list',
+        payload: {
+          paging: {
+            limit: 10,
+            offset: 0,
+            sort: filter.sort_by
+          },
+          filter: {
+            order_number: filter.keyword,
+            person_name: filter.keyword,
+          }
+        }
+      })
+    }
+  }, [filter.keyword])
+
+  useEffect(() => {
+    console.log("sort by", filter.sort_by)
+    dispatch({
+      type: 'order/list',
+      payload: {
+        paging: {
+          limit: 10,
+          offset: 0,
+          sort: filter.sort_by
+        },
+        filter: {
+          order_number: filter.keyword,
+          person_name: filter.keyword,
+        }
+      }
+    })
+  }, [filter.sort_by])
+
+  const download = ({type}) => {
+    const formData = new FormData();
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     };
 
-    fetch('http://localhost:3002/order/download/4erp?page=1', requestOptions)
+    formData.append("page", filter.page)
+    formData.append("limit", filter.max_row)
+
+    fetch(`http://localhost:3002/order/download/${type}?page=1`, requestOptions)
       .then((res) => {
         return res.blob();
       })
@@ -61,6 +107,30 @@ export default function OrdersPage() {
       })
   }
 
+  const downloadYesterday = () => {
+    fetch(`http://localhost:3002/order/download/4erp_yesterday`)
+      .then((res) => {
+        return res.blob();
+      })
+      .then((blob) => {
+        const href = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = href;
+        link.setAttribute('download', '*.xlsx'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((err) => {
+        return Promise.reject({ Error: 'Something Went Wrong', err });
+      })
+  }
+
+  const handleChangeDownload = (e) => {
+    const { id, value } = e.target
+    console.log("handle change download ID:" + id + ", value:" + value)
+    download({type: value})
+  }
+
   return (
     <>
       <Header title="Orders" />
@@ -74,8 +144,14 @@ export default function OrdersPage() {
             </div>
 
             <div className="space-x-8">
-              <button className="text-sm bg-transparent text-N0" onClick={download}>export for erp</button>
-              <button className="text-sm bg-transparent text-N0">export for logistic</button>
+              <button className="text-sm bg-transparent text-N0 bg-P700 px-4" onClick={downloadYesterday} >EXPORT ERP PREVIOUS DAY</button>
+              <select className="px-8 py-3 bg-transparent text-N0 border-0 text-left"
+                onChange={handleChangeDownload}
+                id="export">
+                <option >EXPORT FOR</option>
+                <option value="4erp">ERP</option>
+                <option value="4logistic">LOGISTICS</option>
+              </select>
             </div>
           </div>
         </div>
@@ -123,8 +199,8 @@ export default function OrdersPage() {
                     <select className="px-8 py-3 text-BLACK bg-opacity-0 bg-N200 border-0"
                       onChange={handleChange}
                       id="sort_by">
-                      <option value="asc">Ascending</option>
-                      <option value="des">Descending</option>
+                      <option value={1}>Ascending</option>
+                      <option value={0}>Descending</option>
                     </select>
                     <div className="relative w-2/3">
                       <svg xmlns="http://www.w3.org/2000/svg" className="absolute w-6 h-6 text-N0 left-3 top-2" fill="none" viewBox="0 0 24 24" stroke="black"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -147,8 +223,8 @@ export default function OrdersPage() {
                         <select className="px-8 py-3 text-BLACK bg-opacity-0 bg-N200 border-0 text-N0"
                           id="sort_by"
                           onChange={handleChange}>
-                          <option value="asc">Ascending</option>
-                          <option value="des">Descending</option>
+                          <option value={1}>Ascending</option>
+                          <option value={0}>Descending</option>
                         </select>
                       </div>
                       <div className="relative py-4 pr-2 w-full">
