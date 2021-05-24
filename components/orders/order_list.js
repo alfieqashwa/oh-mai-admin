@@ -7,12 +7,15 @@ import moment from 'moment'
 import { useStore } from 'react-redux'
 import { order } from 'tailwindcss/defaultTheme'
 import Confirm from 'components/widgets/dialog/Confirm'
+import { deleteOrders } from 'services/api/order_services'
 
 export function OrderList({ filter, page }) {
   console.log("/components/widget/pagination:filter", filter)
   const store = useStore()
   const [orders, setOrders] = useState([])
   const [confirmOpen, setConfirmOpen] = useState(false)
+  const [selectedDeleteOrder, setSelectedDeleteOrder] = useState("")
+
   const moneyFormat = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'TWD',
@@ -36,13 +39,20 @@ export function OrderList({ filter, page }) {
     setOrders(listOrders)
   });
 
-  const deleteData = (strId) => {
+  const showDeleteData = (orderNumber) => {
     setConfirmOpen(true)
-    // var shouldDelete = Confirm('Do you really want to delete Order data with Id: ' + strId + '?');
-    // if (shouldDelete) {
-    //   console.log("Data deleted")
-    //   //deleteArticle();
-    // }
+    setSelectedDeleteOrder(orderNumber)
+  }
+
+  const doDeleteData = async () => {
+    // put loader dialog while waiting
+    const {strResult, isSuccess} = await deleteOrders({order_number: selectedDeleteOrder})
+    alert(strResult)
+
+    if (isSuccess) {
+      let newOrder = orders.filter(item => item.order_number !== selectedDeleteOrder)
+      setOrders(newOrder)
+    }
   }
 
   useEffect(() => {
@@ -114,7 +124,7 @@ export function OrderList({ filter, page }) {
                 <a href="#" className="transition duration-200 ease-in-out text-N0 hover:text-opacity-75">
                   <HiOutlinePencilAlt className="w-5 h-5" />
                 </a>
-                <a href="#" className="transition duration-200 ease-in-out text-N0 hover:text-opacity-75" onClick={deleteData.bind(null, o.order_number)}>
+                <a href="#" className="transition duration-200 ease-in-out text-N0 hover:text-opacity-75" onClick={showDeleteData.bind(null, o.order_number)}>
                   <BiTrash className="w-5 h-5" />
                 </a>
               </td>
@@ -126,7 +136,7 @@ export function OrderList({ filter, page }) {
         title="Delete order?"
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}
-        onConfirm={deleteData}
+        onConfirm={doDeleteData}
       >
         Are you sure you want to delete this order?
       </Confirm>
