@@ -13,10 +13,11 @@ import { useState } from 'react'
 import { Pagination } from 'components/widgets/pagination'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { BASE_URL } from 'etc/constants'
 
 export default function OrdersPage() {
   const [totalPage, setTotalPage] = useState(0)
-  const [filter, setFilter] = useState({max_row: 10, keyword: ""})
+  const [filter, setFilter] = useState({ max_row: 10, keyword: "" })
   const dispatch = useDispatch()
 
   const handleChange = (e) => {
@@ -79,13 +80,17 @@ export default function OrdersPage() {
     })
   }, [filter.sort_by])
 
-  const download = () => {
+  const download = ({type}) => {
+    const formData = new FormData();
     const requestOptions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     };
 
-    fetch('http://localhost:3002/order/download/4erp?page=1', requestOptions)
+    formData.append("page", filter.page)
+    formData.append("limit", filter.max_row)
+
+    fetch(`http://localhost:3002/order/download/${type}?page=1`, requestOptions)
       .then((res) => {
         return res.blob();
       })
@@ -102,6 +107,30 @@ export default function OrdersPage() {
       })
   }
 
+  const downloadYesterday = () => {
+    fetch(`http://localhost:3002/order/download/4erp_yesterday`)
+      .then((res) => {
+        return res.blob();
+      })
+      .then((blob) => {
+        const href = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = href;
+        link.setAttribute('download', '*.xlsx'); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((err) => {
+        return Promise.reject({ Error: 'Something Went Wrong', err });
+      })
+  }
+
+  const handleChangeDownload = (e) => {
+    const { id, value } = e.target
+    console.log("handle change download ID:" + id + ", value:" + value)
+    download({type: value})
+  }
+
   return (
     <>
       <Header title="Orders" />
@@ -115,8 +144,14 @@ export default function OrdersPage() {
             </div>
 
             <div className="space-x-8">
-              <button className="text-sm bg-transparent text-N0" onClick={download}>export for erp</button>
-              <button className="text-sm bg-transparent text-N0">export for logistic</button>
+              <button className="text-sm bg-transparent text-N0 bg-P700 px-4" onClick={downloadYesterday} >EXPORT ERP PREVIOUS DAY</button>
+              <select className="px-8 py-3 bg-transparent text-N0 border-0 text-left"
+                onChange={handleChangeDownload}
+                id="export">
+                <option >EXPORT FOR</option>
+                <option value="4erp">ERP</option>
+                <option value="4logistic">LOGISTICS</option>
+              </select>
             </div>
           </div>
         </div>
