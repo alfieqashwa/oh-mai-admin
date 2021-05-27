@@ -85,7 +85,7 @@ export const Pagination = ({ offset, total, onChangeInput }) => {
         {/* <button className="px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out">1</button>
         <button className="px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">2</button>
         <button className="px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">3</button> */}
-        <a className="px-2.5 py-1 text-sm font-medium rounded bg-N800 hover:bg-P700">...</a>
+        <a className="px-2.5 py-1 text-sm font-medium rounded bg-N800">...</a>
         <button className="px-2 text-sm font-medium bg-N800 hover:bg-P700">12</button>
         <ChevronRightIcon className="w-5 h-5" />
         <ChevronDoubleRightIcon className="w-5 h-5" />

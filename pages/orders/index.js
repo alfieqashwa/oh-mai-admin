@@ -17,7 +17,7 @@ import { BASE_URL } from 'etc/constants'
 
 export default function OrdersPage() {
   const [totalPage, setTotalPage] = useState(0)
-  const [filter, setFilter] = useState({ max_row: 10, keyword: "" })
+  const [filter, setFilter] = useState({ max_row: 10, keyword: "", page: 1 })
   const dispatch = useDispatch()
 
   const handleChange = (e) => {
@@ -80,17 +80,21 @@ export default function OrdersPage() {
     })
   }, [filter.sort_by])
 
-  const download = ({type}) => {
-    const formData = new FormData();
+  const download = ({ type }) => {
+    if (type === "")
+      return
+    
+    filter.limit = filter.max_row
+    let query = Object.keys(filter)
+      .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(filter[k]))
+      .join('&');
+
     const requestOptions = {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     };
 
-    formData.append("page", filter.page)
-    formData.append("limit", filter.max_row)
-
-    fetch(`http://localhost:3002/order/download/${type}?page=1`, requestOptions)
+    fetch(`${BASE_URL}/order/download/${type}?${query}`, requestOptions)
       .then((res) => {
         return res.blob();
       })
@@ -98,25 +102,7 @@ export default function OrdersPage() {
         const href = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = href;
-        link.setAttribute('download', 'orders.xlsx'); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-      })
-      .catch((err) => {
-        return Promise.reject({ Error: 'Something Went Wrong', err });
-      })
-  }
-
-  const downloadYesterday = () => {
-    fetch(`http://localhost:3002/order/download/4erp_yesterday`)
-      .then((res) => {
-        return res.blob();
-      })
-      .then((blob) => {
-        const href = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = href;
-        link.setAttribute('download', '*.xlsx'); //or any other extension
+        link.setAttribute('download', `${type}.xlsx`); //or any other extension
         document.body.appendChild(link);
         link.click();
       })
@@ -128,7 +114,7 @@ export default function OrdersPage() {
   const handleChangeDownload = (e) => {
     const { id, value } = e.target
     console.log("handle change download ID:" + id + ", value:" + value)
-    download({type: value})
+    download({ type: value })
   }
 
   return (
@@ -144,11 +130,13 @@ export default function OrdersPage() {
             </div>
 
             <div className="space-x-8">
-              <button className="text-sm bg-transparent text-N0 bg-P700 px-4" onClick={downloadYesterday} >EXPORT ERP PREVIOUS DAY</button>
+              <a className="" href="http://localhost:3002/order/download/4erp_yesterday" >
+                <button className="px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out text-N0">EXPORT ERP PREVIOUS DAY</button>
+              </a>
               <select className="px-8 py-3 bg-transparent text-N0 border-0 text-left"
                 onChange={handleChangeDownload}
                 id="export">
-                <option >EXPORT FOR</option>
+                <option value="">EXPORT FOR</option>
                 <option value="4erp">ERP</option>
                 <option value="4logistic">LOGISTICS</option>
               </select>
