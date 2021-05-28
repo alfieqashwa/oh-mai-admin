@@ -10,6 +10,7 @@ export default function Dialog(props) {
   }
   
   return (
+    // !HASKEL this dialog blur is not as blur as we want (not blur enought)
     <div className="fixed z-10 inset-0 overflow-visible overflow-auto" role="dialog" aria-modal="true">
       <div className="relative p-8 w-full max-w-md m-auto flex-col flex rounded-lg bg-clip-padding glassBlur">
         <div>{props.children}</div>
