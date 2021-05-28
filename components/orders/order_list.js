@@ -8,6 +8,8 @@ import { useStore } from 'react-redux'
 import { order } from 'tailwindcss/defaultTheme'
 import Confirm from 'components/widgets/dialog/Confirm'
 import { deleteOrders } from 'services/api/order_services'
+import { parseAddress } from 'utils/OrderUtils'
+import OrderLookup from 'components/widgets/dialog/OrderLookup'
 
 export function OrderList({ filter, page }) {
   console.log("/components/widget/pagination:filter", filter)
@@ -15,6 +17,8 @@ export function OrderList({ filter, page }) {
   const [orders, setOrders] = useState([])
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [selectedDeleteOrder, setSelectedDeleteOrder] = useState("")
+  const [selectedOrder, setSelectedOrder] = useState(null)
+  const [lookupOpen, setLookupOpen] = useState(false)
 
   const moneyFormat = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -23,13 +27,6 @@ export function OrderList({ filter, page }) {
 
   useEffect(() => {
   }, [])
-
-  const parseAddress = (order) => {
-    const txtAddr = `${order.person_name}, ${order.shipping_address.line1}, 
-    ${order.shipping_address.line2} ${order.shipping_address.city} ${order.shipping_address.state} ${order.shipping_address.country}`
-
-    return txtAddr
-  }
 
   store.subscribe(async () => {
     const state = await store.getState()
@@ -53,6 +50,15 @@ export function OrderList({ filter, page }) {
       let newOrder = orders.filter(item => item.order_number !== selectedDeleteOrder)
       setOrders(newOrder)
     }
+  }
+
+  const lookupOrder = (order) => {
+    setSelectedOrder(order)
+    setLookupOpen(true)
+  }
+
+  const closeLookup = () => {
+    setLookupOpen(false)
   }
 
   useEffect(() => {
@@ -107,7 +113,7 @@ export function OrderList({ filter, page }) {
                 {i + 1}
               </td>
               <td className="p-4 whitespace-nowrap">
-                <div className="text-sm text-N0">{o.order_number}</div>
+                <div className="text-sm text-N0 cursor-pointer" onClick={lookupOrder.bind(null, o)}>{o.order_number}</div>
               </td>
               <td className="p-4 whitespace-nowrap">
                 <div className="text-sm text-G400">{moment(o.order_datetime).format("DD/MM/YYYY HH:mm:ss")}</div>
@@ -140,6 +146,11 @@ export function OrderList({ filter, page }) {
       >
         Are you sure you want to delete this order?
       </Confirm>
+      <OrderLookup
+        order={selectedOrder}
+        open={lookupOpen}
+        onClose={closeLookup}
+        ></OrderLookup>
     </>
   )
 }

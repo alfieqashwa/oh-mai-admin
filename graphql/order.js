@@ -18,6 +18,7 @@ export const GET_LIST_ORDER_GQL = gql`
       city
       state
       country
+      phone_num
     }
     payment_type
     total_price
@@ -25,6 +26,7 @@ export const GET_LIST_ORDER_GQL = gql`
     payment_type_charge_fee
     total_count
     person_name
+    email
   }
 }
 `
