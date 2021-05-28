@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Listbox, Menu, RadioGroup, Switch, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import { XIcon } from '@heroicons/react/outline'
@@ -7,6 +7,15 @@ import { FiArrowDownRight, FiArrowRight, FiArrowUpRight, FiDownloadCloud, FiSear
 
 import { Header } from 'components/header';
 import { DateRangeComparison, ChartView, PaginationProducts } from 'components/analytics/products'
+
+const initialCurrentDate = [
+  { startDate: new Date("2020/12/31") },
+  { endDate: new Date() },
+]
+const initialPreviousDate = [
+  { startDate: new Date("2019/12/31") },
+  { endDate: new Date("2020/01/01") },
+]
 
 export default function Products() {
   const [startCurrentDate, setStartCurrentDate] = useState(new Date("2021/01/01"))
