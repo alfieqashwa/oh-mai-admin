@@ -133,6 +133,9 @@ export default function OrdersPage() {
               <a className="" href="http://localhost:3002/order/download/4erp_yesterday" >
                 <button className="px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out text-N0">EXPORT ERP PREVIOUS DAY</button>
               </a>
+              <a className="" href="http://localhost:3002/order/download/4logistics_yesterday" >
+                <button className="px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out text-N0">EXPORT LOGISTICS PREVIOUS DAY</button>
+              </a>
               <select className="px-8 py-3 bg-transparent text-N0 border-0 text-left"
                 onChange={handleChangeDownload}
                 id="export">
