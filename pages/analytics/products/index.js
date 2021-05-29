@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import { Listbox, Menu, RadioGroup, Switch, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
+import { CheckIcon } from "@heroicons/react/solid";
 import { XIcon } from '@heroicons/react/outline'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiArrowDownRight, FiArrowRight, FiArrowUpRight, FiDownloadCloud, FiSearch } from 'react-icons/fi';
