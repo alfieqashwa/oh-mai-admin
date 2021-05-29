@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import { format } from 'date-fns'
 
 import "react-datepicker/dist/react-datepicker.css";
+import { Custom } from './custom';
 
 export function DateRangeComparison({
   startCurrentDate,
@@ -88,16 +89,7 @@ export function DateRangeComparison({
                       />
                     }
                     {plan === "custom"
-                      && <Custom
-                        startCurrentDate={startCurrentDate}
-                        setStartCurrentDate={setStartCurrentDate}
-                        endCurrentDate={endCurrentDate}
-                        setEndCurrentDate={setEndCurrentDate}
-                        startPreviousDate={startPreviousDate}
-                        setStartPreviousDate={setStartPreviousDate}
-                        endPreviousDate={endPreviousDate}
-                        setEndPreviousDate={setEndPreviousDate}
-                      />
+                      && <Custom />
                     }
                   </div>
                 </div>
@@ -375,60 +367,6 @@ const MonthComparison = ({
   )
 }
 
-const Custom = ({
-  startCurrentDate,
-  setStartCurrentDate,
-  endCurrentDate,
-  setEndCurrentDate,
-  startPreviousDate,
-  setStartPreviousDate,
-  endPreviousDate,
-  setEndPreviousDate
-}) => {
-
-  const onChange = dates => {
-    const [start, end] = dates;
-    setStartCurrentDate(start);
-    setEndCurrentDate(end);
-  };
-  return (
-    <div className="text-center">
-      <DatePicker
-        selected={startCurrentDate}
-        onChange={onChange}
-        startDate={startCurrentDate}
-        endDate={endCurrentDate}
-        selectsRange
-        inline
-        wrapperClassName="datePicker"
-      />
-      <div className="pb-10 mt-4 -mx-6 bg-N0">
-
-        <h5 className="py-4 w250 text-N800">compare to</h5>
-        <div className="flex items-center justify-between mt-2">
-          <p className="pl-8 text-black W400">Same range in</p>
-          <select className="w-1/2 p-4 mx-8">
-            <option>2020</option>
-            <option>2019</option>
-            <option>2018</option>
-            <option>2017</option>
-          </select>
-        </div>
-
-        {/* Apply & Reset button */}
-        <div className="flex items-center justify-center mt-8 space-x-4">
-          <button type="button" className="px-20 py-4 uppercase bg-N50">
-            <h4 className="text-N450 w250">reset</h4>
-          </button>
-          <button type="button" className="px-20 py-4 uppercase text-N0">apply</button>
-        </div>
-
-        {/* <pre className="text-N900">{JSON.stringify(startDate, null, 2)}</pre>
-      <pre className="text-N900">{JSON.stringify(endDate, null, 2)}</pre> */}
-      </div>
-    </div>
-  );
-}
 
 const presetRange = [
   { id: 1, name: "year vs. year" },
