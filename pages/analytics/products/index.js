@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useContext, createContext, Fragment } from 'react';
 import { Listbox, Menu, RadioGroup, Switch, Transition } from '@headlessui/react'
 import { CheckIcon } from "@heroicons/react/solid";
 import { XIcon } from '@heroicons/react/outline'
@@ -8,20 +8,20 @@ import { FiArrowDownRight, FiArrowRight, FiArrowUpRight, FiDownloadCloud, FiSear
 import { Header } from 'components/header';
 import { DateRangeComparison, ChartView, PaginationProducts } from 'components/analytics/products'
 
-const initialCurrentDate = [
-  { startDate: new Date("2020/12/31") },
-  { endDate: new Date() },
-]
-const initialPreviousDate = [
-  { startDate: new Date("2019/12/31") },
-  { endDate: new Date("2020/01/01") },
-]
+export const DateRangeCtx = createContext(null)
 
 export default function Products() {
   const [startCurrentDate, setStartCurrentDate] = useState(new Date("2021/01/01"))
   const [endCurrentDate, setEndCurrentDate] = useState(new Date())
   const [startPreviousDate, setStartPreviousDate] = useState(new Date("2020/01/01"))
   const [endPreviousDate, setEndPreviousDate] = useState(new Date("2020/12/31"))
+
+  const storeDateRange = {
+    startCurrent: [startCurrentDate, setStartCurrentDate],
+    endCurrent: [endCurrentDate, setEndCurrentDate],
+    startPrevious: [startPreviousDate, setStartPreviousDate],
+    endPrevious: [endPreviousDate, setEndCurrentDate]
+  }
 
   return (
     <div className="pb-4">
@@ -33,16 +33,9 @@ export default function Products() {
 
         {/* Start Select Date-Range-Compare */}
         <div className="flex items-center justify-between w-full mt-5 space-x-6">
-          <DateRangeComparison
-            startCurrentDate={startCurrentDate}
-            setStartCurrentDate={setStartCurrentDate}
-            endCurrentDate={endCurrentDate}
-            setEndCurrentDate={setEndCurrentDate}
-            startPreviousDate={startPreviousDate}
-            setStartPreviousDate={setStartPreviousDate}
-            endPreviousDate={endPreviousDate}
-            setEndPreviousDate={setEndPreviousDate}
-          />
+          <DateRangeCtx.Provider value={storeDateRange}>
+            <DateRangeComparison />
+          </DateRangeCtx.Provider>
           {/* <div className="w-full">
             <p className="w400">Compare with Date Range</p>
             <Listbox value={selectedPrevious} onChange={setSelectedPrevious}>

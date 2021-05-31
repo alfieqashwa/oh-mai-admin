@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useContext } from 'react'
 import { Popover, RadioGroup, Listbox, Transition } from '@headlessui/react'
 import { ChevronDownIcon, LibraryIcon } from "@heroicons/react/solid";
 import { CheckIcon, SelectorIcon } from '@heroicons/react/outline';
@@ -6,19 +6,13 @@ import { CheckIcon, SelectorIcon } from '@heroicons/react/outline';
 import DatePicker from "react-datepicker";
 import { format } from 'date-fns'
 
-import "react-datepicker/dist/react-datepicker.css";
+import { DateRangeCtx } from 'pages/analytics/products'
 import { Custom } from './custom';
 
-export function DateRangeComparison({
-  startCurrentDate,
-  setStartCurrentDate,
-  endCurrentDate,
-  setEndCurrentDate,
-  startPreviousDate,
-  setStartPreviousDate,
-  endPreviousDate,
-  setEndPreviousDate
-}) {
+import "react-datepicker/dist/react-datepicker.css";
+
+export function DateRangeComparison() {
+  const { startCurrent, endCurrent, startPrevious, endPrevious } = useContext(DateRangeCtx)
 
   const [plan, setPlan] = useState("presets")
 
@@ -29,8 +23,8 @@ export function DateRangeComparison({
           <p className="w400">Date Range</p>
           <Popover.Button className="flex items-center justify-between px-4 py-2 mt-2 space-x-8 bg-N200 bg-opacity-20">
             <div>
-              <h4 className={`w250 hover:text-G400 transition duration-300 ease-in-out ${open && "text-P700"}`}>current period ({format(startCurrentDate, "MMM d")} - {format(endCurrentDate, "MMM d, yyyy")})</h4>
-              <p className="normal-case w400">vs. Previous Period {format(startPreviousDate, "MMM d")} - {format(endPreviousDate, "MMM d, yyyy")}</p>
+              <h4 className={`w250 hover:text-G400 transition duration-300 ease-in-out ${open && "text-P700"}`}>current period ({format(startCurrent[0], "MMM d")} - {format(endCurrent[0], "MMM d, yyyy")})</h4>
+              <p className="normal-case w400">vs. Previous Period {format(startPrevious[0], "MMM d")} - {format(endPrevious[0], "MMM d, yyyy")}</p>
             </div>
             <ChevronDownIcon className={`w-8 h-8 text-N0 ${open && "transform rotate-180 text-P700"}`} />
           </Popover.Button>
@@ -77,16 +71,7 @@ export function DateRangeComparison({
                   <div className="px-6 pt-5 mt-1 bg-N200">
                     {
                       plan === "presets"
-                      && <Presets
-                        startCurrentDate={startCurrentDate}
-                        setStartCurrentDate={setStartCurrentDate}
-                        endCurrentDate={endCurrentDate}
-                        setEndCurrentDate={setEndCurrentDate}
-                        startPreviousDate={startPreviousDate}
-                        setStartPreviousDate={setStartPreviousDate}
-                        endPreviousDate={endPreviousDate}
-                        setEndPreviousDate={setEndPreviousDate}
-                      />
+                      && <Presets />
                     }
                     {plan === "custom"
                       && <Custom />
@@ -102,16 +87,7 @@ export function DateRangeComparison({
   )
 }
 
-const Presets = ({
-  startCurrentDate,
-  setStartCurrentDate,
-  endCurrentDate,
-  setEndCurrentDate,
-  startPreviousDate,
-  setStartPreviousDate,
-  endPreviousDate,
-  setEndPreviousDate
-}) => {
+const Presets = () => {
   const [selected, setSelected] = useState(presetRange[0])
   return (
     <>
@@ -177,28 +153,10 @@ const Presets = ({
         <div className="flex items-center justify-start mt-24 space-x-8">
           {
             selected.id === 1
-            && <YearComparison
-            // startCurrentDate={startCurrentDate}
-            // setStartCurrentDate={setStartCurrentDate}
-            // endCurrentDate={endCurrentDate}
-            // setEndCurrentDate={setEndCurrentDate}
-            // startPreviousDate={startPreviousDate}
-            // setStartPreviousDate={setStartPreviousDate}
-            // endPreviousDate={endPreviousDate}
-            // setEndPreviousDate={setEndPreviousDate}
-            />
+            && <YearComparison />
           }
           {selected.id === 2
-            && <MonthComparison
-              startCurrentDate={startCurrentDate}
-              setStartCurrentDate={setStartCurrentDate}
-              endCurrentDate={endCurrentDate}
-              setEndCurrentDate={setEndCurrentDate}
-              startPreviousDate={startPreviousDate}
-              setStartPreviousDate={setStartPreviousDate}
-              endPreviousDate={endPreviousDate}
-              setEndPreviousDate={setEndPreviousDate}
-            />}
+            && <MonthComparison />}
         </div>
 
         {/* Apply & Reset button */}
@@ -213,16 +171,7 @@ const Presets = ({
   )
 }
 
-const YearComparison = ({
-  // startCurrentDate,
-  // setStartCurrentDate,
-  // endCurrentDate,
-  // setEndCurrentDate,
-  // startPreviousDate,
-  // setStartPreviousDate,
-  // endPreviousDate,
-  // setEndPreviousDate
-}) => {
+const YearComparison = () => {
 
   // =========================================================
   // Datepicker setup
@@ -287,16 +236,7 @@ const YearComparison = ({
   )
 }
 
-const MonthComparison = ({
-  startCurrentDate,
-  setStartCurrentDate,
-  endCurrentDate,
-  setEndCurrentDate,
-  startPreviousDate,
-  setStartPreviousDate,
-  endPreviousDate,
-  setEndPreviousDate
-}) => {
+const MonthComparison = () => {
 
   return (
     <>

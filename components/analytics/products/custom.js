@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import DatePicker from 'react-datepicker'
 import { AiOutlineCalendar } from 'react-icons/ai'
 import { format, subYears } from 'date-fns'
@@ -6,9 +6,13 @@ import { Listbox, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { CheckIcon } from '@heroicons/react/outline';
 
+import { DateRangeCtx } from 'pages/analytics/products'
+
 export const Custom = () => {
-  const [startDate, setStartDate] = useState(new Date(2021, 0, 5))
-  const [endDate, setEndDate] = useState(new Date(2021, 0, 7))
+  const { startCurrent, endCurrent, startPrevious, endPrevious } = useContext(DateRangeCtx)
+
+  const [startDate, setStartDate] = useState(startCurrent[0])
+  const [endDate, setEndDate] = useState(endCurrent[0])
   const [compareTo, setCompareTo] = useState(yearOptions[0])
 
   const onChange = dates => {
@@ -17,14 +21,32 @@ export const Custom = () => {
     setEndDate(end);
 
   };
-  console.log(`start: ${startDate}, end: ${endDate}`)
 
-  const fiveYearsBefore = subYears(startDate, 5)
-  console.log('five years before: ', fiveYearsBefore)
+  let previousDate = []
+  if (compareTo.id === 2020) {
+    previousDate = [subYears(startDate, 1), subYears(endDate, 1)];
+  } else if (compareTo.id === 2019) {
+    previousDate = [subYears(startDate, 2), subYears(endDate, 2)];
+  } else if (compareTo.id === 2018) {
+    previousDate = [subYears(startDate, 3), subYears(endDate, 3)];
+  } else if (compareTo.id === 2017) {
+    previousDate = [subYears(startDate, 4), subYears(endDate, 4)];
+  } else {
+    previousDate
+  }
 
+  const onSubmit = (e) => {
+    e.preventDefault()
+
+
+    startCurrent[1](startDate)
+    endCurrent[1](endDate)
+    startPrevious[1](previousDate[0])
+    endPrevious[1](previousDate[1])
+  }
 
   return (
-    <div className="text-center">
+    <form onSubmit={onSubmit} className="text-center">
       <section className="flex items-center justify-center">
         <div className="flex items-center justify-start p-4 border bg-N100">
           <AiOutlineCalendar className="w-5 h-5" />
@@ -53,6 +75,10 @@ export const Custom = () => {
       <div className="px-4 pb-6 mt-4 -mx-6 bg-N0">
 
         <h5 className="py-4 w250 text-N800">compare to</h5>
+        {/* <pre className="text-N800">{JSON.stringify(previousDate, null, 2)}</pre> */}
+        <pre className="text-N800">{JSON.stringify(previousDate, null, 2)}</pre>
+        <pre className="text-N800">{JSON.stringify(startPrevious[0], null, 2)}</pre>
+        <pre className="text-N800">{JSON.stringify(endPrevious[0], null, 2)}</pre>
         <div className="flex items-start justify-between mt-2">
           <p className="pt-6 pl-8 text-black W400 whitespace-nowrap">Same range in</p>
 
@@ -96,10 +122,10 @@ export const Custom = () => {
           <button type="button" className="px-16 py-4 uppercase bg-N50">
             <h4 className="text-N450 w250">reset</h4>
           </button>
-          <button type="button" className="px-20 py-4 uppercase text-N0">apply</button>
+          <button type="submit" className="px-20 py-4 uppercase text-N0">apply</button>
         </div>
       </div>
-    </div>
+    </form>
   )
 }
 
