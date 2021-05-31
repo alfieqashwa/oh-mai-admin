@@ -24,26 +24,28 @@ export const Custom = () => {
 
   let previousDate = []
   if (compareTo.id === 2020) {
-    previousDate = [subYears(startDate, 1), subYears(endDate, 1)];
+    previousDate = [subYears(startDate, 1), subYears(endDate, 1)]
   } else if (compareTo.id === 2019) {
-    previousDate = [subYears(startDate, 2), subYears(endDate, 2)];
+    previousDate = [subYears(startDate, 2), subYears(endDate, 2)]
   } else if (compareTo.id === 2018) {
-    previousDate = [subYears(startDate, 3), subYears(endDate, 3)];
+    previousDate = [subYears(startDate, 3), subYears(endDate, 3)]
   } else if (compareTo.id === 2017) {
-    previousDate = [subYears(startDate, 4), subYears(endDate, 4)];
+    previousDate = [subYears(startDate, 4), subYears(endDate, 4)]
   } else {
-    previousDate
+    []
   }
 
   const onSubmit = (e) => {
     e.preventDefault()
 
-
     startCurrent[1](startDate)
     endCurrent[1](endDate)
-    startPrevious[1](previousDate[0])
-    endPrevious[1](previousDate[1])
+    startPrevious[1](previousDate?.[0])
+    endPrevious[1](previousDate?.[1])
   }
+
+  console.log(JSON.stringify(startPrevious, null, 2))
+  console.log(JSON.stringify(endPrevious, null, 2))
 
   return (
     <form onSubmit={onSubmit} className="text-center">
@@ -75,7 +77,6 @@ export const Custom = () => {
       <div className="px-4 pb-6 mt-4 -mx-6 bg-N0">
 
         <h5 className="py-4 w250 text-N800">compare to</h5>
-        {/* <pre className="text-N800">{JSON.stringify(previousDate, null, 2)}</pre> */}
         <pre className="text-N800">{JSON.stringify(previousDate, null, 2)}</pre>
         <pre className="text-N800">{JSON.stringify(startPrevious[0], null, 2)}</pre>
         <pre className="text-N800">{JSON.stringify(endPrevious[0], null, 2)}</pre>

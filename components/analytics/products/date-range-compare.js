@@ -3,7 +3,6 @@ import { Popover, RadioGroup, Listbox, Transition } from '@headlessui/react'
 import { ChevronDownIcon, LibraryIcon } from "@heroicons/react/solid";
 import { CheckIcon, SelectorIcon } from '@heroicons/react/outline';
 
-import DatePicker from "react-datepicker";
 import { format } from 'date-fns'
 
 import { DateRangeCtx } from 'pages/analytics/products'

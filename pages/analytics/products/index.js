@@ -20,7 +20,7 @@ export default function Products() {
     startCurrent: [startCurrentDate, setStartCurrentDate],
     endCurrent: [endCurrentDate, setEndCurrentDate],
     startPrevious: [startPreviousDate, setStartPreviousDate],
-    endPrevious: [endPreviousDate, setEndCurrentDate]
+    endPrevious: [endPreviousDate, setEndPreviousDate]
   }
 
   return (
