@@ -77,17 +77,14 @@ export const Custom = () => {
       <div className="px-4 pb-6 mt-4 -mx-6 bg-N0">
 
         <h5 className="py-4 w250 text-N800">compare to</h5>
-        <pre className="text-N800">{JSON.stringify(previousDate, null, 2)}</pre>
-        <pre className="text-N800">{JSON.stringify(startPrevious[0], null, 2)}</pre>
-        <pre className="text-N800">{JSON.stringify(endPrevious[0], null, 2)}</pre>
         <div className="flex items-start justify-between mt-2">
           <p className="pt-6 pl-8 text-black W400 whitespace-nowrap">Same range in</p>
 
-          <Listbox as="div" className="w-1/2 py-4 mx-8 bg-N200" value={compareTo} onChange={setCompareTo}>
+          <Listbox as="div" className="relative w-1/2 py-4 mx-8 bg-N200" value={compareTo} onChange={setCompareTo}>
             {({ open }) => (
               <>
                 <Listbox.Button className="flex items-center justify-between w-full px-5 bg-transparent shadow-none hover:text-P700 focus:outline-none">
-                  <p className="text-black w400 hover:text-P700">{compareTo.name}</p>
+                  <p className={`${open ? "text-P700" : "text-black"} w400 hover:text-P700`}>{compareTo.name}</p>
                   <ChevronDownIcon className={`w-6 h-6 ${open ? "transform rotate-180" : ""}`} />
                 </Listbox.Button>
                 <Transition
@@ -99,13 +96,13 @@ export const Custom = () => {
                   leaveFrom="transform scale-100 opacity-100"
                   leaveTo="transform scale-95 opacity-0"
                 >
-                  <Listbox.Options static className="mt-2 text-left bg-N100">
+                  <Listbox.Options static className="absolute w-full mt-4 text-left bg-N100">
                     {yearOptions.map(y => (
                       <Listbox.Option
                         key={y.id}
                         value={y}
                       >
-                        <p className={`pl-5 text-N800 py-2 hover:bg-P700 hover:text-N0 transition duration-200 ease-in-out`}>
+                        <p className="py-2 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0">
                           {y.name}
                         </p>
                       </Listbox.Option>
@@ -115,12 +112,10 @@ export const Custom = () => {
               </>
             )}
           </Listbox>
-
         </div>
-
         {/* Apply & Reset button */}
-        <div className="flex items-center justify-center mt-8 space-x-4">
-          <button type="button" className="px-16 py-4 uppercase bg-N50">
+        <div className="flex items-center justify-center pt-20 space-x-4">
+          <button type="button" className="px-16 py-4 uppercase border bg-N50 border-N300">
             <h4 className="text-N450 w250">reset</h4>
           </button>
           <button type="submit" className="px-20 py-4 uppercase text-N0">apply</button>

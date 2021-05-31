@@ -39,8 +39,8 @@ export function DateRangeComparison() {
           >
             <Popover.Panel className="absolute z-20 w-screen max-w-sm mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-lg">
               <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                <div className="relative py-4 bg-N100">
-                  <h4 className="text-center uppercase w250 text-N800">select a date range</h4>
+                <div className="relative pt-4 bg-N100">
+                  <h4 className="text-center uppercase font-secondary w250 text-N800">select a date range</h4>
                   <RadioGroup as="div" value={plan} onChange={setPlan} className="flex flex-row items-center justify-center mt-4 mb-6">
                     <RadioGroup.Option
                       value="presets"
