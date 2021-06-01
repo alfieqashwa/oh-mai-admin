@@ -1,10 +1,9 @@
-import { useEffect, useState, useContext } from 'react'
+import { useState, useContext, Fragment } from 'react'
 import DatePicker from 'react-datepicker'
 import { AiOutlineCalendar } from 'react-icons/ai'
 import { format, subYears } from 'date-fns'
 import { Listbox, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import { CheckIcon } from '@heroicons/react/outline';
 
 import { DateRangeCtx } from 'pages/analytics/products'
 
@@ -88,6 +87,7 @@ export const Custom = () => {
                   <ChevronDownIcon className={`w-6 h-6 ${open ? "transform rotate-180" : ""}`} />
                 </Listbox.Button>
                 <Transition
+                  as={Fragment}
                   show={open}
                   enter="transition duration-200 ease-out"
                   enterFrom="transform scale-95 opacity-0"
