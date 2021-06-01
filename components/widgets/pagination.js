@@ -9,7 +9,7 @@ export const Pagination = ({ offset, total, onChangeInput }) => {
   const dispatch = useDispatch()
   const store = useStore()
   const [mTotal, setmTotal] = useState(0)
-  const [maxRow, setMaxRow] = useState(10)
+  const [maxRow, setMaxRow] = useState(2)
   const [currentPage, setCurrentPage] = useState(1) // one based
   const styleNumberHilight = 'px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out'
   const styleNumberNormal = 'px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out'
@@ -25,7 +25,7 @@ export const Pagination = ({ offset, total, onChangeInput }) => {
       }
     })
   }
-  
+
   useEffect(() => {
     setmTotal(total)
   }, [offset, total])
@@ -69,26 +69,107 @@ export const Pagination = ({ offset, total, onChangeInput }) => {
     console.log("pagination/totalRow", totalRow)
   });
 
+  const gotoFirst = () => {
+    setCurrentPage(0)
+    dispatch({
+      type: 'order/list',
+      payload: {
+        paging: {
+          limit: maxRow,
+          offset: 0
+        }
+      }
+    })
+  }
+
+  const gotoLast = () => {
+    const lastPage = (mTotal/maxRow)
+    console.log("last_page", lastPage)
+    setCurrentPage(lastPage)
+    dispatch({
+      type: 'order/list',
+      payload: {
+        paging: {
+          limit: maxRow,
+          offset: lastPage
+        }
+      }
+    })
+  }
+
+  const gotoNext = () => {
+    if (currentPage + 1 <= ((mTotal/maxRow) - 1)) {
+      dispatch({
+        type: 'order/list',
+        payload: {
+          paging: {
+            limit: maxRow,
+            offset: (currentPage + 1)
+          }
+        }
+      })
+      setCurrentPage(currentPage + 1)
+    }
+
+  }
+
+  const gotoPrev = () => {
+    if (currentPage - 1 >= 0) {
+      dispatch({
+        type: 'order/list',
+        payload: {
+          paging: {
+            limit: maxRow,
+            offset: (currentPage + 1)
+          }
+        }
+      })
+      setCurrentPage(currentPage - 1)
+    }
+  }
+
   return (
     <div className="block pt-4 pb-8 md:items-center md:justify-end md:flex">
       <nav className="flex items-center justify-center space-x-6 text-N0">
-        <ChevronDoubleLeftIcon className="w-5 h-5" />
-        <ChevronLeftIcon className="w-5 h-5" />
-        {Array.apply(0, Array(Math.ceil(mTotal/maxRow))).map(function (x, i) {
-          return <button
-            key={i}
-            className={(i+1) === currentPage ? styleNumberHilight : styleNumberNormal}
-            page={i}
-            onClick={handleClick.bind(null, i)}
-          >{i + 1}</button>
+        <ChevronDoubleLeftIcon className="w-5 h-5 cursor-pointer" onClick={gotoFirst} />
+        <ChevronLeftIcon className="w-5 h-5 cursor-pointer" onClick={gotoPrev} />
+        {Array.apply(0, Array(Math.ceil(mTotal / maxRow))).map(function (x, i) {
+          if (i < 5) {
+            return <button
+              key={i}
+              className={(i) === currentPage ? styleNumberHilight : styleNumberNormal}
+              page={i}
+              onClick={handleClick.bind(null, i)}
+            >{i + 1}</button>
+          } else if ((Math.ceil(mTotal / maxRow) - 1) >= 5) {
+            if ((i === 5) && (Math.ceil(mTotal / maxRow) - 1) == 5) {
+              return <button
+                key={i}
+                className={(i + 1) === currentPage ? styleNumberHilight : styleNumberNormal}
+                page={i}
+                onClick={handleClick.bind(null, i)}
+              >{i + 1}</button>
+            } else if ((Math.ceil(mTotal / maxRow) - 1) > 5) {
+              if (i === ((Math.ceil(mTotal / maxRow) - 1))) {
+                return <button
+                  key={i}
+                  className={(i + 1) === currentPage ? styleNumberHilight : styleNumberNormal}
+                  page={i}
+                  onClick={handleClick.bind(null, i)}
+                >{i + 1}</button>
+              } else if (i === 5) {
+                return <a className="px-2.5 py-1 text-sm font-medium rounded bg-N800">...</a>
+              }
+            }
+          }
         })}
         {/* <button className="px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out">1</button>
         <button className="px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">2</button>
         <button className="px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out">3</button> */}
-        <a className="px-2.5 py-1 text-sm font-medium rounded bg-N800">...</a>
-        <button className="px-2 text-sm font-medium bg-N800 hover:bg-P700">12</button>
-        <ChevronRightIcon className="w-5 h-5" />
-        <ChevronDoubleRightIcon className="w-5 h-5" />
+        {/* <a className="px-2.5 py-1 text-sm font-medium rounded bg-N800">...</a> */}
+        {/* <button className="px-2 text-sm font-medium bg-N800 hover:bg-P700">12</button> */}
+        <ChevronRightIcon className="w-5 h-5 cursor-pointer" onClick={gotoNext} />
+        <ChevronDoubleRightIcon className="w-5 h-5 cursor-pointer" onClick={gotoLast} />
       </nav>
 
       <div className="mt-2 text-center lg:mt-0 lg:text-none lg:mx-6">
@@ -99,6 +180,7 @@ export const Pagination = ({ offset, total, onChangeInput }) => {
         <p className="w350 text-N200">Show</p>
         <select type="number" name="show" className="w-16 px-2 py-1 mx-2 rounded-md bg-N100"
           id="max_row" onChange={handleChangeMaxRow}>
+          <option>2</option>
           <option>10</option>
           <option>20</option>
           <option>30</option>

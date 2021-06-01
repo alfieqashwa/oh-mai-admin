@@ -4,7 +4,7 @@ import { white } from 'tailwindcss/colors'
 import { BiTrash } from 'react-icons/bi'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
-import { useStore } from 'react-redux'
+import { useDispatch, useStore } from 'react-redux'
 import { order } from 'tailwindcss/defaultTheme'
 import Confirm from 'components/widgets/dialog/Confirm'
 import { deleteOrders } from 'services/api/order_services'
@@ -14,11 +14,16 @@ import OrderLookup from 'components/widgets/dialog/OrderLookup'
 export function OrderList({ filter, page }) {
   console.log("/components/widget/pagination:filter", filter)
   const store = useStore()
+  const dispatch = useDispatch()
   const [orders, setOrders] = useState([])
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [selectedDeleteOrder, setSelectedDeleteOrder] = useState("")
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [lookupOpen, setLookupOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [maxRow, setMaxRow] = useState(2)
+  const [totalPage, setTotalPage] = useState(0)
+  const [mTotal, setmTotal] = useState(0)
 
   const moneyFormat = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -26,15 +31,23 @@ export function OrderList({ filter, page }) {
   });
 
   useEffect(() => {
+    dispatch({
+      type: 'order/list',
+      payload: {
+        paging: {
+          limit: maxRow,
+          offset: 0
+        }
+      }
+    })
   }, [])
 
-  store.subscribe(async () => {
-    const state = await store.getState()
-    console.log("order_list/State change", state)
-
-    const listOrders = state.value.data
-    setOrders(listOrders)
-  });
+  // store.subscribe(async () => {
+  //   const state = await store.getState()
+  //   const totalRow = state.value?.totalRow || 0
+  //   const orders = state.value.data
+  //   setmTotal(totalRow)
+  // });
 
   const showDeleteData = (orderNumber) => {
     setConfirmOpen(true)
@@ -64,6 +77,31 @@ export function OrderList({ filter, page }) {
   useEffect(() => {
 
   }, confirmOpen)
+
+  const onPageChange = ({current, pageSize}) => {
+    setCurrentPage(current)
+    dispatch({
+      type: 'order/list',
+      payload: {
+        paging: {
+          limit: maxRow,
+          offset: current * maxRow
+        }
+      }
+    })
+  }
+
+  store.subscribe(async () => {
+    const state = await store.getState()
+    const totalRow = state.value?.totalRow || 0
+    const orders = state.value.data
+    setmTotal(totalRow)
+    const mTotalPage = Math.ceil(mTotal / maxRow)
+    setTotalPage(mTotalPage)
+    setOrders(orders)
+    console.log("pagination/State change", state)
+    console.log("pagination/totalRow", totalRow)
+  });
 
   return (
 

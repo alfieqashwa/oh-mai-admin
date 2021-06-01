@@ -21,13 +21,14 @@ export default function Confirm(props) {
         <div className="p-1">
           <Button
             onClick={() => onClose()}
-            className="bg-secondary hover:bg-secondary-light"
+            className="bg-secondary hover:bg-secondary-light text-N0 text-sm"
           >
             No
           </Button>
         </div>
         <div className="p-1">
           <Button
+            className="text-N0 text-sm"
             onClick={() => {
               onClose();
               onConfirm();
