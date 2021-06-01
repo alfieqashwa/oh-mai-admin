@@ -81,6 +81,27 @@
     border-radius: 10px;
     border: 2px solid rgba(255, 255, 255, 0.18);
   }
+  .pagination {
+    @apply block pt-4 space-x-6 pb-8 md:items-center md:justify-end md:flex text-N0 items-center justify-center
+  }
+  .pagination > .active > a{
+    @apply px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out
+  }
+  .pagination > li > a{
+    @apply px-2.5 py-1 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out rounded-md
+  }
+  .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+    @apply px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out
+  }
+  .pagination > li > a, .pagination > li > span{
+    @apply px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out
+  }
+  .pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span{
+    border-radius: unset
+  }
+  .pagination-navigate {
+    @apply rounded-md bg-N0
+  }
 }
 @layer utilities {
   @variants {
