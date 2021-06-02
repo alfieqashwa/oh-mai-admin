@@ -21,7 +21,7 @@ export function OrderList({ filter, page }) {
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [lookupOpen, setLookupOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const [maxRow, setMaxRow] = useState(2)
+  const [maxRow, setMaxRow] = useState(10)
   const [totalPage, setTotalPage] = useState(0)
   const [mTotal, setmTotal] = useState(0)
 
@@ -56,7 +56,7 @@ export function OrderList({ filter, page }) {
 
   const doDeleteData = async () => {
     // put loader dialog while waiting
-    const {strResult, isSuccess} = await deleteOrders({order_number: selectedDeleteOrder})
+    const { strResult, isSuccess } = await deleteOrders({ order_number: selectedDeleteOrder })
     alert(strResult)
 
     if (isSuccess) {
@@ -78,7 +78,7 @@ export function OrderList({ filter, page }) {
 
   }, confirmOpen)
 
-  const onPageChange = ({current, pageSize}) => {
+  const onPageChange = ({ current, pageSize }) => {
     setCurrentPage(current)
     dispatch({
       type: 'order/list',
@@ -109,10 +109,6 @@ export function OrderList({ filter, page }) {
       <table className="md:min-w-full w-full">
         <thead className="bg-N0 bg-opacity-30">
           <tr>
-            <th scope="col"
-              className="hidden py-3 px-4 text-left md:table-cell text-N0">
-              S/N
-          </th>
             <th scope="col"
               className="px-4 py-3 font-normal text-left text-N0">
               Order No.
@@ -147,9 +143,6 @@ export function OrderList({ filter, page }) {
         <tbody className="">
           {orders.map((o, i) => (
             <tr key={o.order_number}>
-              <td className="hidden py-4 px-4 whitespace-nowrap md:table-cell text-N0">
-                {i + 1}
-              </td>
               <td className="p-4 whitespace-nowrap">
                 <div className="text-sm text-N0 cursor-pointer" onClick={lookupOrder.bind(null, o)}>{o.order_number}</div>
               </td>
@@ -188,7 +181,7 @@ export function OrderList({ filter, page }) {
         order={selectedOrder}
         open={lookupOpen}
         onClose={closeLookup}
-        ></OrderLookup>
+      ></OrderLookup>
     </>
   )
 }

@@ -26,16 +26,6 @@ export default function OrdersPage() {
     console.log("handleChange: id", id)
     console.log("handleChange: value", value)
 
-    // let val = null
-
-    // if (value === 'true') {
-    //   val = true
-    // } else if (value === 'false') {
-    //   val = false
-    // } else {
-    //   val = value
-    // }
-
     setFilter(prevState => ({
       ...prevState,
       [id]: value

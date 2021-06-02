@@ -18,17 +18,30 @@ async function ordersReducer(state = initial_val, action) {
   }
 }
 
+async function filterReducer(state = {}, action) {
+  switch (action.type) {
+    case 'filter/set':
+      console.log("dispatching filter:set", action.payload)
+      return { filter: action.payload }
+    default:
+      return state
+  }
+}
+
 // Create a Redux store holding the state of your app.
 // Its API is { subscribe, dispatch, getState }.
 const store = createStore(ordersReducer)
+const storeFilter = createStore(filterReducer)
 
 // You can use subscribe() to update the UI in response to state changes.
 // Normally you'd use a view binding library (e.g. React Redux) rather than subscribe() directly.
 // There may be additional use cases where it's helpful to subscribe as well.
 
 store.subscribe(() => console.log(store.getState()))
+
 export {
-  store
+  store,
+  storeFilter
 }
 
 // The only way to mutate the internal state is to dispatch an action.
