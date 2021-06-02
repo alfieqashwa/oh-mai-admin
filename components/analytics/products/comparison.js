@@ -267,6 +267,7 @@ const MonthComparison = () => {
                   </div>
                 </Listbox.Button>
                 <Transition
+                  as={Fragment}
                   show={open}
                   enter="transition duration-300 ease-out"
                   enterFrom="transform scale-95 opacity-0"

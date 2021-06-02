@@ -1,7 +1,7 @@
 import { useState, useContext, Fragment } from 'react'
 import DatePicker from 'react-datepicker'
 import { AiOutlineCalendar } from 'react-icons/ai'
-import { format, subYears } from 'date-fns'
+import { format, subYears, getYear } from 'date-fns'
 import { Listbox, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from "@heroicons/react/solid";
 
@@ -10,29 +10,55 @@ import { DateRangeCtx } from 'pages/analytics/products'
 export const Custom = () => {
   const { startCurrent, endCurrent, startPrevious, endPrevious } = useContext(DateRangeCtx)
 
-  const [startDate, setStartDate] = useState(startCurrent[0])
-  const [endDate, setEndDate] = useState(endCurrent[0])
+  const [startDate, setStartDate] = useState(new Date(2021, 0, 4))
+  const [endDate, setEndDate] = useState(new Date(2021, 0, 7))
+  const [prevDate, setPrevDate] = useState([subYears(startDate, 1), subYears(endDate, 1)])
   const [compareTo, setCompareTo] = useState(yearOptions[0])
 
   const onChange = dates => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
+    setPrevDate([subYears(start, 1), subYears(end, 1)])
 
   };
 
+  let prevYear = getYear(prevDate[1])
+  let prevYearList = [{ id: 0, name: "Select a year", disabled: true }]
+  for (let i = prevYear; i > (2015); i--) {
+    prevYearList.push({ id: i, name: i, disabled: false })
+  }
+
+  // the max range year to compare: from 2026 to 2016
   let previousDate = []
-  if (compareTo.id === 2020) {
-    previousDate = [subYears(startDate, 1), subYears(endDate, 1)]
-  } else if (compareTo.id === 2019) {
-    previousDate = [subYears(startDate, 2), subYears(endDate, 2)]
-  } else if (compareTo.id === 2018) {
-    previousDate = [subYears(startDate, 3), subYears(endDate, 3)]
-  } else if (compareTo.id === 2017) {
-    previousDate = [subYears(startDate, 4), subYears(endDate, 4)]
+  if (compareTo.id === prevYear) {
+    previousDate = [prevDate[0], prevDate[1]]
+  } else if (compareTo.id === (prevYear - 1)) {
+    previousDate = [subYears(prevDate[0], 1), subYears(prevDate[1], 1)]
+  } else if (compareTo.id === (prevYear - 2)) {
+    previousDate = [subYears(prevDate[0], 2), subYears(prevDate[1], 2)]
+  } else if (compareTo.id === (prevYear - 3)) {
+    previousDate = [subYears(prevDate[0], 3), subYears(prevDate[1], 3)]
+  } else if (compareTo.id === (prevYear - 4)) {
+    previousDate = [subYears(prevDate[0], 4), subYears(prevDate[1], 4)]
+    // I added some repetitive (dirty) conditions, so you no-need to worry for the next couple of years... duh!
+  } else if (compareTo.id === (prevYear - 5)) {
+    previousDate = [subYears(prevDate[0], 5), subYears(prevDate[1], 5)]
+  } else if (compareTo.id === (prevYear - 6)) {
+    previousDate = [subYears(prevDate[0], 6), subYears(prevDate[1], 6)]
+  } else if (compareTo.id === (prevYear - 7)) {
+    previousDate = [subYears(prevDate[0], 7), subYears(prevDate[1], 7)]
+  } else if (compareTo.id === (prevYear - 8)) {
+    previousDate = [subYears(prevDate[0], 8), subYears(prevDate[1], 8)]
+  } else if (compareTo.id === (prevYear - 9)) {
+    previousDate = [subYears(prevDate[0], 9), subYears(prevDate[1], 9)]
   } else {
     []
   }
+
+
+
+  console.log(JSON.stringify(previousDate, null, 2))
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -43,8 +69,6 @@ export const Custom = () => {
     endPrevious[1](previousDate?.[1])
   }
 
-  console.log(JSON.stringify(startPrevious, null, 2))
-  console.log(JSON.stringify(endPrevious, null, 2))
 
   return (
     <form onSubmit={onSubmit} className="text-center">
@@ -79,12 +103,16 @@ export const Custom = () => {
         <div className="flex items-start justify-between mt-2">
           <p className="pt-6 pl-8 text-black W400 whitespace-nowrap">Same range in</p>
 
-          <Listbox as="div" className="relative w-1/2 py-4 mx-8 bg-N200" value={compareTo} onChange={setCompareTo}>
+          <Listbox as="div" className="w-1/2 mx-8" value={compareTo} onChange={setCompareTo}>
             {({ open }) => (
               <>
-                <Listbox.Button className="flex items-center justify-between w-full px-5 bg-transparent shadow-none hover:text-P700 focus:outline-none">
-                  <p className={`${open ? "text-P700" : "text-black"} w400 hover:text-P700`}>{compareTo.name}</p>
-                  <ChevronDownIcon className={`w-6 h-6 ${open ? "transform rotate-180" : ""}`} />
+                <Listbox.Button className="bg-N100 mt-1.5 h-16 w-full">
+                  <div className="flex items-center justify-between px-4">
+                    <p className={`${open ? "text-P700" : "text-N450"} normal-case w400 hover:text-P700`}>{compareTo.name}</p>
+                    <ChevronDownIcon className={`w-8 h-8 ${open ? "transform rotate-180 text-P700" : ""}`}
+                      aria-hidden="true"
+                    />
+                  </div>
                 </Listbox.Button>
                 <Transition
                   as={Fragment}
@@ -96,11 +124,12 @@ export const Custom = () => {
                   leaveFrom="transform scale-100 opacity-100"
                   leaveTo="transform scale-95 opacity-0"
                 >
-                  <Listbox.Options static className="absolute w-full mt-4 text-left bg-N100">
-                    {yearOptions.map(y => (
+                  <Listbox.Options static className="w-full text-left bg-N100">
+                    {prevYearList.map(y => (
                       <Listbox.Option
                         key={y.id}
                         value={y}
+                        disabled={y.disabled}
                       >
                         <p className="py-2 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0">
                           {y.name}
@@ -114,7 +143,7 @@ export const Custom = () => {
           </Listbox>
         </div>
         {/* Apply & Reset button */}
-        <div className="flex items-center justify-center pt-20 space-x-4">
+        <div className="flex items-center justify-center pt-8 space-x-4">
           <button type="button" className="px-16 py-4 uppercase border bg-N50 border-N300">
             <h4 className="text-N450 w250">reset</h4>
           </button>
@@ -126,8 +155,5 @@ export const Custom = () => {
 }
 
 const yearOptions = [
-  { id: 2020, name: '2020' },
-  { id: 2019, name: '2019' },
-  { id: 2018, name: '2018' },
-  { id: 2017, name: '2017' },
+  { id: 0, name: 'Select a year', disabled: true },
 ]

@@ -22,8 +22,8 @@ export function DateRangeComparison() {
           <p className="w400">Date Range</p>
           <Popover.Button className="flex items-center justify-between px-4 py-2 mt-2 space-x-8 bg-N200 bg-opacity-20">
             <div>
-              <h4 className={`w250 hover:text-G400 transition duration-300 ease-in-out ${open && "text-P700"}`}>current period ({format(startCurrent[0], "MMM d")} - {format(endCurrent[0], "MMM d, yyyy")})</h4>
-              <p className="normal-case w400">vs. Previous Period {format(startPrevious[0], "MMM d")} - {format(endPrevious[0], "MMM d, yyyy")}</p>
+              <h4 className={`w250 hover:text-G400 transition duration-300 ease-in-out ${open && "text-P700"}`}>current period ({format(startCurrent?.[0], "MMM d")} - {format(endCurrent?.[0], "MMM d, yyyy")})</h4>
+              <p className="normal-case w400">vs. Previous Period {format(startPrevious?.[0], "MMM d")} - {format(endPrevious?.[0], "MMM d, yyyy")}</p>
             </div>
             <ChevronDownIcon className={`w-8 h-8 text-N0 ${open && "transform rotate-180 text-P700"}`} />
           </Popover.Button>
