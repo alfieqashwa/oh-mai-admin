@@ -6,6 +6,7 @@ import { Listbox, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from "@heroicons/react/solid";
 
 import { DateRangeCtx } from 'pages/analytics/products'
+// import 'react-datepicker/dist/react-datepicker.css'
 
 export const Custom = () => {
   const { startCurrent, endCurrent, startPrevious, endPrevious } = useContext(DateRangeCtx)
@@ -13,7 +14,7 @@ export const Custom = () => {
   const [startDate, setStartDate] = useState(new Date(2021, 0, 4))
   const [endDate, setEndDate] = useState(new Date(2021, 0, 7))
   const [prevDate, setPrevDate] = useState([subYears(startDate, 1), subYears(endDate, 1)])
-  const [compareTo, setCompareTo] = useState(yearOptions[0])
+  const [compareTo, setCompareTo] = useState(initialState[0])
 
   const onChange = dates => {
     const [start, end] = dates;
@@ -25,11 +26,11 @@ export const Custom = () => {
 
   let prevYear = getYear(prevDate[1])
   let prevYearList = [{ id: 0, name: "Select a year", disabled: true }]
-  for (let i = prevYear; i > (2015); i--) {
+  for (let i = prevYear; i > 2015; i--) {
     prevYearList.push({ id: i, name: i, disabled: false })
   }
 
-  // the max range year to compare: from 2026 to 2016
+  // max-range is 10 years
   let previousDate = []
   if (compareTo.id === prevYear) {
     previousDate = [prevDate[0], prevDate[1]]
@@ -94,6 +95,7 @@ export const Custom = () => {
           startDate={startDate}
           endDate={endDate}
           selectsRange
+          maxDate={new Date()}
           inline
         />
       </div>
@@ -150,10 +152,11 @@ export const Custom = () => {
           <button type="submit" className="px-20 py-4 uppercase text-N0">apply</button>
         </div>
       </div>
+
     </form>
   )
 }
 
-const yearOptions = [
+const initialState = [
   { id: 0, name: 'Select a year', disabled: true },
 ]
