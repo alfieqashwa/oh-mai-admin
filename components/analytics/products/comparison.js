@@ -76,7 +76,7 @@ const YearComparison = () => {
                   leaveFrom="transform scale-100 opacity-100"
                   leaveTo="transform scale-95 opacity-0"
                 >
-                  <Listbox.Options static className="w-full text-left bg-N100 mr-7">
+                  <Listbox.Options static className="w-full mt-1 text-left shadow-md bg-N100 mr-7">
                     {yearCompareOptions.map(y => (
                       <Listbox.Option
                         key={y.id}
@@ -119,7 +119,7 @@ const YearComparison = () => {
                   leaveFrom="transform scale-100 opacity-100"
                   leaveTo="transform scale-95 opacity-0"
                 >
-                  <Listbox.Options static className="w-full text-left bg-N100 mr-7">
+                  <Listbox.Options static className="w-full mt-1 text-left shadow-md bg-N100 mr-7">
                     {yearWithOptions.map(y => (
                       <Listbox.Option
                         key={y.id}
