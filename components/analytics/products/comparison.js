@@ -11,31 +11,42 @@ const YearComparison = () => {
   const [withOption, setWithOption] = useState()
 
   let currentDate = []
-  if (compareTo?.id === 2021) {
-    currentDate = [new Date(2021, 0, 1), new Date()]
-  } else if (compareTo?.id === 2020) {
-    currentDate = [new Date(2020, 0, 1), new Date(2020, 11, 31)]
-  } else if (compareTo?.id === 2019) {
-    currentDate = [new Date(2019, 0, 1), new Date(2019, 11, 31)]
-  } else if (compareTo?.id === 2018) {
-    currentDate = [new Date(2018, 0, 1), new Date(2018, 11, 31)]
-  } else if (compareTo?.id === 2017) {
-    currentDate = [new Date(2017, 0, 1), new Date(2017, 11, 31)]
-  } else {
-    []
+  switch (true) {
+    case compareTo?.id === 2021:
+      currentDate = [new Date(2021, 0, 1), new Date()]
+      break;
+    case compareTo?.id === 2020:
+      currentDate = [new Date(2020, 0, 1), new Date(2020, 11, 31)]
+      break;
+    case compareTo?.id === 2019:
+      currentDate = [new Date(2019, 0, 1), new Date(2019, 11, 31)]
+      break;
+    case compareTo?.id === 2018:
+      currentDate = [new Date(2018, 0, 1), new Date(2018, 11, 31)]
+      break;
+    case compareTo?.id === 2017:
+      currentDate = [new Date(2017, 0, 1), new Date(2017, 11, 31)]
+      break;
+    default:
+      currentDate = []
   }
 
   let previousDate = []
-  if (withOption?.id === 2020) {
-    previousDate = [new Date(2020, 0, 1), new Date(2020, 11, 31)]
-  } else if (withOption?.id === 2019) {
-    previousDate = [new Date(2019, 0, 1), new Date(2019, 11, 31)]
-  } else if (withOption?.id === 2018) {
-    previousDate = [new Date(2018, 0, 1), new Date(2018, 11, 31)]
-  } else if (withOption?.id === 2017) {
-    previousDate = [new Date(2017, 0, 1), new Date(2017, 11, 31)]
-  } else {
-    []
+  switch (true) {
+    case withOption?.id === 2020:
+      previousDate = [new Date(2020, 0, 1), new Date(2020, 11, 31)]
+      break;
+    case withOption?.id === 2019:
+      previousDate = [new Date(2019, 0, 1), new Date(2019, 11, 31)]
+      break;
+    case withOption?.id === 2018:
+      previousDate = [new Date(2018, 0, 1), new Date(2018, 11, 31)]
+      break;
+    case withOption?.id === 2017:
+      previousDate = [new Date(2017, 0, 1), new Date(2017, 11, 31)]
+      break;
+    default:
+      previousDate = []
   }
 
   function onReset() {
@@ -189,63 +200,89 @@ const MonthComparison = () => {
   const november = [new Date(todaysYear, 10, 1), new Date(todaysYear, 10, 30)]
   const december = [new Date(todaysYear, 11, 1), new Date(todaysYear, 11, 31)]
 
-  // TODO: should be convert to switch-case when necessary
+
   let currentDate = []
-  if (compareTo?.id === 1) {
-    currentDate = january
-  } else if (compareTo?.id === 2) {
-    currentDate = february
-  } else if (compareTo?.id === 3) {
-    currentDate = march
-  } else if (compareTo?.id === 4) {
-    currentDate = april
-  } else if (compareTo?.id === 5) {
-    currentDate = may
-  } else if (compareTo?.id === 6) {
-    currentDate = june
-  } else if (compareTo?.id === 7) {
-    currentDate = july
-  } else if (compareTo?.id === 8) {
-    currentDate = august
-  } else if (compareTo?.id === 9) {
-    currentDate = september
-  } else if (compareTo?.id === 10) {
-    currentDate = october
-  } else if (compareTo?.id === 11) {
-    currentDate = november
-  } else if (compareTo?.id === 12) {
-    currentDate = december
-  } else {
-    currentDate = []
+  switch (true) {
+    case compareTo?.id === 1:
+      currentDate = january
+      break;
+    case compareTo?.id === 2:
+      currentDate = february
+      break;
+    case compareTo?.id === 3:
+      currentDate = march
+      break;
+    case compareTo?.id === 4:
+      currentDate = april
+      break;
+    case compareTo?.id === 5:
+      currentDate = may
+      break;
+    case compareTo?.id === 6:
+      currentDate = june
+      break;
+    case compareTo?.id === 7:
+      currentDate = july
+      break;
+    case compareTo?.id === 8:
+      currentDate = august
+      break;
+    case compareTo?.id === 9:
+      currentDate = september
+      break;
+    case compareTo?.id === 10:
+      currentDate = october
+      break;
+    case compareTo?.id === 11:
+      currentDate = november
+      break;
+    case compareTo?.id === 12:
+      currentDate = december
+      break;
+    default:
+      currentDate = []
   }
 
   let previousDate = []
-  if (withOption?.id === 1) {
-    previousDate = january
-  } else if (withOption?.id === 2) {
-    previousDate = february
-  } else if (withOption?.id === 3) {
-    previousDate = march
-  } else if (withOption?.id === 4) {
-    previousDate = april
-  } else if (withOption?.id === 5) {
-    previousDate = may
-  } else if (withOption?.id === 6) {
-    previousDate = june
-  } else if (withOption?.id === 7) {
-    previousDate = july
-  } else if (withOption?.id === 8) {
-    previousDate = august
-  } else if (withOption?.id === 9) {
-    previousDate = september
-  } else if (withOption?.id === 10) {
-    previousDate = october
-  } else if (withOption?.id === 11) {
-    previousDate = november
-  } else if (withOption?.id === 12) {
-    previousDate = december
-  } else {
-    previousDate = []
+  switch (true) {
+    case withOption?.id === 1:
+      previousDate = january
+      break;
+    case withOption?.id === 2:
+      previousDate = february
+      break;
+    case withOption?.id === 3:
+      previousDate = march
+      break;
+    case withOption?.id === 4:
+      previousDate = april
+      break;
+    case withOption?.id === 5:
+      previousDate = may
+      break;
+    case withOption?.id === 6:
+      previousDate = june
+      break;
+    case withOption?.id === 7:
+      previousDate = july
+      break;
+    case withOption?.id === 8:
+      previousDate = august
+      break;
+    case withOption?.id === 9:
+      previousDate = september
+      break;
+    case withOption?.id === 10:
+      previousDate = october
+      break;
+    case withOption?.id === 11:
+      previousDate = november
+      break;
+    case withOption?.id === 12:
+      previousDate = december
+      break;
+    default:
+      previousDate = []
   }
 
   function onReset() {

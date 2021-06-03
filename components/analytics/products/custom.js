@@ -32,31 +32,41 @@ export const Custom = () => {
 
   // max-range is 10 years
   let previousDate = []
-  if (compareTo.id === prevYear) {
-    previousDate = [prevDate[0], prevDate[1]]
-  } else if (compareTo.id === (prevYear - 1)) {
-    previousDate = [subYears(prevDate[0], 1), subYears(prevDate[1], 1)]
-  } else if (compareTo.id === (prevYear - 2)) {
-    previousDate = [subYears(prevDate[0], 2), subYears(prevDate[1], 2)]
-  } else if (compareTo.id === (prevYear - 3)) {
-    previousDate = [subYears(prevDate[0], 3), subYears(prevDate[1], 3)]
-  } else if (compareTo.id === (prevYear - 4)) {
-    previousDate = [subYears(prevDate[0], 4), subYears(prevDate[1], 4)]
+  switch (true) {
+    case compareTo.id === prevYear:
+      previousDate = [prevDate[0], prevDate[1]]
+      break;
+    case compareTo.id === (prevYear - 1):
+      previousDate = [subYears(prevDate[0], 1), subYears(prevDate[1], 1)]
+      break;
+    case compareTo.id === (prevYear - 2):
+      previousDate = [subYears(prevDate[0], 2), subYears(prevDate[1], 2)]
+      break;
+    case compareTo.id === (prevYear - 3):
+      previousDate = [subYears(prevDate[0], 3), subYears(prevDate[1], 3)]
+      break;
+    case compareTo.id === (prevYear - 4):
+      previousDate = [subYears(prevDate[0], 4), subYears(prevDate[1], 4)]
+      break;
     // I added some repetitive (dirty) conditions, so you no-need to worry for the next couple of years... duh!
-  } else if (compareTo.id === (prevYear - 5)) {
-    previousDate = [subYears(prevDate[0], 5), subYears(prevDate[1], 5)]
-  } else if (compareTo.id === (prevYear - 6)) {
-    previousDate = [subYears(prevDate[0], 6), subYears(prevDate[1], 6)]
-  } else if (compareTo.id === (prevYear - 7)) {
-    previousDate = [subYears(prevDate[0], 7), subYears(prevDate[1], 7)]
-  } else if (compareTo.id === (prevYear - 8)) {
-    previousDate = [subYears(prevDate[0], 8), subYears(prevDate[1], 8)]
-  } else if (compareTo.id === (prevYear - 9)) {
-    previousDate = [subYears(prevDate[0], 9), subYears(prevDate[1], 9)]
-  } else {
-    []
+    case compareTo.id === (prevYear - 5):
+      previousDate = [subYears(prevDate[0], 5), subYears(prevDate[1], 5)]
+      break;
+    case compareTo.id === (prevYear - 6):
+      previousDate = [subYears(prevDate[0], 6), subYears(prevDate[1], 6)]
+      break;
+    case compareTo.id === (prevYear - 7):
+      previousDate = [subYears(prevDate[0], 7), subYears(prevDate[1], 7)]
+      break;
+    case compareTo.id === (prevYear - 8):
+      previousDate = [subYears(prevDate[0], 8), subYears(prevDate[1], 8)]
+      break;
+    case compareTo.id === (prevYear - 9):
+      previousDate = [subYears(prevDate[0], 9), subYears(prevDate[1], 9)]
+      break;
+    default:
+      previousDate = []
   }
-
 
 
   console.log(JSON.stringify(compareTo, null, 2))
