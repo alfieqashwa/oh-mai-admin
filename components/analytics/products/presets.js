@@ -83,10 +83,10 @@ absolute inset-y-0 left-0 flex items-center pl-3`}
         {selected?.id === undefined
           &&
           <div className="flex items-center justify-center pb-10 space-x-5 mt-11">
-            <button type="button" disabled className="px-20 py-4 uppercase bg-N50">
+            <button type="button" disabled className="px-20 py-4 uppercase disabled:cursor-not-allowed disabled:opacity-50 bg-N50">
               <h4 className="text-N450 w250">reset</h4>
             </button>
-            <button type="submit" disabled className="px-20 py-4 uppercase text-N0">apply</button>
+            <button type="submit" disabled className="px-20 py-4 uppercase disabled:opacity-50 disabled:cursor-not-allowed text-N0">apply</button>
           </div>
         }
       </div>

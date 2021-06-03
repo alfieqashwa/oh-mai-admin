@@ -46,6 +46,9 @@ const YearComparison = () => {
     endPrevious[1](previousDate?.[1])
   }
 
+  console.log(JSON.stringify(compareTo, null, 2))
+  console.log(JSON.stringify(withOption, null, 2))
+
   return (
     <form onSubmit={onSubmit}>
       <div className="flex items-start justify-between w-full space-x-7">
@@ -145,7 +148,7 @@ const YearComparison = () => {
         <button type="button" className="px-20 py-4 uppercase bg-N50">
           <h4 className="text-N450 w250">reset</h4>
         </button>
-        <button type="submit" className="px-20 py-4 uppercase text-N0">apply</button>
+        <button type="submit" disabled={!compareTo || !withOption} className="px-20 py-4 uppercase disabled:opacity-50 disabled:cursor-not-allowed text-N0">apply</button>
       </div>
     </form>
   )
@@ -345,7 +348,7 @@ const MonthComparison = () => {
         <button type="button" className="px-20 py-4 uppercase bg-N50">
           <h4 className="text-N450 w250">reset</h4>
         </button>
-        <button type="submit" className="px-20 py-4 uppercase text-N0">apply</button>
+        <button type="submit" disabled={!compareTo || !withOption} className="px-20 py-4 uppercase disabled:cursor-not-allowed disabled:opacity-50 text-N0">apply</button>
       </div>
     </form>
   )

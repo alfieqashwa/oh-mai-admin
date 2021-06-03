@@ -59,7 +59,7 @@ export const Custom = () => {
 
 
 
-  console.log(JSON.stringify(previousDate, null, 2))
+  console.log(JSON.stringify(compareTo, null, 2))
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -149,7 +149,7 @@ export const Custom = () => {
           <button type="button" className="px-16 py-4 uppercase border bg-N50 border-N300">
             <h4 className="text-N450 w250">reset</h4>
           </button>
-          <button type="submit" className="px-20 py-4 uppercase text-N0">apply</button>
+          <button type="submit" disabled={compareTo.id === 0} className="px-20 py-4 uppercase disabled:opacity-50 disabled:cursor-not-allowed text-N0">apply</button>
         </div>
       </div>
 
