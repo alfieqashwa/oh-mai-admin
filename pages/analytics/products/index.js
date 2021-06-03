@@ -1,12 +1,10 @@
 import React, { useState, createContext, Fragment } from 'react';
-import { Menu, RadioGroup, Switch, Transition } from '@headlessui/react'
-import { CheckIcon } from "@heroicons/react/solid";
-import { XIcon } from '@heroicons/react/outline'
+import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import { FiArrowDownRight, FiArrowRight, FiArrowUpRight, FiDownloadCloud, FiSearch } from 'react-icons/fi';
+import { FiDownloadCloud, FiSearch } from 'react-icons/fi';
 
 import { Header } from 'components/header';
-import { DateRangeComparison, ShowProductSelect, ChartView, PaginationProducts } from 'components/analytics/products'
+import { DateRangeComparison, ShowProductSelect, ChartView, PaginationProducts, SwitchOnOff, ProductPerformanceCard } from 'components/analytics/products'
 
 export const DateRangeCtx = createContext(null)
 
@@ -27,7 +25,6 @@ export default function Products() {
     <div className="pb-4">
       <Header title="Analytics - Products" />
       <div className="my-8 ml-6 mr-12">
-
         {/* header */}
         <h2 className="w800">Analytics</h2>
         <div className="flex items-start justify-between w-full mt-5 space-x-0">
@@ -36,14 +33,12 @@ export default function Products() {
           </DateRangeCtx.Provider>
           <ShowProductSelect />
         </div>
-
         {/* Leaderboard */}
         <div className="flex items-center justify-between mt-6 mb-4">
           <h4 className="w600">Leaderboard</h4>
           <div className="w-full mx-5 border border-N0 border-opacity-30"></div>
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
-
         {/* Table */}
         <div className="mt-8">
           <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
@@ -155,109 +150,10 @@ export default function Products() {
   )
 }
 
-const ProductPerformanceCard = () => {
-  const [selected, setSelected] = useState(performanceCards[0])
-  return (
-    <RadioGroup className="grid grid-cols-3" value={selected} onChange={setSelected}>
-      <RadioGroup.Label className="sr-only">Performance</RadioGroup.Label>
-      {performanceCards.map((c, i) => {
-        return (
-          <RadioGroup.Option
-            key={i}
-            value={c}
-            className={({ active, checked }) =>
-              `${active
-                ? "ring-1 ring-offset-P900"
-                : ""
-              }
-              ${checked
-                ? "bg-N0 bg-opacity-80 border-t-4 border-P700"
-                : "bg-[#E0E0F24D] bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]"
-              }
-              relative px-5 cursor-pointer`
-            }
-          >
-            {({ active, checked }) => (
-              <>
-                <h5 className={`mt-5 text-opacity-50 w250 ${checked ? "text-N800" : "text-N0"}`}>{c.category}</h5>
-                <div className="mt-3">
-                  <h3 className={`w700 ${checked ? "text-N800" : "text-N0"}`}>
-                    {c.category === "net sales"
-                      ? <>$NT{c.amount.toFixed(2)}</>
-                      : <>${c.amount.toFixed(2)}</>
-                    }
-                  </h3>
-                  <div className="flex items-center space-x-1">
-                    {/* temporary logic */}
-                    {c.percentage === '-'
-                      ?
-                      <>
-                        <FiArrowRight className={`w-5 h-5 ${checked ? "text-N800" : "text-N0"}`} />
-                        <h5 className={`w250 ${checked ? "text-N800" : "text-N0"}`}>{c.percentage}</h5>
-                      </>
-                      :
-                      c.category === 'orders'
-                        ?
-                        <>
-                          <FiArrowDownRight className="w-5 h-5 text-R600" />
-                          <h5 className="w250 text-R600">{c.percentage}%</h5>
-                        </>
-                        :
-                        <>
-                          <FiArrowUpRight className="w-5 h-5 text-G400" />
-                          <h5 className="w250 text-G400">{c.percentage}%</h5>
-                        </>
-                    }
-                  </div>
-                </div>
-                <div className="my-4">
-                  <p className={`text-opacity-50 w400 ${checked ? "text-N800" : "text-N0"}`}>Previous Year</p>
-                  <p className={`w400 ${checked ? "text-N800" : "text-N0"}`}>${c.previousYear.toFixed(2)}</p>
-                </div>
-              </>
-            )}
-          </RadioGroup.Option>
-        )
-      })}
-    </RadioGroup>)
-}
-
-export function SwitchOnOff(props) {
-  const initialValue = props.isEnabled;
-  const [enabled, setEnabled] = useState(initialValue);
-
-  return (
-    <Switch
-      checked={enabled}
-      onChange={setEnabled}
-      className={`${enabled ? "bg-G400" : "bg-N400"}
-        inline-flex flex-shrink-0 h-[36px] w-[82px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-N0 focus-visible:ring-opacity-75`}
-    >
-      <span className="sr-only">{props.title}</span>
-      <span
-        aria-hidden="true"
-        className={`${enabled ? "translate-x-11" : "translate-x-0"}
-            pointer-events-none flex items-center justify-center h-[24px] w-[24px] rounded-full bg-N0 shadow-lg transform ring-0 transition ease-in-out duration-500`}
-      >
-        {enabled
-          ? <CheckIcon className="w-5 h-5 text-G400" />
-          : <XIcon className="w-5 h-5 text-N400" />
-        }
-      </span>
-    </Switch>
-  )
-}
-
 // Best Selling Product List Dummy Data
 const tableBody = [
   { id: 1, sn: '1', productTitle: 'Zelta: Breath of the Wild', sku: '128SKXUM-CI', itemsSold: 100, netSales: 1000.00, orders: 10, category: 'Games', status: true },
   { id: 2, sn: '2', productTitle: 'Persona 5', sku: 'PERS9290S-XL', itemsSold: 24, netSales: 400.00, orders: 10, category: 'Games', status: false },
   { id: 3, sn: '3', productTitle: 'Play Station 5 Cyberpunk: 2077 Skin Wrap Edition', sku: 'PS829-SIMNXO', itemsSold: 2, netSales: 200.00, orders: 1, category: 'Games Accessories', status: false },
   { id: 4, sn: '4', productTitle: 'Back4Blood', sku: 'B4B12312490L', itemsSold: 2, netSales: 0.00, orders: 1, category: 'Games', status: true },
-]
-
-const performanceCards = [
-  { category: "orders", amount: 10, percentage: 50, previousYear: 0.00 },
-  { category: "net sales", amount: 1000.00, percentage: 50, previousYear: 0.00 },
-  { category: "items sold", amount: 100.00, percentage: 50, previousYear: 50.00 },
 ]
