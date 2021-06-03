@@ -99,7 +99,7 @@ export const Custom = () => {
           inline
         />
       </div>
-      <div className="px-4 pb-6 mt-4 -mx-6 bg-N0">
+      <div className="px-4 pb-6 mt-4 -mx-6 bg-N100">
 
         <h5 className="py-4 w250 text-N800">compare to</h5>
         <div className="flex items-start justify-between mt-2">
@@ -108,7 +108,7 @@ export const Custom = () => {
           <Listbox as="div" className="w-1/2 mx-8" value={compareTo} onChange={setCompareTo}>
             {({ open }) => (
               <>
-                <Listbox.Button className="bg-N100 mt-1.5 h-16 w-full">
+                <Listbox.Button className="bg-N200 mt-1.5 h-16 w-full">
                   <div className="flex items-center justify-between px-4">
                     <p className={`${open ? "text-P700" : "text-N450"} normal-case w400 hover:text-P700`}>{compareTo.name}</p>
                     <ChevronDownIcon className={`w-8 h-8 ${open ? "transform rotate-180 text-P700" : ""}`}
@@ -119,14 +119,14 @@ export const Custom = () => {
                 <Transition
                   as={Fragment}
                   show={open}
-                  enter="transition duration-200 ease-out"
+                  enter="transition duration-300 ease-out"
                   enterFrom="transform scale-95 opacity-0"
                   enterTo="transform scale-100 opacity-100"
                   leave="transition duration-75 ease-out"
                   leaveFrom="transform scale-100 opacity-100"
                   leaveTo="transform scale-95 opacity-0"
                 >
-                  <Listbox.Options static className="w-full text-left bg-N100">
+                  <Listbox.Options static className="w-full mt-1.5 text-left shadow-md bg-N100">
                     {prevYearList.map(y => (
                       <Listbox.Option
                         key={y.id}
