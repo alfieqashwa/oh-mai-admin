@@ -61,6 +61,16 @@ export const Custom = () => {
 
   console.log(JSON.stringify(compareTo, null, 2))
 
+  function onReset() {
+    startCurrent[1]()
+    endCurrent[1]()
+    startPrevious[1]()
+    endPrevious[1]()
+    setStartDate(new Date(2021, 0, 4))
+    setEndDate(new Date(2021, 0, 7))
+    setCompareTo(initialState[0])
+  }
+
   const onSubmit = (e) => {
     e.preventDefault()
 
@@ -69,7 +79,6 @@ export const Custom = () => {
     startPrevious[1](previousDate?.[0])
     endPrevious[1](previousDate?.[1])
   }
-
 
   return (
     <form onSubmit={onSubmit} className="text-center">
@@ -146,7 +155,7 @@ export const Custom = () => {
         </div>
         {/* Apply & Reset button */}
         <div className="flex items-center justify-center pt-8 space-x-4">
-          <button type="button" className="px-16 py-4 uppercase border bg-N50 border-N300">
+          <button type="button" onClick={onReset} className="px-16 py-4 uppercase border bg-N50 border-N300">
             <h4 className="text-N450 w250">reset</h4>
           </button>
           <button type="submit" disabled={compareTo.id === 0} className="px-20 py-4 uppercase disabled:opacity-50 disabled:cursor-not-allowed text-N0">apply</button>

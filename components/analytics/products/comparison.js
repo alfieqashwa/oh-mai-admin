@@ -38,6 +38,15 @@ const YearComparison = () => {
     []
   }
 
+  function onReset() {
+    startCurrent[1]()
+    endCurrent[1]()
+    startPrevious[1]()
+    endPrevious[1]()
+    setCompareTo()
+    setWithOption()
+  }
+
   const onSubmit = (e) => {
     e.preventDefault()
     startCurrent[1](currentDate?.[0])
@@ -145,7 +154,7 @@ const YearComparison = () => {
       </div>
       {/* Apply & Reset button */}
       <div className="flex items-center justify-center pb-10 space-x-5 mt-11">
-        <button type="button" className="px-20 py-4 uppercase bg-N50">
+        <button type="button" onClick={onReset} className="px-20 py-4 uppercase bg-N50">
           <h4 className="text-N450 w250">reset</h4>
         </button>
         <button type="submit" disabled={!compareTo || !withOption} className="px-20 py-4 uppercase disabled:opacity-50 disabled:cursor-not-allowed text-N0">apply</button>
@@ -237,6 +246,15 @@ const MonthComparison = () => {
     previousDate = december
   } else {
     previousDate = []
+  }
+
+  function onReset() {
+    startCurrent[1]()
+    endCurrent[1]()
+    startPrevious[1]()
+    endPrevious[1]()
+    setCompareTo()
+    setWithOption()
   }
 
   const onSubmit = e => {
@@ -345,7 +363,7 @@ const MonthComparison = () => {
       </div>
       {/* Apply & Reset button */}
       <div className="flex items-center justify-center pb-10 space-x-5 mt-11">
-        <button type="button" className="px-20 py-4 uppercase bg-N50">
+        <button type="button" onClick={onReset} className="px-20 py-4 uppercase bg-N50">
           <h4 className="text-N450 w250">reset</h4>
         </button>
         <button type="submit" disabled={!compareTo || !withOption} className="px-20 py-4 uppercase disabled:cursor-not-allowed disabled:opacity-50 text-N0">apply</button>
