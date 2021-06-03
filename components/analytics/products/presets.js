@@ -20,7 +20,6 @@ export const Presets = () => {
                   ? <span className={`block truncate ${open ? "text-P700" : "text-N900"}`}>{selected?.name}</span>
                   : <span className="block normal-case truncate text-N350 w400">Select a preset</span>
                 }
-
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                   <ChevronDownIcon
                     className={`w-8 h-8 ${open ? "transform rotate-180" : ""}`}

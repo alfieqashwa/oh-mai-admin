@@ -1,6 +1,6 @@
 import { useState, Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
+import { CheckIcon } from "@heroicons/react/solid";
 
 export function ShowProductSelect() {
   const [show, setShow] = useState(initialState[0])
@@ -13,7 +13,6 @@ export function ShowProductSelect() {
             <div className="relative mt-2">
               <Listbox.Button className="relative w-full py-2 text-left shadow-md h-11 bg-N200 bg-opacity-20 text-N0 focus:outline-none focus:ring-2 focus:ring-opacity-75 focus:ring-P900 focus:ring-offset-P900 focus-visible:ring-offset-2 focus:border-P900 sm:text-sm">
                 <p className="pl-4 capitalize text-N0">{show.name}</p>
-
               </Listbox.Button>
               <Transition
                 show={open}
@@ -73,7 +72,6 @@ export function ShowProductSelect() {
 }
 
 const initialState = [
-  { name: "all products" },
   { name: "all products" },
   { name: "all products" },
 ]

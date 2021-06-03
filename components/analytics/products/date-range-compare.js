@@ -1,18 +1,14 @@
 import { Fragment, useState, useContext } from 'react'
-import { Popover, RadioGroup, Listbox, Transition } from '@headlessui/react'
-import { ChevronDownIcon, LibraryIcon } from "@heroicons/react/solid";
-import { CheckIcon, SelectorIcon } from '@heroicons/react/outline';
+import { Popover, RadioGroup, Transition } from '@headlessui/react'
+import { ChevronDownIcon, } from "@heroicons/react/solid";
 import { format } from 'date-fns'
 
 import { Presets } from './presets';
 import { Custom } from './custom';
 import { DateRangeCtx } from 'pages/analytics/products'
 
-import "react-datepicker/dist/react-datepicker.css";
-
 export function DateRangeComparison() {
   const { startCurrent, endCurrent, startPrevious, endPrevious } = useContext(DateRangeCtx)
-
   const [plan, setPlan] = useState("presets")
 
   return (
@@ -96,15 +92,3 @@ export function DateRangeComparison() {
     </Popover >
   )
 }
-
-
-
-
-
-
-// TODO
-// NOTE:
-// 1. maxDate of the endCurrentDate should be now (new Date()).
-// 2. maxDate of the startCurrentDate should be the endCurrentDate.
-// 3. maxDate of the endPreviousDate should be the startCurrentDate.
-// 4. maxDate of the startPreviousDate should be the endPreviousDate.

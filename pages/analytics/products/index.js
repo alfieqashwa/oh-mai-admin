@@ -1,5 +1,5 @@
-import React, { useState, useContext, createContext, Fragment } from 'react';
-import { Listbox, Menu, RadioGroup, Switch, Transition } from '@headlessui/react'
+import React, { useState, createContext, Fragment } from 'react';
+import { Menu, RadioGroup, Switch, Transition } from '@headlessui/react'
 import { CheckIcon } from "@heroicons/react/solid";
 import { XIcon } from '@heroicons/react/outline'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -30,7 +30,6 @@ export default function Products() {
 
         {/* header */}
         <h2 className="w800">Analytics</h2>
-
         <div className="flex items-start justify-between w-full mt-5 space-x-0">
           <DateRangeCtx.Provider value={storeDateRange}>
             <DateRangeComparison />
@@ -139,23 +138,18 @@ export default function Products() {
             </tbody>
           </table>
         </div>
-
         {/* Pagination */}
         <PaginationProducts />
-
         {/* Performance-border */}
         <div className="flex items-center justify-between mt-10 mb-4">
           <h4 className="w600">Performance</h4>
           <div className="w-full mx-5 border border-N0 border-opacity-30"></div>
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
-
         {/* Performance */}
         <ProductPerformanceCard />
-
         {/* Chart View */}
         <ChartView />
-
       </div>
     </div>
   )
@@ -253,7 +247,6 @@ export function SwitchOnOff(props) {
     </Switch>
   )
 }
-
 
 // Best Selling Product List Dummy Data
 const tableBody = [

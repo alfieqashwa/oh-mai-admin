@@ -73,12 +73,6 @@ export function ChartView() {
 
         </div>
       </div>
-      {/* <div className="grid w-full py-32 rounded-b bg-G400 h-1/2 place-items-center">
-        <h1 className="text-N0">
-          Bar / Line Chart
-        </h1>
-      </div> */}
-      {/* <ChartArea /> */}
       {plan === "bar" && <ChartBar />}
       {plan === "area" && <ChartArea />}
     </>
@@ -93,7 +87,6 @@ for (let num = 30; num >= 0; num--) {
     value: 1 + Math.random(),
   })
 }
-
 
 function ChartArea() {
   return (
@@ -152,7 +145,6 @@ function CustomTooltip({ active, payload, label }) {
 }
 
 // Bar Chart Testing
-
 const getPath = (x, y, width, height) => (
   `M${x},${y + height}
    C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${x + width / 2}, ${y}

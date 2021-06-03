@@ -20,11 +20,9 @@ export const PaginationProducts = () => {
         <ChevronRightIcon className="w-5 h-5 cursor-pointer" />
         <ChevronDoubleRightIcon className="w-5 h-5 cursor-pointer" />
       </nav>
-
       <div className="pr-10 mt-2 text-center lg:mt-0 lg:text-none lg:mx-6">
         <p className="w350 text-N450 whitespace-nowrap">Showing<span className="px-1.5 font-medium text-N0">1</span>to<span className="px-1.5 font-medium text-N0">4</span>of<span className="px-1.5 font-medium text-N0">60</span>products</p>
       </div>
-
       <div className="items-center hidden lg:flex whitespace-nowrap">
         <p className="px-2 w350 text-N200">Show</p>
         <select
@@ -32,12 +30,10 @@ export const PaginationProducts = () => {
           name="show"
           defaultValue={4}
           className="w-16 px-2 py-1 mx-2 rounded-md cursor-pointer bg-N100">
-
           {options.map((o, i) => (
             <option key={i} value={o.value}>{o.label}</option>
           ))
           }
-
         </select>
         <p className="px-2 w350 text-N200">at a time</p>
       </div>

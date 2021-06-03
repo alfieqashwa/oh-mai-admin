@@ -66,13 +66,9 @@ const YearComparison = () => {
     endPrevious[1](previousDate?.[1])
   }
 
-  console.log(JSON.stringify(compareTo, null, 2))
-  console.log(JSON.stringify(withOption, null, 2))
-
   return (
     <form onSubmit={onSubmit}>
       <div className="flex items-start justify-between w-full space-x-7">
-
         {/* Compare to */}
         <div className="w-1/2">
           <p className="text-black w400">Compare</p>
@@ -117,7 +113,6 @@ const YearComparison = () => {
             )}
           </Listbox>
         </div>
-
         {/* With options */}
         <div className="w-1/2">
           <p className="text-black w400">With</p>
@@ -179,7 +174,6 @@ const MonthComparison = () => {
   const [compareTo, setCompareTo] = useState()
   const [withOption, setWithOption] = useState()
 
-
   const todaysYear = getYear(new Date()) // so in the next year, this would be relevant as well.
   const februaryDays = getDaysInMonth(new Date(todaysYear, 1)) // leap year (28 or 29 days in February)
 
@@ -199,7 +193,6 @@ const MonthComparison = () => {
   const october = [new Date(todaysYear, 9, 1), new Date(todaysYear, 9, 31)]
   const november = [new Date(todaysYear, 10, 1), new Date(todaysYear, 10, 30)]
   const december = [new Date(todaysYear, 11, 1), new Date(todaysYear, 11, 31)]
-
 
   let currentDate = []
   switch (true) {
@@ -300,15 +293,11 @@ const MonthComparison = () => {
     endCurrent[1](currentDate?.[1])
     startPrevious[1](previousDate?.[0])
     endPrevious[1](previousDate?.[1])
-
-    console.log(JSON.stringify(currentDate, null, 2))
-    console.log(JSON.stringify(previousDate, null, 2))
   }
 
   return (
     <form onSubmit={onSubmit}>
       <div className="flex items-start justify-between w-full space-x-7">
-
         {/* Compare to */}
         <div className="w-1/2">
           <p className="text-black w400">Compare</p>
@@ -354,7 +343,6 @@ const MonthComparison = () => {
             )}
           </Listbox>
         </div>
-
         {/* With options */}
         <div className="w-1/2">
           <p className="text-black w400">With</p>

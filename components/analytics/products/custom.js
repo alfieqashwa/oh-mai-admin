@@ -6,11 +6,9 @@ import { Listbox, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from "@heroicons/react/solid";
 
 import { DateRangeCtx } from 'pages/analytics/products'
-// import 'react-datepicker/dist/react-datepicker.css'
 
 export const Custom = () => {
   const { startCurrent, endCurrent, startPrevious, endPrevious } = useContext(DateRangeCtx)
-
   const [startDate, setStartDate] = useState(new Date(2021, 0, 4))
   const [endDate, setEndDate] = useState(new Date(2021, 0, 7))
   const [prevDate, setPrevDate] = useState([subYears(startDate, 1), subYears(endDate, 1)])
@@ -21,7 +19,6 @@ export const Custom = () => {
     setStartDate(start);
     setEndDate(end);
     setPrevDate([subYears(start, 1), subYears(end, 1)])
-
   };
 
   let prevYear = getYear(prevDate[1])
@@ -67,9 +64,6 @@ export const Custom = () => {
     default:
       previousDate = []
   }
-
-
-  console.log(JSON.stringify(compareTo, null, 2))
 
   function onReset() {
     startCurrent[1]()
@@ -119,11 +113,9 @@ export const Custom = () => {
         />
       </div>
       <div className="px-4 pb-6 mt-4 -mx-6 bg-N100">
-
         <h5 className="py-4 w250 text-N800">compare to</h5>
         <div className="flex items-start justify-between mt-2">
           <p className="pt-6 pl-8 text-black W400 whitespace-nowrap">Same range in</p>
-
           <Listbox as="div" className="w-1/2 mx-8" value={compareTo} onChange={setCompareTo}>
             {({ open }) => (
               <>
@@ -171,7 +163,6 @@ export const Custom = () => {
           <button type="submit" disabled={compareTo.id === 0} className="px-20 py-4 uppercase disabled:opacity-50 disabled:cursor-not-allowed text-N0">apply</button>
         </div>
       </div>
-
     </form>
   )
 }
