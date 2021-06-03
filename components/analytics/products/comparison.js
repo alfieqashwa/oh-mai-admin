@@ -7,32 +7,32 @@ import { DateRangeCtx } from 'pages/analytics/products'
 
 const YearComparison = () => {
   const { startCurrent, endCurrent, startPrevious, endPrevious } = useContext(DateRangeCtx)
-  const [compareTo, setCompareTo] = useState(yearCompareOptions[0])
-  const [withOption, setWithOption] = useState(yearWithOptions[0])
+  const [compareTo, setCompareTo] = useState()
+  const [withOption, setWithOption] = useState()
 
   let currentDate = []
-  if (compareTo.id === 2021) {
+  if (compareTo?.id === 2021) {
     currentDate = [new Date(2021, 0, 1), new Date()]
-  } else if (compareTo.id === 2020) {
+  } else if (compareTo?.id === 2020) {
     currentDate = [new Date(2020, 0, 1), new Date(2020, 11, 31)]
-  } else if (compareTo.id === 2019) {
+  } else if (compareTo?.id === 2019) {
     currentDate = [new Date(2019, 0, 1), new Date(2019, 11, 31)]
-  } else if (compareTo.id === 2018) {
+  } else if (compareTo?.id === 2018) {
     currentDate = [new Date(2018, 0, 1), new Date(2018, 11, 31)]
-  } else if (compareTo.id === 2017) {
+  } else if (compareTo?.id === 2017) {
     currentDate = [new Date(2017, 0, 1), new Date(2017, 11, 31)]
   } else {
     []
   }
 
   let previousDate = []
-  if (withOption.id === 2020) {
+  if (withOption?.id === 2020) {
     previousDate = [new Date(2020, 0, 1), new Date(2020, 11, 31)]
-  } else if (withOption.id === 2019) {
+  } else if (withOption?.id === 2019) {
     previousDate = [new Date(2019, 0, 1), new Date(2019, 11, 31)]
-  } else if (withOption.id === 2018) {
+  } else if (withOption?.id === 2018) {
     previousDate = [new Date(2018, 0, 1), new Date(2018, 11, 31)]
-  } else if (withOption.id === 2017) {
+  } else if (withOption?.id === 2017) {
     previousDate = [new Date(2017, 0, 1), new Date(2017, 11, 31)]
   } else {
     []
@@ -58,8 +58,8 @@ const YearComparison = () => {
               <>
                 <Listbox.Button className="bg-N100 mt-1.5 h-16 w-full">
                   <div className="flex items-center justify-between px-4">
-                    <p className="text-left normal-case text-N450 w400">
-                      {compareTo.name}
+                    <p className={`text-left normal-case w400 ${open ? "text-P700" : "text-N450"}`}>
+                      {compareTo ? compareTo?.name : "Select a year"}
                     </p>
                     <ChevronDownIcon
                       className={`w-8 h-8 ${open ? "transform rotate-180 text-P700" : ""}`}
@@ -83,7 +83,7 @@ const YearComparison = () => {
                         value={y}
                         disabled={y.disabled}
                       >
-                        <p className="py-2 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0">
+                        <p className={`${y.disabled ? "opacity-50" : ""} py-2 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0`}>
                           {y.name}
                         </p>
                       </Listbox.Option>
@@ -103,7 +103,9 @@ const YearComparison = () => {
               <>
                 <Listbox.Button className="bg-N100 mt-1.5 h-16 w-full">
                   <div className="flex items-center justify-between px-4">
-                    <p className="text-left normal-case text-N450 w400">{withOption.name}</p>
+                    <p className={`text-left normal-case w400 ${open ? "text-P700" : "text-N450"}`}>
+                      {withOption ? withOption?.name : "Select a year"}
+                    </p>
                     <ChevronDownIcon
                       className={`w-8 h-8 ${open ? "transform rotate-180 text-P700" : ""}`}
                       aria-hidden="true"
@@ -126,7 +128,7 @@ const YearComparison = () => {
                         value={y}
                         disabled={y.disabled}
                       >
-                        <p className="py-2 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0">
+                        <p className={`${y.disabled ? "opacity-50" : ""} py-2 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0`}>
                           {y.name}
                         </p>
                       </Listbox.Option>
@@ -151,8 +153,8 @@ const YearComparison = () => {
 
 const MonthComparison = () => {
   const { startCurrent, endCurrent, startPrevious, endPrevious } = useContext(DateRangeCtx)
-  const [compareTo, setCompareTo] = useState(monthCompareOptions[0])
-  const [withOption, setWithOption] = useState(monthWithOptions[0])
+  const [compareTo, setCompareTo] = useState()
+  const [withOption, setWithOption] = useState()
 
 
   const todaysYear = getYear(new Date()) // so in the next year, this would be relevant as well.
@@ -177,58 +179,58 @@ const MonthComparison = () => {
 
   // TODO: should be convert to switch-case when necessary
   let currentDate = []
-  if (compareTo.id === 1) {
+  if (compareTo?.id === 1) {
     currentDate = january
-  } else if (compareTo.id === 2) {
+  } else if (compareTo?.id === 2) {
     currentDate = february
-  } else if (compareTo.id === 3) {
+  } else if (compareTo?.id === 3) {
     currentDate = march
-  } else if (compareTo.id === 4) {
+  } else if (compareTo?.id === 4) {
     currentDate = april
-  } else if (compareTo.id === 5) {
+  } else if (compareTo?.id === 5) {
     currentDate = may
-  } else if (compareTo.id === 6) {
+  } else if (compareTo?.id === 6) {
     currentDate = june
-  } else if (compareTo.id === 7) {
+  } else if (compareTo?.id === 7) {
     currentDate = july
-  } else if (compareTo.id === 8) {
+  } else if (compareTo?.id === 8) {
     currentDate = august
-  } else if (compareTo.id === 9) {
+  } else if (compareTo?.id === 9) {
     currentDate = september
-  } else if (compareTo.id === 10) {
+  } else if (compareTo?.id === 10) {
     currentDate = october
-  } else if (compareTo.id === 11) {
+  } else if (compareTo?.id === 11) {
     currentDate = november
-  } else if (compareTo.id === 12) {
+  } else if (compareTo?.id === 12) {
     currentDate = december
   } else {
     currentDate = []
   }
 
   let previousDate = []
-  if (withOption.id === 1) {
+  if (withOption?.id === 1) {
     previousDate = january
-  } else if (withOption.id === 2) {
+  } else if (withOption?.id === 2) {
     previousDate = february
-  } else if (withOption.id === 3) {
+  } else if (withOption?.id === 3) {
     previousDate = march
-  } else if (withOption.id === 4) {
+  } else if (withOption?.id === 4) {
     previousDate = april
-  } else if (withOption.id === 5) {
+  } else if (withOption?.id === 5) {
     previousDate = may
-  } else if (withOption.id === 6) {
+  } else if (withOption?.id === 6) {
     previousDate = june
-  } else if (withOption.id === 7) {
+  } else if (withOption?.id === 7) {
     previousDate = july
-  } else if (withOption.id === 8) {
+  } else if (withOption?.id === 8) {
     previousDate = august
-  } else if (withOption.id === 9) {
+  } else if (withOption?.id === 9) {
     previousDate = september
-  } else if (withOption.id === 10) {
+  } else if (withOption?.id === 10) {
     previousDate = october
-  } else if (withOption.id === 11) {
+  } else if (withOption?.id === 11) {
     previousDate = november
-  } else if (withOption.id === 12) {
+  } else if (withOption?.id === 12) {
     previousDate = december
   } else {
     previousDate = []
@@ -258,7 +260,7 @@ const MonthComparison = () => {
                 <Listbox.Button className="bg-N100 mt-1.5 h-16 w-full">
                   <div className="flex items-center justify-between px-4">
                     <p className="text-left normal-case text-N450 w400">
-                      {compareTo.name}
+                      {compareTo ? compareTo?.name : "Select a month"}
                     </p>
                     <ChevronDownIcon
                       className={`w-8 h-8 ${open ? "transform rotate-180 text-P700" : ""}`}
@@ -276,7 +278,7 @@ const MonthComparison = () => {
                   leaveFrom="transform scale-100 opacity-100"
                   leaveTo="transform scale-95 opacity-0"
                 >
-                  <Listbox.Options static className="w-full text-left bg-N100 mr-7">
+                  <Listbox.Options static className="w-full mt-1 text-left shadow-md bg-N100 mr-7">
                     {monthCompareOptions.map(m => (
                       <Listbox.Option
                         key={m.id}
@@ -303,7 +305,7 @@ const MonthComparison = () => {
               <>
                 <Listbox.Button className="bg-N100 mt-1.5 h-16 w-full">
                   <div className="flex items-center justify-between px-4">
-                    <p className="text-left normal-case text-N450 w400">{withOption.name}</p>
+                    <p className="text-left normal-case text-N450 w400">{withOption ? withOption?.name : "Select a month"}</p>
                     <ChevronDownIcon
                       className={`w-8 h-8 ${open ? "transform rotate-180 text-P700" : ""}`}
                       aria-hidden="true"
@@ -319,7 +321,7 @@ const MonthComparison = () => {
                   leaveFrom="transform scale-100 opacity-100"
                   leaveTo="transform scale-95 opacity-0"
                 >
-                  <Listbox.Options static className="w-full text-left bg-N100 mr-7">
+                  <Listbox.Options static className="w-full mt-1 text-left shadow-md bg-N100 mr-7">
                     {monthWithOptions.map(m => (
                       <Listbox.Option
                         key={m.id}
@@ -352,24 +354,21 @@ const MonthComparison = () => {
 export { YearComparison, MonthComparison }
 
 const yearCompareOptions = [
-  { id: 0, name: 'Select a year', disabled: true },
   { id: 2021, name: '2021', disabled: false },
   { id: 2020, name: '2020', disabled: false },
-  { id: 2019, name: '2019', disabled: false },
-  { id: 2018, name: '2018', disabled: false },
-  { id: 2017, name: '2017', disabled: false },
+  { id: 2019, name: '2019', disabled: true },
+  { id: 2018, name: '2018', disabled: true },
+  { id: 2017, name: '2017', disabled: true },
 ]
 
 const yearWithOptions = [
-  { id: 0, name: 'Select a year', disabled: true },
   { id: 2020, name: '2020', disabled: false },
   { id: 2019, name: '2019', disabled: false },
-  { id: 2018, name: '2018', disabled: false },
-  { id: 2017, name: '2017', disabled: false },
+  { id: 2018, name: '2018', disabled: true },
+  { id: 2017, name: '2017', disabled: true },
 ]
 
 const monthCompareOptions = [
-  { id: 0, name: 'Select a month', disabled: true },
   { id: 1, name: 'January', disabled: false },
   { id: 2, name: 'February', disabled: false },
   { id: 3, name: 'March', disabled: false },
@@ -385,7 +384,6 @@ const monthCompareOptions = [
 ]
 
 const monthWithOptions = [
-  { id: 0, name: 'Select a month', disabled: true },
   { id: 1, name: 'January', disabled: false },
   { id: 2, name: 'February', disabled: false },
   { id: 3, name: 'March', disabled: false },
