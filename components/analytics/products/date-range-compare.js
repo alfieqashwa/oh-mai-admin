@@ -92,8 +92,7 @@ export function DateRangeComparison() {
             </Popover.Panel>
           </Transition>
         </>
-      )
-      }
+      )}
     </Popover >
   )
 }
