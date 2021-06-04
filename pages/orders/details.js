@@ -15,11 +15,19 @@ import { Pagination } from 'components/widgets/pagination'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { BASE_URL } from 'etc/constants'
+import { getOrderDetails } from 'services/api/order_services'
+import EditAddress from 'components/widgets/dialog/EditAddress'
+import EditTrackingNumber from 'components/widgets/dialog/EditTrackingNumber'
+import EditDeliveryDate from 'components/widgets/dialog/EditDeliveryDate'
 
-export default function OrdersPage() {
+export default function OrderDetail(props) {
   const [totalPage, setTotalPage] = useState(0)
   const [filter, setFilter] = useState({ max_row: 3, keyword: "", page: 1 })
   const dispatch = useDispatch()
+  const [order, setOrder] = useState()
+  const [dialogAddressOpen, setDialogAddressOpen] = useState(false)
+  const [dialogTrackingNumOpen, setDialogTrackingNumOpen] = useState(false)
+  const [dialogDeliveryDateOpen, setDialogDeliveryDateOpen] = useState(false)
 
   const handleChange = (e) => {
     console.log("handleChange: filter before update", filter)
@@ -33,73 +41,12 @@ export default function OrdersPage() {
     }))
   }
 
-  useEffect(() => {
-    // search for keyword more than 3 chars, and serch all if keyword is empty chars is 0
-    if ((filter.keyword.length > 3) || (filter.keyword.length == 0)) {
-      dispatch({
-        type: 'order/list',
-        payload: {
-          paging: {
-            limit: 2,
-            offset: 0,
-            sort: filter.sort_by
-          },
-          filter: {
-            order_number: filter.keyword,
-            person_name: filter.keyword,
-          }
-        }
-      })
+  const loadData = async () => {
+    const data = await getOrderDetails({ order_number: "ORD-113" })
+    console.log("ldo", data)
+    if (data.isSuccess) {
+      setOrder(data.order)
     }
-  }, [filter.keyword])
-
-  useEffect(() => {
-    console.log("sort by", filter.sort_by)
-    dispatch({
-      type: 'order/list',
-      payload: {
-        paging: {
-          limit: 2,
-          offset: 0,
-          sort: filter.sort_by
-        },
-        filter: {
-          order_number: filter.keyword,
-          person_name: filter.keyword,
-        }
-      }
-    })
-  }, [filter.sort_by])
-
-  const download = ({ type }) => {
-    if (type === "")
-      return
-
-    filter.limit = filter.max_row
-    let query = Object.keys(filter)
-      .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(filter[k]))
-      .join('&');
-
-    const requestOptions = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    };
-
-    fetch(`${BASE_URL}/order/download/${type}?${query}`, requestOptions)
-      .then((res) => {
-        return res.blob();
-      })
-      .then((blob) => {
-        const href = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = href;
-        link.setAttribute('download', `${type}.xlsx`); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-      })
-      .catch((err) => {
-        return Promise.reject({ Error: 'Something Went Wrong', err });
-      })
   }
 
   const handleChangeDownload = (e) => {
@@ -108,13 +55,21 @@ export default function OrdersPage() {
     download({ type: value })
   }
 
+  const closeAddress = () => {
+    setDialogAddressOpen(false)
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
   return (
     <>
       <Header title="Orders" />
       <div>
         <div className="md:block glass p-4 rounded-none">
           <div className="flex flex-row text-N0 space-x-4 content-center">
-            <div className="flex-1">Order ID: ORD00001</div>
+            <div className="flex-1">Order ID: {order?.order_number}</div>
             <div className="flex-initial mr-8 pt-1">NT$15,000</div>
             <button className="flex-initial text-sm px-2 bg-transparent border-N0 border-2">EXPORT</button>
           </div>
@@ -132,8 +87,8 @@ export default function OrdersPage() {
         <div className="px-8">
           <div className="flex flex-row text-N0 space-x-4 py-4 content-center">
             <AiOutlineArrowLeft className="w-6 h-8 transition duration-300 ease-in-out text-N0 hover:text-P400" />
-            <div className="text-2xl text-N0 font-bold">ORD00001</div>
-            <button className="flex-initial text-sm px-2 font-thin" disabled>Completed</button>
+            <div className="text-2xl text-N0 font-bold">{order?.order_number}</div>
+            <button className="flex-initial text-sm px-2 font-thin" disabled>{order?.order_status_payment}</button>
           </div>
           <div className="flex flex-row my-4 space-x-4">
             <div id="general" className="w-3/5 glass p-4">
@@ -143,31 +98,31 @@ export default function OrdersPage() {
                   <div id="cols1" className="">
                     <div className="flex flex-col pt-4">
                       <span className="flex-1 text-N0">Order Number</span>
-                      <span className="text-N300 text-sm">ORD0000A</span>
+                      <span className="text-N300 text-sm">{order?.order_number}</span>
                     </div>
                     <div className="flex flex-col pt-4">
                       <span className="flex-1 text-N0">Customer ID</span>
-                      <span className="text-N300 text-sm">CUS-00001</span>
+                      <span className="text-N300 text-xs">{order?.consumer?.id}</span>
                     </div>
                   </div>
                   <div id="cols2" className="">
                     <div className="flex flex-col pt-4">
                       <span className="text-N0">Order Date Time</span>
-                      <span className="text-N300 text-sm">13 May 2021, 14:00</span>
+                      <span className="text-N300 text-sm">{order?.order_datetime}</span>
                     </div>
                     <div className="flex flex-col pt-4">
                       <span className="text-N0">Customer Name</span>
-                      <span className="text-N300 text-sm">Fan Leng Leng</span>
+                      <span className="text-N300 text-sm">{order?.consumer?.user?.first_name + " " + order?.consumer?.user?.last_name}</span>
                     </div>
                   </div>
                   <div id="cols2" className="">
                     <div className="flex flex-col pt-4">
                       <span className="text-N0">Payment Method</span>
-                      <span className="text-N300 text-sm">Credit Card (ECPay)</span>
+                      <span className="text-N300 text-sm">{order?.payment_type + " - " + order?.payment_gateway}</span>
                     </div>
                     <div className="flex flex-col pt-4">
                       <span className="text-N0">Charge ID</span>
-                      <span className="text-N300 text-sm">8JYSM92LAIJKIS2909LOSl8...</span>
+                      <span className="text-N300 text-sm">{order?.charge_id}</span>
                     </div>
                   </div>
                 </div>
@@ -178,18 +133,18 @@ export default function OrdersPage() {
                       <select
                         id="shipping-status"
                         className="mt-2 rounded-md w400 focus:ring-1 focus:ring-N700 focus:outline-none bg-opacity-20 bg-N200">
-                        <option>13 May 2021, 13:04</option>
+                        <option>{order?.order_datetime}</option>
                         <option>-</option>
                       </select>
                       <div className="flex flex-row pt-4">
                         <span className="text-N0 flex-1">Billing</span>
                         <span className="text-N0"><HiOutlinePencilAlt className="w-6 h-6" /></span>
                       </div>
-                      <span className="text-N300 text-sm pt-2">Fan Leng Leng</span>
-                      <span className="text-N300 text-sm">No.3, Lane 163, Shih Yi Rd</span>
-                      <span className="text-N300 text-sm">Panchiao City</span>
-                      <span className="text-N300 text-sm">Taipei Hsien</span>
-                      <span className="text-N300 text-sm">Taiwan (China)</span>
+                      <span className="text-N300 text-sm pt-2">{order?.person_name}</span>
+                      <span className="text-N300 text-sm">{order?.shipping_address?.line1}</span>
+                      <span className="text-N300 text-sm">{order?.shipping_address?.line2}</span>
+                      <span className="text-N300 text-sm">{order?.shipping_address?.city}</span>
+                      <span className="text-N300 text-sm">{order?.shipping_address?.state + ", " + order?.shipping_address?.country + "," + order?.shipping_address?.postal_code}</span>
                     </div>
                     <div className="flex flex-col text-N0">
                       <span>Order Status</span>
@@ -201,11 +156,11 @@ export default function OrdersPage() {
                       </select>
                       <div className="flex flex-col pt-4">
                         <span className="text-N0">Email Address</span>
-                        <span className="text-N300 text-sm">fanlengleng@gmail.com</span>
+                        <span className="text-N300 text-sm">{order?.email}</span>
                       </div>
                       <div className="flex flex-col pt-4">
                         <span className="text-N0">Phone Number</span>
-                        <span className="text-N300 text-sm">(02) 29538380</span>
+                        <span className="text-N300 text-sm">{order?.shipping_address?.phone_num}</span>
                       </div>
                     </div>
                   </div>
@@ -218,30 +173,33 @@ export default function OrdersPage() {
                 <div className="flex flex-col ">
                   <div className="flex flex-row">
                     <span className="text-N0 flex-1">Address</span>
-                    <span className="text-N0"><HiOutlinePencilAlt className="w-6 h-6" /></span>
+                    <span className="text-N0 cursor-pointer" 
+                      onClick={() => setDialogAddressOpen(true)}><HiOutlinePencilAlt className="w-6 h-6" /></span>
                   </div>
-                  <span className="text-N300 text-sm pt-2">Address line 1</span>
-                  <span className="text-N300 text-sm">Address line 2</span>
-                  <span className="text-N300 text-sm">City</span>
-                  <span className="text-N300 text-sm">State</span>
-                  <span className="text-N300 text-sm">Country</span>
-                  <span className="text-N300 text-sm">Postal Code</span>
-                  <span className="text-N300 text-sm">Phone number</span>
-                  <span className="text-N300 text-sm">Name</span>
+                  <span className="text-N300 text-sm pt-2">{order?.shipping_address?.line1}</span>
+                  <span className="text-N300 text-sm">{order?.shipping_address?.line2}</span>
+                  <span className="text-N300 text-sm">{order?.shipping_address?.city}</span>
+                  <span className="text-N300 text-sm">{order?.shipping_address?.state}</span>
+                  <span className="text-N300 text-sm">{order?.shipping_address?.country}</span>
+                  <span className="text-N300 text-sm">{order?.shipping_address?.postal_code}</span>
+                  <span className="text-N300 text-sm">{order?.shipping_address?.phone_num}</span>
+                  <span className="text-N300 text-sm">{order?.shipping_address?.person_name}</span>
                 </div>
                 <div className="flex flex-col ">
                   <div className="flex flex-row">
                     <span className="text-N0 flex-1">Tracking Number</span>
-                    <span className="text-N0"><HiOutlinePencilAlt className="w-6 h-6" /></span>
+                    <span className="text-N0 cursor-pointer" 
+                      onClick={() => setDialogTrackingNumOpen(true)}><HiOutlinePencilAlt className="w-6 h-6" /></span>
                   </div>
-                  <span className="text-N300 text-sm">XUY729MSLP0SKX</span>
+                  <span className="text-N300 text-sm">{order?.shipping_tracking_number}</span>
                   <div className="flex flex-row pt-2">
                     <span className="text-N0 flex-1">Order Delivery Date</span>
-                    <span className="text-N0"><HiOutlinePencilAlt className="w-6 h-6" /></span>
+                    <span className="text-N0 cursor-pointer"
+                      onClick={() => setDialogDeliveryDateOpen(true)}><HiOutlinePencilAlt className="w-6 h-6" /></span>
                   </div>
-                  <span className="text-N300 text-sm">15 May 2021</span>
+                  <span className="text-N300 text-sm">{order?.order_delivery_date}</span>
                   <span className="text-N0 mt-2">Ship by</span>
-                  <span className="text-N300 text-sm">Family Mart</span>
+                  <span className="text-N300 text-sm">{order?.shipping_company}</span>
                 </div>
               </div>
               <div className="grid grid-cols-2 pt-4 space-x-2">
@@ -277,7 +235,7 @@ export default function OrdersPage() {
           </div>
           <div id="general" className="w-full glass p-4">
             <p>Invoice</p>
-            <table class="table-auto text-N0 mt-4">
+            <table className="table-auto text-N0 mt-4">
               <thead className="text-left font-normal text-sm">
                 <tr>
                   <th className="w-3/12">Product</th>
@@ -394,33 +352,26 @@ export default function OrdersPage() {
                 <thead className="text-left font-normal text-sm">
                   <tr>
                     <th className="w-3/12">Product</th>
-                    <th className="w-3/12">Variant</th>
-                    <th className="w-1/12">Cost</th>
+                    <th className="w-3/12">KOL</th>
+                    <th className="w-2/12">Cost</th>
                     <th className="w-1/12">Qty</th>
-                    <th className="w-1/12">Total</th>
+                    <th className="w-2/12">Total</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm">
                   <tr>
                     <td>Tekken 7</td>
-                    <td>Japan Reg, PS4</td>
+                    <td>Lice Wang</td>
                     <td>$ 30.00</td>
                     <td>1</td>
                     <td>$ 50.00</td>
                   </tr>
                   <tr className="mt-2">
                     <td>Monster Hunter Rise</td>
-                    <td>Japan Reg, Nintendo Switch</td>
+                    <td>Charlene Yue</td>
                     <td>$ 60.00</td>
                     <td>1</td>
                     <td>$ 60.00</td>
-                  </tr>
-                  <tr className="mt-4">
-                    <td>Dirt 5</td>
-                    <td>US Reg, PS4</td>
-                    <td>$ 30.00</td>
-                    <td>1</td>
-                    <td>$ 30.00</td>
                   </tr>
                 </tbody>
               </table>
@@ -450,6 +401,21 @@ export default function OrdersPage() {
           </div>
         </div>
       </div>
+      <EditAddress
+        order={order}
+        open={dialogAddressOpen}
+        onClose={closeAddress}
+      />
+      <EditTrackingNumber
+        order={order}
+        open={dialogTrackingNumOpen}
+        onClose={() => setDialogTrackingNumOpen(false)}
+      />
+      <EditDeliveryDate
+        order={order}
+        open={dialogDeliveryDateOpen}
+        onClose={() => setDialogDeliveryDateOpen(false)}
+      />
     </>
   )
 }
