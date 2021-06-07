@@ -12,7 +12,7 @@ export function ShowProductSelect() {
           <>
             <div className="relative mt-2">
               <Listbox.Button className="relative w-full py-2 text-left shadow-md h-11 bg-N200 bg-opacity-20 text-N0 focus:outline-none focus:ring-2 focus:ring-opacity-75 focus:ring-P900 focus:ring-offset-P900 focus-visible:ring-offset-2 focus:border-P900 sm:text-sm">
-                <p className="pl-4 capitalize transition duration-200 ease-in-out hover:text-P700 text-N0">{show.name}</p>
+                <p className={`pl-4 capitalize transition duration-200 ease-in-out hover:text-G400 ${open ? "text-P700" : "text-N0"}`}>{show.name}</p>
               </Listbox.Button>
               <Transition
                 show={open}
