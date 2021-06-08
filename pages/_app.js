@@ -11,26 +11,24 @@ import Layout from 'components/layout'
 function MyApp({ Component, pageProps }) {
   // const router = useRouter();
 
-  // useEffect(() => {
-  //   setHeader(Cookies.get("token"));
-  // }, []);
+  useEffect(() => {
+    setHeader(Cookies.get("token"));
+  }, []);
 
   return (
-    // <>
-    //   <SWRConfig
-    //     value={{
-    //       fetcher: (query, args) => {
-    //         console.log(query, args);
-    //         return client.request(query, args);
-    //       },
-    //       dedupingInterval: 2000,
-    //     }}
-    //   >
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
-    // </SWRConfig>
-    // </>
+    <SWRConfig
+      value={{
+        fetcher: (query, args) => {
+          console.log(query, args);
+          return client.request(query, args);
+        },
+        dedupingInterval: 2000,
+      }}
+    >
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </SWRConfig>
   );
 }
 

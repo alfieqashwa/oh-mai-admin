@@ -1,6 +1,6 @@
 import { Fragment, useState, useContext } from 'react'
 import { Popover, RadioGroup, Transition } from '@headlessui/react'
-import { ChevronDownIcon, } from "@heroicons/react/solid";
+import { ChevronDownIcon } from "@heroicons/react/solid";
 import { format } from 'date-fns'
 
 import { Presets } from './presets';
