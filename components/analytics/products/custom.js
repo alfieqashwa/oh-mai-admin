@@ -1,25 +1,57 @@
-import { useState, useContext, Fragment } from 'react'
+import { useState, useEffect, useContext, Fragment } from 'react'
 import DatePicker from 'react-datepicker'
 import { AiOutlineCalendar } from 'react-icons/ai'
 import { format, subYears, getYear } from 'date-fns'
 import { Listbox, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from "@heroicons/react/solid";
+// import 'react-modern-calendar-datepicker/lib/DatePicker.css';
+// import { Calendar, utils } from 'react-modern-calendar-datepicker';
+import { Calendar, utils } from '@hassanmojab/react-modern-calendar-datepicker'
+import '@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css';
 
 import { DateRangeCtx } from 'pages/analytics/products'
 
 export const Custom = () => {
+  const defaultFrom = {
+    year: 2021,
+    month: 1,
+    day: 4,
+  };
+  const defaultTo = {
+    year: 2021,
+    month: 1,
+    day: 7,
+  }
+
+  const defaultRange = {
+    from: defaultFrom,
+    to: defaultTo
+  }
   const { startCurrent, endCurrent, startPrevious, endPrevious } = useContext(DateRangeCtx)
-  const [startDate, setStartDate] = useState(new Date(2021, 0, 4))
-  const [endDate, setEndDate] = useState(new Date(2021, 0, 7))
-  const [prevDate, setPrevDate] = useState([subYears(startDate, 1), subYears(endDate, 1)])
+  // const [startDate, setStartDate] = useState(new Date(2021, 0, 4))
+  const [selectedDayRange, setSelectedDayRange] = useState(defaultRange)
+  // const [endDate, setEndDate] = useState(new Date(2021, 0, 7))
+  // const [prevDate, setPrevDate] = useState([subYears(startDate, 1), subYears(endDate, 1)])
   const [compareTo, setCompareTo] = useState(initialState[0])
 
-  const onChange = dates => {
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-    setPrevDate([subYears(start, 1), subYears(end, 1)])
-  };
+  // const onChange = dates => {
+  //   const [start, end] = dates;
+  //   setStartDate(start);
+  //   setEndDate(end);
+  //   setPrevDate([subYears(start, 1), subYears(end, 1)])
+  // };
+
+  // const { from: { day: startDay, month: startMonth, year: startYear }, to: { day: endDay, month: endMonth, year: endYear } } = selectedDayRange;
+
+  const { from, to } = selectedDayRange;
+  let startDate;
+  startDate = from ? new Date(from.year, from.month - 1, from.day) : ''
+  let endDate;
+  endDate = to ? new Date(to.year, to.month - 1, to.day) : ''
+  const prevDate = [subYears(startDate, 1), subYears(endDate, 1)]
+  // console.log('start-date: ', startDate)
+  // console.log('end-date: ', endDate)
+  // console.log('prevDate', JSON.stringify(prevDate, null, 4))
 
   let prevYear = getYear(prevDate[1])
   let prevYearList = [{ id: 0, name: "Select a year", disabled: true }]
@@ -65,13 +97,16 @@ export const Custom = () => {
       previousDate = []
   }
 
+  // console.log('previous-date: ', JSON.stringify(previousDate, null, 2))
+
   function onReset() {
     startCurrent[1]()
     endCurrent[1]()
     startPrevious[1]()
     endPrevious[1]()
-    setStartDate(new Date(2021, 0, 4))
-    setEndDate(new Date(2021, 0, 7))
+    // setStartDate(new Date(2021, 0, 4))
+    // setEndDate(new Date(2021, 0, 7))
+    setSelectedDayRange(defaultRange)
     setCompareTo(initialState[0])
   }
 
@@ -101,8 +136,18 @@ export const Custom = () => {
           </p>
         </div>
       </section>
-      <div className="mt-5">
-        <DatePicker
+      <div className="flex justify-center mx-5 mt-5">
+        <Calendar
+          className="Calendar__day.-selectedBetween Calendar__monthArrowWrapper"
+          value={selectedDayRange}
+          onChange={setSelectedDayRange}
+          maximumDate={utils().getToday()}
+          colorPrimary="#682EC0"
+          colorPrimaryLight="#7D38E8"
+          calendarRangeBetweenClassName="#ECECFF"
+          shouldHighlightWeekends
+        />
+        {/* <DatePicker
           selected={startDate}
           onChange={onChange}
           startDate={startDate}
@@ -110,7 +155,8 @@ export const Custom = () => {
           selectsRange
           maxDate={new Date()}
           inline
-        />
+        /> */}
+
       </div>
       <div className="px-4 pb-6 mt-4 -mx-6 bg-N100">
         <h5 className="py-4 w250 text-N800">compare to</h5>
@@ -170,3 +216,10 @@ export const Custom = () => {
 const initialState = [
   { id: 0, name: 'Select a year', disabled: true },
 ]
+
+// bugs when using 'react-modern-calendar-datepicker;
+// https://github.com/Kiarash-Z/react-modern-calendar-datepicker/issues?q=is%3Aissue+is%3Aopen+removeEventListener
+
+// solution: 
+// import DatePicker from '@hassanmojab/react-modern-calendar-datepicker';
+// import '@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css';

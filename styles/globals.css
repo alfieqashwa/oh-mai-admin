@@ -73,6 +73,24 @@
     border: 1px solid rgba(255, 255, 255, 0.18);
     //opacity: 0.15;
   }
+  .Calendar {
+    width: 100% !important;
+    /* background: #ECECFF !important; */
+    /* border-radius: .5em !important; */
+  }
+  .Calendar__day.-selectedBetween {
+    color: #E0E0F2 !important;
+  }
+  .Calendar__monthArrowWrapper {
+    /* line-height: 0;
+    font-size: 1em; */
+    padding: 8px !important;
+    /* position: relative;
+    border: none;
+    z-index: 1;
+    opacity: 1;
+    transition: 0.2s; */
+  }
 }
 @layer utilities {
   @variants {
