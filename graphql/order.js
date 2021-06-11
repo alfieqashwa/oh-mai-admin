@@ -43,8 +43,8 @@ export const DELETE_ORDER_GQL = gql`
 `
 
 export const GET_ORDER_BY_ORDNUM = gql`
-  query getOrderByOrderNum($order_number: String) {
-    getOrderByOrderNum(order_number: $order_number){
+  query getOrderByOrderNumAdm($order_number: String) {
+    getOrderByOrderNumAdm(order_number: $order_number){
         order_id
         order_datetime
         order_number
@@ -85,4 +85,44 @@ export const GET_ORDER_BY_ORDNUM = gql`
         shipping_company
     }
   }
+`
+
+export const UPDATE_ORDER_GQL = gql`
+mutation updateOrder(
+  $order_id: Int
+  $order_datetime: String
+  $shipping_tracking_number: String
+  $order_status_shipping: String
+  $order_status_payment: String
+  $shipping_cost: Float
+  $order_delivery_date: String
+  $shipping_line_1: String
+  $shipping_line_2: String
+  $city: String
+  $state: String
+  $country: String
+  $postcode: Int
+  $phone_num: String
+  $person_name: String
+  $payment_gateway: String
+) {
+  updateOrder(
+    order_id: $order_id, 
+    order_datetime: $order_datetime, 
+    shipping_tracking_number: $shipping_tracking_number, 
+    order_status_shipping: $order_status_shipping, 
+    order_status_payment: $order_status_payment, 
+    shipping_cost: $shipping_cost, 
+    order_delivery_date: $order_delivery_date, 
+    shipping_line_1: $shipping_line_1, 
+    shipping_line_2: $shipping_line_2, 
+    city: $city, 
+    state: $state, 
+    country: $country, 
+    postcode: $postcode, 
+    phone_num: $phone_num, 
+    person_name: $person_name, 
+    payment_gateway: $payment_gateway
+  )
+}
 `

@@ -2,6 +2,7 @@ import { parseAddress } from 'utils/OrderUtils';
 import Button from './Button';
 import Dialog from './Dialog';
 import moment from 'moment'
+import { useEffect, useState } from 'react';
 // interface Props {
 //   title: string;
 //   children: React.ReactNode;
@@ -10,15 +11,27 @@ import moment from 'moment'
 //   onConfirm: Function; 
 // }
 export default function EditAddress(props) {
-  const { open, onClose, order, children, onConfirm } = props;
+  const { open, onClose, order, children, onConfirm, onChange } = props;
   if (!open) {
     return <></>;
   }
 
-  const moneyFormat = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'TWD',
-  });
+  const handleChange = (e) => {
+    // console.log("handleChange: filter before update", filter)
+    const { id, value } = e.target
+    // console.log("handleChange: id", id)
+    // console.log("handleChange: value", value)
+
+    onChange(prevState => ({
+      ...prevState,
+      [id]: value
+    }))
+  }
+
+  const confirm = () => {
+    onConfirm()
+    onClose()
+  }
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -30,9 +43,10 @@ export default function EditAddress(props) {
         <input
           className="w-full mt-2 rounded-md text-N700 bg-opacity-20 bg-N200"
           type="text"
-          id="line1"
-          defaultValue={order?.shipping_address?.line1}
+          id="shipping_line_1"
+          defaultValue={order?.shipping_address?.shipping_line_1}
           placeholder=""
+          onChange={handleChange}
         />
       </div>
       <div className="mt-2 ">
@@ -40,9 +54,10 @@ export default function EditAddress(props) {
         <input
           className="w-full mt-2 rounded-md text-N700 bg-opacity-20 bg-N200"
           type="text"
-          id="line2"
-          defaultValue={order?.shipping_address?.line2}
+          id="shipping_line_2"
+          defaultValue={order?.shipping_address?.shipping_line_2}
           placeholder=""
+          onChange={handleChange}
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
@@ -55,6 +70,7 @@ export default function EditAddress(props) {
               id="country"
               defaultValue={order?.shipping_address?.country}
               placeholder=""
+              onChange={handleChange}
             />
           </div>
           <div className="mt-2 ">
@@ -65,6 +81,7 @@ export default function EditAddress(props) {
               id="city"
               defaultValue={order?.shipping_address?.city}
               placeholder=""
+              onChange={handleChange}
             />
           </div>
           <div className="mt-2 ">
@@ -75,6 +92,7 @@ export default function EditAddress(props) {
               id="phone_num"
               defaultValue={order?.shipping_address?.phone_num}
               placeholder=""
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -87,6 +105,7 @@ export default function EditAddress(props) {
               id="state"
               defaultValue={order?.shipping_address?.state}
               placeholder=""
+              onChange={handleChange}
             />
           </div>
           <div className="mt-2 ">
@@ -94,9 +113,10 @@ export default function EditAddress(props) {
             <input
               className="w-full mt-2 rounded-md text-N700 bg-opacity-20 bg-N200"
               type="text"
-              id="postal_code"
-              defaultValue={order?.shipping_address?.postal_code}
+              id="postcode"
+              defaultValue={order?.shipping_address?.postcode}
               placeholder=""
+              onChange={handleChange}
             />
           </div>
           <div className="mt-2 ">
@@ -107,6 +127,7 @@ export default function EditAddress(props) {
               id="person_name"
               defaultValue={order?.shipping_address?.person_name}
               placeholder=""
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -116,7 +137,7 @@ export default function EditAddress(props) {
           onClick={() => onClose()}
           className="text-xs text-N600 bg-N0">CANCEL</Button>
         <Button
-          onClick={() => onClose()}
+          onClick={confirm}
           className="text-xs text-N0 bg-secondary hover:bg-secondary-light">APPLY</Button>
       </div>
     </Dialog>

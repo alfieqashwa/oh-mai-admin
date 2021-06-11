@@ -14,11 +14,22 @@ import { useState } from 'react'
 import { Pagination } from 'components/widgets/pagination'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { BASE_URL } from 'etc/constants'
-import { getOrderDetails } from 'services/api/order_services'
+import { BASE_URL, PAYMENT_STATUS_ARR, SHIPPING_STATUS_ARR } from 'etc/constants'
+import { getOrderDetails, updateOrder } from 'services/api/order_services'
 import EditAddress from 'components/widgets/dialog/EditAddress'
 import EditTrackingNumber from 'components/widgets/dialog/EditTrackingNumber'
 import EditDeliveryDate from 'components/widgets/dialog/EditDeliveryDate'
+import DatePicker from "react-datepicker";
+import { setHours } from 'date-fns'
+import { setMinutes } from 'date-fns'
+import { toReadableDate } from 'utils/OrderUtils'
+import { DateTime } from 'luxon'
+require('react-datepicker/dist/react-datepicker.css')
+
+const moneyFormat = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'TWD',
+});
 
 export default function OrderDetail(props) {
   const [totalPage, setTotalPage] = useState(0)
@@ -28,6 +39,16 @@ export default function OrderDetail(props) {
   const [dialogAddressOpen, setDialogAddressOpen] = useState(false)
   const [dialogTrackingNumOpen, setDialogTrackingNumOpen] = useState(false)
   const [dialogDeliveryDateOpen, setDialogDeliveryDateOpen] = useState(false)
+  const [orderStatusPayment, setOrderStatusPayment] = useState()
+  const [trackingNumber, setTrackingNumber] = useState()
+  const [deliveryDate, setDeliveryDate] = useState()
+  const [shippingStatus, setShippingStatus] = useState()
+  const [shippingCost, setShippingCost] = useState()
+  const [address, setAddress] = useState()
+  const [orderDate, setOrderDate] = useState(
+    setHours(setMinutes(new Date(), 0), 9)
+  )
+  const date = new Date()
 
   const handleChange = (e) => {
     console.log("handleChange: filter before update", filter)
@@ -49,10 +70,67 @@ export default function OrderDetail(props) {
     }
   }
 
+  const _updateOrder = async (order) => {
+    const data = await updateOrder(order)
+    console.log("updateOrder", data)
+    if (data.isSuccess) {
+      // setOrder(data.order)
+      console.log("updateOrder", "Done")
+    }
+  }
+
   const handleChangeDownload = (e) => {
     const { id, value } = e.target
     console.log("handle change download ID:" + id + ", value:" + value)
     download({ type: value })
+  }
+
+  const orderDateChange = async (date) => {
+    setOrderDate(date)
+  }
+
+  const paymentStatusChange = async (e) => {
+    setOrderStatusPayment(e.target.value)
+  }
+
+  const shippingStatusChange = (e) => {
+    setShippingStatus(e.target.value)
+  }
+
+  const shippingCostChange = (e) => {
+    setShippingCost(e.target.value)
+  }
+
+  const changeTrackingNumber = () => {
+    _updateOrder({
+      shipping_tracking_number: trackingNumber,
+      order_id: order.order_id
+    })
+    setDialogTrackingNumOpen(false)
+  }
+
+  const changeAddress = () => {
+    _updateOrder({
+      shipping_line_1: address.shipping_line_1,
+      shipping_line_2: address.shipping_line_2,
+      city: address.city,
+      state: address.state,
+      country: address.country,
+      postcode: address.postcode,
+      phone_num: address.phone_num,
+      person_name: address.person_name,
+      order_id: order.order_id
+    })
+    setDialogTrackingNumOpen(false)
+  }
+
+  const changeDeliveryDate = () => {
+    // deliveryDate format : '24 Dec 2023'
+    _updateOrder({
+      order_delivery_date: DateTime.fromFormat(deliveryDate, "dd MMM yyyy"),
+      order_id: order.order_id
+    })
+    setDialogDeliveryDateOpen(false)
   }
 
   const closeAddress = () => {
@@ -61,7 +139,92 @@ export default function OrderDetail(props) {
 
   useEffect(() => {
     loadData()
+    console.log("// orderdate", orderDate)
   }, [])
+
+  useEffect(() => {
+    if (order) {
+      if (order.order_datetime instanceof Date) {
+        console.log("// Instance of date")
+      } else {
+        console.log("// Not date")
+      }
+      console.log("// Order date", order.order_datetime)
+      console.log("// Order date stringify", JSON.stringify(order.order_datetime))
+
+      var t = order.order_datetime.split(/[- :]/);
+      console.log("// dateParts", t)
+
+      var jsDate = new Date(order.order_datetime)
+      const lxDate = DateTime.fromJSDate(jsDate)
+
+      console.log("// order.order_datetime", typeof order.order_datetime)
+      console.log("// jsDate", jsDate)
+      console.log("// jsDate typeof", typeof jsDate)
+      console.log("// lxDate", lxDate)
+      setOrderDate(jsDate)
+      setOrderStatusPayment(order.order_status_payment)
+      setDeliveryDate(order.order_delivery_date)
+      setAddress({
+        shipping_line_1: order.shipping_address.line1,
+        shipping_line_2: order.shipping_address.line2,
+        country: order.shipping_address.country,
+        city: order.shipping_address.city,
+        phone_num: order.shipping_address.phone_num,
+        state: order.shipping_address.state,
+        postcode: order.shipping_address.postal_code,
+        person_name: order.shipping_address.person_name
+      })
+    }
+  }, [order])
+
+  useEffect(async () => {
+    if (order) {
+      const jsDate = new Date(orderDate)
+
+      await _updateOrder({
+        order_datetime: jsDate,
+        order_id: order.order_id
+      })
+    }
+  }, [orderDate])
+
+  useEffect(async () => {
+    if (order) {
+      await _updateOrder({
+        order_status_payment: orderStatusPayment,
+        order_id: order.order_id
+      })
+    }
+  }, [orderStatusPayment])
+
+  useEffect(async () => {
+    if (order) {
+      await _updateOrder({
+        order_status_shipping: shippingStatus,
+        order_id: order.order_id
+      })
+    }
+  }, [shippingStatus])
+
+  useEffect(async () => {
+    console.log("//shippingCost", shippingCost)
+
+    if (order && (shippingCost !== "")) {
+      await _updateOrder({
+        shipping_cost: shippingCost,
+        order_id: order.order_id
+      })
+    }
+  }, [shippingCost])
+
+  useEffect(async () => {
+    console.log("//address", address)
+
+    if (address) {
+      console.log("//address filled", address)
+    }
+  }, [address])
 
   return (
     <>
@@ -70,19 +233,9 @@ export default function OrderDetail(props) {
         <div className="md:block glass p-4 rounded-none">
           <div className="flex flex-row text-N0 space-x-4 content-center">
             <div className="flex-1">Order ID: {order?.order_number}</div>
-            <div className="flex-initial mr-8 pt-1">NT$15,000</div>
+            <div className="flex-initial mr-8 pt-1">{moneyFormat.format(order?.total_price)}</div>
             <button className="flex-initial text-sm px-2 bg-transparent border-N0 border-2">EXPORT</button>
           </div>
-          {/* Start Order List, Export Desktop */}
-          {/* Ends of Order List, Export Desktop */}
-          {/* Start Order List, Export Mobile */}
-          {/* Ends of List order, Export Mobile */}
-          {/* Start first row Mobile */}
-          {/* Ends first row Mobile */}
-          {/* Start Tabel (GlassDiv) */}
-          {/* Ends Tabel (GlassDiv) */}
-          {/* Pagination */}
-          {/* <Pagination total={totalPage} forDispatch={{ type: 'order/list' }} onChangeInput={handleChange} /> */}
         </div>
         <div className="px-8">
           <div className="flex flex-row text-N0 space-x-4 py-4 content-center">
@@ -130,12 +283,21 @@ export default function OrderDetail(props) {
                   <div className="flex-1 grid grid-cols-2 pt-4 space-x-4">
                     <div className="flex flex-col text-N0">
                       <span >Date created</span>
-                      <select
-                        id="shipping-status"
-                        className="mt-2 rounded-md w400 focus:ring-1 focus:ring-N700 focus:outline-none bg-opacity-20 bg-N200">
-                        <option>{order?.order_datetime}</option>
-                        <option>-</option>
-                      </select>
+                      <div className="flex flex-1">
+                        <DatePicker
+                          portalId="root-portal"
+                          style={{ position: "relative", zIndex: "999!important" }}
+                          className="flex flex-1 mt-2 rounded-md text-N0 bg-opacity-20 bg-N0 w-full"
+                          wrapperClassName="w-full"
+                          calendarClassName="w-full"
+                          selected={orderDate}
+                          onChange={orderDateChange}
+                          showTimeSelect
+                          // minTime={setHours(setMinutes(new Date(), 0), 17)}
+                          // maxTime={setHours(setMinutes(new Date(), 30), 20)}
+                          dateFormat="dd MMM yyyy, hh:mm"
+                        />
+                      </div>
                       <div className="flex flex-row pt-4">
                         <span className="text-N0 flex-1">Billing</span>
                         <span className="text-N0"><HiOutlinePencilAlt className="w-6 h-6" /></span>
@@ -148,11 +310,14 @@ export default function OrderDetail(props) {
                     </div>
                     <div className="flex flex-col text-N0">
                       <span>Order Status</span>
+                      {/* Payment status */}
                       <select
                         id="shipping-status"
-                        className="mt-2 rounded-md w400 focus:ring-1 focus:ring-N700 focus:outline-none bg-opacity-20 bg-N200">
-                        <option>Pending</option>
-                        <option>-</option>
+                        className="mt-2 rounded-md w400 focus:ring-1 focus:ring-N700 focus:outline-none bg-opacity-20 bg-N200"
+                        onChange={paymentStatusChange}>
+                        {PAYMENT_STATUS_ARR.map(item => {
+                          return <option className="capitalize" selected={orderStatusPayment == item} value={item}>{item}</option>
+                        })}
                       </select>
                       <div className="flex flex-col pt-4">
                         <span className="text-N0">Email Address</span>
@@ -173,22 +338,22 @@ export default function OrderDetail(props) {
                 <div className="flex flex-col ">
                   <div className="flex flex-row">
                     <span className="text-N0 flex-1">Address</span>
-                    <span className="text-N0 cursor-pointer" 
+                    <span className="text-N0 cursor-pointer"
                       onClick={() => setDialogAddressOpen(true)}><HiOutlinePencilAlt className="w-6 h-6" /></span>
                   </div>
-                  <span className="text-N300 text-sm pt-2">{order?.shipping_address?.line1}</span>
-                  <span className="text-N300 text-sm">{order?.shipping_address?.line2}</span>
-                  <span className="text-N300 text-sm">{order?.shipping_address?.city}</span>
-                  <span className="text-N300 text-sm">{order?.shipping_address?.state}</span>
-                  <span className="text-N300 text-sm">{order?.shipping_address?.country}</span>
-                  <span className="text-N300 text-sm">{order?.shipping_address?.postal_code}</span>
-                  <span className="text-N300 text-sm">{order?.shipping_address?.phone_num}</span>
-                  <span className="text-N300 text-sm">{order?.shipping_address?.person_name}</span>
+                  <span className="text-N300 text-sm pt-2">{address?.line1}</span>
+                  <span className="text-N300 text-sm">{address?.line2}</span>
+                  <span className="text-N300 text-sm">{address?.city}</span>
+                  <span className="text-N300 text-sm">{address?.state}</span>
+                  <span className="text-N300 text-sm">{address?.country}</span>
+                  <span className="text-N300 text-sm">{address?.postal_code}</span>
+                  <span className="text-N300 text-sm">{address?.phone_num}</span>
+                  <span className="text-N300 text-sm">{address?.person_name}</span>
                 </div>
                 <div className="flex flex-col ">
                   <div className="flex flex-row">
                     <span className="text-N0 flex-1">Tracking Number</span>
-                    <span className="text-N0 cursor-pointer" 
+                    <span className="text-N0 cursor-pointer"
                       onClick={() => setDialogTrackingNumOpen(true)}><HiOutlinePencilAlt className="w-6 h-6" /></span>
                   </div>
                   <span className="text-N300 text-sm">{order?.shipping_tracking_number}</span>
@@ -197,7 +362,7 @@ export default function OrderDetail(props) {
                     <span className="text-N0 cursor-pointer"
                       onClick={() => setDialogDeliveryDateOpen(true)}><HiOutlinePencilAlt className="w-6 h-6" /></span>
                   </div>
-                  <span className="text-N300 text-sm">{order?.order_delivery_date}</span>
+                  <span className="text-N300 text-sm">{toReadableDate(deliveryDate)}</span>
                   <span className="text-N0 mt-2">Ship by</span>
                   <span className="text-N300 text-sm">{order?.shipping_company}</span>
                 </div>
@@ -210,15 +375,19 @@ export default function OrderDetail(props) {
                     type="text"
                     id="shipping_cost"
                     placeholder="$ 0"
+                    onChange={shippingCostChange}
+                    defaultValue={order?.shipping_cost}
                   />
                 </div>
                 <div className="flex flex-col text-N0">
                   Shipping Status
                   <select
                     id="shipping-status"
+                    onChange={shippingStatusChange}
                     className="mt-2 rounded-md w400 focus:ring-1 focus:ring-N700 focus:outline-none bg-opacity-20 bg-N200">
-                    <option>Pending</option>
-                    <option>-</option>
+                    {SHIPPING_STATUS_ARR.map(item => {
+                      return <option className="capitalize" value={item}>{item}</option>
+                    })}
                   </select>
                 </div>
               </div>
@@ -233,7 +402,7 @@ export default function OrderDetail(props) {
               </div>
             </div>
           </div>
-          <div id="general" className="w-full glass p-4">
+          <div id="general" className="w-full glass p-4 z-0 relative">
             <p>Invoice</p>
             <table className="table-auto text-N0 mt-4">
               <thead className="text-left font-normal text-sm">
@@ -402,19 +571,25 @@ export default function OrderDetail(props) {
         </div>
       </div>
       <EditAddress
-        order={order}
+        order={{shipping_address: address}}
         open={dialogAddressOpen}
         onClose={closeAddress}
+        onChange={setAddress}
+        onConfirm={changeAddress}
       />
       <EditTrackingNumber
         order={order}
         open={dialogTrackingNumOpen}
         onClose={() => setDialogTrackingNumOpen(false)}
+        onChange={setTrackingNumber}
+        onConfirm={changeTrackingNumber}
       />
       <EditDeliveryDate
-        order={order}
+        order={{ order_delivery_date: deliveryDate }}
         open={dialogDeliveryDateOpen}
         onClose={() => setDialogDeliveryDateOpen(false)}
+        onChange={setDeliveryDate}
+        onConfirm={changeDeliveryDate}
       />
     </>
   )
