@@ -5,8 +5,11 @@ import { setHeader } from "lib/graphqlclient";
 import Cookies from "js-cookie";
 import { client } from "lib/graphqlclient";
 import useSWR, { SWRConfig } from "swr";
-
+import { store } from '../data/state/store';
+import { NextPageContext } from 'next';
+import { Provider } from 'react-redux';
 import Layout from 'components/layout'
+import withRedux from "next-redux-wrapper";
 
 function MyApp({ Component, pageProps }) {
   // const router = useRouter();
@@ -25,11 +28,14 @@ function MyApp({ Component, pageProps }) {
         dedupingInterval: 2000,
       }}
     >
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Provider store={store}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </Provider>
     </SWRConfig>
   );
 }
 
-export default MyApp;
+const makeStore = () => store;
+export default withRedux(makeStore)(MyApp);

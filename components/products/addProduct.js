@@ -5,6 +5,7 @@ import { GlassDefault } from 'components/glassDefault'
 import TextEditor from 'components/textEditor'
 import { UploadMedia } from 'components/uploadMedia'
 import { useEffect, useState } from 'react';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 // Confirmation Saved-Button
 export const ConfirmationSavedButton = ({ update }) =>
