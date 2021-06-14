@@ -1,5 +1,5 @@
 import { client } from 'lib/graphqlclient';
-import { DELETE_ORDER_GQL, GET_LIST_ORDER_GQL } from 'graphql/order'
+import { DELETE_ORDER_GQL, GET_LIST_ORDER_GQL, GET_ORDER_BY_ORDNUM, UPDATE_ORDER_GQL } from 'graphql/order'
 
 export const loadOrders = async (vars) => {
   let totalRow = 0
@@ -42,6 +42,41 @@ export const deleteOrders = async ({ order_number }) => {
     return {
       strResult: "Failed to delete",
       isSuccess: false
+    }
+  }
+}
+
+export const getOrderDetails = async ({ order_number }) => {
+  try {
+    const data = await client.request(GET_ORDER_BY_ORDNUM, {
+      order_number: order_number
+    })
+
+    return {
+      order: data.getOrderByOrderNumAdm,
+      isSuccess: true
+    }
+  } catch (error) {
+    console.log("Get order error", error)
+    return {
+      order: null,
+      isSuccess: false
+    }
+  }
+}
+
+export const updateOrder = async (order) => {
+  try {
+    const data = await client.request(UPDATE_ORDER_GQL, order)
+
+    return {
+      isSuccess: data.updateOrder
+    }
+  } catch (error) {
+    console.log("Get order error", error)
+    return {
+      isSuccess: false,
+      error: error
     }
   }
 }

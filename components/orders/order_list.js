@@ -4,7 +4,7 @@ import { white } from 'tailwindcss/colors'
 import { BiTrash } from 'react-icons/bi'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
-import { useStore } from 'react-redux'
+import { useDispatch, useStore } from 'react-redux'
 import { order } from 'tailwindcss/defaultTheme'
 import Confirm from 'components/widgets/dialog/Confirm'
 import { deleteOrders } from 'services/api/order_services'
@@ -14,11 +14,16 @@ import OrderLookup from 'components/widgets/dialog/OrderLookup'
 export function OrderList({ filter, page }) {
   console.log("/components/widget/pagination:filter", filter)
   const store = useStore()
+  const dispatch = useDispatch()
   const [orders, setOrders] = useState([])
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [selectedDeleteOrder, setSelectedDeleteOrder] = useState("")
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [lookupOpen, setLookupOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [maxRow, setMaxRow] = useState(10)
+  const [totalPage, setTotalPage] = useState(0)
+  const [mTotal, setmTotal] = useState(0)
 
   const moneyFormat = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -26,15 +31,23 @@ export function OrderList({ filter, page }) {
   });
 
   useEffect(() => {
+    dispatch({
+      type: 'order/list',
+      payload: {
+        paging: {
+          limit: maxRow,
+          offset: 0
+        }
+      }
+    })
   }, [])
 
-  store.subscribe(async () => {
-    const state = await store.getState()
-    console.log("order_list/State change", state)
-
-    const listOrders = state.value.data
-    setOrders(listOrders)
-  });
+  // store.subscribe(async () => {
+  //   const state = await store.getState()
+  //   const totalRow = state.value?.totalRow || 0
+  //   const orders = state.value.data
+  //   setmTotal(totalRow)
+  // });
 
   const showDeleteData = (orderNumber) => {
     setConfirmOpen(true)
@@ -43,7 +56,7 @@ export function OrderList({ filter, page }) {
 
   const doDeleteData = async () => {
     // put loader dialog while waiting
-    const {strResult, isSuccess} = await deleteOrders({order_number: selectedDeleteOrder})
+    const { strResult, isSuccess } = await deleteOrders({ order_number: selectedDeleteOrder })
     alert(strResult)
 
     if (isSuccess) {
@@ -65,16 +78,37 @@ export function OrderList({ filter, page }) {
 
   }, confirmOpen)
 
+  const onPageChange = ({ current, pageSize }) => {
+    setCurrentPage(current)
+    dispatch({
+      type: 'order/list',
+      payload: {
+        paging: {
+          limit: maxRow,
+          offset: current * maxRow
+        }
+      }
+    })
+  }
+
+  store.subscribe(async () => {
+    const state = await store.getState()
+    const totalRow = state.value?.totalRow || 0
+    const orders = state.value.data
+    setmTotal(totalRow)
+    const mTotalPage = Math.ceil(mTotal / maxRow)
+    setTotalPage(mTotalPage)
+    setOrders(orders)
+    console.log("pagination/State change", state)
+    console.log("pagination/totalRow", totalRow)
+  });
+
   return (
 
     <>
       <table className="md:min-w-full w-full">
         <thead className="bg-N0 bg-opacity-30">
           <tr>
-            <th scope="col"
-              className="hidden py-3 px-4 text-left md:table-cell text-N0">
-              S/N
-          </th>
             <th scope="col"
               className="px-4 py-3 font-normal text-left text-N0">
               Order No.
@@ -109,9 +143,6 @@ export function OrderList({ filter, page }) {
         <tbody className="">
           {orders.map((o, i) => (
             <tr key={o.order_number}>
-              <td className="hidden py-4 px-4 whitespace-nowrap md:table-cell text-N0">
-                {i + 1}
-              </td>
               <td className="p-4 whitespace-nowrap">
                 <div className="text-sm text-N0 cursor-pointer" onClick={lookupOrder.bind(null, o)}>{o.order_number}</div>
               </td>
@@ -150,7 +181,7 @@ export function OrderList({ filter, page }) {
         order={selectedOrder}
         open={lookupOpen}
         onClose={closeLookup}
-        ></OrderLookup>
+      ></OrderLookup>
     </>
   )
 }

@@ -43,6 +43,7 @@ module.exports = {
       WHITE_D1: "#D2D2D3",
       Y001: "#F4C82B",
       GradientEnd: "#E92F94",
+      GREY1: "#727176",
     },
 
     fontFamily: {

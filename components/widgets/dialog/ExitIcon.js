@@ -1,7 +1,7 @@
 export default function ExitIcon() {
   return (
     <svg
-      className="h-6 w-6 fill-current text-grey hover:text-grey-darkest"
+      className="h-6 w-6 hover:text-grey-darkest fill-current text-N0)"
       role="button"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"

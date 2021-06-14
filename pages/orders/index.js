@@ -17,7 +17,7 @@ import { BASE_URL } from 'etc/constants'
 
 export default function OrdersPage() {
   const [totalPage, setTotalPage] = useState(0)
-  const [filter, setFilter] = useState({ max_row: 10, keyword: "", page: 1 })
+  const [filter, setFilter] = useState({ max_row: 3, keyword: "", page: 1 })
   const dispatch = useDispatch()
 
   const handleChange = (e) => {
@@ -25,16 +25,6 @@ export default function OrdersPage() {
     const { id, value } = e.target
     console.log("handleChange: id", id)
     console.log("handleChange: value", value)
-
-    // let val = null
-
-    // if (value === 'true') {
-    //   val = true
-    // } else if (value === 'false') {
-    //   val = false
-    // } else {
-    //   val = value
-    // }
 
     setFilter(prevState => ({
       ...prevState,
@@ -49,7 +39,7 @@ export default function OrdersPage() {
         type: 'order/list',
         payload: {
           paging: {
-            limit: 10,
+            limit: 2,
             offset: 0,
             sort: filter.sort_by
           },
@@ -68,7 +58,7 @@ export default function OrdersPage() {
       type: 'order/list',
       payload: {
         paging: {
-          limit: 10,
+          limit: 2,
           offset: 0,
           sort: filter.sort_by
         },
@@ -248,7 +238,6 @@ export default function OrdersPage() {
 
         {/* Pagination */}
         <Pagination total={totalPage} forDispatch={{ type: 'order/list' }} onChangeInput={handleChange} />
-
       </div>
     </>
   )

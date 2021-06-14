@@ -15,7 +15,7 @@ export default function Dialog(props) {
       <div className="relative p-8 w-full max-w-md m-auto flex-col flex rounded-lg bg-clip-padding glassBlur">
         <div>{props.children}</div>
         <span className="absolute top-0 right-0 p-4">
-          <IconButton onClick={() => onClose()}>
+          <IconButton onClick={() => onClose()} className="text-N0">
             <ExitIcon />
           </IconButton>
         </span>

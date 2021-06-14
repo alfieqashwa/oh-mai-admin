@@ -23,35 +23,35 @@ export default function OrderLookup(props) {
   return (
     <Dialog open={open} onClose={onClose}>
       <div className="mb-8 flex flex-row ">
-        <div className="text-xl text-BLACK mr-4">{order.order_number}</div>
+        <div className="text-xl text-BLACK mr-4 font-bold">{order.order_number}</div>
         <button className="text-xs bg-Y001">{order.order_status_payment}</button>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div id="left">
           <div className="mb-4">
-            <div>Date & Time</div>
+            <div className="text-GREY1">Date & Time</div>
             <div>{moment(order.order_datetime).format("DD/MM/YYYY HH:mm:ss")}</div>
           </div>
           <div className="mb-4">
-            <div>Billing</div>
+            <div className="text-GREY1">Billing</div>
             <div>{parseAddress(order)}</div>
           </div>
           <div>
-            <div>Payment Via</div>
+            <div className="text-GREY1">Payment Via</div>
             <div>via Credit Card (ECPay)</div>
           </div>
         </div>
         <div id="right">
           <div className="mb-4">
-            <div>Total</div>
+            <div className="text-GREY1">Total</div>
             <div>{moneyFormat.format(order.total_price)}</div>
           </div>
           <div className="mb-4">
-            <div>Email</div>
+            <div className="text-GREY1">Email</div>
             <div>{order.email}</div>
           </div>
           <div>
-            <div>Phone Number</div>
+            <div className="text-GREY1">Phone Number</div>
             <div>{order.shipping_address.phone_num}</div>
           </div>
         </div>
