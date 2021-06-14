@@ -8,7 +8,7 @@ import { GlassHeader } from 'components/glassHeader'
 import { TitleWithBackButton } from 'components/titleWithBackButton'
 import { Pagination } from 'components/analytics/kol'
 
-export default function TopSalesFromKol() {
+export default function MostOrdersFromKol() {
 	return (
 		<div className="pr-12 pl-7">
 
