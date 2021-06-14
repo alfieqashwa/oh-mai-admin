@@ -5,7 +5,7 @@ import { setHeader } from "lib/graphqlclient";
 import Cookies from "js-cookie";
 import { client } from "lib/graphqlclient";
 import useSWR, { SWRConfig } from "swr";
-import {store} from '../data/state/store';
+import { store } from '../data/state/store';
 import { NextPageContext } from 'next';
 import { Provider } from 'react-redux';
 import Layout from 'components/layout'
@@ -14,28 +14,26 @@ import withRedux from "next-redux-wrapper";
 function MyApp({ Component, pageProps }) {
   // const router = useRouter();
 
-  // useEffect(() => {
-  //   setHeader(Cookies.get("token"));
-  // }, []);
+  useEffect(() => {
+    setHeader(Cookies.get("token"));
+  }, []);
 
   return (
-    // <>
-    //   <SWRConfig
-    //     value={{
-    //       fetcher: (query, args) => {
-    //         console.log(query, args);
-    //         return client.request(query, args);
-    //       },
-    //       dedupingInterval: 2000,
-    //     }}
-    //   >
-    <Provider store={store}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </Provider>
-    // </SWRConfig>
-    // </>
+    <SWRConfig
+      value={{
+        fetcher: (query, args) => {
+          console.log(query, args);
+          return client.request(query, args);
+        },
+        dedupingInterval: 2000,
+      }}
+    >
+      <Provider store={store}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </Provider>
+    </SWRConfig>
   );
 }
 
