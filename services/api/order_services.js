@@ -73,7 +73,7 @@ export const updateOrder = async (order) => {
       isSuccess: data.updateOrder
     }
   } catch (error) {
-    console.log("Get order error", error)
+    console.log("Update order error", error)
     return {
       isSuccess: false,
       error: error
