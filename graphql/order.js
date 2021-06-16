@@ -83,6 +83,24 @@ export const GET_ORDER_BY_ORDNUM = gql`
         person_name
         email
         shipping_company
+        order_item {
+          order_item_id
+          price
+          quantity
+          tax
+          product{
+            id
+            sku
+            main_product{
+              product_name
+            }
+          }
+
+          kol{
+            id
+            display_name
+          }
+        }
     }
   }
 `
