@@ -22,3 +22,18 @@ export const toReadableDate = (date) => {
   const lxDate = DateTime.fromJSDate(jsDate)
   return lxDate.toFormat("dd MMM yyyy")
 }
+
+export const toReadableDateTime = (date) => {
+  if (!date) {
+    return 
+  }
+  
+  console.log("toReadableDate:date", date)
+  const jsDate = new Date(date)
+
+  console.log("toReadableDate:jsDate", jsDate)
+  console.log("toReadableDate:jsDate typeof", typeof jsDate)
+
+  const lxDate = DateTime.fromJSDate(jsDate)
+  return lxDate.toFormat("dd MMM yyyy HH:mm")
+}
