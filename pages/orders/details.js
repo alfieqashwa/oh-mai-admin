@@ -22,7 +22,7 @@ import EditDeliveryDate from 'components/widgets/dialog/EditDeliveryDate'
 import DatePicker from "react-datepicker";
 import { setHours } from 'date-fns'
 import { setMinutes } from 'date-fns'
-import { toReadableDate } from 'utils/OrderUtils'
+import { toReadableDate, toReadableDateTime } from 'utils/OrderUtils'
 import { DateTime } from 'luxon'
 require('react-datepicker/dist/react-datepicker.css')
 
@@ -35,7 +35,7 @@ export default function OrderDetail(props) {
   const [totalPage, setTotalPage] = useState(0)
   const [filter, setFilter] = useState({ max_row: 3, keyword: "", page: 1 })
   const dispatch = useDispatch()
-  const [order, setOrder] = useState()
+  const [order, setOrder] = useState(null)
   const [dialogAddressOpen, setDialogAddressOpen] = useState(false)
   const [dialogTrackingNumOpen, setDialogTrackingNumOpen] = useState(false)
   const [dialogDeliveryDateOpen, setDialogDeliveryDateOpen] = useState(false)
@@ -178,6 +178,18 @@ export default function OrderDetail(props) {
     }
   }, [order])
 
+  const dateCreatedSelect = async (e) => {
+    console.log("dateCreatedSelect..")
+    console.log("dateCreatedSelect", e)
+
+    if (order) {
+      await _updateOrder({
+        order_datetime: e,
+        order_id: order.order_id
+      })
+    }
+  }
+
   useEffect(async () => {
     if (order) {
       const jsDate = new Date(orderDate)
@@ -261,7 +273,7 @@ export default function OrderDetail(props) {
                   <div id="cols2" className="">
                     <div className="flex flex-col pt-4">
                       <span className="text-N0">Order Date Time</span>
-                      <span className="text-N300 text-sm">{order?.order_datetime}</span>
+                      <span className="text-N300 text-sm">{toReadableDateTime(order?.order_datetime)}</span>
                     </div>
                     <div className="flex flex-col pt-4">
                       <span className="text-N0">Customer Name</span>
@@ -407,12 +419,10 @@ export default function OrderDetail(props) {
             <table className="table-auto text-N0 mt-4">
               <thead className="text-left font-normal text-sm">
                 <tr>
-                  <th className="w-3/12">Product</th>
-                  <th className="w-3/12">Variant</th>
-                  <th className="w-1/12">Cost</th>
+                  <th className="w-5/12">Product</th>
+                  <th className="w-2/12">Cost</th>
                   <th className="w-1/12">Qty</th>
-                  <th className="w-1/12">Taxes</th>
-                  <th className="w-1/12">Shipping</th>
+                  <th className="w-2/12">Taxes</th>
                   <th className="w-2/12">Total</th>
                   <th className="w-2/12">
                     {/* {action button} */}
@@ -420,22 +430,25 @@ export default function OrderDetail(props) {
                 </tr>
               </thead>
               <tbody className="">
-                <tr>
-                  <td>Tekken 7</td>
-                  <td>Japan Reg, PS4</td>
-                  <td>$ 30.00</td>
-                  <td>1</td>
-                  <td>$ 0.00</td>
-                  <td>$ 0.00</td>
-                  <td>$ 50.00</td>
-                  <td>
-                    <div className="flex flex-row space-x-2">
-                      <a><HiOutlinePencilAlt className="w-5 h-5" /></a>
-                      <a><BiTrash className="w-5 h-5" /></a>
-                    </div>
-                  </td>
-                </tr>
-                <tr className="mt-2">
+                {order?.order_item?.map(oi => {
+                  return (
+                    <tr>
+                      <td>{oi?.product?.main_product?.product_name}</td>
+                      <td>{moneyFormat.format(oi?.price)}</td>
+                      <td>{oi?.quantity}</td>
+                      <td>{moneyFormat.format(oi?.tax || 0)}</td>
+                      <td>{moneyFormat.format(oi?.price * oi?.quantity)}</td>
+                      <td>
+                        <div className="flex flex-row space-x-2">
+                          <a><HiOutlinePencilAlt className="w-5 h-5" /></a>
+                          <a><BiTrash className="w-5 h-5" /></a>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
+
+                {/* <tr className="mt-2">
                   <td>Monster Hunter Rise</td>
                   <td>Japan Reg, Nintendo Switch</td>
                   <td>$ 60.00</td>
@@ -449,8 +462,8 @@ export default function OrderDetail(props) {
                       <a><BiTrash className="w-5 h-5" /></a>
                     </div>
                   </td>
-                </tr>
-                <tr className="mt-4">
+                </tr> */}
+                {/* <tr className="mt-4">
                   <td>Dirt 5</td>
                   <td>US Reg, PS4</td>
                   <td>$ 30.00</td>
@@ -464,14 +477,14 @@ export default function OrderDetail(props) {
                       <a><BiTrash className="w-5 h-5" /></a>
                     </div>
                   </td>
-                </tr>
+                </tr> */}
               </tbody>
             </table>
             <div className="border-t-2 border-opacity-50 border-N0 text-N0 my-4 py-4">
               <div className="grid grid-cols-2">
                 <div className="flex flex-1 flex-col">
                   <span>Coupon(s)</span>
-                  <span>LICEWANG20</span>
+                  <span>{/** LICEWANG20 */}</span>
                 </div>
                 <div className="flex flex-col">
                   <div id="first_calc" className="flex flex-row  text-right">
@@ -517,7 +530,7 @@ export default function OrderDetail(props) {
           <div className="flex flex-row my-4 space-x-4">
             <div className="glass flex flex-col w-full">
               <p className="m-4">KOL</p>
-              <table class="table-auto text-N0 m-4 mt-2">
+              <table className="table-auto text-N0 m-4 mt-2">
                 <thead className="text-left font-normal text-sm">
                   <tr>
                     <th className="w-3/12">Product</th>
@@ -528,26 +541,26 @@ export default function OrderDetail(props) {
                   </tr>
                 </thead>
                 <tbody className="text-sm">
-                  <tr>
-                    <td>Tekken 7</td>
-                    <td>Lice Wang</td>
-                    <td>$ 30.00</td>
-                    <td>1</td>
-                    <td>$ 50.00</td>
-                  </tr>
-                  <tr className="mt-2">
-                    <td>Monster Hunter Rise</td>
-                    <td>Charlene Yue</td>
-                    <td>$ 60.00</td>
-                    <td>1</td>
-                    <td>$ 60.00</td>
-                  </tr>
+                  {order?.order_item?.map(oi => {
+                    if (oi.kol) {
+                      return (
+                        <tr>
+                          <td>{oi?.product?.main_product?.product_name}</td>
+                          <td>{oi?.kol?.display_name}</td>
+                          <td>{moneyFormat.format(oi?.price)}</td>
+                          <td>{oi?.quantity}</td>
+                          <td>{moneyFormat.format(oi?.price * oi?.quantity)}</td>
+                        </tr>
+                      )
+                    }
+                  })}
                 </tbody>
               </table>
+              <div className="border-t-2 border-N0 border-opacity-50 mx-4"></div>
             </div>
             <div className="glass flex flex-col w-full">
               <p className="m-4">發票</p>
-              <table class="table-auto text-N0 m-4 mt-2 ">
+              <table className="table-auto text-N0 m-4 mt-2 ">
                 <thead className="text-left font-normal text-sm">
                   <tr>
                     <th className="w-3/12">發票號碼</th>
@@ -571,7 +584,7 @@ export default function OrderDetail(props) {
         </div>
       </div>
       <EditAddress
-        order={{shipping_address: address}}
+        order={{ shipping_address: address }}
         open={dialogAddressOpen}
         onClose={closeAddress}
         onChange={setAddress}
