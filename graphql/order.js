@@ -85,6 +85,7 @@ export const GET_ORDER_BY_ORDNUM = gql`
         shipping_company
         order_item {
           order_item_id
+          order_item_name
           price
           quantity
           tax

@@ -63,7 +63,7 @@ export default function OrderDetail(props) {
   }
 
   const loadData = async () => {
-    const data = await getOrderDetails({ order_number: "ORD-113" })
+    const data = await getOrderDetails({ order_number: "ORD8L4OERJ98" })
     console.log("ldo", data)
     if (data.isSuccess) {
       setOrder(data.order)
@@ -433,7 +433,7 @@ export default function OrderDetail(props) {
                 {order?.order_item?.map(oi => {
                   return (
                     <tr>
-                      <td>{oi?.product?.main_product?.product_name}</td>
+                      <td>{oi?.order_item_name}</td>
                       <td>{moneyFormat.format(oi?.price)}</td>
                       <td>{oi?.quantity}</td>
                       <td>{moneyFormat.format(oi?.tax || 0)}</td>
@@ -533,8 +533,8 @@ export default function OrderDetail(props) {
               <table className="table-auto text-N0 m-4 mt-2">
                 <thead className="text-left font-normal text-sm">
                   <tr>
-                    <th className="w-3/12">Product</th>
-                    <th className="w-3/12">KOL</th>
+                    <th className="w-4/12">Product</th>
+                    <th className="w-2/12">KOL</th>
                     <th className="w-2/12">Cost</th>
                     <th className="w-1/12">Qty</th>
                     <th className="w-2/12">Total</th>
@@ -545,7 +545,7 @@ export default function OrderDetail(props) {
                     if (oi.kol) {
                       return (
                         <tr>
-                          <td>{oi?.product?.main_product?.product_name}</td>
+                          <td>{oi?.order_item_name}</td>
                           <td>{oi?.kol?.display_name}</td>
                           <td>{moneyFormat.format(oi?.price)}</td>
                           <td>{oi?.quantity}</td>
