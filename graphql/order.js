@@ -85,6 +85,8 @@ export const GET_ORDER_BY_ORDNUM = gql`
         shipping_company
         order_item {
           order_item_id
+          order_item_name
+          order_item_kol_profit_earning
           price
           quantity
           tax
@@ -141,6 +143,27 @@ mutation updateOrder(
     phone_num: $phone_num, 
     person_name: $person_name, 
     payment_gateway: $payment_gateway
+  )
+}`
+
+export const UPDATE_ORDER_ITEM_QTY = gql`
+  mutation updateOrderItemQty(
+    $order_item_id: Int,
+    $quantity: Int
+  ){
+    updateOrderItemQty(
+      order_item_id: $order_item_id,
+      quantity: $quantity
+    )
+  }
+`
+
+export const DELETE_ORDER_ITEM_GQL = gql`
+mutation deleteOrderItem(
+  $order_item_id: Int,
+){
+  deleteOrderItem(
+    order_item_id: $order_item_id,
   )
 }
 `

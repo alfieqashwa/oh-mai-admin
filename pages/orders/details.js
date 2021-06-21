@@ -15,8 +15,9 @@ import { Pagination } from 'components/widgets/pagination'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { BASE_URL, PAYMENT_STATUS_ARR, SHIPPING_STATUS_ARR } from 'etc/constants'
-import { getOrderDetails, updateOrder } from 'services/api/order_services'
+import { deleteOrderItem, getOrderDetails, updateOrder, updateOrderItem } from 'services/api/order_services'
 import EditAddress from 'components/widgets/dialog/EditAddress'
+import EditOrderItem from 'components/widgets/dialog/EditOrderItem'
 import EditTrackingNumber from 'components/widgets/dialog/EditTrackingNumber'
 import EditDeliveryDate from 'components/widgets/dialog/EditDeliveryDate'
 import DatePicker from "react-datepicker";
@@ -39,12 +40,18 @@ export default function OrderDetail(props) {
   const [dialogAddressOpen, setDialogAddressOpen] = useState(false)
   const [dialogTrackingNumOpen, setDialogTrackingNumOpen] = useState(false)
   const [dialogDeliveryDateOpen, setDialogDeliveryDateOpen] = useState(false)
+  const [dialogOrderItemOpen, setDialogOrderItemOpen] = useState(false)
   const [orderStatusPayment, setOrderStatusPayment] = useState()
   const [trackingNumber, setTrackingNumber] = useState()
   const [deliveryDate, setDeliveryDate] = useState()
   const [shippingStatus, setShippingStatus] = useState()
   const [shippingCost, setShippingCost] = useState()
   const [address, setAddress] = useState()
+  const [subTotalKol, setSubtotalKol] = useState(0)
+  const [itemSubtotal, setItemSubtotal] = useState(0)
+  const [totalTax, setTotalTax] = useState(0)
+  const [selectedOrderItem, setSelectedOrderItem] = useState()
+  const [totalPerKolEarning, setTotalPerKolEarning] = useState()
   const [orderDate, setOrderDate] = useState(
     setHours(setMinutes(new Date(), 0), 9)
   )
@@ -63,10 +70,10 @@ export default function OrderDetail(props) {
   }
 
   const loadData = async () => {
-    const data = await getOrderDetails({ order_number: "ORD-113" })
+    const data = await getOrderDetails({ order_number: "ORD8L4OERJ98" })
     console.log("ldo", data)
     if (data.isSuccess) {
-      setOrder(data.order)
+      await setOrder(data.order)
     }
   }
 
@@ -137,6 +144,80 @@ export default function OrderDetail(props) {
     setDialogAddressOpen(false)
   }
 
+  const closeOrderItem = () => {
+    setDialogOrderItemOpen(false)
+  }
+
+  const openOrderItem = (oi) => {
+    console.log("OI:", oi)
+    setDialogOrderItemOpen(true)
+    setSelectedOrderItem(oi)
+  }
+
+  const _updateOrderItem = async (oi) => {
+    console.log("update order item")
+    const result = await updateOrderItem(oi)
+
+    if (result.isSuccess) {
+      loadData()
+    }
+    console.log("result", result)
+  }
+
+  const _deleteOrderItem = async (id) => {
+    console.log("update order item")
+    const result = await deleteOrderItem(id)
+
+    if (result.isSuccess) {
+      loadData()
+    }
+    console.log("result", result)
+  }
+
+  const calculateKolSubtotal = (order) => {
+    let subtotalKl = 0
+    let itemSubttl = 0
+    let ttlTax = 0
+    const perKolEarning = []
+    const arrFapiao = []
+
+    order?.order_item?.map(oi => {
+      if (oi.kol) {
+        subtotalKl += oi?.order_item_kol_profit_earning * oi?.quantity
+
+        if (perKolEarning.length === 0) {
+          let earning = {
+            kol: oi.kol,
+            earning: (oi?.order_item_kol_profit_earning || 0) * oi?.quantity // this zero validation should be done serverside before
+          }
+
+          perKolEarning.push(earning)
+        }
+
+        perKolEarning.map(item => {
+          if (item.kol === oi.kol) {
+            item.kol.earning = item.kol.earning + ((oi?.order_item_kol_profit_earning  || 0)* oi?.quantity)
+          } else {
+            let earning = {
+              kol: oi.kol,
+              earning: (oi?.order_item_kol_profit_earning || 0) * oi?.quantity
+            }
+
+            perKolEarning.push(earning)
+          }
+        })
+      }
+
+      itemSubttl += oi?.price * oi?.quantity
+      ttlTax += oi?.tax * oi?.quantity
+    })
+
+    setItemSubtotal(itemSubttl)
+    setSubtotalKol(subtotalKl)
+    setTotalTax(ttlTax)
+    setTotalPerKolEarning(perKolEarning)
+  }
+
   useEffect(() => {
     loadData()
     console.log("// orderdate", orderDate)
@@ -175,6 +256,8 @@ export default function OrderDetail(props) {
         postcode: order.shipping_address.postal_code,
         person_name: order.shipping_address.person_name
       })
+
+      calculateKolSubtotal(order)
     }
   }, [order])
 
@@ -242,7 +325,7 @@ export default function OrderDetail(props) {
     <>
       <Header title="Orders" />
       <div>
-        <div className="md:block glass p-4 rounded-none">
+        <div className="flex md:block glass p-4 rounded-none">
           <div className="flex flex-row text-N0 space-x-4 content-center">
             <div className="flex-1">Order ID: {order?.order_number}</div>
             <div className="flex-initial mr-8 pt-1">{moneyFormat.format(order?.total_price)}</div>
@@ -433,51 +516,20 @@ export default function OrderDetail(props) {
                 {order?.order_item?.map(oi => {
                   return (
                     <tr>
-                      <td>{oi?.product?.main_product?.product_name}</td>
+                      <td>{oi?.order_item_name}</td>
                       <td>{moneyFormat.format(oi?.price)}</td>
                       <td>{oi?.quantity}</td>
                       <td>{moneyFormat.format(oi?.tax || 0)}</td>
                       <td>{moneyFormat.format(oi?.price * oi?.quantity)}</td>
                       <td>
                         <div className="flex flex-row space-x-2">
-                          <a><HiOutlinePencilAlt className="w-5 h-5" /></a>
-                          <a><BiTrash className="w-5 h-5" /></a>
+                          <a onClick={openOrderItem.bind(this, oi)} className="cursor-pointer"><HiOutlinePencilAlt className="w-5 h-5" /></a>
+                          <a className="cursor-pointer" onClick={_deleteOrderItem.bind(this, oi?.order_item_id)}><BiTrash className="w-5 h-5" /></a>
                         </div>
                       </td>
                     </tr>
                   )
                 })}
-
-                {/* <tr className="mt-2">
-                  <td>Monster Hunter Rise</td>
-                  <td>Japan Reg, Nintendo Switch</td>
-                  <td>$ 60.00</td>
-                  <td>1</td>
-                  <td>$ 0.00</td>
-                  <td>$ 0.00</td>
-                  <td>$ 60.00</td>
-                  <td>
-                    <div className="flex flex-row space-x-2">
-                      <a><HiOutlinePencilAlt className="w-5 h-5" /></a>
-                      <a><BiTrash className="w-5 h-5" /></a>
-                    </div>
-                  </td>
-                </tr> */}
-                {/* <tr className="mt-4">
-                  <td>Dirt 5</td>
-                  <td>US Reg, PS4</td>
-                  <td>$ 30.00</td>
-                  <td>1</td>
-                  <td>$ 0.00</td>
-                  <td>$ 0.00</td>
-                  <td>$ 30.00</td>
-                  <td>
-                    <div className="flex flex-row space-x-2">
-                      <a><HiOutlinePencilAlt className="w-5 h-5" /></a>
-                      <a><BiTrash className="w-5 h-5" /></a>
-                    </div>
-                  </td>
-                </tr> */}
               </tbody>
             </table>
             <div className="border-t-2 border-opacity-50 border-N0 text-N0 my-4 py-4">
@@ -496,11 +548,11 @@ export default function OrderDetail(props) {
                       <span>Order Total:</span>
                     </div>
                     <div className="w-1/3  flex flex-col">
-                      <span>$ 100.00</span>
-                      <span>- $ 20.00</span>
-                      <span>$ 2.00</span>
-                      <span>$ 1.00</span>
-                      <span>$ 84.00</span>
+                      <span>{moneyFormat.format(itemSubtotal)}</span>
+                      <span>- {moneyFormat.format(0) /** coupon is not implemented yet*/} </span>
+                      <span>{moneyFormat.format(order?.shipping_cost)}</span>
+                      <span>{moneyFormat.format(totalTax)}</span>
+                      <span>{moneyFormat.format(itemSubtotal + totalTax + order?.shipping_cost - totalTax)}</span>
                     </div>
                   </div>
                   <div id="second_calc" className="flex flex-row text-right border-t-2 border-N0 border-opacity-50 mt-4 py-4">
@@ -510,9 +562,9 @@ export default function OrderDetail(props) {
                       <span>Gateway Payout:</span>
                     </div>
                     <div className="w-1/3  flex flex-col">
-                      <span>$ 84.00</span>
-                      <span>- $ 5.00</span>
-                      <span>$ 79.00</span>
+                      <span>{moneyFormat.format(order?.total_price)}</span>
+                      <span>{moneyFormat.format(order?.payment_type_charge_fee)}</span>
+                      <span>{moneyFormat.format(order?.total_price - order?.payment_type_charge_fee)}</span>
                     </div>
                   </div>
                 </div>
@@ -520,21 +572,21 @@ export default function OrderDetail(props) {
               <div className="flex flex-row text-right border-t-2 border-N0 border-opacity-50 mt-4 py-4">
                 <div className="flex flex-row flex-1 space-x-2">
                   <button className="flex-initial text-sm px-2 bg-transparent border-N400 text-N400 border-2" disabled>REFUND</button>
-                  <button className="flex-initial text-sm px-2 bg-transparent border-N400 text-N400 border-2" disabled>ADD ITEMS</button>
+                  {/* <button className="flex-initial text-sm px-2 bg-transparent border-N400 text-N400 border-2" disabled>ADD ITEMS</button> */}
                   <button className="flex-initial text-sm px-2 bg-transparent border-N400 text-N400 border-2" disabled>APPLY COUPON</button>
                 </div>
                 <span>This order is completed and no longer editable. </span>
               </div>
             </div>
           </div>
-          <div className="flex flex-row my-4 space-x-4">
+          <div className="flex flex-row my-4 space-x-4 pb-8">
             <div className="glass flex flex-col w-full">
               <p className="m-4">KOL</p>
               <table className="table-auto text-N0 m-4 mt-2">
                 <thead className="text-left font-normal text-sm">
                   <tr>
-                    <th className="w-3/12">Product</th>
-                    <th className="w-3/12">KOL</th>
+                    <th className="w-4/12">Product</th>
+                    <th className="w-2/12">KOL</th>
                     <th className="w-2/12">Cost</th>
                     <th className="w-1/12">Qty</th>
                     <th className="w-2/12">Total</th>
@@ -545,18 +597,31 @@ export default function OrderDetail(props) {
                     if (oi.kol) {
                       return (
                         <tr>
-                          <td>{oi?.product?.main_product?.product_name}</td>
+                          <td>{oi?.order_item_name}</td>
                           <td>{oi?.kol?.display_name}</td>
-                          <td>{moneyFormat.format(oi?.price)}</td>
+                          <td>{moneyFormat.format(oi?.order_item_kol_profit_earning)}</td>
                           <td>{oi?.quantity}</td>
-                          <td>{moneyFormat.format(oi?.price * oi?.quantity)}</td>
+                          <td>{moneyFormat.format(oi?.order_item_kol_profit_earning * oi?.quantity)}</td>
                         </tr>
                       )
                     }
                   })}
                 </tbody>
               </table>
-              <div className="border-t-2 border-N0 border-opacity-50 mx-4"></div>
+              <div className="border-t-2 border-N0 border-opacity-50 mx-4 flex flex-col text-N0 justify-end">
+                <div className="text-right m-4">
+                  Subtotal {moneyFormat.format(subTotalKol)}
+                </div>
+                {
+                  totalPerKolEarning?.map(item => {
+                    return (
+                      <div className="text-right m-4">
+                        {item.kol?.display_name} {moneyFormat.format(item.earning)}
+                      </div>
+                    )
+                  })
+                }
+              </div>
             </div>
             <div className="glass flex flex-col w-full">
               <p className="m-4">發票</p>
@@ -570,9 +635,9 @@ export default function OrderDetail(props) {
                 </thead>
                 <tbody className="text-sm">
                   <tr>
-                    <td>PH41960752</td>
-                    <td>3 May 2021</td>
-                    <td>1742</td>
+                    <td>{order?.invoice_num}</td>
+                    <td>{toReadableDate(order?.invoice_date)}</td>
+                    <td>{order?.invoice_random_num}</td>
                   </tr>
                 </tbody>
               </table>
@@ -589,6 +654,13 @@ export default function OrderDetail(props) {
         onClose={closeAddress}
         onChange={setAddress}
         onConfirm={changeAddress}
+      />
+      <EditOrderItem
+        orderItem={selectedOrderItem}
+        open={dialogOrderItemOpen}
+        onClose={closeOrderItem}
+        onChange={setSelectedOrderItem}
+        onConfirm={_updateOrderItem.bind(this, selectedOrderItem)}
       />
       <EditTrackingNumber
         order={order}
