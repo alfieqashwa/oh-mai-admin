@@ -196,7 +196,7 @@ export default function OrderDetail(props) {
 
         perKolEarning.map(item => {
           if (item.kol === oi.kol) {
-            item.kol.earning = item.kol.earning + ((oi?.order_item_kol_profit_earning  || 0)* oi?.quantity)
+            item.kol.earning = item.kol.earning + ((oi?.order_item_kol_profit_earning || 0) * oi?.quantity)
           } else {
             let earning = {
               kol: oi.kol,
@@ -329,7 +329,9 @@ export default function OrderDetail(props) {
           <div className="flex flex-row text-N0 space-x-4 content-center">
             <div className="flex-1">Order ID: {order?.order_number}</div>
             <div className="flex-initial mr-8 pt-1">{moneyFormat.format(order?.total_price)}</div>
-            <button className="flex-initial text-sm px-2 bg-transparent border-N0 border-2">EXPORT</button>
+            <a href={process.env.NEXT_PUBLIC_BACKEND_HOST + "/order/download/order_detail?order_number=" + order?.order_number}>
+              <button className="flex-initial text-sm px-2 bg-transparent border-N0 border-2">EXPORT</button>
+            </a>
           </div>
         </div>
         <div className="px-8">
