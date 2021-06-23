@@ -24,14 +24,6 @@ export const SideBar = () => {
 
       {/* Home */}
       <div className="mt-16 space-y-5 text-N0">
-        <ActiveLink href="/">
-          <div className={`flex items-center justify-start w-full pl-16 cursor-pointer space-x-6 ${router.pathname === "/" ? "text-P100" : ""}`}>
-            <BiHomeAlt className="w-6 h-6" />
-            <p className={`w400 ${router.pathname === "/" ? "text-P100" : ""}`}>Home</p>
-          </div>
-        </ActiveLink>
-
-
         {/* Analytics */}
         <Disclosure>
           {({ open }) => (
