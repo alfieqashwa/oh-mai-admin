@@ -25,10 +25,12 @@ import Dropzone from "react-dropzone-uploader";
 import { ProgressSpinner } from "primereact/progressspinner";
 
 import { Dialog } from "primereact/dialog";
+import { getClient } from "lib/graphqlclient";
 
 export default function ProductEditor(props) {
   const { slug } = props;
   const router = useRouter();
+  const client = getClient()
 
   let emptyProduct = {
     sku: "",

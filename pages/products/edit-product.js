@@ -2,13 +2,14 @@ import { GlassDefault } from 'components/glassDefault';
 import { Header } from 'components/header';
 import { ConfirmationSavedButton, Title, Media, ProductStatus, ProductVariants, ProductType, Inventory, Price, Shipping } from 'components/products/addProduct';
 import { GET_PRODUCT_FROM_SLUG, GET_PRODUCT_GQL, UPDATE_PRODUCT_GQL } from 'graphql/product';
-import { client } from 'lib/graphqlclient';
+import { getClient } from 'lib/graphqlclient';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 const EditProduct = (props) => {
   console.log("start EditProduct...")
 
+  const client = getClient()
   const { id } = props.query
   const variables = {
     id: id

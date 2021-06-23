@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useEffect } from 'react'
 import Link from 'next/link';
 import { Listbox, Menu, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
@@ -11,6 +11,10 @@ import { ChartView, PerformanceBorder, PerformanceCard, TableSummary } from 'com
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
+
+  useEffect(() => {
+    
+  }, [])
 
   return (
     <div className="pb-4">

@@ -9,22 +9,20 @@ import { InputText } from "primereact/inputtext";
 
 import useSWR from "swr";
 import { kols, DELETE_KOL, KOL_USER_INFO } from "../graphql/kol";
-import { client } from "../lib/graphqlclient";
 import Link from "next/link";
 import useUser from "lib/useUser";
 import PuffLoader from "react-spinners/PuffLoader";
+import { getClient } from "lib/graphqlclient";
 
 export default function KOL() {
+  const client = getClient()
   const { loggedOut, user } = useUser();
-
   const [selectedKols, setSelectedKols] = useState(null);
   const [selectedSingle, setSelectedSingle] = useState(null);
-
   const [deleteKolDialog, setDeleteKolDialog] = useState(false);
   const [deleteKolsDialog, setDeleteKolsDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
   const [kolsList, setKolsList] = useState([]);
-
   const toast = useRef(null);
   const dt = useRef(null);
 

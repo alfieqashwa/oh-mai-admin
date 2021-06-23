@@ -3,7 +3,7 @@ import { client, getClient } from "lib/graphqlclient";
 
 const login = async (email, password) => {
   try {
-    const a = await getClient().request(LOGIN_MUTATION, {
+    const a = await client.request(LOGIN_MUTATION, {
       email: email,
       password: password,
     });

@@ -28,7 +28,7 @@ import {
   KOL_USER_INFO,
   FIND_EXIST_USER,
 } from "graphql/kol";
-import { client } from "lib/graphqlclient";
+import { getClient } from "lib/graphqlclient";
 import Dropzone from "react-dropzone-uploader";
 import { ProgressSpinner } from "primereact/progressspinner";
 
@@ -38,6 +38,7 @@ import { products } from "graphql/product";
 export default function KolEditor(props) {
   const { slug } = props;
   const router = useRouter();
+  const client = getClient()
 
   let emptyKol = {
     id: "",
