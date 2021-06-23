@@ -1,5 +1,6 @@
 import { client, getClient } from 'lib/graphqlclient';
 import { DELETE_ORDER_GQL, DELETE_ORDER_ITEM_GQL, GET_LIST_ORDER_GQL, GET_ORDER_BY_ORDNUM, UPDATE_ORDER_GQL, UPDATE_ORDER_ITEM_QTY } from 'graphql/order'
+import { checkErrorAuth } from 'utils/Auth';
 
 export const loadOrders = async (vars) => {
   let totalRow = 0
@@ -20,6 +21,7 @@ export const loadOrders = async (vars) => {
     }
   } catch (error) {
     console.log("Get list order error", error)
+    checkErrorAuth(error)
     return {
       data: [],
       totalRow
@@ -58,6 +60,7 @@ export const getOrderDetails = async ({ order_number }) => {
     }
   } catch (error) {
     console.log("Get order error", error)
+    checkErrorAuth(error)
     return {
       order: null,
       isSuccess: false
@@ -74,6 +77,7 @@ export const updateOrder = async (order) => {
     }
   } catch (error) {
     console.log("Update order error", error)
+    checkErrorAuth(error)
     return {
       isSuccess: false,
       error: error
@@ -90,6 +94,7 @@ export const updateOrderItem = async (oi) => {
       isSuccess: true
     }
   } catch (error) {
+    checkErrorAuth(error)
     console.log("Update order item error", error)
     return {
       strResult: "Failed to update order item",
@@ -102,12 +107,12 @@ export const updateOrderItem = async (oi) => {
 export const deleteOrderItem = async (id) => {
   try {
     await getClient().request(DELETE_ORDER_ITEM_GQL, { order_item_id: id })
-
     return {
       strResult: "Order item has been deleted",
       isSuccess: true
     }
   } catch (error) {
+    checkErrorAuth(error)
     console.log("Delete order item error", error)
     return {
       strResult: "Failed to delete order item",

@@ -10,7 +10,7 @@ import Cookies from "js-cookie";
 
 import useUser from "lib/useUser";
 
-import { client } from "lib/graphqlclient";
+import { getClient } from "lib/graphqlclient";
 import PuffLoader from "react-spinners/PuffLoader";
 
 export const AppTopbar = (props) => {
@@ -25,7 +25,7 @@ export const AppTopbar = (props) => {
   }, [loggedOut]);
 
   async function logout() {
-    await client.request(LOGOUT);
+    await getClient().request(LOGOUT);
 
     router.push("/login");
   }

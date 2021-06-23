@@ -3,12 +3,12 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { LOGIN_MUTATION } from "graphql/login";
-import { client } from "../lib/graphqlclient";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import useUser from "lib/useUser";
 import Cookies from "js-cookie";
 import PuffLoader from "react-spinners/PuffLoader";
+import { getClient } from "lib/graphqlclient";
 
 export default function Login() {
   //useUser({ redirectTo: "/", redirectIfFound: true });
@@ -16,6 +16,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const client = getClient()
 
   async function loginMutation(email, password) {
     try {

@@ -6,7 +6,7 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { client } from "lib/graphqlclient";
+import { getClient } from "lib/graphqlclient";
 import useSWR from "swr";
 import { products, DELETE_PRODUCT } from "../graphql/product";
 import Link from "next/link";
@@ -14,11 +14,10 @@ import useUser from "lib/useUser";
 import PuffLoader from "react-spinners/PuffLoader";
 
 export default function Products() {
+  const client = getClient()
   const { loggedOut, user } = useUser();
-
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [selectedSingle, setSelectedSingle] = useState(null);
-
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
   const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
