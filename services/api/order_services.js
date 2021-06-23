@@ -1,11 +1,11 @@
-import { client } from 'lib/graphqlclient';
+import { client, getClient } from 'lib/graphqlclient';
 import { DELETE_ORDER_GQL, DELETE_ORDER_ITEM_GQL, GET_LIST_ORDER_GQL, GET_ORDER_BY_ORDNUM, UPDATE_ORDER_GQL, UPDATE_ORDER_ITEM_QTY } from 'graphql/order'
 
 export const loadOrders = async (vars) => {
   let totalRow = 0
 
   try {
-    const data = await client.request(GET_LIST_ORDER_GQL, vars)
+    const data = await getClient().request(GET_LIST_ORDER_GQL, vars)
     console.log("Get list order done", data)
     const orders = data.listOrder
 
@@ -29,7 +29,7 @@ export const loadOrders = async (vars) => {
 
 export const deleteOrders = async ({ order_number }) => {
   try {
-    await client.request(DELETE_ORDER_GQL, {
+    await getClient().request(DELETE_ORDER_GQL, {
       order_number: order_number
     })
 
@@ -48,7 +48,7 @@ export const deleteOrders = async ({ order_number }) => {
 
 export const getOrderDetails = async ({ order_number }) => {
   try {
-    const data = await client.request(GET_ORDER_BY_ORDNUM, {
+    const data = await getClient().request(GET_ORDER_BY_ORDNUM, {
       order_number: order_number
     })
 
@@ -67,7 +67,7 @@ export const getOrderDetails = async ({ order_number }) => {
 
 export const updateOrder = async (order) => {
   try {
-    const data = await client.request(UPDATE_ORDER_GQL, order)
+    const data = await getClient().request(UPDATE_ORDER_GQL, order)
 
     return {
       isSuccess: data.updateOrder
@@ -83,7 +83,7 @@ export const updateOrder = async (order) => {
 
 export const updateOrderItem = async (oi) => {
   try {
-    await client.request(UPDATE_ORDER_ITEM_QTY, oi)
+    await getClient().request(UPDATE_ORDER_ITEM_QTY, oi)
 
     return {
       strResult: "Order item has been updated",
@@ -101,7 +101,7 @@ export const updateOrderItem = async (oi) => {
 
 export const deleteOrderItem = async (id) => {
   try {
-    await client.request(DELETE_ORDER_ITEM_GQL, { order_item_id: id })
+    await getClient().request(DELETE_ORDER_ITEM_GQL, { order_item_id: id })
 
     return {
       strResult: "Order item has been deleted",
