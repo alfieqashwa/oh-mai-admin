@@ -7,8 +7,8 @@ import useSWR, { SWRConfig } from "swr";
 import { store } from '../data/state/store';
 import { NextPageContext } from 'next';
 import { Provider } from 'react-redux';
-import Layout from 'components/layout'
 import withRedux from "next-redux-wrapper";
+import LayoutSidebar from "layouts/layout_sidebar";
 
 function MyApp({ Component, pageProps }) {
   // const router = useRouter();
@@ -22,6 +22,8 @@ function MyApp({ Component, pageProps }) {
       Router.push('/login')
     }
   }, []);
+
+  const Layout = Component.Layout || LayoutSidebar
 
   return (
     <SWRConfig

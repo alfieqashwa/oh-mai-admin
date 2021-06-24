@@ -14,6 +14,7 @@ import { Pagination } from 'components/widgets/pagination'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { BASE_URL } from 'etc/constants'
+import { checkLogin } from 'utils/Auth'
 
 export default function OrdersPage() {
   const [totalPage, setTotalPage] = useState(0)
@@ -31,6 +32,10 @@ export default function OrdersPage() {
       [id]: value
     }))
   }
+
+  useEffect(() => {
+    checkLogin()
+  }, [])
 
   useEffect(() => {
     // search for keyword more than 3 chars, and serch all if keyword is empty chars is 0

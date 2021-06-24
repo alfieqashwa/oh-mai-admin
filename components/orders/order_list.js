@@ -10,6 +10,7 @@ import Confirm from 'components/widgets/dialog/Confirm'
 import { deleteOrders } from 'services/api/order_services'
 import { parseAddress } from 'utils/OrderUtils'
 import OrderLookup from 'components/widgets/dialog/OrderLookup'
+import Link from 'next/link'
 
 export function OrderList({ filter, page }) {
   console.log("/components/widget/pagination:filter", filter)
@@ -158,9 +159,9 @@ export function OrderList({ filter, page }) {
               </td>
               <td className="hidden p-4 text-sm md:table-cell text-N0 whitespace-nowrap">{moneyFormat.format(o.total_price)}</td>
               <td className="hidden content-center align-middle p-4 whitespace-nowrap flex flex-row content-between md:flex">
-                <a href="#" className="transition duration-200 ease-in-out text-N0 hover:text-opacity-75">
-                  <HiOutlinePencilAlt className="w-5 h-5" />
-                </a>
+                <Link href={"/orders/details?num=" + o.order_number} className="">
+                  <HiOutlinePencilAlt className="w-5 h-5 text-N0 transition duration-200 ease-in-out text-N0 hover:text-opacity-75 mr-4 cursor-pointer" />
+                </Link>
                 <a href="#" className="transition duration-200 ease-in-out text-N0 hover:text-opacity-75" onClick={showDeleteData.bind(null, o.order_number)}>
                   <BiTrash className="w-5 h-5" />
                 </a>

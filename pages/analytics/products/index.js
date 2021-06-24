@@ -1,10 +1,11 @@
-import React, { useState, createContext, Fragment } from 'react';
+import React, { useState, createContext, Fragment, useEffect } from 'react';
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi';
 
 import { Header } from 'components/header';
 import { DateRangeComparison, ShowProductSelect, ChartView, PaginationProducts, SwitchOnOff, ProductPerformanceCard } from 'components/analytics/products'
+import { checkLogin } from 'utils/Auth';
 
 export const DateRangeCtx = createContext(null)
 
@@ -20,6 +21,11 @@ export default function Products() {
     startPrevious: [startPreviousDate, setStartPreviousDate],
     endPrevious: [endPreviousDate, setEndPreviousDate]
   }
+
+  useEffect(() => {
+    console.log('Check login')
+    checkLogin()
+  }, [])
 
   return (
     <div className="pb-4">

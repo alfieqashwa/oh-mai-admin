@@ -1,6 +1,13 @@
 import { Header } from 'components/header'
+import { useEffect } from 'react'
+import { checkLogin } from 'utils/Auth'
 
 export default function Promo() {
+
+  useEffect(() => {
+    checkLogin()
+  }, [])
+
   return (
     <>
       <Header title="Analytics - Promo" />

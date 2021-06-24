@@ -1,8 +1,15 @@
 import { Header } from 'components/header';
 import { GlassHeader } from 'components/glassHeader'
 import { Title, Media, ProductStatus, ProductVariants, ProductType, Inventory, Price, Shipping } from 'components/products/addProduct';
+import { useEffect } from 'react';
+import { checkLogin } from 'utils/Auth';
 
 function AddProduct(props) {
+
+  useEffect(() => {
+    checkLogin()
+  }, [])
+
   return (
     <>
       <Header title="Products - Add Product" />
