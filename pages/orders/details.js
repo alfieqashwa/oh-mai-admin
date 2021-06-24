@@ -25,6 +25,7 @@ import { setHours } from 'date-fns'
 import { setMinutes } from 'date-fns'
 import { toReadableDate, toReadableDateTime } from 'utils/OrderUtils'
 import { DateTime } from 'luxon'
+import { useRouter } from 'next/router'
 require('react-datepicker/dist/react-datepicker.css')
 
 const moneyFormat = new Intl.NumberFormat('en-US', {
@@ -33,6 +34,7 @@ const moneyFormat = new Intl.NumberFormat('en-US', {
 });
 
 export default function OrderDetail(props) {
+  const route = useRouter()
   const [totalPage, setTotalPage] = useState(0)
   const [filter, setFilter] = useState({ max_row: 3, keyword: "", page: 1 })
   const dispatch = useDispatch()
@@ -69,8 +71,8 @@ export default function OrderDetail(props) {
     }))
   }
 
-  const loadData = async () => {
-    const data = await getOrderDetails({ order_number: "ORD8L4OERJ98" })
+  const loadData = async (num) => {
+    const data = await getOrderDetails({ order_number: num})
     console.log("ldo", data)
     if (data.isSuccess) {
       await setOrder(data.order)
@@ -159,7 +161,7 @@ export default function OrderDetail(props) {
     const result = await updateOrderItem(oi)
 
     if (result.isSuccess) {
-      loadData()
+      loadData(route.query.num)
     }
     console.log("result", result)
   }
@@ -169,7 +171,7 @@ export default function OrderDetail(props) {
     const result = await deleteOrderItem(id)
 
     if (result.isSuccess) {
-      loadData()
+      loadData(route.query.num)
     }
     console.log("result", result)
   }
@@ -219,8 +221,9 @@ export default function OrderDetail(props) {
   }
 
   useEffect(() => {
-    loadData()
     console.log("// orderdate", orderDate)
+    console.log("route.query", route.query.num)
+    loadData(route.query.num)
   }, [])
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import { parseAddress } from 'utils/OrderUtils';
 import Button from './Button';
 import Dialog from './Dialog';
 import moment from 'moment'
+import router from 'next/router';
 // interface Props {
 //   title: string;
 //   children: React.ReactNode;
@@ -11,6 +12,7 @@ import moment from 'moment'
 // }
 export default function OrderLookup(props) {
   const { open, onClose, order, children, onConfirm } = props;
+
   if (!open) {
     return <></>;
   }
@@ -19,6 +21,11 @@ export default function OrderLookup(props) {
     style: 'currency',
     currency: 'TWD',
   });
+
+  const edit = (number) => {
+    onClose()
+    router.push('/orders/details?num=' + number)
+  }
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -59,7 +66,7 @@ export default function OrderLookup(props) {
       <div className="flex justify-end">
         <div className="p-1">
           <Button
-            onClick={() => onClose()}
+            onClick={edit.bind(this, order.order_number)}
             className="text-xs text-N0 bg-secondary hover:bg-secondary-light"
           >
             EDIT ORDER

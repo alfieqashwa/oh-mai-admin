@@ -1,12 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 
 import { Header } from 'components/header'
 import { DateRangeSelect, TableOrders, Pagination, ChartView, OrderPerformanceCard } from 'components/analytics/customer'
+import { checkLogin } from 'utils/Auth'
 
 export default function Customer() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
+
+  useEffect(() => {
+    checkLogin()
+  }, [])
+
   return (
     <div className="pb-4">
       <Header title="Analytics - Customer" />

@@ -7,13 +7,15 @@ import { SiGoogleanalytics } from 'react-icons/si'
 
 import { Header } from 'components/header'
 import { ChartView, DateRangeSelect, PerformanceBorder, PerformanceCard, TableSummary } from 'components/analytics/summary';
+import { checkLogin } from 'utils/Auth';
 
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
 
   useEffect(() => {
-    
+    console.log('Check login')
+    checkLogin()
   }, [])
 
   return (

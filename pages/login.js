@@ -7,7 +7,7 @@ import PuffLoader from "react-spinners/PuffLoader";
 import Button from "components/widgets/dialog/Button";
 import { login } from "services/api/user";
 import { isTokenExist } from "utils/Auth";
-
+import LayoutNoSidebar from "layouts/layout_no_sidebar";
 export default function Login() {
   //useUser({ redirectTo: "/", redirectIfFound: true });
   const [wrongField, setWrongField] = useState(false);
@@ -53,6 +53,8 @@ export default function Login() {
     if (isTokenExist()) {
       setLoading(true)
       Router.push("/analytics/summary");
+    } else {
+      // Router.reload(window.location.pathname)
     }
   }, [])
 
@@ -100,3 +102,5 @@ export default function Login() {
     </div>
   );
 }
+
+Login.Layout = LayoutNoSidebar

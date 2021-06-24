@@ -8,8 +8,15 @@ import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { GlassDefault } from 'components/glassDefault'
 import { Header } from 'components/header'
 import { Pagination, ProductListTable, InventoryMobileView } from 'components/products/inventory'
+import { useEffect } from 'react'
+import { checkLogin } from 'utils/Auth'
 
 export default function Inventory() {
+  
+  useEffect(() => {
+    checkLogin()
+  }, [])
+
   return (
     <>
       <Header title="Products - Inventory" />

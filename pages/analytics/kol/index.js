@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useEffect } from 'react'
 import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -7,10 +7,16 @@ import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 
 import { Header } from 'components/header'
 import { SwitchOnOff, PaginationKol, DateRangeSelect, KolPerformanceCard, ChartView } from 'components/analytics/kol'
+import { checkLogin } from 'utils/Auth'
 
 export default function Kol() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
+
+  useEffect(() => {
+    checkLogin()
+  }, [])
+
   return (
     <div className="pb-4">
       <Header title="Analytics - KOL" />

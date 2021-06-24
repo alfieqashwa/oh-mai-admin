@@ -10,7 +10,7 @@ export const checkErrorAuth = (error) => {
 }
 
 export const checkLogin = () => {
-  if (isTokenExist()) {
+  if (!isTokenExist()) {
     Router.push('/login')
   }
 }
