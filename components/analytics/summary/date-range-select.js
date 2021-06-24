@@ -14,7 +14,7 @@ export function DateRangeSelect({
 					{({ open }) => (
 						<>
 							<div className="relative mt-1">
-								<Listbox.Button className="relative z-20 w-full py-2 pl-3 pr-10 text-left rounded-lg shadow-md cursor-default bg-N200 bg-opacity-20 text-N0 focus:outline-none focus:ring-2 focus:ring-opacity-75 focus:ring-P900 focus:ring-offset-P900 focus-visible:ring-offset-2 focus:border-P900 sm:text-sm">
+								<Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left rounded-lg shadow-md cursor-default bg-N200 bg-opacity-20 text-N0 focus:outline-none focus:ring-2 focus:ring-opacity-75 focus:ring-P900 focus:ring-offset-P900 focus-visible:ring-offset-2 focus:border-P900 sm:text-sm">
 									<span className="block truncate">{selectedCurrent.name}</span>
 									<span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
 										<ChevronDownIcon
@@ -32,14 +32,14 @@ export function DateRangeSelect({
 								>
 									<Listbox.Options
 										static
-										className="absolute w-full py-1 mt-1 overflow-auto text-base rounded-md shadow-lg text-N0 bg-N600 max-h-60 ring-1 ring-P900 ring-opacity-5 focus:outline-none sm:text-sm"
+										className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base rounded-md shadow-lg text-N0 bg-N600 max-h-60 ring-1 ring-P900 ring-opacity-5 focus:outline-none sm:text-sm"
 									>
 										{dates.map((date, i) => (
 											<Listbox.Option
 												key={i}
 												className={({ active }) =>
 													`${active
-														? "bg-P700"
+														? "bg-P900"
 														: ""
 													}
 										cursor-default select-none relative py-2 pl-10 pr-4`
@@ -83,7 +83,7 @@ export function DateRangeSelect({
 					{({ open }) => (
 						<>
 							<div className="relative mt-1">
-								<Listbox.Button className="relative z-20 w-full py-2 pl-3 pr-10 text-left rounded-lg shadow-md cursor-default bg-N200 bg-opacity-20 text-N0 focus:outline-none focus:ring-2 focus:ring-opacity-75 focus:ring-P900 focus:ring-offset-P900 focus-visible:ring-offset-2 focus:border-P900 sm:text-sm">
+								<Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left rounded-lg shadow-md cursor-default bg-N200 bg-opacity-20 text-N0 focus:outline-none focus:ring-2 focus:ring-opacity-75 focus:ring-P900 focus:ring-offset-P900 focus-visible:ring-offset-2 focus:border-P900 sm:text-sm">
 									<span className="block truncate">{selectedPrevious.name}</span>
 									<span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
 										<ChevronDownIcon
@@ -101,7 +101,7 @@ export function DateRangeSelect({
 								>
 									<Listbox.Options
 										static
-										className="absolute w-full py-1 mt-1 overflow-auto text-base rounded-md shadow-lg text-N0 bg-N600 max-h-60 ring-1 ring-P900 ring-opacity-5 focus:outline-none sm:text-sm"
+										className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base rounded-md shadow-lg text-N0 bg-N600 max-h-60 ring-1 ring-P900 ring-opacity-5 focus:outline-none sm:text-sm"
 									>
 										{dates.map((date, i) => (
 											<Listbox.Option
@@ -149,7 +149,7 @@ export function DateRangeSelect({
 		</div>
 	)
 }
-
+// fix tab space
 const dates = [
 	{ name: "Current Year (Jan 1 - Dec 31, 2021)" },
 	{ name: "Previous Year (Jan 1 - Dec 31, 2020)" }
