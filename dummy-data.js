@@ -79,3 +79,10 @@ export const topKol = [
     ]
   },
 ]
+
+export const customers = [
+  { id: 1, sn: '1', customer: 'Fan Leng Leng', mostRecentOrder: '15/06/21 18:23:35', orders: 42, itemsSold: 100, netSales: 1000, status: false },
+  { id: 2, sn: '2', customer: 'Hen You Qian', mostRecentOrder: '15/06/21 18:23:35', orders: 24, itemsSold: 24, netSales: 400, status: false },
+  { id: 3, sn: '3', customer: 'Wu Neng', mostRecentOrder: '15/06/21 18:23:35', orders: 1, itemsSold: 2, netSales: 200, status: false },
+  { id: 4, sn: '4', customer: 'Gao Mat Guai', mostRecentOrder: '15/06/21 18:23:35', orders: 1, itemsSold: 2, netSales: 200, status: false },
+]
