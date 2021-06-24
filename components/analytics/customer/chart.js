@@ -190,7 +190,7 @@ function ChartBar() {
 					tickCount={8}
 					tickFormatter={(number) => `$${number.toFixed(2)}`}
 				/>
-				<Bar dataKey="value" fill="#8A3EFF"
+				<Bar dataKey="value" fill="#8A3EFF" 
 					shape={<TriangleBar />} />
 			</BarChart>
 		</ResponsiveContainer>
