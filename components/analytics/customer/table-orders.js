@@ -57,9 +57,9 @@ export function TableOrders() {
 									<Menu.Items
 										static
 										className={`
-                  ${!open ? "motion-safe:animate-bounce transition duration-700 ease-in-out" : ""}
-                  absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
-                  `}
+											${!open ? "motion-safe:animate-bounce transition duration-700 ease-in-out" : ""}
+											absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
+											`}
 									>
 										<Menu.Item
 											as="button"

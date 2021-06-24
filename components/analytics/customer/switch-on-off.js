@@ -18,7 +18,7 @@ export function SwitchOnOff(props) {
       <span
         aria-hidden="true"
         className={`${enabled ? "translate-x-11" : "translate-x-0"}
-            pointer-events-none flex items-center justify-center h-[24px] w-[24px] rounded-full bg-N0 shadow-lg transform ring-0 transition ease-in-out duration-500`}
+          pointer-events-none flex items-center justify-center h-[24px] w-[24px] rounded-full bg-N0 shadow-lg transform ring-0 transition ease-in-out duration-500`}
       >
         {enabled
           ? <CheckIcon className="w-5 h-5 text-G400" />

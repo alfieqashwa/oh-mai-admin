@@ -42,7 +42,7 @@ export function DateRangeSelect({
 														? "bg-P700"
 														: ""
 													}
-										cursor-default select-none relative py-2 pl-10 pr-4`
+cursor-default select-none relative py-2 pl-10 pr-4`
 												}
 												value={date}
 											>
@@ -58,7 +58,7 @@ export function DateRangeSelect({
 															<span
 																className={`${active ? "text-N0" : ""
 																	}
-													absolute inset-y-0 left-0 flex items-center pl-3`}
+absolute inset-y-0 left-0 flex items-center pl-3`}
 															>
 																<CheckIcon
 																	className="w-5 h-5"
@@ -111,7 +111,7 @@ export function DateRangeSelect({
 														? "bg-P700"
 														: ""
 													}
-										cursor-default select-none relative py-2 pl-10 pr-4`
+cursor-default select-none relative py-2 pl-10 pr-4`
 												}
 												value={date}
 											>
@@ -127,7 +127,7 @@ export function DateRangeSelect({
 															<span
 																className={`${active ? "text-N0" : ""
 																	}
-													absolute inset-y-0 left-0 flex items-center pl-3`}
+absolute inset-y-0 left-0 flex items-center pl-3`}
 															>
 																<CheckIcon
 																	className="w-5 h-5 text-N0"
