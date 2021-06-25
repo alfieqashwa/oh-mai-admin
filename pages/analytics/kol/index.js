@@ -1,4 +1,4 @@
-import { useState, Fragment, useEffect } from 'react'
+import React, { useState, Fragment, useEffect } from 'react'
 import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -39,7 +39,7 @@ export default function Kol() {
               <Menu>
                 {({ open }) => (
                   <>
-                    <Menu.Button className={`absolute bg-transparent top-4 right-3 focus:outline-none ${open ? "text-P400" : "text-N0"}`}>
+                    <Menu.Button className={`absolute bg-transparent top-4 right-3 focus:outline-none ${open ? 'text-P400' : 'text-N0'}`}>
                       <BsThreeDotsVertical className="w-6 h-6" />
                     </Menu.Button>
                     <Transition
@@ -105,7 +105,7 @@ export default function Kol() {
               <Menu as="div" className="relative">
                 {({ open }) => (
                   <>
-                    <Menu.Button className={`bg-transparent focus:outline-none ${open ? "text-P400" : ""}`}>
+                    <Menu.Button className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''}`}>
                       <BsThreeDotsVertical className="w-6 h-6" />
                     </Menu.Button>
                     <Transition
@@ -121,7 +121,7 @@ export default function Kol() {
                       <Menu.Items
                         static
                         className={`
-                  ${!open ? "motion-safe:animate-bounce transition duration-700 ease-in-out" : ""}
+                  ${!open ? 'motion-safe:animate-bounce transition duration-700 ease-in-out' : ''}
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                   `}
                       >
@@ -196,19 +196,19 @@ export default function Kol() {
 }
 
 const leaderBoardCards = [
-  { url: '/analytics/kol/top-sales-from-kol', category: "top sales from KOL", product: "charlene yue", totalOrdersValue: "135", netSalesValue: "10,000.00" },
-  { url: '/analytics/kol/most-orders-from-kol', category: "most orders from KOL", product: "ruden", totalOrdersValue: "249", netSalesValue: "7,398.15" },
-  { url: '/analytics/kol/most-items-sold-from-kol', category: "most items sold from KOL", product: "charlene yue", totalOrdersValue: "149", netSalesValue: "10,000.00" }
+  { url: '/analytics/kol/top-sales-from-kol', category: 'top sales from KOL', product: 'charlene yue', totalOrdersValue: '135', netSalesValue: '10,000.00' },
+  { url: '/analytics/kol/most-orders-from-kol', category: 'most orders from KOL', product: 'ruden', totalOrdersValue: '249', netSalesValue: '7,398.15' },
+  { url: '/analytics/kol/most-items-sold-from-kol', category: 'most items sold from KOL', product: 'charlene yue', totalOrdersValue: '149', netSalesValue: '10,000.00' }
 ]
 
 const tableBody = [
   { id: 1, sn: '1', kol: 'charlene yue', itemsSold: 100, netSales: 1000.00, orders: 10, totalCommissions: 120, status: true },
   { id: 2, sn: '2', kol: 'lice wang', itemsSold: 24, netSales: 400.00, orders: 10, totalCommissions: 40, status: false },
   { id: 3, sn: '3', kol: 'sky game', itemsSold: 2, netSales: 200.00, orders: 1, totalCommissions: 30, status: false },
-  { id: 4, sn: '4', kol: 'molly', itemsSold: 1, netSales: 10.00, orders: 1, totalCommissions: 0.05, status: false },
+  { id: 4, sn: '4', kol: 'molly', itemsSold: 1, netSales: 10.00, orders: 1, totalCommissions: 0.05, status: false }
 ]
 
 const dates = [
-  { name: "Current Year (Jan 1 - Dec 31, 2021)" },
-  { name: "Previous Year (Jan 1 - Dec 31, 2020)" }
+  { name: 'Current Year (Jan 1 - Dec 31, 2021)' },
+  { name: 'Previous Year (Jan 1 - Dec 31, 2020)' }
 ]

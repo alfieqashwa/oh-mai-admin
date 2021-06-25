@@ -1,9 +1,8 @@
 import { Header } from 'components/header'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { checkLogin } from 'utils/Auth'
 
 export default function Attributes() {
-
   useEffect(() => {
     checkLogin()
   }, [])

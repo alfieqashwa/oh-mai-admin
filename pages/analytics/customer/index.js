@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-
 import { Header } from 'components/header'
 import { DateRangeSelect, TableOrders, Pagination, ChartView, OrderPerformanceCard } from 'components/analytics/customer'
 import { checkLogin } from 'utils/Auth'
@@ -53,6 +52,6 @@ export default function Customer() {
 }
 
 const dates = [
-  { name: "Current Year (Jan 1 - Dec 31, 2021)" },
-  { name: "Previous Year (Jan 1 - Dec 31, 2020)" }
+  { name: 'Current Year (Jan 1 - Dec 31, 2021)' },
+  { name: 'Previous Year (Jan 1 - Dec 31, 2020)' }
 ]
