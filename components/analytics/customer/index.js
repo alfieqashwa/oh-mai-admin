@@ -5,9 +5,9 @@ import { TableOrders } from './table-orders'
 import { Pagination } from './pagination'
 
 export {
-	DateRangeSelect,
-	OrderPerformanceCard,
-	ChartView,
-	TableOrders,
-	Pagination
-};
+  DateRangeSelect,
+  OrderPerformanceCard,
+  ChartView,
+  TableOrders,
+  Pagination
+}

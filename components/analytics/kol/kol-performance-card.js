@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { RadioGroup } from '@headlessui/react';
-import { FiArrowDownRight, FiArrowRight, FiArrowUpRight } from 'react-icons/fi';
+import React, { useState } from 'react'
+import { RadioGroup } from '@headlessui/react'
+import { FiArrowDownRight, FiArrowRight, FiArrowUpRight } from 'react-icons/fi'
 
 export const KolPerformanceCard = () => {
   const [selected, setSelected] = useState(performanceCards[0])
@@ -14,22 +14,22 @@ export const KolPerformanceCard = () => {
             value={c}
             className={({ active, checked }) =>
               `${active
-                ? "ring-1 ring-offset-P900"
-                : ""
+                ? 'ring-1 ring-offset-P900'
+                : ''
               }
               ${checked
-                ? "bg-N0 bg-opacity-80 border-t-4 border-P700"
-                : "bg-[#E0E0F24D] bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]"
+                ? 'bg-N0 bg-opacity-80 border-t-4 border-P700'
+                : 'bg-[#E0E0F24D] bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]'
               }
               relative px-5 cursor-pointer`
             }
           >
             {({ active, checked }) => (
               <>
-                <h5 className={`mt-5 text-opacity-50 w250 ${checked ? "text-N800" : "text-N0"}`}>{c.category}</h5>
+                <h5 className={`mt-5 text-opacity-50 w250 ${checked ? 'text-N800' : 'text-N0'}`}>{c.category}</h5>
                 <div className="mt-3">
-                  <h3 className={`w700 ${checked ? "text-N800" : "text-N0"}`}>
-                    {c.category === "net sales"
+                  <h3 className={`w700 ${checked ? 'text-N800' : 'text-N0'}`}>
+                    {c.category === 'net sales'
                       ? <>$NT{c.amount.toFixed(2)}</>
                       : <>${c.amount.toFixed(2)}</>
                     }
@@ -37,20 +37,16 @@ export const KolPerformanceCard = () => {
                   <div className="flex items-center space-x-1">
                     {/* temporary logic */}
                     {c.percentage === '-'
-                      ?
-                      <>
-                        <FiArrowRight className={`w-5 h-5 ${checked ? "text-N800" : "text-N0"}`} />
-                        <h5 className={`w250 ${checked ? "text-N800" : "text-N0"}`}>{c.percentage}</h5>
+                      ? <>
+                        <FiArrowRight className={`w-5 h-5 ${checked ? 'text-N800' : 'text-N0'}`} />
+                        <h5 className={`w250 ${checked ? 'text-N800' : 'text-N0'}`}>{c.percentage}</h5>
                       </>
-                      :
-                      c.category === 'orders'
-                        ?
-                        <>
+                      : c.category === 'orders'
+                        ? <>
                           <FiArrowDownRight className="w-5 h-5 text-R600" />
                           <h5 className="w250 text-R600">{c.percentage}%</h5>
                         </>
-                        :
-                        <>
+                        : <>
                           <FiArrowUpRight className="w-5 h-5 text-G400" />
                           <h5 className="w250 text-G400">{c.percentage}%</h5>
                         </>
@@ -58,8 +54,8 @@ export const KolPerformanceCard = () => {
                   </div>
                 </div>
                 <div className="my-4">
-                  <p className={`text-opacity-50 w400 ${checked ? "text-N800" : "text-N0"}`}>Previous Year</p>
-                  <p className={`w400 ${checked ? "text-N800" : "text-N0"}`}>${c.previousYear.toFixed(2)}</p>
+                  <p className={`text-opacity-50 w400 ${checked ? 'text-N800' : 'text-N0'}`}>Previous Year</p>
+                  <p className={`w400 ${checked ? 'text-N800' : 'text-N0'}`}>${c.previousYear.toFixed(2)}</p>
                 </div>
               </>
             )}
@@ -70,8 +66,8 @@ export const KolPerformanceCard = () => {
 }
 
 const performanceCards = [
-  { category: "commissions", amount: 500, percentage: 200, previousYear: 250 },
-  { category: "successful orders", amount: 500, percentage: 200, previousYear: 250 },
-  { category: "gross sales", amount: 1000, percentage: 200, previousYear: 500 },
-  { category: "net sales", amount: 800, percentage: 200, previousYear: 400 },
+  { category: 'commissions', amount: 500, percentage: 200, previousYear: 250 },
+  { category: 'successful orders', amount: 500, percentage: 200, previousYear: 250 },
+  { category: 'gross sales', amount: 1000, percentage: 200, previousYear: 500 },
+  { category: 'net sales', amount: 800, percentage: 200, previousYear: 400 }
 ]

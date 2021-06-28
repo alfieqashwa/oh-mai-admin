@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import { RadioGroup, Menu, Transition } from '@headlessui/react'
 import { PlusCircleIcon } from '@heroicons/react/solid'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -17,7 +17,7 @@ export const PerformanceBorder = () => {
       <Menu as="div" className="relative">
         {({ open }) => (
           <>
-            <Menu.Button className={`bg-transparent focus:outline-none ${open ? "text-P400" : "text-N0"}`}>
+            <Menu.Button className={`bg-transparent focus:outline-none ${open ? 'text-P400' : 'text-N0'}`}>
               <BsThreeDotsVertical className="w-6 h-6" />
             </Menu.Button>
             <Transition
@@ -33,7 +33,7 @@ export const PerformanceBorder = () => {
               <Menu.Items
                 static
                 className={`
-                  ${!open ? "motion-safe:animate-bounce transition duration-200 ease-in-out" : ""}
+                  ${!open ? 'motion-safe:animate-bounce transition duration-200 ease-in-out' : ''}
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                 `}
               >
@@ -78,38 +78,34 @@ export const PerformanceCard = () => {
             value={c}
             className={({ active, checked }) =>
               `${active
-                ? "ring-1 ring-offset-P900"
-                : ""
+                ? 'ring-1 ring-offset-P900'
+                : ''
               }
               ${checked
-                ? "bg-N0 bg-opacity-80 border-t-4 border-P700"
-                : "bg-[#E0E0F24D] bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]"
+                ? 'bg-N0 bg-opacity-80 border-t-4 border-P700'
+                : 'bg-[#E0E0F24D] bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]'
               }
               relative px-5 cursor-pointer`
             }
           >
             {({ active, checked }) => (
               <>
-                <h5 className={`mt-5 text-opacity-50 w250 ${checked ? "text-N800" : "text-N0"}`}>{c.category}</h5>
+                <h5 className={`mt-5 text-opacity-50 w250 ${checked ? 'text-N800' : 'text-N0'}`}>{c.category}</h5>
                 <div className="mt-3">
-                  <h3 className={`w700 ${checked ? "text-N800" : "text-N0"}`}>${c.amount}</h3>
+                  <h3 className={`w700 ${checked ? 'text-N800' : 'text-N0'}`}>${c.amount}</h3>
                   <div className="flex items-center space-x-1">
                     {/* temporary logic */}
                     {c.percentage === '-'
-                      ?
-                      <>
-                        <FiArrowRight className={`w-5 h-5 ${checked ? "text-N800" : "text-N0"}`} />
-                        <h5 className={`w250 ${checked ? "text-N800" : "text-N0"}`}>{c.percentage}</h5>
+                      ? <>
+                        <FiArrowRight className={`w-5 h-5 ${checked ? 'text-N800' : 'text-N0'}`} />
+                        <h5 className={`w250 ${checked ? 'text-N800' : 'text-N0'}`}>{c.percentage}</h5>
                       </>
-                      :
-                      c.category === 'orders'
-                        ?
-                        <>
+                      : c.category === 'orders'
+                        ? <>
                           <FiArrowDownRight className="w-5 h-5 text-R600" />
                           <h5 className="w250 text-R600">{c.percentage}%</h5>
                         </>
-                        :
-                        <>
+                        : <>
                           <FiArrowUpRight className="w-5 h-5 text-G400" />
                           <h5 className="w250 text-G400">{c.percentage}%</h5>
                         </>
@@ -117,8 +113,8 @@ export const PerformanceCard = () => {
                   </div>
                 </div>
                 <div className="my-4">
-                  <p className={`text-opacity-50 w400 ${checked ? "text-N800" : "text-N0"}`}>Previous Year</p>
-                  <p className={`w400 ${checked ? "text-N800" : "text-N0"}`}>${c.previousYear}</p>
+                  <p className={`text-opacity-50 w400 ${checked ? 'text-N800' : 'text-N0'}`}>Previous Year</p>
+                  <p className={`w400 ${checked ? 'text-N800' : 'text-N0'}`}>${c.previousYear}</p>
                 </div>
               </>
             )}
@@ -129,10 +125,10 @@ export const PerformanceCard = () => {
 }
 
 const performanceCards = [
-  { category: "gross sales", amount: "500.00", percentage: "50", previousYear: "250.00" },
-  { category: "net sales", amount: "500.00", percentage: "50", previousYear: "250.00" },
-  { category: "orders", amount: "100", percentage: "50", previousYear: "200" },
-  { category: "average order value", amount: "5.00", percentage: "400", previousYear: "250.00" },
-  { category: "refunds", amount: "0.00", percentage: "-", previousYear: "50.00" },
-  { category: "gross profit", amount: "500.00", percentage: "50", previousYear: "150.00" },
+  { category: 'gross sales', amount: '500.00', percentage: '50', previousYear: '250.00' },
+  { category: 'net sales', amount: '500.00', percentage: '50', previousYear: '250.00' },
+  { category: 'orders', amount: '100', percentage: '50', previousYear: '200' },
+  { category: 'average order value', amount: '5.00', percentage: '400', previousYear: '250.00' },
+  { category: 'refunds', amount: '0.00', percentage: '-', previousYear: '50.00' },
+  { category: 'gross profit', amount: '500.00', percentage: '50', previousYear: '150.00' }
 ]

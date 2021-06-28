@@ -1,9 +1,8 @@
-import { Fragment } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { XIcon } from '@heroicons/react/outline'
-import { ChevronRightIcon } from '@heroicons/react/outline'
+import React, { Fragment } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
+import { XIcon, ChevronRightIcon } from '@heroicons/react/outline'
 
-import { GlassDiv } from "components/glassdiv";
+import { GlassDiv } from 'components/glassdiv'
 
 export function FilterSidebar({ isOpen, setIsOpen }) {
   return (
@@ -86,5 +85,5 @@ const filterContent = [
   { id: 1, name: 'date & time' },
   { id: 2, name: 'status' },
   { id: 3, name: 'items sold' },
-  { id: 4, name: 'net sales' },
+  { id: 4, name: 'net sales' }
 ]

@@ -4,8 +4,8 @@ import { ChartView } from './chart'
 import { TableOrders } from './table-orders'
 
 export {
-	DateRangeSelect,
-	OrderPerformanceCard,
-	ChartView,
-	TableOrders
-};
+  DateRangeSelect,
+  OrderPerformanceCard,
+  ChartView,
+  TableOrders
+}

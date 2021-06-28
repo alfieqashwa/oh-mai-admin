@@ -1,12 +1,13 @@
-import { useState, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { FiSearch } from 'react-icons/fi'
+import { FiSearch, FiDownloadCloud } from 'react-icons/fi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import { FiDownloadCloud } from 'react-icons/fi'
 
 // Table on Summary Main Page
 export function TableSummary() {
+  // eslint-disable-next-line no-unused-vars
   const [_isOpen, _setIsOpen] = useState(false)
+
   return (
     <div className="my-10">
       <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
@@ -30,7 +31,7 @@ export function TableSummary() {
           <Menu as="div" className="relative">
             {({ open }) => (
               <>
-                <Menu.Button className={`bg-transparent focus:outline-none ${open ? "text-P400" : ""}`}>
+                <Menu.Button className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''}`}>
                   <BsThreeDotsVertical className="w-6 h-6" />
                 </Menu.Button>
                 <Transition
@@ -46,7 +47,7 @@ export function TableSummary() {
                   <Menu.Items
                     static
                     className={`
-                  ${!open ? "motion-safe:animate-bounce transition duration-700 ease-in-out" : ""}
+                  ${!open ? 'motion-safe:animate-bounce transition duration-700 ease-in-out' : ''}
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                   `}
                   >
@@ -113,7 +114,7 @@ const tableBody = [
   { id: 3, date: '03/01/2021', orders: 3, grossSales: 50.00, taxes: 0.00, returns: 0.00, shipping: 0.00, totalSales: 50.00 },
   { id: 4, date: '04/01/2021', orders: 3, grossSales: 50.00, taxes: 0.00, returns: 0.00, shipping: 0.00, totalSales: 50.00 },
   { id: 5, date: '05/01/2021', orders: 3, grossSales: 50.00, taxes: 0.00, returns: 0.00, shipping: 0.00, totalSales: 50.00 },
-  { id: 6, date: '06/01/2021', orders: 3, grossSales: 50.00, taxes: 0.00, returns: 0.00, shipping: 0.00, totalSales: 50.00 },
+  { id: 6, date: '06/01/2021', orders: 3, grossSales: 50.00, taxes: 0.00, returns: 0.00, shipping: 0.00, totalSales: 50.00 }
 ]
 
 const initialValue = 0

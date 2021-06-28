@@ -1,15 +1,15 @@
-import { Fragment, useState, useContext } from 'react'
+import React, { Fragment, useState, useContext } from 'react'
 import { Popover, RadioGroup, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon } from '@heroicons/react/solid'
 import { format } from 'date-fns'
 
-import { Presets } from './presets';
-import { Custom } from './custom';
+import { Presets } from './presets'
+import { Custom } from './custom'
 import { DateRangeCtx } from 'pages/analytics/products'
 
 export function DateRangeComparison() {
   const { startCurrent, endCurrent, startPrevious, endPrevious } = useContext(DateRangeCtx)
-  const [plan, setPlan] = useState("presets")
+  const [plan, setPlan] = useState('presets')
 
   return (
     <Popover as="div" className="w-1/2">
@@ -21,18 +21,19 @@ export function DateRangeComparison() {
               {startCurrent?.[0] || endCurrent?.[0] || startPrevious?.[0] || endPrevious?.[0]
                 ? (
                   <>
-                    <h4 className={`w250 hover:text-G400 transition duration-300 ease-in-out ${open ? "text-P700" : ""}`}>current period ({format(startCurrent?.[0], "MMM d")} - {format(endCurrent?.[0], "MMM d, yyyy")})</h4>
-                    <p className="normal-case w400">vs. Previous Period {format(startPrevious?.[0], "MMM d")} - {format(endPrevious?.[0], "MMM d, yyyy")}</p>
+                    <h4 className={`w250 hover:text-G400 transition duration-300 ease-in-out ${open ? 'text-P700' : ''}`}>current period ({format(startCurrent?.[0], 'MMM d')} - {format(endCurrent?.[0], 'MMM d, yyyy')})</h4>
+                    <p className="normal-case w400">vs. Previous Period {format(startPrevious?.[0], 'MMM d')} - {format(endPrevious?.[0], 'MMM d, yyyy')}</p>
                   </>
-                ) : (
+                  )
+                : (
                   <div className="pr-80">
-                    <h4 className={`w250 hover:text-G400 transition duration-300 ease-in-out ${open ? "text-P700" : ""}`}>-</h4>
+                    <h4 className={`w250 hover:text-G400 transition duration-300 ease-in-out ${open ? 'text-P700' : ''}`}>-</h4>
                     <p className="normal-case w400">vs. -</p>
                   </div>
-                )
+                  )
               }
             </div>
-            <ChevronDownIcon className={`w-8 h-8 text-N0 ${open && "transform rotate-180 text-P700"}`} />
+            <ChevronDownIcon className={`w-8 h-8 text-N0 ${open && 'transform rotate-180 text-P700'}`} />
           </Popover.Button>
           <Transition
             as={Fragment}
@@ -55,9 +56,9 @@ export function DateRangeComparison() {
                       {({ active, checked }) => (
                         <button
                           type="button"
-                          className={`px-16 py-3 border rounded-none rounded-l  ${checked ? "bg-P700" : "bg-N100"}`}
+                          className={`px-16 py-3 border rounded-none rounded-l  ${checked ? 'bg-P700' : 'bg-N100'}`}
                         >
-                          <h4 className={`w250 font-secondary ${checked ? "text-N100" : "text-P700"}`}>presets</h4>
+                          <h4 className={`w250 font-secondary ${checked ? 'text-N100' : 'text-P700'}`}>presets</h4>
                         </button>
                       )}
                     </RadioGroup.Option>
@@ -67,20 +68,20 @@ export function DateRangeComparison() {
                       {({ active, checked }) => (
                         <button
                           type="button"
-                          className={`px-16 py-3 border rounded-none rounded-r  ${checked ? "bg-P700" : "bg-N100"}`}
+                          className={`px-16 py-3 border rounded-none rounded-r  ${checked ? 'bg-P700' : 'bg-N100'}`}
                         >
-                          <h4 className={`w250 font-secondary ${checked ? "text-N100" : "text-P700"}`}>custom</h4>
+                          <h4 className={`w250 font-secondary ${checked ? 'text-N100' : 'text-P700'}`}>custom</h4>
                         </button>
                       )}
                     </RadioGroup.Option>
                   </RadioGroup>
                   <div className="px-6 pt-5 mt-1 bg-N200">
                     {
-                      plan === "presets"
-                      && <Presets />
+                      plan === 'presets' &&
+                      <Presets />
                     }
-                    {plan === "custom"
-                      && <Custom />
+                    {plan === 'custom' &&
+                      <Custom />
                     }
                   </div>
                 </div>
