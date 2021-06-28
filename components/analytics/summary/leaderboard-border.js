@@ -1,3 +1,5 @@
+import React from 'react'
+
 export const LeaderBoardBorder = () => (
   <div className="flex items-center mt-5 space-x-5">
     <h4 className="capitalize w600">leaderboard</h4>

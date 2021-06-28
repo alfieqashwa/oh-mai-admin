@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 
@@ -6,7 +6,6 @@ import { AddCategoryContent } from './category-modal-content'
 import { GlassDiv } from 'components/glassdiv'
 
 export function AddCategoryModal({ isOpen, setIsOpen }) {
-
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog

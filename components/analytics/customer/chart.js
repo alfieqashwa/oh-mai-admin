@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import {
   ResponsiveContainer,
@@ -9,9 +9,9 @@ import {
   Tooltip,
   CartesianGrid,
   BarChart,
-  Bar,
-} from "recharts";
-import { format, parseISO, subDays } from "date-fns";
+  Bar
+} from 'recharts'
+import { format, parseISO, subDays } from 'date-fns'
 import { AiOutlineBarChart, AiOutlineLineChart } from 'react-icons/ai'
 
 export function ChartView() {
@@ -56,7 +56,7 @@ export function ChartView() {
                 {({ checked, active }) => (
                   <button
                     type="button"
-                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 focus:ring focus:ring-P700 ${checked ? "shadow-inner" : ""}`}
+                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 focus:ring focus:ring-P700 ${checked ? 'shadow-inner' : ''}`}
                   >
                     <AiOutlineBarChart className="w-6 h-6 font-primary text-P700" />
                   </button>
@@ -66,7 +66,7 @@ export function ChartView() {
                 {({ checked, active }) => (
                   <button
                     type="button"
-                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 focus:ring focus:ring-P700 ${checked ? "shadow-inner" : ""}`}
+                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 focus:ring focus:ring-P700 ${checked ? 'shadow-inner' : ''}`}
                   >
                     <AiOutlineLineChart className="w-6 h-6 text-P700" />
                   </button>
@@ -78,8 +78,8 @@ export function ChartView() {
         </div>
       </div>
       {/* <ChartArea /> */}
-      {plan === "bar" && <ChartBar />}
-      {plan === "area" && <ChartArea />}
+      {plan === 'bar' && <ChartBar />}
+      {plan === 'area' && <ChartArea />}
     </>
   )
 }
@@ -89,10 +89,9 @@ const data = []
 for (let num = 30; num >= 0; num--) {
   data.push({
     date: subDays(new Date(), num).toISOString().substr(0, 10),
-    value: 1 + Math.random(),
+    value: 1 + Math.random()
   })
 }
-
 
 function ChartArea() {
   return (
@@ -101,9 +100,9 @@ function ChartArea() {
         <defs>
           <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
             {/* <stop offset="0%" stopColor="#2451B7" stopOpacity={0.4} /> */}
-            <stop offset="0%" stopColor="#8A3EFF" stopOpacity={.4} />
-            <stop offset="40%" stopColor="#8A3EFF" stopOpacity={.9} />
-            <stop offset="90%" stopColor="#8A3EFF" stopOpacity={.9} />
+            <stop offset="0%" stopColor="#8A3EFF" stopOpacity={0.4} />
+            <stop offset="40%" stopColor="#8A3EFF" stopOpacity={0.9} />
+            <stop offset="90%" stopColor="#8A3EFF" stopOpacity={0.9} />
           </linearGradient>
         </defs>
 
@@ -114,11 +113,11 @@ function ChartArea() {
           axisLine={false}
           tickLine={false}
           tickFormatter={(str) => {
-            const date = parseISO(str);
+            const date = parseISO(str)
             if (date.getDate() % 7 === 0) {
-              return format(date, "MMM, d");
+              return format(date, 'MMM, d')
             }
-            return "";
+            return ''
           }}
         />
 
@@ -142,12 +141,12 @@ function CustomTooltip({ active, payload, label }) {
   if (active) {
     return (
       <div className="tooltip">
-        <h5>{format(parseISO(label), "eeee, d MMM, yyyy")}</h5>
+        <h5>{format(parseISO(label), 'eeee, d MMM, yyyy')}</h5>
         <p>${payload[0].value.toFixed(2)}</p>
       </div>
-    );
+    )
   }
-  return null;
+  return null
 }
 
 // Bar Chart Testing
@@ -157,15 +156,15 @@ const getPath = (x, y, width, height) => (
 C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${x + width / 2}, ${y}
 C${x + width / 2},${y + height / 3} ${x + 2 * width / 3},${y + height} ${x + width}, ${y + height}
 Z`
-);
+)
 
 const TriangleBar = (props) => {
   const {
-    fill, x, y, width, height,
-  } = props;
+    fill, x, y, width, height
+  } = props
 
-  return <path d={getPath(x, y, width, height)} stroke="#8A3EFF" fill={fill} />;
-};
+  return <path d={getPath(x, y, width, height)} stroke="#8A3EFF" fill={fill} />
+}
 
 function ChartBar() {
   return (
@@ -176,11 +175,11 @@ function ChartBar() {
           axisLine={false}
           tickLine={false}
           tickFormatter={(str) => {
-            const date = parseISO(str);
+            const date = parseISO(str)
             if (date.getDate() % 7 === 0) {
-              return format(date, "MMM, d");
+              return format(date, 'MMM, d')
             }
-            return "";
+            return ''
           }}
         />
         <YAxis
@@ -190,10 +189,9 @@ function ChartBar() {
           tickCount={8}
           tickFormatter={(number) => `$${number.toFixed(2)}`}
         />
-        <Bar dataKey="value" fill="#8A3EFF" 
+        <Bar dataKey="value" fill="#8A3EFF"
           shape={<TriangleBar />} />
       </BarChart>
     </ResponsiveContainer>
   )
 }
-

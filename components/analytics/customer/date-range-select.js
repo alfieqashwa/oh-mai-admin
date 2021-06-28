@@ -1,6 +1,6 @@
-import { Fragment } from 'react'
-import { Listbox, Transition } from "@headlessui/react";
-import { CheckIcon, ChevronDownIcon } from "@heroicons/react/outline";
+import React, { Fragment } from 'react'
+import { Listbox, Transition } from '@headlessui/react'
+import { CheckIcon, ChevronDownIcon } from '@heroicons/react/outline'
 
 export function DateRangeSelect({
   selectedCurrent, setSelectedCurrent,
@@ -39,8 +39,8 @@ export function DateRangeSelect({
                         key={i}
                         className={({ active }) =>
                           `${active
-                            ? "bg-P700"
-                            : ""
+                            ? 'bg-P700'
+                            : ''
                           }
 cursor-default select-none relative py-2 pl-10 pr-4`
                         }
@@ -49,14 +49,15 @@ cursor-default select-none relative py-2 pl-10 pr-4`
                         {({ selected, active }) => (
                           <>
                             <span
-                              className={`${selected ? "font-medium" : "font-normal"
+                              className={`${selected ? 'font-medium' : 'font-normal'
                                 } block truncate`}
                             >
                               {date.name}
                             </span>
-                            {selected ? (
+                            {selected
+                              ? (
                               <span
-                                className={`${active ? "text-N0" : ""
+                                className={`${active ? 'text-N0' : ''
                                   }
 absolute inset-y-0 left-0 flex items-center pl-3`}
                               >
@@ -65,7 +66,8 @@ absolute inset-y-0 left-0 flex items-center pl-3`}
                                   aria-hidden="true"
                                 />
                               </span>
-                            ) : null}
+                                )
+                              : null}
                           </>
                         )}
                       </Listbox.Option>
@@ -108,8 +110,8 @@ absolute inset-y-0 left-0 flex items-center pl-3`}
                         key={i}
                         className={({ active }) =>
                           `${active
-                            ? "bg-P700"
-                            : ""
+                            ? 'bg-P700'
+                            : ''
                           }
 cursor-default select-none relative py-2 pl-10 pr-4`
                         }
@@ -118,14 +120,15 @@ cursor-default select-none relative py-2 pl-10 pr-4`
                         {({ selected, active }) => (
                           <>
                             <span
-                              className={`${selected ? "font-medium" : "font-normal"
+                              className={`${selected ? 'font-medium' : 'font-normal'
                                 } block truncate`}
                             >
                               {date.name}
                             </span>
-                            {selected ? (
+                            {selected
+                              ? (
                               <span
-                                className={`${active ? "text-N0" : ""
+                                className={`${active ? 'text-N0' : ''
                                   }
 absolute inset-y-0 left-0 flex items-center pl-3`}
                               >
@@ -134,7 +137,8 @@ absolute inset-y-0 left-0 flex items-center pl-3`}
                                   aria-hidden="true"
                                 />
                               </span>
-                            ) : null}
+                                )
+                              : null}
                           </>
                         )}
                       </Listbox.Option>
@@ -151,6 +155,6 @@ absolute inset-y-0 left-0 flex items-center pl-3`}
 }
 
 const dates = [
-  { name: "Current Year (Jan 1 - Dec 31, 2021)" },
-  { name: "Previous Year (Jan 1 - Dec 31, 2020)" }
+  { name: 'Current Year (Jan 1 - Dec 31, 2021)' },
+  { name: 'Previous Year (Jan 1 - Dec 31, 2020)' }
 ]

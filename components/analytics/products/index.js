@@ -11,5 +11,5 @@ export {
   DateRangeComparison,
   ShowProductSelect,
   SwitchOnOff,
-  ProductPerformanceCard,
+  ProductPerformanceCard
 }
