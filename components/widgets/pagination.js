@@ -1,23 +1,17 @@
-import { useState, useEffect } from 'react'
-import { HiOutlinePencilAlt } from 'react-icons/hi'
-import { ChevronLeftIcon, ChevronRightIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/react/solid'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useStore } from 'react-redux'
-import { order } from 'tailwindcss/defaultTheme'
-import ReactPaginate from 'react-paginate';
+import ReactPaginate from 'react-paginate'
 
 export const Pagination = ({ offset, total, onChangeInput }) => {
-  console.log("Pagination total", total)
+  console.log('Pagination total', total)
   const dispatch = useDispatch()
   const store = useStore()
   const [mTotal, setmTotal] = useState(0)
   const [maxRow, setMaxRow] = useState(10)
+  // eslint-disable-next-line no-unused-vars
   const [pages, setPages] = useState([])
   const [totalDisplayedOrder, setTotalDisplayedOrder] = useState(0)
   const [currentPage, setCurrentPage] = useState(0) // index based
-  const styleNumberHilight = 'px-2.5 text-sm font-medium bg-P700 hover:bg-P700 transition duration-200 ease-in-out'
-  const styleNumberNormal = 'px-2.5 text-sm font-medium bg-N800 hover:bg-P700 transition duration-200 ease-in-out'
-  const LEFT_PAGE = 'LEFT';
-  const RIGHT_PAGE = 'RIGHT';
 
   const loadData = () => {
     dispatch({
@@ -41,12 +35,12 @@ export const Pagination = ({ offset, total, onChangeInput }) => {
 
   useEffect(() => {
     loadData()
-    console.log("loadData maxRow:" + maxRow)
+    console.log('loadData maxRow:' + maxRow)
   }, [maxRow])
 
   const handleClick = (props) => {
     const _currentPage = props.selected
-    console.log("handle click page", _currentPage)
+    console.log('handle click page', _currentPage)
     setCurrentPage(_currentPage)
 
     dispatch({
@@ -63,20 +57,8 @@ export const Pagination = ({ offset, total, onChangeInput }) => {
   const handleChangeMaxRow = e => {
     onChangeInput(e)
     const { value } = e.target
-    console.log("handleChangeMaxRow:" + value)
+    console.log('handleChangeMaxRow:' + value)
     setMaxRow(parseInt(value))
-  }
-
-  const range = (from, to, step = 1) => {
-    let i = from;
-    const range = [];
-
-    while (i <= to) {
-      range.push(i);
-      i += step;
-    }
-
-    return range;
   }
 
   const generatePageNumber = () => {
@@ -89,13 +71,12 @@ export const Pagination = ({ offset, total, onChangeInput }) => {
 
     for (let i = 0; i < totalPage; i++) {
       if (i < iCurrentPage) {
-        if ((iCurrentPage - i) >= (iCurrentPage - pageNeighbor))
-          leftPages.push(i)
+        if ((iCurrentPage - i) >= (iCurrentPage - pageNeighbor)) { leftPages.push(i) }
       }
 
       if (i > iCurrentPage) {
         if (((iCurrentPage + i) <= (pageNeighbor + iCurrentPage))) {
-          console.log("pg leftPage", leftPages)
+          console.log('pg leftPage', leftPages)
           rightPages.push(i)
         }
       }
@@ -105,10 +86,10 @@ export const Pagination = ({ offset, total, onChangeInput }) => {
     newPages.push(iCurrentPage)
     newPages = newPages.concat(rightPages)
 
-    console.log("pg leftPage", leftPages)
-    console.log("pg rightPages", rightPages)
-    console.log("pg all", newPages)
-    console.log("pg iCurrentPage", iCurrentPage)
+    console.log('pg leftPage', leftPages)
+    console.log('pg rightPages', rightPages)
+    console.log('pg all', newPages)
+    console.log('pg iCurrentPage', iCurrentPage)
 
     return newPages
   }
@@ -119,93 +100,34 @@ export const Pagination = ({ offset, total, onChangeInput }) => {
     const orders = state.value.data
     setmTotal(totalRow)
     setTotalDisplayedOrder(orders.length)
-    console.log("pagination/State change", state)
-    console.log("pagination/totalRow", totalRow)
-  });
-
-  const gotoFirst = () => {
-    setCurrentPage(0)
-    dispatch({
-      type: 'order/list',
-      payload: {
-        paging: {
-          limit: maxRow,
-          offset: 0
-        }
-      }
-    })
-  }
-
-  const gotoLast = () => {
-    const lastPage = (mTotal / maxRow)
-    console.log("last_page", lastPage)
-    setCurrentPage(lastPage)
-    dispatch({
-      type: 'order/list',
-      payload: {
-        paging: {
-          limit: maxRow,
-          offset: lastPage * maxRow
-        }
-      }
-    })
-  }
-
-  const gotoNext = () => {
-    if (currentPage + 1 <= ((mTotal / maxRow) - 1)) {
-      dispatch({
-        type: 'order/list',
-        payload: {
-          paging: {
-            limit: maxRow,
-            offset: (currentPage + 1)
-          }
-        }
-      })
-      setCurrentPage(currentPage + 1)
-    }
-
-  }
-
-  const gotoPrev = () => {
-    if (currentPage - 1 >= 0) {
-      dispatch({
-        type: 'order/list',
-        payload: {
-          paging: {
-            limit: maxRow,
-            offset: (currentPage + 1) * maxRow
-          }
-        }
-      })
-      setCurrentPage(currentPage - 1)
-    }
-  }
+    console.log('pagination/State change', state)
+    console.log('pagination/totalRow', totalRow)
+  })
 
   useEffect(() => {
     const newPages = generatePageNumber()
     // const newPages = fetchPageNumbers()
     // console.log("newPages", newPages)
-    console.log("newPages", newPages)
+    console.log('newPages', newPages)
     setPages(newPages)
   }, [mTotal, maxRow, currentPage])
 
   return (
     <div className="block pt-4 pb-8 md:items-center md:justify-end md:flex">
       <ReactPaginate
-        previousLabel={"Prev"}
-        nextLabel={"Next"}
-        breakLabel={"..."}
-        breakClassName={"break-me"}
+        previousLabel={'Prev'}
+        nextLabel={'Next'}
+        breakLabel={'...'}
+        breakClassName={'break-me'}
         pageCount={Math.ceil(mTotal / maxRow)}
         marginPagesDisplayed={2}
         pageRangeDisplayed={2}
         onPageChange={handleClick}
-        containerClassName={"pagination"}
-        pageClassName={"pagination-page"}
-        nextClassName={"pagination-navigate"}
-        previousClassName={"pagination-navigate"}
-        activeClassName={"active"} />
+        containerClassName={'pagination'}
+        pageClassName={'pagination-page'}
+        nextClassName={'pagination-navigate'}
+        previousClassName={'pagination-navigate'}
+        activeClassName={'active'} />
       <div className="block pt-4 pb-8 md:items-center md:justify-end md:flex">
         <div className="mt-2 text-center lg:mt-0 lg:text-none lg:mx-6">
           <p className="w350 text-N300 whitespace-nowrap">

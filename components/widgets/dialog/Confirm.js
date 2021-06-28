@@ -1,18 +1,19 @@
-import Button from './Button';
-import Dialog from './Dialog';
+import React from 'react'
+import Button from './Button'
+import Dialog from './Dialog'
 // interface Props {
 //   title: string;
 //   children: React.ReactNode;
 //   open: boolean;
 //   onClose: Function;
-//   onConfirm: Function; 
+//   onConfirm: Function;
 // }
 export default function Confirm(props) {
-  const { open, onClose, title, children, onConfirm } = props;
+  const { open, onClose, title, children, onConfirm } = props
   if (!open) {
-    return <></>;
+    return <></>
   }
-  
+
   return (
     <Dialog open={open} onClose={onClose}>
       <div className="text-xl text-BLACK">{title}</div>
@@ -30,8 +31,8 @@ export default function Confirm(props) {
           <Button
             className="text-N0 text-sm"
             onClick={() => {
-              onClose();
-              onConfirm();
+              onClose()
+              onConfirm()
             }}
           >
             Yes
@@ -39,5 +40,5 @@ export default function Confirm(props) {
         </div>
       </div>
     </Dialog>
-  );
+  )
 }

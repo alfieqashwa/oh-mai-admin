@@ -1,3 +1,5 @@
+import React from 'react'
+
 export const ErrorStatus = ({ message }) => (
 
   <div className="grid h-screen text-5xl place-items-center">

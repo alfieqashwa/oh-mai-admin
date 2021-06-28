@@ -1,26 +1,27 @@
-import { parseAddress } from 'utils/OrderUtils';
-import Button from './Button';
-import Dialog from './Dialog';
+import React from 'react'
+import { parseAddress } from 'utils/OrderUtils'
+import Button from './Button'
+import Dialog from './Dialog'
 import moment from 'moment'
-import router from 'next/router';
+import router from 'next/router'
 // interface Props {
 //   title: string;
 //   children: React.ReactNode;
 //   open: boolean;
 //   onClose: Function;
-//   onConfirm: Function; 
+//   onConfirm: Function;
 // }
 export default function OrderLookup(props) {
-  const { open, onClose, order, children, onConfirm } = props;
+  const { open, onClose, order } = props
 
   if (!open) {
-    return <></>;
+    return <></>
   }
 
   const moneyFormat = new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'TWD',
-  });
+    currency: 'TWD'
+  })
 
   const edit = (number) => {
     onClose()
@@ -37,7 +38,7 @@ export default function OrderLookup(props) {
         <div id="left">
           <div className="mb-4">
             <div className="text-GREY1">Date & Time</div>
-            <div>{moment(order.order_datetime).format("DD/MM/YYYY HH:mm:ss")}</div>
+            <div>{moment(order.order_datetime).format('DD/MM/YYYY HH:mm:ss')}</div>
           </div>
           <div className="mb-4">
             <div className="text-GREY1">Billing</div>
@@ -74,5 +75,5 @@ export default function OrderLookup(props) {
         </div>
       </div>
     </Dialog>
-  );
+  )
 }

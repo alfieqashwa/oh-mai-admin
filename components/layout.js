@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from 'react'
 import { SideBar } from 'components/sidebar'
-import { useEffect, useState } from 'react';
-import { isTokenExist } from 'utils/Auth';
+import { isTokenExist } from 'utils/Auth'
 
 export default function Layout({ title, children }) {
   const [isLoggedin, setIsLoggedin] = useState(false)
@@ -15,10 +15,10 @@ export default function Layout({ title, children }) {
 
   return (
     <>
-      {isLoggedin? (<SideBar />) : (<></>)}
+      {isLoggedin ? (<SideBar />) : (<></>)}
       <main className="md:ml-[252px]">
         {children}
       </main>
     </>
-  );
+  )
 }

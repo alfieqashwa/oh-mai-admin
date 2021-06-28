@@ -1,5 +1,6 @@
-import { AiOutlineArrowLeft } from 'react-icons/ai';
-import { GlassDefault } from './glassDefault';
+import React from 'react'
+import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { GlassDefault } from './glassDefault'
 
 // Confirmation Saved-Button
 export const GlassHeader = ({ title, children }) =>

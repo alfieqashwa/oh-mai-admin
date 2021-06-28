@@ -1,9 +1,11 @@
+import React from 'react'
+
 export default function IconButton(props) {
   const {
     children,
     onClick = (event) => {},
-    className = '',
-  } = props;
+    className = ''
+  } = props
   return (
     <button
       onClick={onClick}
@@ -11,5 +13,5 @@ export default function IconButton(props) {
     >
       {children}
     </button>
-  );
+  )
 }

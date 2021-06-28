@@ -1,18 +1,12 @@
-import { parseAddress } from 'utils/OrderUtils';
-import Button from './Button';
-import Dialog from './Dialog';
-import moment from 'moment'
+import React from 'react'
+import Button from './Button'
+import Dialog from './Dialog'
 
 export default function EditEmail(props) {
-  const { open, onClose, order, children, onConfirm } = props;
+  const { open, onClose, order } = props
   if (!open) {
-    return <></>;
+    return <></>
   }
-
-  const moneyFormat = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'TWD',
-  });
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -35,5 +29,5 @@ export default function EditEmail(props) {
           className="text-xs text-N0 bg-secondary hover:bg-secondary-light">APPLY</Button>
       </div>
     </Dialog>
-  );
+  )
 }

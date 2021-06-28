@@ -1,9 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Image from "next/image";
+import React from 'react'
+import Image from 'next/image'
 
 function CornersDiv(props) {
-  const { className } = props;
+  const { className } = props
   return (
     <div className={`w-full h-full p-4 relative ${className}`}>
       <>
@@ -22,9 +21,9 @@ function CornersDiv(props) {
       </>
       {props.children}
     </div>
-  );
+  )
 }
 
-CornersDiv.propTypes = {};
+CornersDiv.propTypes = {}
 
-export default CornersDiv;
+export default CornersDiv

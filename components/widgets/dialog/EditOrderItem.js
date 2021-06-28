@@ -1,19 +1,17 @@
-import { parseAddress } from 'utils/OrderUtils';
-import Button from './Button';
-import Dialog from './Dialog';
-import moment from 'moment'
-import { useEffect, useState } from 'react';
+import React from 'react'
+import Button from './Button'
+import Dialog from './Dialog'
 // interface Props {
 //   title: string;
 //   children: React.ReactNode;
 //   open: boolean;
 //   onClose: Function;
-//   onConfirm: Function; 
+//   onConfirm: Function;
 // }
 export default function EditOrderItem(props) {
-  const { open, onClose, orderItem, children, onConfirm, onChange } = props;
+  const { open, onClose, orderItem, onConfirm, onChange } = props
   if (!open) {
-    return <></>;
+    return <></>
   }
 
   const handleChange = (e) => {
@@ -60,7 +58,7 @@ export default function EditOrderItem(props) {
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
-        
+
       </div>
       <div className="flex justify-end mt-4 space-x-2">
         <Button
@@ -71,5 +69,5 @@ export default function EditOrderItem(props) {
           className="text-xs text-N0 bg-secondary hover:bg-secondary-light">APPLY</Button>
       </div>
     </Dialog>
-  );
+  )
 }

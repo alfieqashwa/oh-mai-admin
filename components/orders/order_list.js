@@ -1,11 +1,8 @@
 import { HiOutlinePencilAlt } from 'react-icons/hi'
-import { ChevronLeftIcon, ChevronRightIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/react/solid'
-import { white } from 'tailwindcss/colors'
 import { BiTrash } from 'react-icons/bi'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { useDispatch, useStore } from 'react-redux'
-import { order } from 'tailwindcss/defaultTheme'
 import Confirm from 'components/widgets/dialog/Confirm'
 import { deleteOrders } from 'services/api/order_services'
 import { parseAddress } from 'utils/OrderUtils'
@@ -13,23 +10,26 @@ import OrderLookup from 'components/widgets/dialog/OrderLookup'
 import Link from 'next/link'
 
 export function OrderList({ filter, page }) {
-  console.log("/components/widget/pagination:filter", filter)
+  console.log('/components/widget/pagination:filter', filter)
   const store = useStore()
   const dispatch = useDispatch()
   const [orders, setOrders] = useState([])
   const [confirmOpen, setConfirmOpen] = useState(false)
-  const [selectedDeleteOrder, setSelectedDeleteOrder] = useState("")
+  const [selectedDeleteOrder, setSelectedDeleteOrder] = useState('')
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [lookupOpen, setLookupOpen] = useState(false)
+  // eslint-disable-next-line no-unused-vars
   const [currentPage, setCurrentPage] = useState(1)
+  // eslint-disable-next-line no-unused-vars
   const [maxRow, setMaxRow] = useState(10)
+  // eslint-disable-next-line no-unused-vars
   const [totalPage, setTotalPage] = useState(0)
   const [mTotal, setmTotal] = useState(0)
 
   const moneyFormat = new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'TWD',
-  });
+    currency: 'TWD'
+  })
 
   useEffect(() => {
     dispatch({
@@ -61,7 +61,7 @@ export function OrderList({ filter, page }) {
     alert(strResult)
 
     if (isSuccess) {
-      let newOrder = orders.filter(item => item.order_number !== selectedDeleteOrder)
+      const newOrder = orders.filter(item => item.order_number !== selectedDeleteOrder)
       setOrders(newOrder)
     }
   }
@@ -79,19 +79,6 @@ export function OrderList({ filter, page }) {
 
   }, confirmOpen)
 
-  const onPageChange = ({ current, pageSize }) => {
-    setCurrentPage(current)
-    dispatch({
-      type: 'order/list',
-      payload: {
-        paging: {
-          limit: maxRow,
-          offset: current * maxRow
-        }
-      }
-    })
-  }
-
   store.subscribe(async () => {
     const state = await store.getState()
     const totalRow = state.value?.totalRow || 0
@@ -100,9 +87,9 @@ export function OrderList({ filter, page }) {
     const mTotalPage = Math.ceil(mTotal / maxRow)
     setTotalPage(mTotalPage)
     setOrders(orders)
-    console.log("pagination/State change", state)
-    console.log("pagination/totalRow", totalRow)
-  });
+    console.log('pagination/State change', state)
+    console.log('pagination/totalRow', totalRow)
+  })
 
   return (
 
@@ -148,7 +135,7 @@ export function OrderList({ filter, page }) {
                 <div className="text-sm text-N0 cursor-pointer" onClick={lookupOrder.bind(null, o)}>{o.order_number}</div>
               </td>
               <td className="p-4 whitespace-nowrap">
-                <div className="text-sm text-G400">{moment(o.order_datetime).format("DD/MM/YYYY HH:mm:ss")}</div>
+                <div className="text-sm text-G400">{moment(o.order_datetime).format('DD/MM/YYYY HH:mm:ss')}</div>
               </td>
               <td className="p-4 md:table-cell whitespace-nowrap">
                 <button className="text-xs bg-Y001">{o.order_status_payment}</button>
@@ -159,7 +146,7 @@ export function OrderList({ filter, page }) {
               </td>
               <td className="hidden p-4 text-sm md:table-cell text-N0 whitespace-nowrap">{moneyFormat.format(o.total_price)}</td>
               <td className="hidden content-center align-middle p-4 whitespace-nowrap flex flex-row content-between md:flex">
-                <Link href={"/orders/details?num=" + o.order_number} className="">
+                <Link href={'/orders/details?num=' + o.order_number} className="">
                   <HiOutlinePencilAlt className="w-5 h-5 text-N0 transition duration-200 ease-in-out text-N0 hover:text-opacity-75 mr-4 cursor-pointer" />
                 </Link>
                 <a href="#" className="transition duration-200 ease-in-out text-N0 hover:text-opacity-75" onClick={showDeleteData.bind(null, o.order_number)}>
