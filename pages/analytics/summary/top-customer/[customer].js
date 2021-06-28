@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { Menu, Transition } from '@headlessui/react'
@@ -116,7 +116,7 @@ export default function Customer() {
             <Menu as="div" className="relative">
               {({ open }) => (
                 <>
-                  <Menu.Button className={`bg-transparent focus:outline-none ${open ? "text-P400" : ""}`}>
+                  <Menu.Button className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''}`}>
                     <BsThreeDotsVertical className="w-6 h-6" />
                   </Menu.Button>
                   <Transition
@@ -132,9 +132,8 @@ export default function Customer() {
                     <Menu.Items
                       static
                       className={`
-                   ${!open ? "motion-safe:animate-bounce transition duration-700 ease-in-out" : ""}
-                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
-                   `}
+                      ${!open ? 'motion-safe:animate-bounce transition duration-700 ease-in-out' : ''}
+                        absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none`}
                     >
                       <Menu.Item
                         as="button"
@@ -184,10 +183,9 @@ export default function Customer() {
   )
 }
 
-
 // source:
 // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
 
 function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }

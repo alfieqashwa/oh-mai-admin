@@ -1,11 +1,11 @@
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { BiTrash } from 'react-icons/bi'
-import { GlassDiv } from "components/glassdiv";
+import { GlassDiv } from 'components/glassdiv'
 import { GlassDefault } from 'components/glassDefault'
 import TextEditor from 'components/textEditor'
 import { UploadMedia } from 'components/uploadMedia'
-import { useEffect, useState } from 'react';
-import { AiOutlineArrowLeft } from 'react-icons/ai';
+import React, { useEffect, useState } from 'react'
+import { AiOutlineArrowLeft } from 'react-icons/ai'
 
 // Confirmation Saved-Button
 export const ConfirmationSavedButton = ({ update }) =>
@@ -30,21 +30,17 @@ export const Title = ({ valTitle, valDescription, onChange }) => {
   // console.log("Title vald", valDescription)
 
   useEffect(() => {
-    console.log("Edit Product/ Title valt", valTitle)
-    console.log("Edit Product/ Title vald", valDescription)
+    console.log('Edit Product/ Title valt', valTitle)
+    console.log('Edit Product/ Title vald', valDescription)
 
-    if (valTitle)
-      setTitle(valTitle)
+    if (valTitle) { setTitle(valTitle) }
 
-    if (valDescription)
-      setDesc(valDescription)
-
+    if (valDescription) { setDesc(valDescription) }
   }, [valTitle, valDescription])
 
   useEffect(() => {
-    console.log("Title valt", valTitle)
-    console.log("Title vald", valDescription)
-
+    console.log('Title valt', valTitle)
+    console.log('Title vald', valDescription)
   }, [])
 
   const _onChange = (e) => {
@@ -66,12 +62,11 @@ export const Title = ({ valTitle, valDescription, onChange }) => {
       />
       <p className="my-4 w400">Description</p>
       <GlassDiv className="rounded-none">
-        <TextEditor defaultValue={desc || ""} onChange={onChange} />
+        <TextEditor defaultValue={desc || ''} onChange={onChange} />
       </GlassDiv>
     </GlassDefault>
   )
 }
-
 
 export const Media = () =>
   <GlassDefault className="p-4">
@@ -98,13 +93,14 @@ export const ProductVariants = ({ variants }) =>
       <div className="flex items-center space-x-2">
         <h5 className="mr-1 text-base">1</h5>
         {
+          // eslint-disable-next-line array-callback-return
           variants?.map(item => {
-            console.log("/Addproduct/variant/options", item)
+            console.log('/Addproduct/variant/options', item)
 
-            item?.options?.map(subItem => {
-              console.log("/Addproduct/variant/options", subitem)
+            item?.options?.map((subItem, i) => {
+              console.log('/Addproduct/variant/options', subItem)
               return (
-                <p className="px-2 py-1 rounded-full w350 bg-N200 bg-opacity-20">{subItem}</p>
+                <p className="px-2 py-1 rounded-full w350 bg-N200 bg-opacity-20" key={toString(i)}>{subItem}</p>
               )
             })
           })
@@ -230,9 +226,8 @@ export const Price = ({ basePrice, costPrice, salePrice, isOnSale, onChange }) =
   </div>
 
 export const Shipping = ({ isPhysical, weight, onChange }) => {
-
   const _onChangePhysical = (e) => {
-    const {id, checked} = e.target
+    const { id, checked } = e.target
 
     onChange({
       target: {

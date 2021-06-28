@@ -1,19 +1,17 @@
-import { parseAddress } from 'utils/OrderUtils';
-import Button from './Button';
-import Dialog from './Dialog';
-import moment from 'moment'
-import { useEffect, useState } from 'react';
+import Button from './Button'
+import Dialog from './Dialog'
+import React, {} from 'react'
 // interface Props {
 //   title: string;
 //   children: React.ReactNode;
 //   open: boolean;
 //   onClose: Function;
-//   onConfirm: Function; 
+//   onConfirm: Function;
 // }
 export default function EditAddress(props) {
-  const { open, onClose, order, children, onConfirm, onChange } = props;
+  const { open, onClose, order, onConfirm, onChange } = props
   if (!open) {
-    return <></>;
+    return <></>
   }
 
   const handleChange = (e) => {
@@ -141,5 +139,5 @@ export default function EditAddress(props) {
           className="text-xs text-N0 bg-secondary hover:bg-secondary-light">APPLY</Button>
       </div>
     </Dialog>
-  );
+  )
 }

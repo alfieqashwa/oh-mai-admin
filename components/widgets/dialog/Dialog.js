@@ -1,14 +1,14 @@
-import { GlassDefault } from 'components/glassDefault';
-import ExitIcon from './ExitIcon';
-import IconButton from './IconButton';
+import React from 'react'
+import ExitIcon from './ExitIcon'
+import IconButton from './IconButton'
 
 export default function Dialog(props) {
-  const { open, onClose } = props;
+  const { open, onClose } = props
 
   if (!open) {
-    return <></>;
+    return <></>
   }
-  
+
   return (
     // !HASKEL this dialog blur is not as blur as we want (not blur enought)
     <div className="fixed z-10 inset-0 overflow-visible overflow-auto" role="dialog" aria-modal="true">
@@ -21,5 +21,5 @@ export default function Dialog(props) {
         </span>
       </div>
     </div>
-  );
+  )
 }

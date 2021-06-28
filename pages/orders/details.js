@@ -1,28 +1,17 @@
-import { Menu, Transition } from '@headlessui/react'
 import { BiTrash } from 'react-icons/bi'
-import { MdAddCircleOutline } from 'react-icons/md'
-import { FiFilter } from 'react-icons/fi'
-import { BsThreeDotsVertical } from 'react-icons/bs'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { HiOutlinePencilAlt } from 'react-icons/hi'
-
-import { GlassDefault } from 'components/glassDefault'
 import { Header } from 'components/header'
-import { ProductListTable, InventoryMobileView } from 'components/products/inventory'
-import { OrderList } from 'components/orders/order_list'
-import { useState } from 'react'
-import { Pagination } from 'components/widgets/pagination'
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { BASE_URL, PAYMENT_STATUS_ARR, SHIPPING_STATUS_ARR } from 'etc/constants'
+import React, { useState, useEffect } from 'react'
+import { PAYMENT_STATUS_ARR, SHIPPING_STATUS_ARR } from 'etc/constants'
 import { deleteOrderItem, getOrderDetails, updateOrder, updateOrderItem } from 'services/api/order_services'
 import EditAddress from 'components/widgets/dialog/EditAddress'
 import EditOrderItem from 'components/widgets/dialog/EditOrderItem'
 import EditTrackingNumber from 'components/widgets/dialog/EditTrackingNumber'
 import EditDeliveryDate from 'components/widgets/dialog/EditDeliveryDate'
-import DatePicker from "react-datepicker";
-import { setHours } from 'date-fns'
-import { setMinutes } from 'date-fns'
+import DatePicker from 'react-datepicker'
+import { setHours, setMinutes } from 'date-fns'
+
 import { toReadableDate, toReadableDateTime } from 'utils/OrderUtils'
 import { DateTime } from 'luxon'
 import { useRouter } from 'next/router'
@@ -30,14 +19,15 @@ require('react-datepicker/dist/react-datepicker.css')
 
 const moneyFormat = new Intl.NumberFormat('en-US', {
   style: 'currency',
-  currency: 'TWD',
-});
+  currency: 'TWD'
+})
 
-export default function OrderDetail(props) {
+export default function OrderDetail() {
   const route = useRouter()
+  // eslint-disable-next-line no-unused-vars
   const [totalPage, setTotalPage] = useState(0)
-  const [filter, setFilter] = useState({ max_row: 3, keyword: "", page: 1 })
-  const dispatch = useDispatch()
+  // eslint-disable-next-line no-unused-vars
+  const [filter, setFilter] = useState({ max_row: 3, keyword: '', page: 1 })
   const [order, setOrder] = useState(null)
   const [dialogAddressOpen, setDialogAddressOpen] = useState(false)
   const [dialogTrackingNumOpen, setDialogTrackingNumOpen] = useState(false)
@@ -57,23 +47,10 @@ export default function OrderDetail(props) {
   const [orderDate, setOrderDate] = useState(
     setHours(setMinutes(new Date(), 0), 9)
   )
-  const date = new Date()
-
-  const handleChange = (e) => {
-    console.log("handleChange: filter before update", filter)
-    const { id, value } = e.target
-    console.log("handleChange: id", id)
-    console.log("handleChange: value", value)
-
-    setFilter(prevState => ({
-      ...prevState,
-      [id]: value
-    }))
-  }
 
   const loadData = async (num) => {
-    const data = await getOrderDetails({ order_number: num})
-    console.log("ldo", data)
+    const data = await getOrderDetails({ order_number: num })
+    console.log('ldo', data)
     if (data.isSuccess) {
       await setOrder(data.order)
     }
@@ -81,17 +58,11 @@ export default function OrderDetail(props) {
 
   const _updateOrder = async (order) => {
     const data = await updateOrder(order)
-    console.log("updateOrder", data)
+    console.log('updateOrder', data)
     if (data.isSuccess) {
       // setOrder(data.order)
-      console.log("updateOrder", "Done")
+      console.log('updateOrder', 'Done')
     }
-  }
-
-  const handleChangeDownload = (e) => {
-    const { id, value } = e.target
-    console.log("handle change download ID:" + id + ", value:" + value)
-    download({ type: value })
   }
 
   const orderDateChange = async (date) => {
@@ -136,7 +107,7 @@ export default function OrderDetail(props) {
   const changeDeliveryDate = () => {
     // deliveryDate format : '24 Dec 2023'
     _updateOrder({
-      order_delivery_date: DateTime.fromFormat(deliveryDate, "dd MMM yyyy"),
+      order_delivery_date: DateTime.fromFormat(deliveryDate, 'dd MMM yyyy'),
       order_id: order.order_id
     })
     setDialogDeliveryDateOpen(false)
@@ -151,29 +122,29 @@ export default function OrderDetail(props) {
   }
 
   const openOrderItem = (oi) => {
-    console.log("OI:", oi)
+    console.log('OI:', oi)
     setDialogOrderItemOpen(true)
     setSelectedOrderItem(oi)
   }
 
   const _updateOrderItem = async (oi) => {
-    console.log("update order item")
+    console.log('update order item')
     const result = await updateOrderItem(oi)
 
     if (result.isSuccess) {
       loadData(route.query.num)
     }
-    console.log("result", result)
+    console.log('result', result)
   }
 
   const _deleteOrderItem = async (id) => {
-    console.log("update order item")
+    console.log('update order item')
     const result = await deleteOrderItem(id)
 
     if (result.isSuccess) {
       loadData(route.query.num)
     }
-    console.log("result", result)
+    console.log('result', result)
   }
 
   const calculateKolSubtotal = (order) => {
@@ -181,14 +152,13 @@ export default function OrderDetail(props) {
     let itemSubttl = 0
     let ttlTax = 0
     const perKolEarning = []
-    const arrFapiao = []
 
-    order?.order_item?.map(oi => {
+    order?.order_item?.forEach(oi => {
       if (oi.kol) {
         subtotalKl += oi?.order_item_kol_profit_earning * oi?.quantity
 
         if (perKolEarning.length === 0) {
-          let earning = {
+          const earning = {
             kol: oi.kol,
             earning: (oi?.order_item_kol_profit_earning || 0) * oi?.quantity // this zero validation should be done serverside before
           }
@@ -196,11 +166,11 @@ export default function OrderDetail(props) {
           perKolEarning.push(earning)
         }
 
-        perKolEarning.map(item => {
+        perKolEarning.forEach(item => {
           if (item.kol === oi.kol) {
             item.kol.earning = item.kol.earning + ((oi?.order_item_kol_profit_earning || 0) * oi?.quantity)
           } else {
-            let earning = {
+            const earning = {
               kol: oi.kol,
               earning: (oi?.order_item_kol_profit_earning || 0) * oi?.quantity
             }
@@ -221,31 +191,31 @@ export default function OrderDetail(props) {
   }
 
   useEffect(() => {
-    console.log("// orderdate", orderDate)
-    console.log("route.query", route.query.num)
+    console.log('// orderdate', orderDate)
+    console.log('route.query', route.query.num)
     loadData(route.query.num)
   }, [])
 
   useEffect(() => {
     if (order) {
       if (order.order_datetime instanceof Date) {
-        console.log("// Instance of date")
+        console.log('// Instance of date')
       } else {
-        console.log("// Not date")
+        console.log('// Not date')
       }
-      console.log("// Order date", order.order_datetime)
-      console.log("// Order date stringify", JSON.stringify(order.order_datetime))
+      console.log('// Order date', order.order_datetime)
+      console.log('// Order date stringify', JSON.stringify(order.order_datetime))
 
-      var t = order.order_datetime.split(/[- :]/);
-      console.log("// dateParts", t)
+      const t = order.order_datetime.split(/[- :]/)
+      console.log('// dateParts', t)
 
-      var jsDate = new Date(order.order_datetime)
+      const jsDate = new Date(order.order_datetime)
       const lxDate = DateTime.fromJSDate(jsDate)
 
-      console.log("// order.order_datetime", typeof order.order_datetime)
-      console.log("// jsDate", jsDate)
-      console.log("// jsDate typeof", typeof jsDate)
-      console.log("// lxDate", lxDate)
+      console.log('// order.order_datetime', typeof order.order_datetime)
+      console.log('// jsDate', jsDate)
+      console.log('// jsDate typeof', typeof jsDate)
+      console.log('// lxDate', lxDate)
       setOrderDate(jsDate)
       setOrderStatusPayment(order.order_status_payment)
       setDeliveryDate(order.order_delivery_date)
@@ -263,18 +233,6 @@ export default function OrderDetail(props) {
       calculateKolSubtotal(order)
     }
   }, [order])
-
-  const dateCreatedSelect = async (e) => {
-    console.log("dateCreatedSelect..")
-    console.log("dateCreatedSelect", e)
-
-    if (order) {
-      await _updateOrder({
-        order_datetime: e,
-        order_id: order.order_id
-      })
-    }
-  }
 
   useEffect(async () => {
     if (order) {
@@ -306,9 +264,9 @@ export default function OrderDetail(props) {
   }, [shippingStatus])
 
   useEffect(async () => {
-    console.log("//shippingCost", shippingCost)
+    console.log('//shippingCost', shippingCost)
 
-    if (order && (shippingCost !== "")) {
+    if (order && (shippingCost !== '')) {
       await _updateOrder({
         shipping_cost: shippingCost,
         order_id: order.order_id
@@ -317,10 +275,10 @@ export default function OrderDetail(props) {
   }, [shippingCost])
 
   useEffect(async () => {
-    console.log("//address", address)
+    console.log('//address', address)
 
     if (address) {
-      console.log("//address filled", address)
+      console.log('//address filled', address)
     }
   }, [address])
 
@@ -332,7 +290,7 @@ export default function OrderDetail(props) {
           <div className="flex flex-row text-N0 space-x-4 content-center">
             <div className="flex-1">Order ID: {order?.order_number}</div>
             <div className="flex-initial mr-8 pt-1">{moneyFormat.format(order?.total_price)}</div>
-            <a href={process.env.NEXT_PUBLIC_BACKEND_HOST + "/order/download/order_detail?order_number=" + order?.order_number}>
+            <a href={process.env.NEXT_PUBLIC_BACKEND_HOST + '/order/download/order_detail?order_number=' + order?.order_number}>
               <button className="flex-initial text-sm px-2 bg-transparent border-N0 border-2">EXPORT</button>
             </a>
           </div>
@@ -365,13 +323,13 @@ export default function OrderDetail(props) {
                     </div>
                     <div className="flex flex-col pt-4">
                       <span className="text-N0">Customer Name</span>
-                      <span className="text-N300 text-sm">{order?.consumer?.user?.first_name + " " + order?.consumer?.user?.last_name}</span>
+                      <span className="text-N300 text-sm">{order?.consumer?.user?.first_name + ' ' + order?.consumer?.user?.last_name}</span>
                     </div>
                   </div>
                   <div id="cols2" className="">
                     <div className="flex flex-col pt-4">
                       <span className="text-N0">Payment Method</span>
-                      <span className="text-N300 text-sm">{order?.payment_type + " - " + order?.payment_gateway}</span>
+                      <span className="text-N300 text-sm">{order?.payment_type + ' - ' + order?.payment_gateway}</span>
                     </div>
                     <div className="flex flex-col pt-4">
                       <span className="text-N0">Charge ID</span>
@@ -386,7 +344,7 @@ export default function OrderDetail(props) {
                       <div className="flex flex-1">
                         <DatePicker
                           portalId="root-portal"
-                          style={{ position: "relative", zIndex: "999!important" }}
+                          style={{ position: 'relative', zIndex: '999!important' }}
                           className="flex flex-1 mt-2 rounded-md text-N0 bg-opacity-20 bg-N0 w-full"
                           wrapperClassName="w-full"
                           calendarClassName="w-full"
@@ -406,7 +364,7 @@ export default function OrderDetail(props) {
                       <span className="text-N300 text-sm">{order?.shipping_address?.line1}</span>
                       <span className="text-N300 text-sm">{order?.shipping_address?.line2}</span>
                       <span className="text-N300 text-sm">{order?.shipping_address?.city}</span>
-                      <span className="text-N300 text-sm">{order?.shipping_address?.state + ", " + order?.shipping_address?.country + "," + order?.shipping_address?.postal_code}</span>
+                      <span className="text-N300 text-sm">{order?.shipping_address?.state + ', ' + order?.shipping_address?.country + ',' + order?.shipping_address?.postal_code}</span>
                     </div>
                     <div className="flex flex-col text-N0">
                       <span>Order Status</span>
@@ -415,8 +373,8 @@ export default function OrderDetail(props) {
                         id="shipping-status"
                         className="mt-2 rounded-md w400 focus:ring-1 focus:ring-N700 focus:outline-none bg-opacity-20 bg-N200"
                         onChange={paymentStatusChange}>
-                        {PAYMENT_STATUS_ARR.map(item => {
-                          return <option className="capitalize" selected={orderStatusPayment == item} value={item}>{item}</option>
+                        {PAYMENT_STATUS_ARR.map((item, i) => {
+                          return <option className="capitalize" selected={orderStatusPayment === item} value={item} key={i}>{item}</option>
                         })}
                       </select>
                       <div className="flex flex-col pt-4">
@@ -485,8 +443,8 @@ export default function OrderDetail(props) {
                     id="shipping-status"
                     onChange={shippingStatusChange}
                     className="mt-2 rounded-md w400 focus:ring-1 focus:ring-N700 focus:outline-none bg-opacity-20 bg-N200">
-                    {SHIPPING_STATUS_ARR.map(item => {
-                      return <option className="capitalize" value={item}>{item}</option>
+                    {SHIPPING_STATUS_ARR.map((item, i) => {
+                      return <option className="capitalize" value={item} key={i}>{item}</option>
                     })}
                   </select>
                 </div>
@@ -518,9 +476,9 @@ export default function OrderDetail(props) {
                 </tr>
               </thead>
               <tbody className="">
-                {order?.order_item?.map(oi => {
+                {order?.order_item?.map((oi, i) => {
                   return (
-                    <tr>
+                    <tr key={i}>
                       <td>{oi?.order_item_name}</td>
                       <td>{moneyFormat.format(oi?.price)}</td>
                       <td>{oi?.quantity}</td>
@@ -554,7 +512,7 @@ export default function OrderDetail(props) {
                     </div>
                     <div className="w-1/3  flex flex-col">
                       <span>{moneyFormat.format(itemSubtotal)}</span>
-                      <span>- {moneyFormat.format(0) /** coupon is not implemented yet*/} </span>
+                      <span>- {moneyFormat.format(0) /** coupon is not implemented yet */} </span>
                       <span>{moneyFormat.format(order?.shipping_cost)}</span>
                       <span>{moneyFormat.format(totalTax)}</span>
                       <span>{moneyFormat.format(itemSubtotal + totalTax + order?.shipping_cost - totalTax)}</span>
@@ -598,7 +556,7 @@ export default function OrderDetail(props) {
                   </tr>
                 </thead>
                 <tbody className="text-sm">
-                  {order?.order_item?.map(oi => {
+                  {order?.order_item?.map((oi, i) => {
                     if (oi.kol) {
                       return (
                         <tr>
@@ -610,6 +568,8 @@ export default function OrderDetail(props) {
                         </tr>
                       )
                     }
+
+                    return <></>
                   })}
                 </tbody>
               </table>
@@ -618,9 +578,9 @@ export default function OrderDetail(props) {
                   Subtotal {moneyFormat.format(subTotalKol)}
                 </div>
                 {
-                  totalPerKolEarning?.map(item => {
+                  totalPerKolEarning?.map((item, i) => {
                     return (
-                      <div className="text-right m-4">
+                      <div className="text-right m-4" key={i}>
                         {item.kol?.display_name} {moneyFormat.format(item.earning)}
                       </div>
                     )

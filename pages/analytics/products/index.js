@@ -1,19 +1,19 @@
-import React, { useState, createContext, Fragment, useEffect } from 'react';
+import React, { useState, createContext, Fragment, useEffect } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import { FiDownloadCloud, FiSearch } from 'react-icons/fi';
+import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 
-import { Header } from 'components/header';
+import { Header } from 'components/header'
 import { DateRangeComparison, ShowProductSelect, ChartView, PaginationProducts, SwitchOnOff, ProductPerformanceCard } from 'components/analytics/products'
-import { checkLogin } from 'utils/Auth';
+import { checkLogin } from 'utils/Auth'
 
 export const DateRangeCtx = createContext(null)
 
 export default function Products() {
-  const [startCurrentDate, setStartCurrentDate] = useState(new Date("2021/01/01"))
+  const [startCurrentDate, setStartCurrentDate] = useState(new Date('2021/01/01'))
   const [endCurrentDate, setEndCurrentDate] = useState(new Date())
-  const [startPreviousDate, setStartPreviousDate] = useState(new Date("2020/01/01"))
-  const [endPreviousDate, setEndPreviousDate] = useState(new Date("2020/12/31"))
+  const [startPreviousDate, setStartPreviousDate] = useState(new Date('2020/01/01'))
+  const [endPreviousDate, setEndPreviousDate] = useState(new Date('2020/12/31'))
 
   const storeDateRange = {
     startCurrent: [startCurrentDate, setStartCurrentDate],
@@ -68,7 +68,7 @@ export default function Products() {
               <Menu as="div" className="relative">
                 {({ open }) => (
                   <>
-                    <Menu.Button className={`bg-transparent focus:outline-none ${open ? "text-P400" : ""}`}>
+                    <Menu.Button className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''}`}>
                       <BsThreeDotsVertical className="w-6 h-6" />
                     </Menu.Button>
                     <Transition
@@ -84,7 +84,7 @@ export default function Products() {
                       <Menu.Items
                         static
                         className={`
-                  ${!open ? "motion-safe:animate-bounce transition duration-700 ease-in-out" : ""}
+                  ${!open ? 'motion-safe:animate-bounce transition duration-700 ease-in-out' : ''}
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                   `}
                       >
@@ -161,5 +161,5 @@ const tableBody = [
   { id: 1, sn: '1', productTitle: 'Zelta: Breath of the Wild', sku: '128SKXUM-CI', itemsSold: 100, netSales: 1000.00, orders: 10, category: 'Games', status: true },
   { id: 2, sn: '2', productTitle: 'Persona 5', sku: 'PERS9290S-XL', itemsSold: 24, netSales: 400.00, orders: 10, category: 'Games', status: false },
   { id: 3, sn: '3', productTitle: 'Play Station 5 Cyberpunk: 2077 Skin Wrap Edition', sku: 'PS829-SIMNXO', itemsSold: 2, netSales: 200.00, orders: 1, category: 'Games Accessories', status: false },
-  { id: 4, sn: '4', productTitle: 'Back4Blood', sku: 'B4B12312490L', itemsSold: 2, netSales: 0.00, orders: 1, category: 'Games', status: true },
+  { id: 4, sn: '4', productTitle: 'Back4Blood', sku: 'B4B12312490L', itemsSold: 2, netSales: 0.00, orders: 1, category: 'Games', status: true }
 ]

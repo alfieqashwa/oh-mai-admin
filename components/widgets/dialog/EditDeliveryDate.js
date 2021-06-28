@@ -1,18 +1,13 @@
-import { parseAddress, toReadableDate } from 'utils/OrderUtils';
-import Button from './Button';
-import Dialog from './Dialog';
-import moment from 'moment'
+import React from 'react'
+import { toReadableDate } from 'utils/OrderUtils'
+import Button from './Button'
+import Dialog from './Dialog'
 
 export default function EditDeliveryDate(props) {
-  const { open, onClose, order, onChange, children, onConfirm } = props;
+  const { open, onClose, order, onChange, onConfirm } = props
   if (!open) {
-    return <></>;
+    return <></>
   }
-
-  const moneyFormat = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'TWD',
-  });
 
   const handleChange = (e) => {
     onChange(e.target.value)
@@ -40,5 +35,5 @@ export default function EditDeliveryDate(props) {
           className="text-xs text-N0 bg-secondary hover:bg-secondary-light">APPLY</Button>
       </div>
     </Dialog>
-  );
+  )
 }

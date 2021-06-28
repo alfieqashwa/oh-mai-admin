@@ -1,13 +1,13 @@
-import { Fragment } from 'react';
-import { Menu, Transition } from "@headlessui/react";
-import { FiDownloadCloud, FiSearch, FiChevronDown } from "react-icons/fi";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { AiOutlineArrowLeft } from 'react-icons/ai';
+import React, { Fragment } from 'react'
+import { Menu, Transition } from '@headlessui/react'
+import { FiDownloadCloud, FiSearch, FiChevronDown } from 'react-icons/fi'
+import { BsThreeDotsVertical } from 'react-icons/bs'
+import { AiOutlineArrowLeft } from 'react-icons/ai'
 
-import { Header } from "components/header";
-import { GlassDefault } from 'components/glassDefault';
+import { Header } from 'components/header'
+import { GlassDefault } from 'components/glassDefault'
 import { TitleWithBackButton } from 'components/titleWithBackButton'
-import { PaginationProducts } from 'components/analytics/products';
+import { PaginationProducts } from 'components/analytics/products'
 
 // TODO: This will be a dynamic page
 export default function ByOrders() {
@@ -53,7 +53,7 @@ export default function ByOrders() {
             <Menu as="div" className="relative">
               {({ open }) => (
                 <>
-                  <Menu.Button className={`bg-transparent focus:outline-none ${open ? "text-P400" : ""}`}>
+                  <Menu.Button className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''}`}>
                     <BsThreeDotsVertical className="w-6 h-6" />
                   </Menu.Button>
                   <Transition
@@ -69,7 +69,7 @@ export default function ByOrders() {
                     <Menu.Items
                       static
                       className={`
-                  ${!open ? "motion-safe:animate-bounce transition duration-700 ease-in-out" : ""}
+                  ${!open ? 'motion-safe:animate-bounce transition duration-700 ease-in-out' : ''}
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                   `}
                     >
@@ -135,5 +135,5 @@ const tableBody = [
   { id: 2, sn: '2', dateTime: '15/05/2021 15:30:23', orderID: 'ORD0563B', customer: 'Fan Leng Leng', billing: ['First Name Last Name, Billing Address, Billing Address, Billing Address, Billing Address, Billing Address, Billing Addr...', 'via Credit Card (ECPay)'], netSales: 40.00 },
   { id: 3, sn: '3', dateTime: '15/05/2021 20:31:58', orderID: 'ORD0898D', customer: 'Fan Leng Leng', billing: ['First Name Last Name, Billing Address, Billing Address, Billing Address, Billing Address, Billing Address, Billing Addr...', 'via Credit Card (ECPay)'], netSales: 30.00 },
   { id: 4, sn: '4', dateTime: '15/05/2021 20:33:58', orderID: 'ORD1558F', customer: 'Fan Leng Leng', billing: ['First Name Last Name, Billing Address, Billing Address, Billing Address, Billing Address, Billing Address, Billing Addr...', 'via Credit Card (ECPay)'], netSales: 0.05 },
-  { id: 5, sn: '5', dateTime: '15/05/2021 20:39:58', orderID: 'ORD7833E', customer: 'Fan Leng Leng', billing: ['First Name Last Name, Billing Address, Billing Address, Billing Address, Billing Address, Billing Address, Billing Addr...', 'via Credit Card (ECPay)'], netSales: 0.05 },
+  { id: 5, sn: '5', dateTime: '15/05/2021 20:39:58', orderID: 'ORD7833E', customer: 'Fan Leng Leng', billing: ['First Name Last Name, Billing Address, Billing Address, Billing Address, Billing Address, Billing Address, Billing Addr...', 'via Credit Card (ECPay)'], netSales: 0.05 }
 ]

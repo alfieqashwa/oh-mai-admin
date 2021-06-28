@@ -1,31 +1,24 @@
-import { Menu, Transition } from '@headlessui/react'
-import { BiTrash } from 'react-icons/bi'
-import { MdAddCircleOutline } from 'react-icons/md'
 import { FiFilter } from 'react-icons/fi'
-import { BsThreeDotsVertical } from 'react-icons/bs'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
-
 import { GlassDefault } from 'components/glassDefault'
 import { Header } from 'components/header'
-import { ProductListTable, InventoryMobileView } from 'components/products/inventory'
 import { OrderList } from 'components/orders/order_list'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Pagination } from 'components/widgets/pagination'
-import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { BASE_URL } from 'etc/constants'
 import { checkLogin } from 'utils/Auth'
 
 export default function OrdersPage() {
   const [totalPage, setTotalPage] = useState(0)
-  const [filter, setFilter] = useState({ max_row: 3, keyword: "", page: 1 })
+  const [filter, setFilter] = useState({ max_row: 3, keyword: '', page: 1 })
   const dispatch = useDispatch()
 
   const handleChange = (e) => {
-    console.log("handleChange: filter before update", filter)
+    console.log('handleChange: filter before update', filter)
     const { id, value } = e.target
-    console.log("handleChange: id", id)
-    console.log("handleChange: value", value)
+    console.log('handleChange: id', id)
+    console.log('handleChange: value', value)
 
     setFilter(prevState => ({
       ...prevState,
@@ -39,7 +32,7 @@ export default function OrdersPage() {
 
   useEffect(() => {
     // search for keyword more than 3 chars, and serch all if keyword is empty chars is 0
-    if ((filter.keyword.length > 3) || (filter.keyword.length == 0)) {
+    if ((filter.keyword.length > 3) || (filter.keyword.length === 0)) {
       dispatch({
         type: 'order/list',
         payload: {
@@ -50,7 +43,7 @@ export default function OrdersPage() {
           },
           filter: {
             order_number: filter.keyword,
-            person_name: filter.keyword,
+            person_name: filter.keyword
           }
         }
       })
@@ -58,7 +51,7 @@ export default function OrdersPage() {
   }, [filter.keyword])
 
   useEffect(() => {
-    console.log("sort by", filter.sort_by)
+    console.log('sort by', filter.sort_by)
     dispatch({
       type: 'order/list',
       payload: {
@@ -69,46 +62,46 @@ export default function OrdersPage() {
         },
         filter: {
           order_number: filter.keyword,
-          person_name: filter.keyword,
+          person_name: filter.keyword
         }
       }
     })
   }, [filter.sort_by])
 
   const download = ({ type }) => {
-    if (type === "")
-      return
-    
+    if (type === '') { return }
+
     filter.limit = filter.max_row
-    let query = Object.keys(filter)
+    const query = Object.keys(filter)
       .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(filter[k]))
-      .join('&');
+      .join('&')
 
     const requestOptions = {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    };
+      headers: { 'Content-Type': 'application/json' }
+    }
 
     fetch(`${BASE_URL}/order/download/${type}?${query}`, requestOptions)
       .then((res) => {
-        return res.blob();
+        return res.blob()
       })
       .then((blob) => {
-        const href = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = href;
-        link.setAttribute('download', `${type}.xlsx`); //or any other extension
-        document.body.appendChild(link);
-        link.click();
+        const href = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = href
+        link.setAttribute('download', `${type}.xlsx`) // or any other extension
+        document.body.appendChild(link)
+        link.click()
       })
       .catch((err) => {
-        return Promise.reject({ Error: 'Something Went Wrong', err });
+        // eslint-disable-next-line prefer-promise-reject-errors
+        return Promise.reject({ Error: 'Something Went Wrong', err })
       })
   }
 
   const handleChangeDownload = (e) => {
     const { id, value } = e.target
-    console.log("handle change download ID:" + id + ", value:" + value)
+    console.log('handle change download ID:' + id + ', value:' + value)
     download({ type: value })
   }
 
@@ -194,7 +187,7 @@ export default function OrdersPage() {
                       <input
                         className="flex-auto w-full pl-10 text-sm placeholder-opacity-50 rounded-md text-BLACK bg-opacity-20 bg-N200 placeholder-BLACK"
                         type="text" name="search" placeholder="Search for order"
-                        defaultValue={filter.keyword || ""}
+                        defaultValue={filter.keyword || ''}
                         id="keyword"
                         onChange={handleChange} />
                     </div>
@@ -219,7 +212,7 @@ export default function OrdersPage() {
                         <input
                           className="w-full pl-10 placeholder-opacity-50 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
                           type="text" name="search" placeholder="Search for order"
-                          defaultValue={filter.keyword || ""}
+                          defaultValue={filter.keyword || ''}
                           id="keyword"
                           onChange={handleChange} />
                       </div>
@@ -228,7 +221,7 @@ export default function OrdersPage() {
                   </div>
                   {/* Ends of second row: Mobile */}
 
-                  {/* // PRODUCTS LIST*/}
+                  {/* // PRODUCTS LIST */}
                   <div className="">
                     <OrderList setTotalPage={setTotalPage} filter={filter} />
                   </div>
@@ -236,7 +229,6 @@ export default function OrdersPage() {
               </div>
             </div>
           </div>
-
 
         </GlassDefault>
         {/* Ends Tabel (GlassDiv) */}

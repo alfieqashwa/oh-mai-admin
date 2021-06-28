@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
-import useSWR from "swr";
-import Router from "next/router";
-import useUser from "lib/useUser";
-import Cookies from "js-cookie";
-import PuffLoader from "react-spinners/PuffLoader";
-import Button from "components/widgets/dialog/Button";
-import { login } from "services/api/user";
-import { isTokenExist } from "utils/Auth";
-import LayoutNoSidebar from "layouts/layout_no_sidebar";
+import React, { useEffect, useState } from 'react';
+import Router from 'next/router';
+import Cookies from 'js-cookie';
+import { login } from 'services/api/user';
+import { isTokenExist } from 'utils/Auth';
+import LayoutNoSidebar from 'layouts/layout_no_sidebar';
+import Button from 'components/widgets/dialog/Button';
 export default function Login() {
   //useUser({ redirectTo: "/", redirectIfFound: true });
   const [wrongField, setWrongField] = useState(false);
@@ -16,14 +13,14 @@ export default function Login() {
   // const router = useRouter();
 
   async function loginMutation(email, password) {
-    console.log("email", email)
-    console.log("password", password)
+    console.log('email', email)
+    console.log('password', password)
 
     try {
       setLoading(true)
       const result = await login(email, password)
-      console.log("login response", result);
-      Cookies.set("token", result.login.token);
+      console.log('login response', result);
+      Cookies.set('token', result.login.token);
       
       if (result.login.token) {
         Router.reload(window.location.pathname)
@@ -31,7 +28,7 @@ export default function Login() {
         setLoading(false)
       }
     } catch (error) {
-      console.log("login failed", error)
+      console.log('login failed', error)
       setLoading(false)
     }
   }
@@ -52,7 +49,7 @@ export default function Login() {
   useEffect(() => {
     if (isTokenExist()) {
       setLoading(true)
-      Router.push("/analytics/summary");
+      Router.push('/analytics/summary');
     } else {
       // Router.reload(window.location.pathname)
     }
@@ -60,13 +57,13 @@ export default function Login() {
 
   useEffect(() => {
 
-    console.log("isi data", data)
+    console.log('isi data', data)
   }, [data]);
 
   return (
     <div
       className="flex p-grid p-align-center p-justify-center justify-center"
-      style={{ height: "calc(100vh - 100px)" }}
+      style={{ height: 'calc(100vh - 100px)' }}
     >
       {loading ? (
         <div className="text-N200">Please wait...</div>

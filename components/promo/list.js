@@ -1,15 +1,16 @@
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { BiTrash } from 'react-icons/bi'
+import { MdAddCircleOutline } from 'react-icons/md'
+import { FiFilter } from 'react-icons/fi'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { useDispatch, useStore } from 'react-redux'
 import Confirm from 'components/widgets/dialog/Confirm'
 import { deleteOrders } from 'services/api/order_services'
-import { parseAddress } from 'utils/OrderUtils'
 import OrderLookup from 'components/widgets/dialog/OrderLookup'
 import Link from 'next/link'
 
-export function OrderList({ filter, page }) {
+export function PromoList({ filter, page }) {
   console.log('/components/widget/pagination:filter', filter)
   const store = useStore()
   const dispatch = useDispatch()
@@ -25,11 +26,6 @@ export function OrderList({ filter, page }) {
   // eslint-disable-next-line no-unused-vars
   const [totalPage, setTotalPage] = useState(0)
   const [mTotal, setmTotal] = useState(0)
-
-  const moneyFormat = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'TWD'
-  })
 
   useEffect(() => {
     dispatch({
@@ -94,60 +90,96 @@ export function OrderList({ filter, page }) {
   return (
 
     <>
+      <div className="flex flex-row pt-4 pb-2 pl-4 space-x-2">
+        <div className="text-N200 font-normal text-xl mr-4">View Promo Code</div>
+        <button className="bg-N200 text-base font-normal px-4 hover:bg-P700 hover:text-N200">ALL</button>
+        <button className="bg-N200 text-base font-normal px-4 hover:bg-P700 hover:text-N200">ACTIVE</button>
+        <button className="bg-N200 text-base font-normal px-4 hover:bg-P700 hover:text-N200">DRAFT</button>
+        <button className="bg-N200 text-base font-normal px-4 hover:bg-P700 hover:text-N200">ARCHIEVED</button>
+      </div>
+      <div className="items-center justify-start hidden md:flex p-4" >
+        <div className="relative text-gray-600 focus-within:text-gray-400 w-1/3 mr-4">
+          <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+            <button type="submit" className="p-1 focus:outline-none focus:shadow-outline bg-transparent">
+              <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" className="w-6 h-6">
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z">
+                </path>
+              </svg>
+            </button>
+          </span>
+          <input type="search" name="q" className="w-full py-2 text-base text-white bg-gray-900 rounded-md pl-10
+            focus:outline-none focus:bg-white focus:text-gray-900"
+            placeholder="Search..." autoComplete="off" />
+        </div>
+        <div className="space-x-2">
+          <button className="bg-N200 text-base font-normal px-4 hover:bg-P700 hover:text-N200 inline-flex items-center">
+            <BiTrash className="w-5 h-5 mr-2" />
+            <span>DELETE</span>
+          </button>
+          <button className="bg-N200 text-base font-normal px-4 hover:bg-P700 hover:text-N200 inline-flex items-center">
+            <MdAddCircleOutline className="w-5 h-5 mr-2" />
+            <span>ADD CATEGORY</span>
+          </button>
+          <button className="bg-N200 text-base font-normal px-4 hover:bg-P700 hover:text-N200 inline-flex items-center">
+            <FiFilter className="w-5 h-5 mr-2" />
+            <span>FILTER</span>
+          </button>
+        </div>
+      </div>
       <table className="md:min-w-full w-full">
         <thead className="bg-N0 bg-opacity-30">
           <tr>
             <th scope="col"
               className="px-4 py-3 font-normal text-left text-N0">
-              Order No.
-          </th>
-            <th scope="col"
-              className="px-4 py-3 font-normal text-left text-N0"
-            >
-              Date & Time
-          </th>
+              Promo
+            </th>
             <th scope="col"
               className="px-4 py-3 font-normal text-left text-N0"
             >
               Status
-          </th>
+            </th>
+            <th scope="col"
+              className="px-4 py-3 font-normal text-left text-N0"
+            >
+              Start Date
+            </th>
             <th scope="col"
               className="hidden px-4 py-3 font-normal text-left text-N0 md:table-cell"
             >
-              Billing
-          </th>
+              End Date
+            </th>
             <th scope="col"
               className="hidden px-4 py-3 font-normal text-left md:table-cell text-N0"
             >
-              Total
-          </th>
+              Discount type
+            </th>
             <th scope="col"
               className="hidden px-4 py-3 font-normal text-left md:table-cell text-N0"
             >
               Actions
-          </th>
+            </th>
           </tr>
         </thead>
         <tbody className="">
           {orders.map((o, i) => (
             <tr key={o.order_number}>
               <td className="p-4 whitespace-nowrap">
-                <div className="text-sm text-N0 cursor-pointer" onClick={lookupOrder.bind(null, o)}>{o.order_number}</div>
+                <div className="text-sm text-N0 cursor-pointer" onClick={lookupOrder.bind(null, o)}>{'LICEWANG20'}</div>
               </td>
               <td className="p-4 whitespace-nowrap">
-                <div className="text-sm text-G400">{moment(o.order_datetime).format('DD/MM/YYYY HH:mm:ss')}</div>
+                <button className="text-xs bg-Y001">{'Active'}</button>
               </td>
               <td className="p-4 md:table-cell whitespace-nowrap">
-                <button className="text-xs bg-Y001">{o.order_status_payment}</button>
+                <div className="text-sm text-G400">{moment(o.order_datetime).format('DD/MM/YYYY HH:mm:ss')}</div>
+
               </td>
               <td className="hidden p-4 text-sm md:table-cell text-N0">
-                <p className="text-N0 text-xs">{parseAddress(o)}</p>
-                <p className="text-N0 opacity-70 text-sm">via Credit Card (ECPay)</p>
+                <p className="text-N0 opacity-70 text-sm">18/05/21 18:00</p>
               </td>
-              <td className="hidden p-4 text-sm md:table-cell text-N0 whitespace-nowrap">{moneyFormat.format(o.total_price)}</td>
+              <td className="hidden p-4 text-sm md:table-cell text-N0 whitespace-nowrap">{'Percentage Discount'}</td>
               <td className="hidden content-center align-middle p-4 whitespace-nowrap flex flex-row content-between md:flex">
                 <Link href={'/orders/details?num=' + o.order_number} className="">
-                  <HiOutlinePencilAlt className="w-5 h-5 text-N0 transition duration-200 ease-in-out text-N0 hover:text-opacity-75 mr-4 cursor-pointer" />
+                  <HiOutlinePencilAlt className="w-5 h-5 text-N0 transition duration-200 ease-in-out hover:text-opacity-75 mr-4 cursor-pointer" />
                 </Link>
                 <a href="#" className="transition duration-200 ease-in-out text-N0 hover:text-opacity-75" onClick={showDeleteData.bind(null, o.order_number)}>
                   <BiTrash className="w-5 h-5" />

@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { Menu, Transition } from '@headlessui/react'
@@ -65,7 +65,7 @@ export default function Kol() {
             <Menu as="div" className="relative">
               {({ open }) => (
                 <>
-                  <Menu.Button className={`bg-transparent focus:outline-none ${open ? "text-P400" : ""}`}>
+                  <Menu.Button className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''}`}>
                     <BsThreeDotsVertical className="w-6 h-6" />
                   </Menu.Button>
                   <Transition
@@ -81,7 +81,7 @@ export default function Kol() {
                     <Menu.Items
                       static
                       className={`
-                   ${!open ? "motion-safe:animate-bounce transition duration-700 ease-in-out" : ""}
+                   ${!open ? 'motion-safe:animate-bounce transition duration-700 ease-in-out' : ''}
                    absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                    `}
                     >

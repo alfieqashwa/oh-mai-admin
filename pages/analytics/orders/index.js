@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 
 import { Header } from 'components/header'
@@ -45,6 +45,6 @@ export default function Orders() {
 }
 
 const dates = [
-  { name: "Current Year (Jan 1 - Dec 31, 2021)" },
-  { name: "Previous Year (Jan 1 - Dec 31, 2020)" }
+  { name: 'Current Year (Jan 1 - Dec 31, 2021)' },
+  { name: 'Previous Year (Jan 1 - Dec 31, 2020)' }
 ]
