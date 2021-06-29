@@ -1,3 +1,4 @@
+import React from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 
 class MyDocument extends Document {
@@ -23,8 +24,8 @@ class MyDocument extends Document {
           <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
         </Head>
         <body className="w-screen h-screen bg-center bg-cover"
-        // style={{ 
-        //   backgroundImage: "url(/mainbg.png)", 
+        // style={{
+        //   backgroundImage: "url(/mainbg.png)",
         //   backgroundRepeat: "no-repeat",
         //   backgroundAttachment: "fixed"
         // }}

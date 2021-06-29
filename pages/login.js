@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import Router from 'next/router';
-import Cookies from 'js-cookie';
-import { login } from 'services/api/user';
-import { isTokenExist } from 'utils/Auth';
-import LayoutNoSidebar from 'layouts/layout_no_sidebar';
-import Button from 'components/widgets/dialog/Button';
+import React, { useEffect, useState } from 'react'
+import Router from 'next/router'
+import Cookies from 'js-cookie'
+import { login } from 'services/api/user'
+import { isTokenExist } from 'utils/Auth'
+import LayoutNoSidebar from 'layouts/layout_no_sidebar'
+import Button from 'components/widgets/dialog/Button'
 export default function Login() {
-  //useUser({ redirectTo: "/", redirectIfFound: true });
-  const [wrongField, setWrongField] = useState(false);
+  // useUser({ redirectTo: "/", redirectIfFound: true });
+  const [wrongField, setWrongField] = useState(false)
   const [data, setData] = useState()
   const [loading, setLoading] = useState(false)
   // const router = useRouter();
@@ -19,9 +19,9 @@ export default function Login() {
     try {
       setLoading(true)
       const result = await login(email, password)
-      console.log('login response', result);
-      Cookies.set('token', result.login.token);
-      
+      console.log('login response', result)
+      Cookies.set('token', result.login.token)
+
       if (result.login.token) {
         Router.reload(window.location.pathname)
       } else {
@@ -43,31 +43,32 @@ export default function Login() {
   }
 
   function onLoginClicked() {
-    loginMutation(data.email, data.password);
+    loginMutation(data.email, data.password)
   }
 
   useEffect(() => {
     if (isTokenExist()) {
       setLoading(true)
-      Router.push('/analytics/summary');
+      Router.push('/analytics/summary')
     } else {
       // Router.reload(window.location.pathname)
     }
   }, [])
 
   useEffect(() => {
-
     console.log('isi data', data)
-  }, [data]);
+  }, [data])
 
   return (
     <div
       className="flex p-grid p-align-center p-justify-center justify-center"
       style={{ height: 'calc(100vh - 100px)' }}
     >
-      {loading ? (
+      {loading
+        ? (
         <div className="text-N200">Please wait...</div>
-      ) : (
+          )
+        : (
         <div className="w-1/3 self-center flex-col">
           <div className="text-N200 py-4 text-4xl font-semibold text-center">Admin Login</div>
           <div className="glass mb-10 p-10">
@@ -95,9 +96,9 @@ export default function Login() {
             {wrongField && <p className="p-invalid">Wrong email/password.</p>}
           </div>
         </div>
-      )}
+          )}
     </div>
-  );
+  )
 }
 
 Login.Layout = LayoutNoSidebar

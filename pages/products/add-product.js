@@ -1,11 +1,10 @@
-import { Header } from 'components/header';
+import { Header } from 'components/header'
 import { GlassHeader } from 'components/glassHeader'
-import { Title, Media, ProductStatus, ProductVariants, ProductType, Inventory, Price, Shipping } from 'components/products/addProduct';
-import { useEffect } from 'react';
-import { checkLogin } from 'utils/Auth';
+import { Title, Media, ProductStatus, ProductVariants, ProductType, Inventory, Price, Shipping } from 'components/products/addProduct'
+import React, { useEffect } from 'react'
+import { checkLogin } from 'utils/Auth'
 
 function AddProduct(props) {
-
   useEffect(() => {
     checkLogin()
   }, [])
@@ -88,9 +87,9 @@ function AddProduct(props) {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-AddProduct.propTypes = {};
+AddProduct.propTypes = {}
 
-export default AddProduct;
+export default AddProduct

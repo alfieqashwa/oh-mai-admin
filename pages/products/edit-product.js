@@ -1,13 +1,11 @@
-import { GlassDefault } from 'components/glassDefault';
-import { Header } from 'components/header';
-import { ConfirmationSavedButton, Title, Media, ProductStatus, ProductVariants, ProductType, Inventory, Price, Shipping } from 'components/products/addProduct';
-import { GET_PRODUCT_FROM_SLUG, GET_PRODUCT_GQL, UPDATE_PRODUCT_GQL } from 'graphql/product';
-import { getClient } from 'lib/graphqlclient';
-import { useEffect, useState } from 'react';
-import useSWR from 'swr';
+import { Header } from 'components/header'
+import { ConfirmationSavedButton, Title, Media, ProductStatus, ProductVariants, ProductType, Inventory, Price, Shipping } from 'components/products/addProduct'
+import { GET_PRODUCT_GQL, UPDATE_PRODUCT_GQL } from 'graphql/product'
+import { getClient } from 'lib/graphqlclient'
+import React, { useEffect, useState } from 'react'
 
 const EditProduct = (props) => {
-  console.log("start EditProduct...")
+  console.log('start EditProduct...')
 
   const client = getClient()
   const { id } = props.query
@@ -55,34 +53,34 @@ const EditProduct = (props) => {
   // }, [product])
 
   useEffect(() => {
-    console.log("Edit Product/ component did mount")
+    console.log('Edit Product/ component did mount')
 
     client.request(GET_PRODUCT_GQL, variables).then((data) => {
-      console.log("Data product", data)
+      console.log('Data product', data)
       setProduct(data.getProductByID)
-    }).catch(err => console.log("error product", err))
+    }).catch(err => console.log('error product', err))
   }, [])
 
   useEffect(() => {
-    console.log("Edit Product/ Product", product)
+    console.log('Edit Product/ Product', product)
   }, [product])
 
   const update = () => {
-    console.log("Update...")
+    console.log('Update...')
     client.request(UPDATE_PRODUCT_GQL, product).then((data) => {
-      console.log("Update success", data)
+      console.log('Update success', data)
       setProduct(data.updateProduct)
-    }).catch(err => console.log("error product", err))
+    }).catch(err => console.log('error product', err))
   }
 
   const handleChange = (e) => {
-    console.log("handleChange: product before update", product)
-    const {id , value} = e.target   
-    console.log("handleChange: id", id)
-    console.log("handleChange: value", value)
+    console.log('handleChange: product before update', product)
+    const { id, value } = e.target
+    console.log('handleChange: id', id)
+    console.log('handleChange: value', value)
 
     let val = null
-    
+
     if (value === 'true') {
       val = true
     } else if (value === 'false') {
@@ -92,8 +90,8 @@ const EditProduct = (props) => {
     }
 
     setProduct(prevState => ({
-        ...prevState,
-        [id] : val
+      ...prevState,
+      [id]: val
     }))
   }
 
@@ -131,7 +129,7 @@ const EditProduct = (props) => {
             {/* Mobile View Only */}
 
             {/* Title */}
-            <Title valDescription={product?.description} valTitle={product?.product_name} 
+            <Title valDescription={product?.description} valTitle={product?.product_name}
               onChange={handleChange} />
 
             {/* Media */}
@@ -161,7 +159,7 @@ const EditProduct = (props) => {
             <Inventory sku={product?.sku} quantity={product?.stock_quantity} onChange={handleChange} />
 
             {/* Price */}
-            <Price basePrice={product?.base_price} costPrice={product?.cost_price} 
+            <Price basePrice={product?.base_price} costPrice={product?.cost_price}
               salePrice={product?.sale_price}
               isOnSale={product?.on_sale}
               onChange={handleChange}
@@ -173,14 +171,14 @@ const EditProduct = (props) => {
         </div>
       </div>
     </>
-  );
+  )
 }
 
 EditProduct.getInitialProps = ({ query }) => {
-  console.log("Edit products: ", query)
+  console.log('Edit products: ', query)
   return { query }
 }
 
-EditProduct.propTypes = {};
+EditProduct.propTypes = {}
 
-export default EditProduct;
+export default EditProduct

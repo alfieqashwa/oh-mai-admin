@@ -1,15 +1,14 @@
-import { Header } from 'components/header';
-import Cookies from 'js-cookie';
-import router from 'next/router';
-import { useEffect } from 'react';
-import { isTokenExist } from 'utils/Auth';
+import { Header } from 'components/header'
+import router from 'next/router'
+import React, { useEffect } from 'react'
+import { isTokenExist } from 'utils/Auth'
 
 function Index(props) {
   useEffect(() => {
     if (isTokenExist()) {
-      router.push("/analytics/summary")
+      router.push('/analytics/summary')
     } else {
-      router.push("/login")
+      router.push('/login')
     }
   }, [])
 
@@ -20,9 +19,9 @@ function Index(props) {
         <h1>Welcome</h1>
       </div>
     </>
-  );
+  )
 }
 
-Index.propTypes = {};
+Index.propTypes = {}
 
-export default Index;
+export default Index

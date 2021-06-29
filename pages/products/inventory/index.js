@@ -7,12 +7,11 @@ import { AiOutlineArrowLeft } from 'react-icons/ai'
 
 import { GlassDefault } from 'components/glassDefault'
 import { Header } from 'components/header'
-import { Pagination, ProductListTable, InventoryMobileView } from 'components/products/inventory'
-import { useEffect } from 'react'
+import { Pagination, ProductListTable } from 'components/products/inventory'
+import React, { useEffect } from 'react'
 import { checkLogin } from 'utils/Auth'
 
 export default function Inventory() {
-  
   useEffect(() => {
     checkLogin()
   }, [])
@@ -162,7 +161,7 @@ export default function Inventory() {
                   </div>
                   {/* Ends of second row: Mobile */}
 
-                  {/* // PRODUCTS LIST*/}
+                  {/* // PRODUCTS LIST */}
                   <div className="mt-4">
                     <ProductListTable />
                   </div>
@@ -170,7 +169,6 @@ export default function Inventory() {
               </div>
             </div>
           </div>
-
 
         </GlassDefault>
         {/* Ends Tabel (GlassDiv) */}

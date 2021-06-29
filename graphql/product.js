@@ -1,4 +1,4 @@
-import { gql } from "graphql-request";
+import { gql } from 'graphql-request'
 
 export const products = `{
     products {
@@ -16,7 +16,7 @@ export const products = `{
       stock_status
       kol_profit
     }
-  }`;
+  }`
 
 export const GET_PRODUCT_FROM_SLUG = `query getProductFromSlug($filter: UserFilter)
   {
@@ -37,7 +37,7 @@ export const GET_PRODUCT_FROM_SLUG = `query getProductFromSlug($filter: UserFilt
       tags
       kol_profit
     }
-  }`;
+  }`
 
 export const CREATE_PRODUCT = `mutation createproduct(
     $sku: String,
@@ -76,7 +76,7 @@ export const CREATE_PRODUCT = `mutation createproduct(
       id
     }
   }
-  `;
+  `
 
 export const UPDATE_PRODUCT = `mutation updateProduct(
     $sku: String,
@@ -115,14 +115,14 @@ export const UPDATE_PRODUCT = `mutation updateProduct(
       id
     }
   }
-  `;
+  `
 
 export const DELETE_PRODUCT = `mutation deleteProduct(
   $id: ID
   ){
     deleteProduct(id: $id)
   }
-  `;
+  `
 
 export const GET_PRODUCT_GQL = gql`
   query getProductByID($id: ID)
