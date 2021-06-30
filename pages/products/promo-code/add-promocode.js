@@ -8,7 +8,7 @@ import { TitleWithBackButton } from "components/titleWithBackButton";
 export default function AddPromocode() {
   return (
       <div className="pr-12 pl-7">
-          <Header title="Products - Add Product" />
+          <Header title="Products - Add Promo Code" />
 
           {/* Discard Save Button Confirmation (??) on top of the page */}
           <GlassHeader title="unsaved promo code">
