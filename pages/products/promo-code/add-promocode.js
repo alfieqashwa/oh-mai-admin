@@ -1,14 +1,22 @@
+import { useEffect } from "react";
+import { checkLogin } from "utils/Auth";
 import { FiSearch } from "react-icons/fi";
 import { GrClose } from "react-icons/gr"
+
+import { Header } from "components/header";
 import { GlassHeader } from "components/glassHeader";
 import { GlassDefault } from "components/glassDefault"
-import { Header } from "components/header";
 import { TitleWithBackButton } from "components/titleWithBackButton";
 
 export default function AddPromocode() {
+
+  useEffect(() => {
+    checkLogin()
+  }, [])
+
   return (
       <div className="pr-12 pl-7">
-          <Header title="Products - Add Promo Code" />
+          <Header title="Products - Add Promo-Code" />
 
           {/* Discard Save Button Confirmation (??) on top of the page */}
           <GlassHeader title="unsaved promo code">
