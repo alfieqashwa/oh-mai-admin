@@ -233,12 +233,12 @@ export default function AddPromocode() {
                 <div className="mt-3.5">
                   <p className="capitalize w350 whitespace-nowrap text-N0">quantity</p>
                   <input type="number" name="quantity" placeholder="0" className="w-full mt-1 rounded bg-N200 bg-opacity-20 text-N0 text-opacity-70 placeholder-N0 placeholder-opacity-70" />
-                  <p className="text-N0 w350 text-opacity-70">This indicates how many times a promo code can be used by all customers before being invalid</p>
+                  <p className="mt-1 text-N0 w350 text-opacity-70">This indicates how many times a promo code can be used by all customers before being invalid</p>
                 </div>
                 <div className="mt-4">
                   <p className="capitalize w350 whitespace-nowrap text-N0">Usage limits per user</p>
                   <input type="number" name="usage-limits-per-user" placeholder="0" className="w-full mt-1 rounded bg-N200 bg-opacity-20 text-N0 text-opacity-70 placeholder-N0 placeholder-opacity-70" />
-                  <p className="text-N0 w350 text-opacity-70">This indicates how many times a promo code can be used by a single user before being invalid</p>
+                  <p className="mt-1 text-N0 w350 text-opacity-70">This indicates how many times a promo code can be used by a single user before being invalid</p>
                 </div>
               </GlassDefault>
             </div>
