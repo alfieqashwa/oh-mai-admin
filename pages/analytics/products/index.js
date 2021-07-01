@@ -62,7 +62,7 @@ export default function Products() {
       const result = await client.request(GET_LIST_TOP_SALES_PRODUCT)
       setListTopSalesProduct(result.getListTopSalesProduct)
 
-      console.log(JSON.stringify(result, null, 4))
+      // console.log(JSON.stringify(result, null, 4))
     } catch (error) {
       console.log(error)
     }
@@ -243,7 +243,7 @@ export default function Products() {
                   <td className="p-4 text-right underline w400">{t.order}</td>
                   <td className="p-4 text-right w400">{t.category}</td>
                   <td className="py-4 text-center x-4 w400 whitespace-nowrap">
-                    {/*  TODO: because the component is also using in the other page, for now i leave it as it is until needed to avoid crashing in the other pages */}
+                    {/*  TODO: because this components is reusable, i leave it as it is for now until needed to avoid crashing in the other pages */}
                     <SwitchOnOff isEnabled={status} />
                   </td>
                 </tr>
