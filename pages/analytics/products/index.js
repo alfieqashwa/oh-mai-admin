@@ -4,22 +4,50 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 
 import { Header } from 'components/header'
-import { DateRangeComparison, ShowProductSelect, ChartView, PaginationProducts, SwitchOnOff, ProductPerformanceCard } from 'components/analytics/products'
+import {
+  DateRangeComparison,
+  ShowProductSelect,
+  ChartView,
+  PaginationProducts,
+  SwitchOnOff,
+  ProductPerformanceCard,
+} from 'components/analytics/products'
+
 import { checkLogin } from 'utils/Auth'
+import { getClient } from 'lib/graphqlclient'
+
+const GET_LIST_TOP_SALES_PRODUCT = `{
+  getListTopSalesProduct {
+    sn
+    product_title
+    sku
+    item_sold
+    net_sales
+    order
+    category
+  }
+}`
 
 export const DateRangeCtx = createContext(null)
 
 export default function Products() {
-  const [startCurrentDate, setStartCurrentDate] = useState(new Date('2021/01/01'))
+  const [startCurrentDate, setStartCurrentDate] = useState(
+    new Date('2021/01/01')
+  )
   const [endCurrentDate, setEndCurrentDate] = useState(new Date())
-  const [startPreviousDate, setStartPreviousDate] = useState(new Date('2020/01/01'))
+  const [startPreviousDate, setStartPreviousDate] = useState(
+    new Date('2020/01/01')
+  )
   const [endPreviousDate, setEndPreviousDate] = useState(new Date('2020/12/31'))
+
+  const [listTopSalesProduct, setListTopSalesProduct] = useState()
+  const [status, setStatus] = useState(false)
 
   const storeDateRange = {
     startCurrent: [startCurrentDate, setStartCurrentDate],
     endCurrent: [endCurrentDate, setEndCurrentDate],
     startPrevious: [startPreviousDate, setStartPreviousDate],
-    endPrevious: [endPreviousDate, setEndPreviousDate]
+    endPrevious: [endPreviousDate, setEndPreviousDate],
   }
 
   useEffect(() => {
@@ -27,12 +55,35 @@ export default function Products() {
     checkLogin()
   }, [])
 
+  const client = getClient()
+
+  async function loadData() {
+    try {
+      const result = await client.request(GET_LIST_TOP_SALES_PRODUCT)
+      setListTopSalesProduct(result.getListTopSalesProduct)
+
+      console.log(JSON.stringify(result, null, 4))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
+  useEffect(() => {
+    if (listTopSalesProduct) {
+      console.log(`listTopSalesProduct_SKU: ${listTopSalesProduct?.[0].sku}`)
+    }
+  }, [listTopSalesProduct])
+
   return (
     <div className="pb-4">
       <Header title="Analytics - Products" />
       <div className="my-8 ml-6 mr-12">
         {/* header */}
-        <h2 className="w800">Analytics</h2>
+        <h2 className="w800">Analytics - Product</h2>
         <div className="flex items-start justify-between w-full mt-5 space-x-0">
           <DateRangeCtx.Provider value={storeDateRange}>
             <DateRangeComparison />
@@ -50,7 +101,10 @@ export default function Products() {
           <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
             <h2 className="w250 text-N900">sort by</h2>
             <div className="px-4">
-              <select name="date-range" className="px-10 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none">
+              <select
+                name="date-range"
+                className="px-10 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none"
+              >
                 <option>Ascending</option>
                 <option>Descending</option>
               </select>
@@ -68,7 +122,11 @@ export default function Products() {
               <Menu as="div" className="relative">
                 {({ open }) => (
                   <>
-                    <Menu.Button className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''}`}>
+                    <Menu.Button
+                      className={`bg-transparent focus:outline-none ${
+                        open ? 'text-P400' : ''
+                      }`}
+                    >
                       <BsThreeDotsVertical className="w-6 h-6" />
                     </Menu.Button>
                     <Transition
@@ -84,7 +142,11 @@ export default function Products() {
                       <Menu.Items
                         static
                         className={`
-                  ${!open ? 'motion-safe:animate-bounce transition duration-700 ease-in-out' : ''}
+                  ${
+                    !open
+                      ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
+                      : ''
+                  }
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                   `}
                       >
@@ -108,31 +170,81 @@ export default function Products() {
           <table className="md:min-w-full text-N0">
             <thead className="bg-N200 bg-opacity-30">
               <tr>
-                <th scope="col" className="p-4 text-center capitalize w400 whitespace-nowrap">s/n</th>
-                <th scope="col" className="p-4 text-left capitalize w400 whitespace-nowrap">product title</th>
-                <th scope="col" className="p-4 text-right capitalize w400 whitespace-nowrap">SKU</th>
-                <th scope="col" className="p-4 text-right capitalize w400 whitespace-nowrap">Items Sold</th>
-                <th scope="col" className="p-4 text-right capitalize w400 whitespace-nowrap">net sales</th>
-                <th scope="col" className="p-4 text-right capitalize w400 whitespace-nowrap">orders</th>
-                <th scope="col" className="p-4 text-right capitalize w400 whitespace-nowrap">category</th>
-                <th scope="col" className="p-4 text-center capitalize w400 whitespace-nowrap">toggle chart</th>
+                <th
+                  scope="col"
+                  className="p-4 text-center capitalize w400 whitespace-nowrap"
+                >
+                  s/n
+                </th>
+                <th
+                  scope="col"
+                  className="p-4 text-left capitalize w400 whitespace-nowrap"
+                >
+                  product title
+                </th>
+                <th
+                  scope="col"
+                  className="p-4 text-right capitalize w400 whitespace-nowrap"
+                >
+                  SKU
+                </th>
+                <th
+                  scope="col"
+                  className="p-4 text-right capitalize w400 whitespace-nowrap"
+                >
+                  Items Sold
+                </th>
+                <th
+                  scope="col"
+                  className="p-4 text-right capitalize w400 whitespace-nowrap"
+                >
+                  net sales
+                </th>
+                <th
+                  scope="col"
+                  className="p-4 text-right capitalize w400 whitespace-nowrap"
+                >
+                  orders
+                </th>
+                <th
+                  scope="col"
+                  className="p-4 text-right capitalize w400 whitespace-nowrap"
+                >
+                  category
+                </th>
+                <th
+                  scope="col"
+                  className="p-4 text-center capitalize w400 whitespace-nowrap"
+                >
+                  toggle chart
+                </th>
               </tr>
             </thead>
 
             {/* Table Content */}
             <tbody className="bg-N700 text-N0">
-              {tableBody.map(t => (
-                <tr key={t.id} className="">
-                  <td className="p-4 text-center bg-N600 w400 whitespace-nowrap">{t.sn}</td>
-                  <td className="p-4 text-left underline w400">{t.productTitle}</td>
-                  <td className="p-4 text-right w400 whitespace-nowrap">{t.sku}</td>
-                  <td className="p-4 text-right w400 whitespace-nowrap">{t.itemsSold}</td>
-                  <td className="p-4 text-right w400 whitespace-nowrap">${t.netSales.toFixed(2)}</td>
-                  <td className="p-4 text-right underline w400">{t.orders}</td>
+              {listTopSalesProduct?.map((t, i) => (
+                <tr key={i} className="">
+                  <td className="p-4 text-center bg-N600 w400 whitespace-nowrap">
+                    {t.sn}
+                  </td>
+                  <td className="p-4 text-left underline w400">
+                    {t.product_title}
+                  </td>
+                  <td className="p-4 text-right w400 whitespace-nowrap">
+                    {t.sku}
+                  </td>
+                  <td className="p-4 text-right w400 whitespace-nowrap">
+                    {t.item_sold}
+                  </td>
+                  <td className="p-4 text-right w400 whitespace-nowrap">
+                    ${t.net_sales.toFixed(2)}
+                  </td>
+                  <td className="p-4 text-right underline w400">{t.order}</td>
                   <td className="p-4 text-right w400">{t.category}</td>
-                  <td
-                    className="py-4 text-center x-4 w400 whitespace-nowrap">
-                    <SwitchOnOff isEnabled={t.status} />
+                  <td className="py-4 text-center x-4 w400 whitespace-nowrap">
+                    {/*  TODO: because the component is also using in the other page, for now i leave it as it is until needed to avoid crashing in the other pages */}
+                    <SwitchOnOff isEnabled={status} />
                   </td>
                 </tr>
               ))}
@@ -158,8 +270,48 @@ export default function Products() {
 
 // Best Selling Product List Dummy Data
 const tableBody = [
-  { id: 1, sn: '1', productTitle: 'Zelta: Breath of the Wild', sku: '128SKXUM-CI', itemsSold: 100, netSales: 1000.00, orders: 10, category: 'Games', status: true },
-  { id: 2, sn: '2', productTitle: 'Persona 5', sku: 'PERS9290S-XL', itemsSold: 24, netSales: 400.00, orders: 10, category: 'Games', status: false },
-  { id: 3, sn: '3', productTitle: 'Play Station 5 Cyberpunk: 2077 Skin Wrap Edition', sku: 'PS829-SIMNXO', itemsSold: 2, netSales: 200.00, orders: 1, category: 'Games Accessories', status: false },
-  { id: 4, sn: '4', productTitle: 'Back4Blood', sku: 'B4B12312490L', itemsSold: 2, netSales: 0.00, orders: 1, category: 'Games', status: true }
+  {
+    id: 1,
+    sn: '1',
+    productTitle: 'Zelta: Breath of the Wild',
+    sku: '128SKXUM-CI',
+    itemsSold: 100,
+    netSales: 1000.0,
+    orders: 10,
+    category: 'Games',
+    status: true,
+  },
+  {
+    id: 2,
+    sn: '2',
+    productTitle: 'Persona 5',
+    sku: 'PERS9290S-XL',
+    itemsSold: 24,
+    netSales: 400.0,
+    orders: 10,
+    category: 'Games',
+    status: false,
+  },
+  {
+    id: 3,
+    sn: '3',
+    productTitle: 'Play Station 5 Cyberpunk: 2077 Skin Wrap Edition',
+    sku: 'PS829-SIMNXO',
+    itemsSold: 2,
+    netSales: 200.0,
+    orders: 1,
+    category: 'Games Accessories',
+    status: false,
+  },
+  {
+    id: 4,
+    sn: '4',
+    productTitle: 'Back4Blood',
+    sku: 'B4B12312490L',
+    itemsSold: 2,
+    netSales: 0.0,
+    orders: 1,
+    category: 'Games',
+    status: true,
+  },
 ]
