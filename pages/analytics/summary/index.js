@@ -13,6 +13,7 @@ import {
   PerformanceCard,
   TableSummary,
 } from 'components/analytics/summary'
+import { thousandSeparator } from 'utils/thousand-separator'
 
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
@@ -172,9 +173,14 @@ export default function Summary() {
               </div>
               <div className="w-40">
                 <p className="text-opacity-50 w400 text-N0">Net Sales</p>
-                <p className="w400 text-N0">
-                  ${leaderboardProduct?.total_net_sales}
-                </p>
+                {leaderboardProduct && (
+                  <p className="w400 text-N0">
+                    $
+                    {thousandSeparator(
+                      leaderboardProduct.total_net_sales.toFixed(2)
+                    )}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -234,9 +240,14 @@ export default function Summary() {
               </div>
               <div className="w-40">
                 <p className="text-opacity-50 w400 text-N0">Net Sales</p>
-                <p className="w400 text-N0">
-                  ${leaderboardKol?.total_net_sales}
-                </p>
+                {leaderboardKol && (
+                  <p className="w400 text-N0">
+                    $
+                    {thousandSeparator(
+                      leaderboardKol.total_net_sales.toFixed(2)
+                    )}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -298,9 +309,14 @@ export default function Summary() {
               </div>
               <div className="w-40">
                 <p className="text-opacity-50 w400 text-N0">Net Sales</p>
-                <p className="w400 text-N0">
-                  ${leaderboardCustomer?.total_net_sales}
-                </p>
+                {leaderboardCustomer && (
+                  <p className="w400 text-N0">
+                    $
+                    {thousandSeparator(
+                      leaderboardCustomer.total_net_sales.toFixed(2)
+                    )}
+                  </p>
+                )}
               </div>
             </div>
           </div>
