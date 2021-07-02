@@ -96,7 +96,7 @@ export default function Summary() {
       <Header title="Analytics - Summary" />
       <div className="my-8 ml-6 mr-12">
         {/* header */}
-        <h2 className="w800">Analytics</h2>
+        <h2 className="w800">Analytics - Summary</h2>
 
         {/* second row */}
         <DateRangeSelect
