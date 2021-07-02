@@ -1,7 +1,6 @@
 import { useState, Fragment, useEffect } from 'react'
 import Link from 'next/link'
-import { Listbox, Menu, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronDownIcon } from '@heroicons/react/solid'
+import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { SiGoogleanalytics } from 'react-icons/si'
 
