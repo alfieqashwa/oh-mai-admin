@@ -1,18 +1,15 @@
-import { useState, Fragment, useEffect } from 'react'
-import Link from 'next/link'
-import { Menu, Transition } from '@headlessui/react'
+import { useState, useEffect } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import { SiGoogleanalytics } from 'react-icons/si'
 
 import { Header } from 'components/header'
 import {
   ChartView,
   DateRangeSelect,
+  LeaderboardCardType,
   PerformanceBorder,
   PerformanceCard,
   TableSummary,
 } from 'components/analytics/summary'
-import { thousandSeparator } from 'utils/thousand-separator'
 
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
@@ -115,210 +112,36 @@ export default function Summary() {
         {/* Leaderboard's Cards */}
         <div className="grid grid-cols-3">
           {/* Starts LeaderBoard Best Selling Product */}
-          <div className="relative px-5 bg-[#E0E0F24D] h-52 bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]">
-            <Menu>
-              {({ open }) => (
-                <>
-                  <Menu.Button
-                    className={`absolute bg-transparent top-4 right-3 focus:outline-none ${
-                      open ? 'text-P400' : 'text-N0'
-                    }`}
-                  >
-                    <BsThreeDotsVertical className="w-6 h-6" />
-                  </Menu.Button>
-                  <Transition
-                    show={open}
-                    as={Fragment}
-                    enter="transition ease-out duration-200"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items
-                      static
-                      className="absolute shadow-xl top-16 right-4 focus:outline-none"
-                    >
-                      <Link href="/analytics/summary/best-selling-product">
-                        <a>
-                          <Menu.Item
-                            as="button"
-                            className="flex items-center justify-between w-full px-4 py-2 transition duration-300 ease-in-out rounded focus:outline-none bg-N0 hover:bg-N300"
-                          >
-                            <SiGoogleanalytics className="w-6 h-6" />
-                            <h4 className="pl-8 w250 text-N900 whitespace-nowrap">
-                              view leaderboard
-                            </h4>
-                          </Menu.Item>
-                        </a>
-                      </Link>
-                    </Menu.Items>
-                  </Transition>
-                </>
-              )}
-            </Menu>
-
-            <h5 className="mt-5 text-opacity-50 w250 text-N0">
-              best selling product
-            </h5>
-            <h4 className="mt-3 w600 text-N0">{leaderboardProduct?.title}</h4>
-            <div className="flex justify-start mt-3 space-x-3">
-              <div className="w-40">
-                <p className="text-opacity-50 w400 text-N0">Total Orders</p>
-                <p className="w400 text-N0">
-                  {leaderboardProduct?.total_order}
-                </p>
-              </div>
-              <div className="w-40">
-                <p className="text-opacity-50 w400 text-N0">Net Sales</p>
-                {leaderboardProduct && (
-                  <p className="w400 text-N0">
-                    $
-                    {thousandSeparator(
-                      leaderboardProduct.total_net_sales.toFixed(2)
-                    )}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
+          <LeaderboardCardType
+            path="/analytics/summary/best-selling-product"
+            cardName="best selling product"
+            title={leaderboardProduct?.title}
+            totalOrder={leaderboardProduct?.total_order}
+            totalNetSales={leaderboardProduct?.total_net_sales}
+            leaderboardQuery={leaderboardProduct}
+          />
           {/* Ends LeaderBoard Best Selling Product */}
 
           {/* Starts LeaderBoard Top KOL */}
-          <div className="relative px-5 bg-[#E0E0F24D] h-52 bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]">
-            <Menu>
-              {({ open }) => (
-                <>
-                  <Menu.Button
-                    className={`absolute bg-transparent top-4 right-3 focus:outline-none ${
-                      open ? 'text-P400' : 'text-N0'
-                    }`}
-                  >
-                    <BsThreeDotsVertical className="w-6 h-6" />
-                  </Menu.Button>
-                  <Transition
-                    show={open}
-                    as={Fragment}
-                    enter="transition ease-out duration-200"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items
-                      static
-                      className="absolute shadow-xl top-16 right-4 focus:outline-none"
-                    >
-                      <Link href="/analytics/summary/top-kol">
-                        <a>
-                          <Menu.Item
-                            as="button"
-                            className="flex items-center justify-between w-full px-4 py-2 transition duration-300 ease-in-out rounded focus:outline-none bg-N0 hover:bg-N300"
-                          >
-                            <SiGoogleanalytics className="w-6 h-6" />
-                            <h4 className="pl-8 w250 text-N900 whitespace-nowrap">
-                              view leaderboard
-                            </h4>
-                          </Menu.Item>
-                        </a>
-                      </Link>
-                    </Menu.Items>
-                  </Transition>
-                </>
-              )}
-            </Menu>
-
-            <h5 className="mt-5 text-opacity-50 w250 text-N0">top kol</h5>
-            <h4 className="mt-3 w600 text-N0">{leaderboardKol?.title}</h4>
-            <div className="flex justify-start mt-3 space-x-3">
-              <div className="w-40">
-                <p className="text-opacity-50 w400 text-N0">Total Orders</p>
-                <p className="w400 text-N0">{leaderboardKol?.total_order}</p>
-              </div>
-              <div className="w-40">
-                <p className="text-opacity-50 w400 text-N0">Net Sales</p>
-                {leaderboardKol && (
-                  <p className="w400 text-N0">
-                    $
-                    {thousandSeparator(
-                      leaderboardKol.total_net_sales.toFixed(2)
-                    )}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
+          <LeaderboardCardType
+            path="/analytics/summary/top-kol"
+            cardName="top kol"
+            title={leaderboardKol?.title}
+            totalOrder={leaderboardKol?.total_order}
+            totalNetSales={leaderboardKol?.total_net_sales}
+            leaderboardQuery={leaderboardKol}
+          />
           {/* Ends LeaderBoard Top KOL */}
 
           {/* Starts LeaderBoard Top Customer */}
-          <div className="relative px-5 bg-[#E0E0F24D] h-52 bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]">
-            <Menu>
-              {({ open }) => (
-                <>
-                  <Menu.Button
-                    className={`absolute bg-transparent top-4 right-3 focus:outline-none ${
-                      open ? 'text-P400' : 'text-N0'
-                    }`}
-                  >
-                    <BsThreeDotsVertical className="w-6 h-6" />
-                  </Menu.Button>
-                  <Transition
-                    show={open}
-                    as={Fragment}
-                    enter="transition ease-out duration-200"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items
-                      static
-                      className="absolute shadow-xl top-16 right-4 focus:outline-none"
-                    >
-                      <Link href="/analytics/summary/top-customer">
-                        <a>
-                          <Menu.Item
-                            as="button"
-                            className="flex items-center justify-between w-full px-4 py-2 transition duration-300 ease-in-out rounded focus:outline-none bg-N0 hover:bg-N300"
-                          >
-                            <SiGoogleanalytics className="w-6 h-6" />
-                            <h4 className="pl-8 w250 text-N900 whitespace-nowrap">
-                              view leaderboard
-                            </h4>
-                          </Menu.Item>
-                        </a>
-                      </Link>
-                    </Menu.Items>
-                  </Transition>
-                </>
-              )}
-            </Menu>
-
-            <h5 className="mt-5 text-opacity-50 w250 text-N0">top customer</h5>
-            <h4 className="mt-3 w600 text-N0">{leaderboardCustomer?.title}</h4>
-            <div className="flex justify-start mt-3 space-x-3">
-              <div className="w-40">
-                <p className="text-opacity-50 w400 text-N0">Total Orders</p>
-                <p className="w400 text-N0">
-                  {leaderboardCustomer?.total_order}
-                </p>
-              </div>
-              <div className="w-40">
-                <p className="text-opacity-50 w400 text-N0">Net Sales</p>
-                {leaderboardCustomer && (
-                  <p className="w400 text-N0">
-                    $
-                    {thousandSeparator(
-                      leaderboardCustomer.total_net_sales.toFixed(2)
-                    )}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
+          <LeaderboardCardType
+            path="/analytics/summary/top-customer"
+            cardName="top customer"
+            title={leaderboardCustomer?.title}
+            totalOrder={leaderboardCustomer?.total_order}
+            totalNetSales={leaderboardCustomer?.total_net_sales}
+            leaderboardQuery={leaderboardCustomer}
+          />
           {/* Ends LeaderBoard Top Customer */}
         </div>
 
