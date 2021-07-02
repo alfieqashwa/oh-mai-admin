@@ -287,7 +287,7 @@ export default function Summary() {
               )}
             </Menu>
 
-            <h5 className="mt-5 text-opacity-50 w250 text-N0">top kol</h5>
+            <h5 className="mt-5 text-opacity-50 w250 text-N0">top customer</h5>
             <h4 className="mt-3 w600 text-N0">{leaderboardCustomer?.title}</h4>
             <div className="flex justify-start mt-3 space-x-3">
               <div className="w-40">
