@@ -32,7 +32,7 @@ export default function TopCustomer() {
       const result = await client.request(GET_LIST_TOP_SALES_ON_CUSTOMER)
       setListTopSalesOnCustomer(result.getListTopSalesOnCustomer)
 
-      console.log(JSON.stringify(result?.getListTopSalesProduct, null, 2))
+      console.log(JSON.stringify(result.getListTopSalesOnCustomer, null, 2))
     } catch (error) {
       console.log(error)
     }
