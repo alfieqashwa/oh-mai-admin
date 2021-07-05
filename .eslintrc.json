@@ -20,6 +20,6 @@
     "rules": {
         "space-before-function-paren":"off",
         "react/prop-types": "off",
-        "prefer-const":"error",
+        "prefer-const":"error"
     }    
 }
