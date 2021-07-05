@@ -39,6 +39,11 @@ export default function Products() {
     endPrevious: [endPreviousDate, setEndPreviousDate],
   }
 
+  const moneyFormat = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'TWD',
+  })
+
   useEffect(() => {
     console.log('Check login')
     checkLogin()
@@ -227,7 +232,7 @@ export default function Products() {
                     {t.item_sold}
                   </td>
                   <td className="p-4 text-right w400 whitespace-nowrap">
-                    ${t.net_sales.toFixed(2)}
+                    {moneyFormat.format(t.net_sales)}
                   </td>
                   <td className="p-4 text-right underline w400">{t.order}</td>
                   <td className="p-4 text-right w400">{t.category}</td>
