@@ -15,18 +15,7 @@ import {
 
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
-
-const GET_LIST_TOP_SALES_PRODUCT = `{
-  getListTopSalesProduct {
-    sn
-    product_title
-    sku
-    item_sold
-    net_sales
-    order
-    category
-  }
-}`
+import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/product'
 
 export const DateRangeCtx = createContext(null)
 
