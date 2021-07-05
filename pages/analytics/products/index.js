@@ -12,6 +12,7 @@ import {
   SwitchOnOff,
   ProductPerformanceCard,
 } from 'components/analytics/products'
+import { moneyFormat } from 'utils/money-format'
 
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
@@ -38,11 +39,6 @@ export default function Products() {
     startPrevious: [startPreviousDate, setStartPreviousDate],
     endPrevious: [endPreviousDate, setEndPreviousDate],
   }
-
-  const moneyFormat = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'TWD',
-  })
 
   useEffect(() => {
     console.log('Check login')
