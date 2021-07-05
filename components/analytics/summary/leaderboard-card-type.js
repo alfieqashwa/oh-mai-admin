@@ -68,7 +68,7 @@ export const LeaderboardCardType = ({
       <div className="w-40">
         <p className="text-opacity-50 w400 text-N0">Net Sales</p>
         {leaderboardQuery && (
-          <p className="w400 text-N0">${moneyFormat.format(totalNetSales)}</p>
+          <p className="w400 text-N0">{moneyFormat.format(totalNetSales)}</p>
         )}
       </div>
     </div>
