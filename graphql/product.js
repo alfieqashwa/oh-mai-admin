@@ -210,18 +210,3 @@ export const UPDATE_PRODUCT_GQL = gql`
     }
   }
 `
-
-// new schema
-export const GET_LIST_TOP_SALES_PRODUCT = gql`
-  query getListTopSalesProduct($startDate: String, $endDate: String) {
-    getListTopSalesProduct(startDate: $startDate, endDate: $endDate) {
-      sn
-      product_title
-      sku
-      item_sold
-      net_sales
-      order
-      category
-    }
-  }
-`

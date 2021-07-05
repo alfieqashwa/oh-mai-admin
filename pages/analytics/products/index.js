@@ -16,7 +16,7 @@ import { moneyFormat } from 'utils/money-format'
 
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
-import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/product'
+import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/order'
 
 export const DateRangeCtx = createContext(null)
 
