@@ -4,7 +4,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { SiGoogleanalytics } from 'react-icons/si'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 
-import { thousandSeparator } from 'utils/thousand-separator'
+import { moneyFormat } from 'utils/money-format'
 
 export const LeaderboardCardType = ({
   path,
@@ -68,9 +68,7 @@ export const LeaderboardCardType = ({
       <div className="w-40">
         <p className="text-opacity-50 w400 text-N0">Net Sales</p>
         {leaderboardQuery && (
-          <p className="w400 text-N0">
-            ${thousandSeparator(totalNetSales.toFixed(2))}
-          </p>
+          <p className="w400 text-N0">${moneyFormat.format(totalNetSales)}</p>
         )}
       </div>
     </div>
