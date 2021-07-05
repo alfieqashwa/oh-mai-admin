@@ -11,11 +11,11 @@ import {
   LeaderBoardBorder,
   PaginationSummary,
 } from 'components/analytics/summary'
+import { moneyFormat } from 'utils/money-format'
 
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
 import { GET_LIST_TOP_SALES_ON_CUSTOMER } from 'graphql/order'
-import { moneyFormat } from 'utils/money-format'
 
 export default function TopCustomer() {
   const [listTopSalesOnCustomer, setListTopSalesOnCustomer] = useState()
