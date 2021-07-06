@@ -243,3 +243,15 @@ export const GET_ORDER_PERFORMANCE = gql`
     }
   }
 `
+
+export const GET_ORDER_SUMMARY_TABLE = gql`
+  query getOrderSummaryTable($startDate: String, $endDate: String) {
+    getOrderSumaryTable(startDate: $startDate, endDate: $endDate) {
+      order_datetime
+      total_order
+      net_sales
+      order_item_tax
+      shipping_cost
+    }
+  }
+`
