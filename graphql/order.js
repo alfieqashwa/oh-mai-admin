@@ -199,3 +199,47 @@ export const GET_LIST_TOP_SALES_ON_CUSTOMER = gql`
     }
   }
 `
+
+export const GET_SUMMARY_PERFORMANCE = gql`
+  query getSumaryPerformance($startDate: String, $endDate: String) {
+    getSumaryPerformance(startDate: $startDate, endDate: $endDate) {
+      title
+      performance
+      precentage_change
+      performance_last_year
+    }
+  }
+`
+
+export const GET_ORDER_SUMMARY_TABLE = gql`
+  query getOrderSumaryTable($startDate: String, $endDate: String) {
+    getOrderSumaryTable(startDate: $startDate, endDate: $endDate) {
+      order_datetime
+      total_order
+      net_sales
+      order_item_tax
+      shipping_cost
+    }
+  }
+`
+
+export const GET_ORDER_SUMMARY_CHART = gql`
+  query getOrderSumaryChart($startDate: String, $endDate: String) {
+    getOrderSumaryChart(startDate: $startDate, endDate: $endDate) {
+      time_date_month
+      time_year
+      net_sales
+    }
+  }
+`
+
+export const GET_ORDER_PERFORMANCE = gql`
+  query getOrderPerformance($startDate: String, $endDate: String) {
+    getOrderPerformance(startDate: $startDate, endDate: $endDate) {
+      title
+      performance
+      precentage_change
+      performance_last_year
+    }
+  }
+`
