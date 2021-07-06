@@ -3,10 +3,15 @@ import { Menu, Transition } from '@headlessui/react'
 import { FiSearch, FiDownloadCloud } from 'react-icons/fi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 
+import moment from 'moment'
+import { moneyFormat } from 'utils/money-format'
+
 // Table on Summary Main Page
-export function TableSummary() {
+export function TableSummary({ data, setData }) {
   // eslint-disable-next-line no-unused-vars
   const [_isOpen, _setIsOpen] = useState(false)
+
+  // console.log(`DATA: ${data?.[0]?.net_sales}`)
 
   return (
     <div className="my-10">
@@ -22,7 +27,10 @@ export function TableSummary() {
           />
         </div>
         <div>
-          <select name="date-range" className="bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none">
+          <select
+            name="date-range"
+            className="bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none"
+          >
             <option>By day</option>
             <option>By month</option>
           </select>
@@ -31,7 +39,11 @@ export function TableSummary() {
           <Menu as="div" className="relative">
             {({ open }) => (
               <>
-                <Menu.Button className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''}`}>
+                <Menu.Button
+                  className={`bg-transparent focus:outline-none ${
+                    open ? 'text-P400' : ''
+                  }`}
+                >
                   <BsThreeDotsVertical className="w-6 h-6" />
                 </Menu.Button>
                 <Transition
@@ -47,7 +59,11 @@ export function TableSummary() {
                   <Menu.Items
                     static
                     className={`
-                  ${!open ? 'motion-safe:animate-bounce transition duration-700 ease-in-out' : ''}
+                  ${
+                    !open
+                      ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
+                      : ''
+                  }
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                   `}
                   >
@@ -70,35 +86,99 @@ export function TableSummary() {
       <table className="md:min-w-full text-N0">
         <thead className="bg-N200 bg-opacity-30">
           <tr>
-            <th scope="col" className="py-4 pl-6 text-left capitalize w400 whitespace-nowrap">date</th>
-            <th scope="col" className="py-4 pl-10 text-right capitalize w400 whitespace-nowrap">orders</th>
-            <th scope="col" className="py-4 pl-6 text-right capitalize w400 whitespace-nowrap">gross sales</th>
-            <th scope="col" className="py-4 pl-6 text-right capitalize w400 whitespace-nowrap">taxes</th>
-            <th scope="col" className="py-4 pl-6 text-right capitalize w400 whitespace-nowrap">returns</th>
-            <th scope="col" className="py-4 pl-6 text-right capitalize w400 whitespace-nowrap">shipping</th>
-            <th scope="col" className="py-4 pr-6 text-right capitalize w400 whitespace-nowrap">total sales</th>
+            <th
+              scope="col"
+              className="py-4 pl-6 text-left capitalize w400 whitespace-nowrap"
+            >
+              date
+            </th>
+            <th
+              scope="col"
+              className="py-4 pl-10 text-right capitalize w400 whitespace-nowrap"
+            >
+              orders
+            </th>
+            <th
+              scope="col"
+              className="py-4 pl-6 text-right capitalize w400 whitespace-nowrap"
+            >
+              gross sales
+            </th>
+            <th
+              scope="col"
+              className="py-4 pl-6 text-right capitalize w400 whitespace-nowrap"
+            >
+              taxes
+            </th>
+            <th
+              scope="col"
+              className="py-4 pl-6 text-right capitalize w400 whitespace-nowrap"
+            >
+              returns
+            </th>
+            <th
+              scope="col"
+              className="py-4 pl-6 text-right capitalize w400 whitespace-nowrap"
+            >
+              shipping
+            </th>
+            <th
+              scope="col"
+              className="py-4 pr-6 text-right capitalize w400 whitespace-nowrap"
+            >
+              total sales
+            </th>
           </tr>
         </thead>
         <tbody className="bg-N700 text-N0">
-          {tableBody.map(t => (
-            <tr key={t.id}>
-              <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">{t.date}</td>
-              <td className="py-4 text-right w400 whitespace-nowrap">{t.orders}</td>
-              <td className="py-4 text-right w400 whitespace-nowrap">${t.grossSales.toFixed(2)}</td>
-              <td className="py-4 text-right w400 whitespace-nowrap">${t.taxes.toFixed(2)}</td>
-              <td className="py-4 text-right w400 whitespace-nowrap">${t.returns.toFixed(2)}</td>
-              <td className="py-4 text-right w400 whitespace-nowrap">${t.shipping.toFixed(2)}</td>
-              <td className="py-4 pr-6 text-right w400 whitespace-nowrap">${t.totalSales.toFixed(2)}</td>
-            </tr>
-          ))}
+          {data?.map((t, i) => {
+            return (
+              <tr key={i}>
+                <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">
+                  {/* TODO */}
+                  {moment(t.order_datetime).format('DD/MM/YYYY HH:mm:ss')}
+                </td>
+                <td className="py-4 text-right w400 whitespace-nowrap">
+                  {t.total_order}
+                </td>
+                <td className="py-4 text-right w400 whitespace-nowrap">
+                  {moneyFormat.format(t.net_sales)}
+                </td>
+                <td className="py-4 text-right w400 whitespace-nowrap">
+                  ${t.order_item_tax.toFixed(2)}
+                </td>
+                <td className="py-4 text-right w400 whitespace-nowrap">${0}</td>
+                <td className="py-4 text-right w400 whitespace-nowrap">
+                  ${t.shipping_cost.toFixed(2)}
+                </td>
+                <td className="py-4 pr-6 text-right w400 whitespace-nowrap">
+                  ${moneyFormat.format(t.net_sales)}
+                </td>
+              </tr>
+            )
+          })}
           <tr>
-            <td className="py-4 text-center capitalize bg-N500 w400 whitespace-nowrap">month total</td>
-            <td className="py-4 text-right w400 whitespace-nowrap">{totalOrders}</td>
-            <td className="py-4 text-right w400 whitespace-nowrap">${totalGrossSales.toFixed(2)}</td>
-            <td className="py-4 text-right w400 whitespace-nowrap">${totalTaxes.toFixed(2)}</td>
-            <td className="py-4 text-right w400 whitespace-nowrap">${totalReturns.toFixed(2)}</td>
-            <td className="py-4 text-right w400 whitespace-nowrap">${totalShipping.toFixed(2)}</td>
-            <td className="py-4 pr-6 text-right w400 whitespace-nowrap">${grandTotalSales.toFixed(2)}</td>
+            <td className="py-4 text-center capitalize bg-N500 w400 whitespace-nowrap">
+              month total
+            </td>
+            <td className="py-4 text-right w400 whitespace-nowrap">
+              {totalOrders}
+            </td>
+            <td className="py-4 text-right w400 whitespace-nowrap">
+              ${totalGrossSales.toFixed(2)}
+            </td>
+            <td className="py-4 text-right w400 whitespace-nowrap">
+              ${totalTaxes.toFixed(2)}
+            </td>
+            <td className="py-4 text-right w400 whitespace-nowrap">
+              ${totalReturns.toFixed(2)}
+            </td>
+            <td className="py-4 text-right w400 whitespace-nowrap">
+              ${totalShipping.toFixed(2)}
+            </td>
+            <td className="py-4 pr-6 text-right w400 whitespace-nowrap">
+              ${grandTotalSales.toFixed(2)}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -109,21 +189,75 @@ export function TableSummary() {
 // dummy data
 // TODO: need formula to calculate
 const tableBody = [
-  { id: 1, date: '01/01/2021', orders: 3, grossSales: 50.00, taxes: 0.00, returns: 0.00, shipping: 0.00, totalSales: 50.00 },
-  { id: 2, date: '02/01/2021', orders: 3, grossSales: 50.00, taxes: 0.00, returns: 0.00, shipping: 0.00, totalSales: 50.00 },
-  { id: 3, date: '03/01/2021', orders: 3, grossSales: 50.00, taxes: 0.00, returns: 0.00, shipping: 0.00, totalSales: 50.00 },
-  { id: 4, date: '04/01/2021', orders: 3, grossSales: 50.00, taxes: 0.00, returns: 0.00, shipping: 0.00, totalSales: 50.00 },
-  { id: 5, date: '05/01/2021', orders: 3, grossSales: 50.00, taxes: 0.00, returns: 0.00, shipping: 0.00, totalSales: 50.00 },
-  { id: 6, date: '06/01/2021', orders: 3, grossSales: 50.00, taxes: 0.00, returns: 0.00, shipping: 0.00, totalSales: 50.00 }
+  {
+    id: 1,
+    date: '01/01/2021',
+    orders: 3,
+    grossSales: 50.0,
+    taxes: 0.0,
+    returns: 0.0,
+    shipping: 0.0,
+    totalSales: 50.0,
+  },
+  {
+    id: 2,
+    date: '02/01/2021',
+    orders: 3,
+    grossSales: 50.0,
+    taxes: 0.0,
+    returns: 0.0,
+    shipping: 0.0,
+    totalSales: 50.0,
+  },
+  {
+    id: 3,
+    date: '03/01/2021',
+    orders: 3,
+    grossSales: 50.0,
+    taxes: 0.0,
+    returns: 0.0,
+    shipping: 0.0,
+    totalSales: 50.0,
+  },
+  {
+    id: 4,
+    date: '04/01/2021',
+    orders: 3,
+    grossSales: 50.0,
+    taxes: 0.0,
+    returns: 0.0,
+    shipping: 0.0,
+    totalSales: 50.0,
+  },
+  {
+    id: 5,
+    date: '05/01/2021',
+    orders: 3,
+    grossSales: 50.0,
+    taxes: 0.0,
+    returns: 0.0,
+    shipping: 0.0,
+    totalSales: 50.0,
+  },
+  {
+    id: 6,
+    date: '06/01/2021',
+    orders: 3,
+    grossSales: 50.0,
+    taxes: 0.0,
+    returns: 0.0,
+    shipping: 0.0,
+    totalSales: 50.0,
+  },
 ]
 
 const initialValue = 0
-const orders = tableBody.map(t => t.orders)
-const grossSales = tableBody.map(t => t.grossSales)
-const taxes = tableBody.map(t => t.taxes)
-const returns = tableBody.map(t => t.returns)
-const shipping = tableBody.map(t => t.shipping)
-const totalSales = tableBody.map(t => t.totalSales)
+const orders = tableBody.map((t) => t.orders)
+const grossSales = tableBody.map((t) => t.grossSales)
+const taxes = tableBody.map((t) => t.taxes)
+const returns = tableBody.map((t) => t.returns)
+const shipping = tableBody.map((t) => t.shipping)
+const totalSales = tableBody.map((t) => t.totalSales)
 
 const reducer = (acc, i) => {
   return acc + i

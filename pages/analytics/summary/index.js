@@ -13,7 +13,7 @@ import {
 
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
-import { GET_SUMMARY_PERFORMANCE } from 'graphql/order'
+import { GET_SUMMARY_PERFORMANCE, GET_ORDER_SUMMARY_TABLE } from 'graphql/order'
 
 const GET_LEADERBOARD_PRODUCT = `{
   getLeaderBoardProduct {
@@ -48,6 +48,7 @@ export default function Summary() {
   const [leaderboardCustomer, setLeaderboardCustomer] = useState()
 
   const [getSummaryPerformance, setGetSummaryPerformance] = useState()
+  const [getOrderSummaryTable, setGetOrderSummaryTable] = useState()
 
   useEffect(() => {
     console.log('Check login')
@@ -66,11 +67,16 @@ export default function Summary() {
         GET_SUMMARY_PERFORMANCE
       )
 
+      const resultGetOrderSummaryTable = await client.request(
+        GET_ORDER_SUMMARY_TABLE
+      )
+
       setLeaderboardProduct(resultProduct.getLeaderBoardProduct)
       setLeaderboardKol(resultKol.getLeaderBoardKol)
       setLeaderboardCustomer(resultCustomer.getLeaderBoardCustomer)
 
       setGetSummaryPerformance(resultGetSummaryPerformance.getSumaryPerformance)
+      setGetOrderSummaryTable(resultGetOrderSummaryTable.getOrderSumaryTable)
 
       // console.log(JSON.stringify(resultProduct, null, 2))
       // console.log(JSON.stringify(resultKol, null, 2))
@@ -101,11 +107,18 @@ export default function Summary() {
         `getSummaryPerformance_first_title: ${getSummaryPerformance[0]?.title}`
       )
     }
+
+    if (getOrderSummaryTable) {
+      console.log(
+        `getOrderSummaryTable_net_sales: ${getOrderSummaryTable[0]?.net_sales}`
+      )
+    }
   }, [
     leaderboardProduct,
     leaderboardKol,
     leaderboardCustomer,
     getSummaryPerformance,
+    getOrderSummaryTable,
   ])
 
   return (
@@ -179,7 +192,10 @@ export default function Summary() {
         <ChartView />
 
         {/* Table View */}
-        <TableSummary />
+        <TableSummary
+          data={getOrderSummaryTable}
+          setData={setGetOrderSummaryTable}
+        />
       </div>
     </div>
   )
