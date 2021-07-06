@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { RadioGroup, Menu, Transition } from '@headlessui/react'
 import { PlusCircleIcon } from '@heroicons/react/solid'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -11,6 +11,7 @@ import {
 } from 'react-icons/fi'
 
 import { AddCategoryModal } from './modal'
+import { moneyFormat } from 'utils/money-format'
 
 export const PerformanceBorder = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -86,8 +87,25 @@ export const PerformanceBorder = () => {
   )
 }
 
-export const PerformanceCard = () => {
-  const [selected, setSelected] = useState(performanceCards[0])
+export const PerformanceCard = ({ data, setData }) => {
+  const [selected, setSelected] = useState()
+  // console.log(`DATA: ${data?.[0]?.title}`)
+
+  async function loadData() {
+    try {
+      const result = await data[0]
+      setSelected(result)
+      // console.log(`RESULT: ${JSON.stringify(result, null, 2)}`)
+      // console.log(`SELECTED: ${JSON.stringify(selected, null, 2)}`)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
   return (
     <RadioGroup
       className="grid grid-cols-3"
@@ -95,7 +113,7 @@ export const PerformanceCard = () => {
       onChange={setSelected}
     >
       <RadioGroup.Label className="sr-only">Performance</RadioGroup.Label>
-      {performanceCards.map((c, i) => {
+      {data?.map((c, i) => {
         return (
           <RadioGroup.Option
             key={i}
@@ -117,15 +135,15 @@ export const PerformanceCard = () => {
                     checked ? 'text-N800' : 'text-N0'
                   }`}
                 >
-                  {c.category}
+                  {c.title}
                 </h5>
                 <div className="mt-3">
                   <h3 className={`w700 ${checked ? 'text-N800' : 'text-N0'}`}>
-                    ${c.amount}
+                    {moneyFormat.format(c.performance)}
                   </h3>
                   <div className="flex items-center space-x-1">
                     {/* temporary logic */}
-                    {c.percentage === '-' ? (
+                    {c.precentage_change === '-' ? (
                       <>
                         <FiArrowRight
                           className={`w-5 h-5 ${
@@ -137,18 +155,22 @@ export const PerformanceCard = () => {
                             checked ? 'text-N800' : 'text-N0'
                           }`}
                         >
-                          {c.percentage}
+                          {c.precentage_change}
                         </h5>
                       </>
-                    ) : c.category === 'orders' ? (
+                    ) : c.title === 'Orders' ? (
                       <>
                         <FiArrowDownRight className="w-5 h-5 text-R600" />
-                        <h5 className="w250 text-R600">{c.percentage}%</h5>
+                        <h5 className="w250 text-R600">
+                          {c.precentage_change}%
+                        </h5>
                       </>
                     ) : (
                       <>
                         <FiArrowUpRight className="w-5 h-5 text-G400" />
-                        <h5 className="w250 text-G400">{c.percentage}%</h5>
+                        <h5 className="w250 text-G400">
+                          {c.precentage_change}%
+                        </h5>
                       </>
                     )}
                   </div>
@@ -162,7 +184,7 @@ export const PerformanceCard = () => {
                     Previous Year
                   </p>
                   <p className={`w400 ${checked ? 'text-N800' : 'text-N0'}`}>
-                    ${c.previousYear}
+                    ${c.performance_last_year}
                   </p>
                 </div>
               </>
@@ -174,36 +196,36 @@ export const PerformanceCard = () => {
   )
 }
 
-const performanceCards = [
-  {
-    category: 'gross sales',
-    amount: '500.00',
-    percentage: '50',
-    previousYear: '250.00',
-  },
-  {
-    category: 'net sales',
-    amount: '500.00',
-    percentage: '50',
-    previousYear: '250.00',
-  },
-  { category: 'orders', amount: '100', percentage: '50', previousYear: '200' },
-  {
-    category: 'average order value',
-    amount: '5.00',
-    percentage: '400',
-    previousYear: '250.00',
-  },
-  {
-    category: 'refunds',
-    amount: '0.00',
-    percentage: '-',
-    previousYear: '50.00',
-  },
-  {
-    category: 'gross profit',
-    amount: '500.00',
-    percentage: '50',
-    previousYear: '150.00',
-  },
-]
+// const performanceCards = [
+//   {
+//     category: 'gross sales',
+//     amount: '500.00',
+//     percentage: '50',
+//     previousYear: '250.00',
+//   },
+//   {
+//     category: 'net sales',
+//     amount: '500.00',
+//     percentage: '50',
+//     previousYear: '250.00',
+//   },
+//   { category: 'orders', amount: '100', percentage: '50', previousYear: '200' },
+//   {
+//     category: 'average order value',
+//     amount: '5.00',
+//     percentage: '400',
+//     previousYear: '250.00',
+//   },
+//   {
+//     category: 'refunds',
+//     amount: '0.00',
+//     percentage: '-',
+//     previousYear: '50.00',
+//   },
+//   {
+//     category: 'gross profit',
+//     amount: '500.00',
+//     percentage: '50',
+//     previousYear: '150.00',
+//   },
+// ]
