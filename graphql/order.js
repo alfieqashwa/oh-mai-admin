@@ -244,14 +244,20 @@ export const GET_ORDER_PERFORMANCE = gql`
   }
 `
 
-export const GET_ORDER_SUMMARY_TABLE = gql`
-  query getOrderSummaryTable($startDate: String, $endDate: String) {
-    getOrderSumaryTable(startDate: $startDate, endDate: $endDate) {
+export const GET_ORDER_LIST_SUMMARY_TABLE = gql`
+  query getOrderListSumaryTable($startDate: String, $endDate: String) {
+    getOrderListSumaryTable(startDate: $startDate, endDate: $endDate) {
       order_datetime
-      total_order
       net_sales
-      order_item_tax
-      shipping_cost
+      order_number
+      consumer_id
+      person_name
+      shipping_line_1
+      shipping_line_2
+      phone_num
+      city
+      state
+      payment_type
     }
   }
 `
