@@ -10,14 +10,47 @@ import {
 } from 'components/analytics/orders'
 import { checkLogin } from 'utils/Auth'
 
+import { getClient } from 'lib/graphqlclient'
+import { GET_ORDER_LIST_SUMMARY_TABLE } from 'graphql/order'
+
 export default function Orders() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
+
+  const [getOrderListSummaryTable, setGetOrderListSummaryTable] = useState()
 
   useEffect(() => {
     console.log('Check login')
     checkLogin()
   }, [])
+
+  const client = getClient()
+
+  async function loadData() {
+    try {
+      const resultGetOrderListSummaryTable = await client.request(
+        GET_ORDER_LIST_SUMMARY_TABLE
+      )
+
+      setGetOrderListSummaryTable(
+        resultGetOrderListSummaryTable.getOrderListSumaryTable
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
+  useEffect(() => {
+    if (getOrderListSummaryTable) {
+      console.log(
+        `getOrderListSummaryTable_date_time: ${getOrderListSummaryTable[0]?.order_datetime}`
+      )
+    }
+  }, [getOrderListSummaryTable])
 
   return (
     <div className="pb-4">
@@ -43,7 +76,10 @@ export default function Orders() {
         {/* Chart */}
         <ChartView />
         {/* Table */}
-        <TableOrders />
+        <TableOrders
+          data={getOrderListSummaryTable}
+          setData={setGetOrderListSummaryTable}
+        />
       </div>
     </div>
   )
