@@ -139,18 +139,18 @@ export function TableOrders({ data, setData }) {
               </td>
               <td className="py-4 pl-16 space-y-1 text-right">
                 <p className="flex-col w350">
-                  <div>
+                  <>
                     <span>Name: {t.person_name}, </span>
                     <span>
                       Address: {t.shipping_line_1}
                       {t.shipping_line_2},
                     </span>
                     <span>Phone: {t.phone_num}, </span>
-                  </div>
-                  <div>
+                  </>
+                  <>
                     <span>City: {t.city}, </span>
                     <span>State: {t.state}</span>
-                  </div>
+                  </>
                 </p>
                 <p className="tracking-widest w350 text-N0 text-opacity-70">
                   {t.payment_type}
