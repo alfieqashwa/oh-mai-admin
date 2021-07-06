@@ -11,12 +11,16 @@ import {
 import { checkLogin } from 'utils/Auth'
 
 import { getClient } from 'lib/graphqlclient'
-import { GET_ORDER_LIST_SUMMARY_TABLE } from 'graphql/order'
+import {
+  GET_ORDER_PERFORMANCE,
+  GET_ORDER_LIST_SUMMARY_TABLE,
+} from 'graphql/order'
 
 export default function Orders() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
 
+  const [getOrderPerformance, setGetOrderPerformance] = useState()
   const [getOrderListSummaryTable, setGetOrderListSummaryTable] = useState()
 
   useEffect(() => {
@@ -28,10 +32,14 @@ export default function Orders() {
 
   async function loadData() {
     try {
+      const resultGetOrderPerformance = await client.request(
+        GET_ORDER_PERFORMANCE
+      )
       const resultGetOrderListSummaryTable = await client.request(
         GET_ORDER_LIST_SUMMARY_TABLE
       )
 
+      setGetOrderPerformance(resultGetOrderPerformance.getOrderPerformance)
       setGetOrderListSummaryTable(
         resultGetOrderListSummaryTable.getOrderListSumaryTable
       )
@@ -45,12 +53,17 @@ export default function Orders() {
   }, [])
 
   useEffect(() => {
+    if (getOrderPerformance) {
+      console.log(
+        `getOrderPerformance_1st_title: ${getOrderPerformance[0]?.title}`
+      )
+    }
     if (getOrderListSummaryTable) {
       console.log(
         `getOrderListSummaryTable_date_time: ${getOrderListSummaryTable[0]?.order_datetime}`
       )
     }
-  }, [getOrderListSummaryTable])
+  }, [getOrderPerformance, getOrderListSummaryTable])
 
   return (
     <div className="pb-4">
@@ -72,7 +85,10 @@ export default function Orders() {
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
         {/* Performance */}
-        <OrderPerformanceCard />
+        <OrderPerformanceCard
+          data={getOrderPerformance}
+          setData={setGetOrderPerformance}
+        />
         {/* Chart */}
         <ChartView />
         {/* Table */}

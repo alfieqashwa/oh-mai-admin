@@ -127,8 +127,8 @@ export function TableOrders({ data, setData }) {
 
         {/* Table Content */}
         <tbody className="bg-N700 text-N0">
-          {data?.map((t) => (
-            <tr key={t.consumer_id}>
+          {data?.map((t, i) => (
+            <tr key={i}>
               <td className="py-4 text-center bg-N600 w400 whitespace-nowrap"></td>
               <td className="py-4 pl-4 text-left w400">{t.order_datetime}</td>
               <td className="py-4 text-right underline cursor-pointer w400 whitespace-nowrap">
