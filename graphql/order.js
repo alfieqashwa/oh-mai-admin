@@ -159,6 +159,34 @@ export const DELETE_ORDER_ITEM_GQL = gql`
 `
 
 // new schema
+export const GET_LEADERBOARD_PRODUCT = gql`
+  query GetLeaderBoardProduct {
+    getLeaderBoardProduct {
+      title
+      total_order
+      total_net_sales
+    }
+  }
+`
+export const GET_LEADERBOARD_KOL = gql`
+  query GetLeaderBordKol {
+    getLeaderBoardKol {
+      title
+      total_order
+      total_net_sales
+    }
+  }
+`
+export const GET_LEADERBOARD_CUSTOMER = gql`
+  query GetLeaderBoardCustomer {
+    getLeaderBoardCustomer {
+      title
+      total_order
+      total_net_sales
+    }
+  }
+`
+
 export const GET_LIST_TOP_SALES_PRODUCT = gql`
   query getListTopSalesProduct($startDate: String, $endDate: String) {
     getListTopSalesProduct(startDate: $startDate, endDate: $endDate) {

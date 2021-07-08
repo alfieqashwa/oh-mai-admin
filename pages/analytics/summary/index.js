@@ -14,34 +14,13 @@ import {
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
 import {
+  GET_LEADERBOARD_PRODUCT,
+  GET_LEADERBOARD_KOL,
+  GET_LEADERBOARD_CUSTOMER,
   GET_SUMMARY_PERFORMANCE,
   GET_ORDER_SUMMARY_CHART,
   GET_ORDER_SUMMARY_TABLE,
 } from 'graphql/order'
-
-const GET_LEADERBOARD_PRODUCT = `{
-  getLeaderBoardProduct {
-    title
-    total_order
-    total_net_sales
-  }
-}`
-
-const GET_LEADERBOARD_KOL = `{
-  getLeaderBoardKol {
-    title
-    total_order
-    total_net_sales
-  }
-}`
-
-const GET_LEADER_BOARD_CUSTOMER = `{
-  getLeaderBoardCustomer {
-    title
-    total_order
-    total_net_sales
-  }
-}`
 
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
@@ -66,7 +45,7 @@ export default function Summary() {
     try {
       const resultProduct = await client.request(GET_LEADERBOARD_PRODUCT)
       const resultKol = await client.request(GET_LEADERBOARD_KOL)
-      const resultCustomer = await client.request(GET_LEADER_BOARD_CUSTOMER)
+      const resultCustomer = await client.request(GET_LEADERBOARD_CUSTOMER)
 
       const resultGetSummaryPerformance = await client.request(
         GET_SUMMARY_PERFORMANCE
