@@ -13,31 +13,14 @@ import {
 
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
-import { GET_SUMMARY_PERFORMANCE, GET_ORDER_SUMMARY_TABLE } from 'graphql/order'
-
-const GET_LEADERBOARD_PRODUCT = `{
-  getLeaderBoardProduct {
-    title
-    total_order
-    total_net_sales
-  }
-}`
-
-const GET_LEADERBOARD_KOL = `{
-  getLeaderBoardKol {
-    title
-    total_order
-    total_net_sales
-  }
-}`
-
-const GET_LEADER_BOARD_CUSTOMER = `{
-  getLeaderBoardCustomer {
-    title
-    total_order
-    total_net_sales
-  }
-}`
+import {
+  GET_LEADERBOARD_PRODUCT,
+  GET_LEADERBOARD_KOL,
+  GET_LEADERBOARD_CUSTOMER,
+  GET_SUMMARY_PERFORMANCE,
+  GET_ORDER_SUMMARY_CHART,
+  GET_ORDER_SUMMARY_TABLE,
+} from 'graphql/order'
 
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
@@ -48,6 +31,7 @@ export default function Summary() {
   const [leaderboardCustomer, setLeaderboardCustomer] = useState()
 
   const [getSummaryPerformance, setGetSummaryPerformance] = useState()
+  const [getOrderSummaryChart, setGetOrderSummaryChart] = useState()
   const [getOrderSummaryTable, setGetOrderSummaryTable] = useState()
 
   useEffect(() => {
@@ -61,12 +45,14 @@ export default function Summary() {
     try {
       const resultProduct = await client.request(GET_LEADERBOARD_PRODUCT)
       const resultKol = await client.request(GET_LEADERBOARD_KOL)
-      const resultCustomer = await client.request(GET_LEADER_BOARD_CUSTOMER)
+      const resultCustomer = await client.request(GET_LEADERBOARD_CUSTOMER)
 
       const resultGetSummaryPerformance = await client.request(
         GET_SUMMARY_PERFORMANCE
       )
-
+      const resultGetOrderSummaryChart = await client.request(
+        GET_ORDER_SUMMARY_CHART
+      )
       const resultGetOrderSummaryTable = await client.request(
         GET_ORDER_SUMMARY_TABLE
       )
@@ -76,6 +62,7 @@ export default function Summary() {
       setLeaderboardCustomer(resultCustomer.getLeaderBoardCustomer)
 
       setGetSummaryPerformance(resultGetSummaryPerformance.getSumaryPerformance)
+      setGetOrderSummaryChart(resultGetOrderSummaryChart.getOrderSumaryChart)
       setGetOrderSummaryTable(resultGetOrderSummaryTable.getOrderSumaryTable)
 
       // console.log(JSON.stringify(resultProduct, null, 2))
@@ -101,13 +88,16 @@ export default function Summary() {
     if (leaderboardCustomer) {
       console.log(`leaderboardCustomer_title: ${leaderboardCustomer?.title}`)
     }
-
     if (getSummaryPerformance) {
       console.log(
         `getSummaryPerformance_first_title: ${getSummaryPerformance[0]?.title}`
       )
     }
-
+    if (getOrderSummaryChart) {
+      console.log(
+        `getOrderSummaryChart_datetime: ${getOrderSummaryChart[0]?.order_datetime}`
+      )
+    }
     if (getOrderSummaryTable) {
       console.log(
         `getOrderSummaryTable_net_sales: ${getOrderSummaryTable[0]?.net_sales}`
@@ -118,6 +108,7 @@ export default function Summary() {
     leaderboardKol,
     leaderboardCustomer,
     getSummaryPerformance,
+    getOrderSummaryChart,
     getOrderSummaryTable,
   ])
 
@@ -189,7 +180,10 @@ export default function Summary() {
         />
 
         {/* Chart View */}
-        <ChartView />
+        <ChartView
+          data={getOrderSummaryChart}
+          setData={setGetOrderSummaryChart}
+        />
 
         {/* Table View */}
         <TableSummary

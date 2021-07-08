@@ -159,6 +159,34 @@ export const DELETE_ORDER_ITEM_GQL = gql`
 `
 
 // new schema
+export const GET_LEADERBOARD_PRODUCT = gql`
+  query GetLeaderBoardProduct($startDate: String, $endDate: String) {
+    getLeaderBoardProduct(startDate: $startDate, endDate: $endDate) {
+      title
+      total_order
+      total_net_sales
+    }
+  }
+`
+export const GET_LEADERBOARD_KOL = gql`
+  query GetLeaderBordKol($startDate: String, $endDate: String) {
+    getLeaderBoardKol(startDate: $startDate, endDate: $endDate) {
+      title
+      total_order
+      total_net_sales
+    }
+  }
+`
+export const GET_LEADERBOARD_CUSTOMER = gql`
+  query GetLeaderBoardCustomer($startDate: String, $endDate: String) {
+    getLeaderBoardCustomer(startDate: $startDate, endDate: $endDate) {
+      title
+      total_order
+      total_net_sales
+    }
+  }
+`
+
 export const GET_LIST_TOP_SALES_PRODUCT = gql`
   query getListTopSalesProduct($startDate: String, $endDate: String) {
     getListTopSalesProduct(startDate: $startDate, endDate: $endDate) {
@@ -226,8 +254,7 @@ export const GET_ORDER_SUMMARY_TABLE = gql`
 export const GET_ORDER_SUMMARY_CHART = gql`
   query getOrderSumaryChart($startDate: String, $endDate: String) {
     getOrderSumaryChart(startDate: $startDate, endDate: $endDate) {
-      time_date_month
-      time_year
+      order_datetime
       net_sales
     }
   }
