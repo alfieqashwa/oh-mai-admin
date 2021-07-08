@@ -116,7 +116,7 @@ export default function Summary() {
     }
     if (getOrderSummaryChart) {
       console.log(
-        `getOrderSummaryChart_Month: ${getOrderSummaryChart[0]?.time_date_month}`
+        `getOrderSummaryChart_datetime: ${getOrderSummaryChart[0]?.order_datetime}`
       )
     }
     if (getOrderSummaryTable) {

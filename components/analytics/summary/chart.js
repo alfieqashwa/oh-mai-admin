@@ -86,7 +86,7 @@ export function ChartView({ data, setData }) {
         </h1>
       </div> */}
       {/* <ChartArea /> */}
-      {plan === 'bar' && <ChartBar datas={data} setDatas={setData} />}
+      {plan === 'bar' && <ChartBar data={data} setData={setData} />}
       {plan === 'area' && <ChartArea data={data} setData={setData} />}
     </>
   )
@@ -120,17 +120,13 @@ function ChartArea({ data, setData }) {
         <Area dataKey="net_sales" stroke="#8A3EFF" fill="url(#color)" />
 
         <XAxis
-          dataKey="time_date_month"
+          dataKey="order_datetime"
           axisLine={false}
           tickLine={false}
           tickCount={12}
           tickFormatter={(str) => {
             const date = new Date(str)
             return format(date, 'MMM d')
-            // if (date.getDate() % 2 === 0) {
-            //   return format(date, 'MMM d')
-            // }
-            // return ''
           }}
         />
 
@@ -150,21 +146,7 @@ function ChartArea({ data, setData }) {
   )
 }
 
-function CustomTooltip({ active, payload, label }) {
-  if (active) {
-    const date = new Date(label)
-    return (
-      <div className="tooltip">
-        <h5 className="text-G400">{format(date, 'eeee, d MMM, yyyy')}</h5>
-        <p className="mt-1 text-N0">${moneyFormat.format(payload[0].value)}</p>
-      </div>
-    )
-  }
-  return null
-}
-
 // Bar Chart Testing
-
 const getPath = (x, y, width, height) =>
   `M${x},${y + height}
    C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${
@@ -182,31 +164,44 @@ const TriangleBar = (props) => {
 }
 
 function ChartBar({ data, setData }) {
+  return (
+    <ResponsiveContainer width="100%" height={400}>
+      <BarChart width={600} height={300} data={data}>
+        <XAxis
+          dataKey="order_datetime"
+          axisLine={false}
+          tickLine={false}
+          tickFormatter={(str) => {
+            const date = new Date(str)
+            if (date.getDate() % 7 === 0) {
+              return format(date, 'MMM d')
+            }
+            return ''
+          }}
+        />
+        <YAxis
+          datakey="net_sales"
+          axisLine={false}
+          tickLine={false}
+          tickCount={8}
+          // tickFormatter={(number) => `$${number.toFixed(2)}`}
+        />
+
+        <Bar dataKey="net_sales" fill="#8A3EFF" shape={<TriangleBar />} />
+      </BarChart>
+    </ResponsiveContainer>
+  )
+}
+
+function CustomTooltip({ active, payload, label }) {
+  if (active) {
+    const date = new Date(label)
+    return (
+      <div className="tooltip">
+        <h5 className="text-G400">{format(date, 'eeee, d MMM, yyyy')}</h5>
+        <p className="mt-1 text-N0">${moneyFormat.format(payload[0].value)}</p>
+      </div>
+    )
+  }
   return null
-  // return (
-  //   <ResponsiveContainer width="100%" height={400}>
-  //     <BarChart width={600} height={300} data={data}>
-  //       <XAxis
-  //         dataKey="date"
-  //         axisLine={false}
-  //         tickLine={false}
-  //         tickFormatter={(str) => {
-  //           const date = parseISO(str)
-  //           if (date.getDate() % 7 === 0) {
-  //             return format(date, 'MMM, d')
-  //           }
-  //           return ''
-  //         }}
-  //       />
-  //       <YAxis
-  //         datakey="value"
-  //         axisLine={false}
-  //         tickLine={false}
-  //         tickCount={8}
-  //         tickFormatter={(number) => `$${number.toFixed(2)}`}
-  //       />
-  //       <Bar dataKey="value" fill="#8A3EFF" shape={<TriangleBar />} />
-  //     </BarChart>
-  //   </ResponsiveContainer>
-  // )
 }

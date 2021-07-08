@@ -226,8 +226,7 @@ export const GET_ORDER_SUMMARY_TABLE = gql`
 export const GET_ORDER_SUMMARY_CHART = gql`
   query getOrderSumaryChart($startDate: String, $endDate: String) {
     getOrderSumaryChart(startDate: $startDate, endDate: $endDate) {
-      time_date_month
-      time_year
+      order_datetime
       net_sales
     }
   }
