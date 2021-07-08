@@ -160,8 +160,8 @@ export const DELETE_ORDER_ITEM_GQL = gql`
 
 // new schema
 export const GET_LEADERBOARD_PRODUCT = gql`
-  query GetLeaderBoardProduct {
-    getLeaderBoardProduct {
+  query GetLeaderBoardProduct($startDate: String, $endDate: String) {
+    getLeaderBoardProduct(startDate: $startDate, endDate: $endDate) {
       title
       total_order
       total_net_sales
@@ -169,8 +169,8 @@ export const GET_LEADERBOARD_PRODUCT = gql`
   }
 `
 export const GET_LEADERBOARD_KOL = gql`
-  query GetLeaderBordKol {
-    getLeaderBoardKol {
+  query GetLeaderBordKol($startDate: String, $endDate: String) {
+    getLeaderBoardKol(startDate: $startDate, endDate: $endDate) {
       title
       total_order
       total_net_sales
@@ -178,8 +178,8 @@ export const GET_LEADERBOARD_KOL = gql`
   }
 `
 export const GET_LEADERBOARD_CUSTOMER = gql`
-  query GetLeaderBoardCustomer {
-    getLeaderBoardCustomer {
+  query GetLeaderBoardCustomer($startDate: String, $endDate: String) {
+    getLeaderBoardCustomer(startDate: $startDate, endDate: $endDate) {
       title
       total_order
       total_net_sales
