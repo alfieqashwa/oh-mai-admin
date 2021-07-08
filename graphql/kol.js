@@ -1,3 +1,5 @@
+import { gql } from 'graphql-request'
+
 export const kols = `{
   kols {
     id,
