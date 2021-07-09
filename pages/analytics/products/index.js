@@ -17,6 +17,7 @@ import { moneyFormat } from 'utils/money-format'
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
 import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/order'
+import { GET_ANALYTIC_PRODUCT_PERFORMANCE } from 'graphql/product'
 
 export const DateRangeCtx = createContext(null)
 
@@ -30,8 +31,10 @@ export default function Products() {
   )
   const [endPreviousDate, setEndPreviousDate] = useState(new Date('2020/12/31'))
 
-  const [listTopSalesProduct, setListTopSalesProduct] = useState()
   const [status, setStatus] = useState(false)
+  const [listTopSalesProduct, setListTopSalesProduct] = useState()
+  const [getAnalyticProductPerformance, setGetAnalyticProductPerformance] =
+    useState()
 
   const storeDateRange = {
     startCurrent: [startCurrentDate, setStartCurrentDate],
@@ -50,7 +53,13 @@ export default function Products() {
   async function loadData() {
     try {
       const result = await client.request(GET_LIST_TOP_SALES_PRODUCT)
+      const resultGetAnalyticProductPerformance = await client.request(
+        GET_ANALYTIC_PRODUCT_PERFORMANCE
+      )
       setListTopSalesProduct(result.getListTopSalesProduct)
+      setGetAnalyticProductPerformance(
+        resultGetAnalyticProductPerformance.getAnalyticProductPerformance
+      )
 
       // console.log(JSON.stringify(result, null, 4))
     } catch (error) {
@@ -66,7 +75,12 @@ export default function Products() {
     if (listTopSalesProduct) {
       console.log(`listTopSalesProduct_SKU: ${listTopSalesProduct?.[0].sku}`)
     }
-  }, [listTopSalesProduct])
+    if (getAnalyticProductPerformance) {
+      console.log(
+        `getAnalyticProductPerformance_1st_title : ${getAnalyticProductPerformance?.[0].title}`
+      )
+    }
+  }, [listTopSalesProduct, getAnalyticProductPerformance])
 
   return (
     <div className="pb-4">
@@ -250,7 +264,10 @@ export default function Products() {
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
         {/* Performance */}
-        <ProductPerformanceCard />
+        <ProductPerformanceCard
+          data={getAnalyticProductPerformance}
+          setData={setGetAnalyticProductPerformance}
+        />
         {/* Chart View */}
         <ChartView />
       </div>
