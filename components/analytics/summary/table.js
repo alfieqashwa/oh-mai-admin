@@ -152,120 +152,125 @@ export function TableSummary({ data, setData }) {
                   ${t.shipping_cost.toFixed(2)}
                 </td>
                 <td className="py-4 pr-6 text-right w400 whitespace-nowrap">
-                  ${moneyFormat.format(t.net_sales)}
+                  {moneyFormat.format(t.net_sales)}
                 </td>
               </tr>
             )
           })}
-          <tr>
-            <td className="py-4 text-center capitalize bg-N500 w400 whitespace-nowrap">
-              month total
-            </td>
-            <td className="py-4 text-right w400 whitespace-nowrap">
-              {totalOrders}
-            </td>
-            <td className="py-4 text-right w400 whitespace-nowrap">
-              ${totalGrossSales.toFixed(2)}
-            </td>
-            <td className="py-4 text-right w400 whitespace-nowrap">
-              ${totalTaxes.toFixed(2)}
-            </td>
-            <td className="py-4 text-right w400 whitespace-nowrap">
-              ${totalReturns.toFixed(2)}
-            </td>
-            <td className="py-4 text-right w400 whitespace-nowrap">
-              ${totalShipping.toFixed(2)}
-            </td>
-            <td className="py-4 pr-6 text-right w400 whitespace-nowrap">
-              ${grandTotalSales.toFixed(2)}
-            </td>
-          </tr>
+          <TotalMonth data={data} />
         </tbody>
       </table>
     </div>
   )
 }
 
-// dummy data
-// TODO: need formula to calculate
-const tableBody = [
-  {
-    id: 1,
-    date: '01/01/2021',
-    orders: 3,
-    grossSales: 50.0,
-    taxes: 0.0,
-    returns: 0.0,
-    shipping: 0.0,
-    totalSales: 50.0,
-  },
-  {
-    id: 2,
-    date: '02/01/2021',
-    orders: 3,
-    grossSales: 50.0,
-    taxes: 0.0,
-    returns: 0.0,
-    shipping: 0.0,
-    totalSales: 50.0,
-  },
-  {
-    id: 3,
-    date: '03/01/2021',
-    orders: 3,
-    grossSales: 50.0,
-    taxes: 0.0,
-    returns: 0.0,
-    shipping: 0.0,
-    totalSales: 50.0,
-  },
-  {
-    id: 4,
-    date: '04/01/2021',
-    orders: 3,
-    grossSales: 50.0,
-    taxes: 0.0,
-    returns: 0.0,
-    shipping: 0.0,
-    totalSales: 50.0,
-  },
-  {
-    id: 5,
-    date: '05/01/2021',
-    orders: 3,
-    grossSales: 50.0,
-    taxes: 0.0,
-    returns: 0.0,
-    shipping: 0.0,
-    totalSales: 50.0,
-  },
-  {
-    id: 6,
-    date: '06/01/2021',
-    orders: 3,
-    grossSales: 50.0,
-    taxes: 0.0,
-    returns: 0.0,
-    shipping: 0.0,
-    totalSales: 50.0,
-  },
-]
+function TotalMonth({ data }) {
+  const initVal = 0
+  function reducer(acc, i) {
+    return acc + i
+  }
 
-const initialValue = 0
-const orders = tableBody.map((t) => t.orders)
-const grossSales = tableBody.map((t) => t.grossSales)
-const taxes = tableBody.map((t) => t.taxes)
-const returns = tableBody.map((t) => t.returns)
-const shipping = tableBody.map((t) => t.shipping)
-const totalSales = tableBody.map((t) => t.totalSales)
+  const orders = data?.map((t) => t.total_order)
+  const grossSales = data?.map((t) => t.net_sales)
+  const taxes = data?.map((t) => t.order_item_tax)
+  // const returns = data?.map((t) => t.returns)
+  const shipping = data?.map((t) => t.shipping_cost)
+  const totalSales = data?.map((t) => t.net_sales)
 
-const reducer = (acc, i) => {
-  return acc + i
+  const totalOrder = orders?.reduce(reducer, initVal)
+  const totalGrossSales = grossSales?.reduce(reducer, initVal)
+  const totalTaxes = taxes?.reduce(reducer, initVal)
+  // const totalReturns = returns.reduce(reducer, initVal)
+  const totalShipping = shipping?.reduce(reducer, initVal)
+  const grandTotalSales = totalSales?.reduce(reducer, initVal)
+
+  return (
+    <tr>
+      <td className="py-4 text-center capitalize bg-N500 w400 whitespace-nowrap">
+        month total
+      </td>
+      <td className="py-4 text-right w400 whitespace-nowrap">{totalOrder}</td>
+      <td className="py-4 text-right w400 whitespace-nowrap">
+        {moneyFormat.format(totalGrossSales)}
+      </td>
+      <td className="py-4 text-right w400 whitespace-nowrap">
+        ${totalTaxes?.toFixed(2)}
+      </td>
+      <td className="py-4 text-right w400 whitespace-nowrap">
+        {/* ${totalReturns.toFixed(2)} */}${0}
+      </td>
+      <td className="py-4 text-right w400 whitespace-nowrap">
+        ${totalShipping?.toFixed(2)}
+      </td>
+      <td className="py-4 pr-6 text-right w400 whitespace-nowrap">
+        {moneyFormat.format(grandTotalSales)}
+      </td>
+    </tr>
+  )
 }
 
-const totalOrders = orders.reduce(reducer, initialValue)
-const totalGrossSales = grossSales.reduce(reducer, initialValue)
-const totalTaxes = taxes.reduce(reducer, initialValue)
-const totalReturns = returns.reduce(reducer, initialValue)
-const totalShipping = shipping.reduce(reducer, initialValue)
-const grandTotalSales = totalSales.reduce(reducer, initialValue)
+// dummy data
+// TODO: need formula to calculate
+
+// const tableBody = [
+//   {
+//     id: 1,
+//     date: '01/01/2021',
+//     orders: 3,
+//     grossSales: 50.0,
+//     taxes: 0.0,
+//     returns: 0.0,
+//     shipping: 0.0,
+//     totalSales: 50.0,
+//   },
+//   {
+//     id: 2,
+//     date: '02/01/2021',
+//     orders: 3,
+//     grossSales: 50.0,
+//     taxes: 0.0,
+//     returns: 0.0,
+//     shipping: 0.0,
+//     totalSales: 50.0,
+//   },
+//   {
+//     id: 3,
+//     date: '03/01/2021',
+//     orders: 3,
+//     grossSales: 50.0,
+//     taxes: 0.0,
+//     returns: 0.0,
+//     shipping: 0.0,
+//     totalSales: 50.0,
+//   },
+//   {
+//     id: 4,
+//     date: '04/01/2021',
+//     orders: 3,
+//     grossSales: 50.0,
+//     taxes: 0.0,
+//     returns: 0.0,
+//     shipping: 0.0,
+//     totalSales: 50.0,
+//   },
+//   {
+//     id: 5,
+//     date: '05/01/2021',
+//     orders: 3,
+//     grossSales: 50.0,
+//     taxes: 0.0,
+//     returns: 0.0,
+//     shipping: 0.0,
+//     totalSales: 50.0,
+//   },
+//   {
+//     id: 6,
+//     date: '06/01/2021',
+//     orders: 3,
+//     grossSales: 50.0,
+//     taxes: 0.0,
+//     returns: 0.0,
+//     shipping: 0.0,
+//     totalSales: 50.0,
+//   },
+// ]
