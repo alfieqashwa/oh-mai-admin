@@ -143,9 +143,10 @@ function ChartArea({ data, setData }) {
           tickLine={false}
           tickCount={12}
           interval={30}
+          reversed={true}
           tickFormatter={(str) => {
             const date = new Date(str)
-            return format(date, 'MMM d')
+            return format(date, 'MMM')
           }}
         />
 
@@ -192,6 +193,7 @@ function ChartBar({ data, setData }) {
           axisLine={false}
           tickLine={false}
           interval={15}
+          reversed={true}
           tickFormatter={(str) => {
             const date = new Date(str)
             return format(date, 'MMM d')
