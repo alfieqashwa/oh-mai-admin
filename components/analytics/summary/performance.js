@@ -4,14 +4,12 @@ import { PlusCircleIcon } from '@heroicons/react/solid'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import {
   FiDollarSign,
-  FiDownloadCloud,
-  FiArrowDownRight,
-  FiArrowUpRight,
-  FiArrowRight
+  FiDownloadCloud
 } from 'react-icons/fi'
 
 import { AddCategoryModal } from './modal'
 import { moneyFormat } from 'utils/money-format'
+import { ArrowDirections } from 'components/widgets/PerformanceArrow'
 
 export const PerformanceBorder = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -112,47 +110,6 @@ export const PerformanceCard = ({ data, setData }) => {
     }
   }, [data])
 
-  const ArrowRight = ({ checked, item }) => {
-    return (
-      <>
-        <FiArrowRight className={`w-5 h-5 ${checked ? 'text-N800' : 'text-N0'}`} />
-        <h5 className={`w250 ${checked ? 'text-N800' : 'text-N0'}`}>
-          {item.precentage_change}
-        </h5>
-      </>
-    )
-  }
-
-  const DownRight = ({ item }) => {
-    return (
-      <>
-        <FiArrowDownRight className="w-5 h-5 text-R600" />
-        <h5 className="w250 text-R600">
-          {item.precentage_change}%
-        </h5>
-      </>
-    )
-  }
-
-  const UpRight = ({ item }) => {
-    return (
-      <>
-        <FiArrowUpRight className="w-5 h-5 text-G400" />
-        <h5 className="w250 text-G400">
-          {item.precentage_change}%
-        </h5>
-      </>
-    )
-  }
-
-  const UpDown = ({ item }) => {
-    if (item.title === 'Orders') {
-      return (<DownRight item/>)
-    }
-
-    return (<UpRight item/>)
-  }
-
   return (
     <RadioGroup
       className="grid grid-cols-3"
@@ -188,7 +145,7 @@ export const PerformanceCard = ({ data, setData }) => {
                   </h3>
                   <div className="flex items-center space-x-1">
                     {/* temporary logic */}
-                    {c.precentage_change === '-' ? <ArrowRight item={c} checked={checked} /> : <UpDown item={c} /> }
+                    <ArrowDirections item={c} checked={checked} />
                   </div>
                 </div>
                 <div className="my-4">

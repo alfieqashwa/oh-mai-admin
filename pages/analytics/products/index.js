@@ -15,6 +15,7 @@ import { moneyFormat } from 'utils/money-format'
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
 import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/order'
+import { GET_ANALYTIC_PRODUCT_PERFORMANCE } from 'graphql/product'
 
 export const DateRangeCtx = createContext(null)
 
@@ -30,6 +31,8 @@ export default function Products() {
   const [listTopSalesProduct, setListTopSalesProduct] = useState()
   // eslint-disable-next-line no-unused-vars
   const [status, setStatus] = useState(false)
+  const [getAnalyticProductPerformance, setGetAnalyticProductPerformance] = useState()
+
   const storeDateRange = {
     startCurrent: [startCurrentDate, setStartCurrentDate],
     endCurrent: [endCurrentDate, setEndCurrentDate],
@@ -47,7 +50,13 @@ export default function Products() {
   async function loadData() {
     try {
       const result = await client.request(GET_LIST_TOP_SALES_PRODUCT)
+      const resultGetAnalyticProductPerformance = await client.request(
+        GET_ANALYTIC_PRODUCT_PERFORMANCE
+      )
       setListTopSalesProduct(result.getListTopSalesProduct)
+      setGetAnalyticProductPerformance(
+        resultGetAnalyticProductPerformance.getAnalyticProductPerformance
+      )
 
       // console.log(JSON.stringify(result, null, 4))
     } catch (error) {
@@ -63,7 +72,12 @@ export default function Products() {
     if (listTopSalesProduct) {
       console.log(`listTopSalesProduct_SKU: ${listTopSalesProduct?.[0].sku}`)
     }
-  }, [listTopSalesProduct])
+    if (getAnalyticProductPerformance) {
+      console.log(
+        `getAnalyticProductPerformance_1st_title : ${getAnalyticProductPerformance?.[0].title}`
+      )
+    }
+  }, [listTopSalesProduct, getAnalyticProductPerformance])
 
   return (
     <div className="pb-4">
@@ -110,9 +124,8 @@ export default function Products() {
                 {({ open }) => (
                   <>
                     <Menu.Button
-                      className={`bg-transparent focus:outline-none ${
-                        open ? 'text-P400' : ''
-                      }`}
+                      className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''
+                        }`}
                     >
                       <BsThreeDotsVertical className="w-6 h-6" />
                     </Menu.Button>
@@ -129,11 +142,10 @@ export default function Products() {
                       <Menu.Items
                         static
                         className={`
-                  ${
-                    !open
-                      ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
-                      : ''
-                  }
+                  ${!open
+                            ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
+                            : ''
+                          }
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                   `}
                       >
@@ -247,7 +259,10 @@ export default function Products() {
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
         {/* Performance */}
-        <ProductPerformanceCard />
+        <ProductPerformanceCard
+          data={getAnalyticProductPerformance}
+          setData={setGetAnalyticProductPerformance}
+        />
         {/* Chart View */}
         <ChartView />
       </div>
