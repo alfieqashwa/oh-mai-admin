@@ -130,5 +130,14 @@ const performanceCards = [
   { category: 'orders', amount: '100', percentage: '50', previousYear: '200' },
   { category: 'average order value', amount: '5.00', percentage: '400', previousYear: '250.00' },
   { category: 'refunds', amount: '0.00', percentage: '-', previousYear: '50.00' },
-  { category: 'gross profit', amount: '500.00', percentage: '50', previousYear: '150.00' }
+  { category: 'kol orders', amount: '500.00', percentage: '50', previousYear: '250.00' },
+  { category: 'non kol orders', amount: '300', percentage: '50', previousYear: '150' },
+  { category: 'discounted orders', amount: '500', percentage: '50', previousYear: '250' },
+  { category: 'successful orders', amount: '500', percentage: '50', previousYear: '250' },
+  { category: 'kol commissions', amount: '500.00', percentage: '50', previousYear: '250.00' },
+  { category: 'item sold', amount: '500', percentage: '50', previousYear: '250' },
+  { category: 'gross profit', amount: '500.00', percentage: '50', previousYear: '250.00' },
+  { category: 'gateway fees', amount: '100.00', percentage: '50', previousYear: '50.00' },
+  { category: 'net discount amount', amount: '100.00', percentage: '50', previousYear: '50.00' },
+  { category: 'shipping fees', amount: '0.00', percentage: 'N/A', previousYear: '0.00' }
 ]
