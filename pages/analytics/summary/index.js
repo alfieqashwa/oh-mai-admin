@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-
 import { Header } from 'components/header'
 import {
   ChartView,
@@ -8,35 +7,18 @@ import {
   LeaderboardCardType,
   PerformanceBorder,
   PerformanceCard,
-  TableSummary,
+  TableSummary
 } from 'components/analytics/summary'
-
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
-
-const GET_LEADERBOARD_PRODUCT = `{
-  getLeaderBoardProduct {
-    title
-    total_order
-    total_net_sales
-  }
-}`
-
-const GET_LEADERBOARD_KOL = `{
-  getLeaderBoardKol {
-    title
-    total_order
-    total_net_sales
-  }
-}`
-
-const GET_LEADER_BOARD_CUSTOMER = `{
-  getLeaderBoardCustomer {
-    title
-    total_order
-    total_net_sales
-  }
-}`
+import {
+  GET_LEADERBOARD_PRODUCT,
+  GET_LEADERBOARD_KOL,
+  GET_LEADERBOARD_CUSTOMER,
+  GET_SUMMARY_PERFORMANCE,
+  GET_ORDER_SUMMARY_CHART,
+  GET_ORDER_SUMMARY_TABLE
+} from 'graphql/order'
 
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
@@ -45,6 +27,10 @@ export default function Summary() {
   const [leaderboardProduct, setLeaderboardProduct] = useState()
   const [leaderboardKol, setLeaderboardKol] = useState()
   const [leaderboardCustomer, setLeaderboardCustomer] = useState()
+
+  const [getSummaryPerformance, setGetSummaryPerformance] = useState()
+  const [getOrderSummaryChart, setGetOrderSummaryChart] = useState()
+  const [getOrderSummaryTable, setGetOrderSummaryTable] = useState()
 
   useEffect(() => {
     console.log('Check login')
@@ -57,15 +43,30 @@ export default function Summary() {
     try {
       const resultProduct = await client.request(GET_LEADERBOARD_PRODUCT)
       const resultKol = await client.request(GET_LEADERBOARD_KOL)
-      const resultCustomer = await client.request(GET_LEADER_BOARD_CUSTOMER)
+      const resultCustomer = await client.request(GET_LEADERBOARD_CUSTOMER)
+
+      const resultGetSummaryPerformance = await client.request(
+        GET_SUMMARY_PERFORMANCE
+      )
+      const resultGetOrderSummaryChart = await client.request(
+        GET_ORDER_SUMMARY_CHART
+      )
+      const resultGetOrderSummaryTable = await client.request(
+        GET_ORDER_SUMMARY_TABLE
+      )
 
       setLeaderboardProduct(resultProduct.getLeaderBoardProduct)
       setLeaderboardKol(resultKol.getLeaderBoardKol)
       setLeaderboardCustomer(resultCustomer.getLeaderBoardCustomer)
 
-      console.log(JSON.stringify(resultProduct, null, 2))
-      console.log(JSON.stringify(resultKol, null, 2))
-      console.log(JSON.stringify(resultCustomer, null, 2))
+      setGetSummaryPerformance(resultGetSummaryPerformance.getSumaryPerformance)
+      setGetOrderSummaryChart(resultGetOrderSummaryChart.getOrderSumaryChart)
+      setGetOrderSummaryTable(resultGetOrderSummaryTable.getOrderSumaryTable)
+
+      // console.log(JSON.stringify(resultProduct, null, 2))
+      // console.log(JSON.stringify(resultKol, null, 2))
+      // console.log(JSON.stringify(resultCustomer, null, 2))
+      // console.log(JSON.stringify(resultGetSummaryPerformance, null, 2))
     } catch (error) {
       console.log(error.message)
     }
@@ -85,7 +86,29 @@ export default function Summary() {
     if (leaderboardCustomer) {
       console.log(`leaderboardCustomer_title: ${leaderboardCustomer?.title}`)
     }
-  }, [leaderboardProduct, leaderboardKol, leaderboardCustomer])
+    if (getSummaryPerformance) {
+      console.log(
+        `getSummaryPerformance_first_title: ${getSummaryPerformance[0]?.title}`
+      )
+    }
+    if (getOrderSummaryChart) {
+      console.log(
+        `getOrderSummaryChart_datetime: ${getOrderSummaryChart[0]?.order_datetime}`
+      )
+    }
+    if (getOrderSummaryTable) {
+      console.log(
+        `getOrderSummaryTable_net_sales: ${getOrderSummaryTable[0]?.net_sales}`
+      )
+    }
+  }, [
+    leaderboardProduct,
+    leaderboardKol,
+    leaderboardCustomer,
+    getSummaryPerformance,
+    getOrderSummaryChart,
+    getOrderSummaryTable
+  ])
 
   return (
     <div className="pb-4">
@@ -149,13 +172,22 @@ export default function Summary() {
         <PerformanceBorder />
 
         {/* Performance's Cards */}
-        <PerformanceCard />
+        <PerformanceCard
+          data={getSummaryPerformance}
+          setData={setGetSummaryPerformance}
+        />
 
         {/* Chart View */}
-        <ChartView />
+        <ChartView
+          data={getOrderSummaryChart}
+          setData={setGetOrderSummaryChart}
+        />
 
         {/* Table View */}
-        <TableSummary />
+        <TableSummary
+          data={getOrderSummaryTable}
+          setData={setGetOrderSummaryTable}
+        />
       </div>
     </div>
   )
@@ -163,29 +195,29 @@ export default function Summary() {
 
 const dates = [
   { name: 'Current Year (Jan 1 - Dec 31, 2021)' },
-  { name: 'Previous Year (Jan 1 - Dec 31, 2020)' },
+  { name: 'Previous Year (Jan 1 - Dec 31, 2020)' }
 ]
 
-const leaderBoardCards = [
-  {
-    url: '/analytics/summary/best-selling-product',
-    category: 'best selling product',
-    product: 'Zelda: Breath of the Wild',
-    totalOrdersValue: '291',
-    netSalesValue: '18,000.00',
-  },
-  {
-    url: '/analytics/summary/top-kol',
-    category: 'top kol',
-    product: 'Lice Wang',
-    totalOrdersValue: '135',
-    netSalesValue: '10,000.00',
-  },
-  {
-    url: '/analytics/summary/top-customer',
-    category: 'top customer',
-    product: 'Fan Leng Leng',
-    totalOrdersValue: '5',
-    netSalesValue: '1,800.00',
-  },
-]
+// const leaderBoardCards = [
+//   {
+//     url: '/analytics/summary/best-selling-product',
+//     category: 'best selling product',
+//     product: 'Zelda: Breath of the Wild',
+//     totalOrdersValue: '291',
+//     netSalesValue: '18,000.00',
+//   },
+//   {
+//     url: '/analytics/summary/top-kol',
+//     category: 'top kol',
+//     product: 'Lice Wang',
+//     totalOrdersValue: '135',
+//     netSalesValue: '10,000.00',
+//   },
+//   {
+//     url: '/analytics/summary/top-customer',
+//     category: 'top customer',
+//     product: 'Fan Leng Leng',
+//     totalOrdersValue: '5',
+//     netSalesValue: '1,800.00',
+//   },
+// ]

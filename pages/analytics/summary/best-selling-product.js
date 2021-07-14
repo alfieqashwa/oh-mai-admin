@@ -10,11 +10,11 @@ import {
   LeaderBoardBorder,
   PaginationSummary,
 } from 'components/analytics/summary'
-import { thousandSeparator } from 'utils/thousand-separator'
+import { moneyFormat } from 'utils/money-format'
 
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
-import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/product'
+import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/order'
 
 export default function BestSellingProduct() {
   const [listTopSalesProduct, setListTopSalesProduct] = useState()
@@ -211,7 +211,7 @@ export default function BestSellingProduct() {
                   {t.item_sold}
                 </td>
                 <td className="w-1/6 py-4 text-right w400 whitespace-nowrap">
-                  ${thousandSeparator(t.net_sales.toFixed(2))}
+                  {moneyFormat.format(t.net_sales)}
                 </td>
                 <td className="py-4 text-right underline w400 whitespace-nowrap">
                   {t.order}

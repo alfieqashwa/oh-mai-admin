@@ -2,7 +2,6 @@ import React, { useState, createContext, Fragment, useEffect } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
-
 import { Header } from 'components/header'
 import {
   DateRangeComparison,
@@ -10,13 +9,12 @@ import {
   ChartView,
   PaginationProducts,
   SwitchOnOff,
-  ProductPerformanceCard,
+  ProductPerformanceCard
 } from 'components/analytics/products'
 import { moneyFormat } from 'utils/money-format'
-
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
-import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/product'
+import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/order'
 
 export const DateRangeCtx = createContext(null)
 
@@ -29,15 +27,14 @@ export default function Products() {
     new Date('2020/01/01')
   )
   const [endPreviousDate, setEndPreviousDate] = useState(new Date('2020/12/31'))
-
   const [listTopSalesProduct, setListTopSalesProduct] = useState()
+  // eslint-disable-next-line no-unused-vars
   const [status, setStatus] = useState(false)
-
   const storeDateRange = {
     startCurrent: [startCurrentDate, setStartCurrentDate],
     endCurrent: [endCurrentDate, setEndCurrentDate],
     startPrevious: [startPreviousDate, setStartPreviousDate],
-    endPrevious: [endPreviousDate, setEndPreviousDate],
+    endPrevious: [endPreviousDate, setEndPreviousDate]
   }
 
   useEffect(() => {
@@ -259,49 +256,49 @@ export default function Products() {
 }
 
 // Best Selling Product List Dummy Data
-const tableBody = [
-  {
-    id: 1,
-    sn: '1',
-    productTitle: 'Zelta: Breath of the Wild',
-    sku: '128SKXUM-CI',
-    itemsSold: 100,
-    netSales: 1000.0,
-    orders: 10,
-    category: 'Games',
-    status: true,
-  },
-  {
-    id: 2,
-    sn: '2',
-    productTitle: 'Persona 5',
-    sku: 'PERS9290S-XL',
-    itemsSold: 24,
-    netSales: 400.0,
-    orders: 10,
-    category: 'Games',
-    status: false,
-  },
-  {
-    id: 3,
-    sn: '3',
-    productTitle: 'Play Station 5 Cyberpunk: 2077 Skin Wrap Edition',
-    sku: 'PS829-SIMNXO',
-    itemsSold: 2,
-    netSales: 200.0,
-    orders: 1,
-    category: 'Games Accessories',
-    status: false,
-  },
-  {
-    id: 4,
-    sn: '4',
-    productTitle: 'Back4Blood',
-    sku: 'B4B12312490L',
-    itemsSold: 2,
-    netSales: 0.0,
-    orders: 1,
-    category: 'Games',
-    status: true,
-  },
-]
+// const tableBody = [
+//   {
+//     id: 1,
+//     sn: '1',
+//     productTitle: 'Zelta: Breath of the Wild',
+//     sku: '128SKXUM-CI',
+//     itemsSold: 100,
+//     netSales: 1000.0,
+//     orders: 10,
+//     category: 'Games',
+//     status: true,
+//   },
+//   {
+//     id: 2,
+//     sn: '2',
+//     productTitle: 'Persona 5',
+//     sku: 'PERS9290S-XL',
+//     itemsSold: 24,
+//     netSales: 400.0,
+//     orders: 10,
+//     category: 'Games',
+//     status: false,
+//   },
+//   {
+//     id: 3,
+//     sn: '3',
+//     productTitle: 'Play Station 5 Cyberpunk: 2077 Skin Wrap Edition',
+//     sku: 'PS829-SIMNXO',
+//     itemsSold: 2,
+//     netSales: 200.0,
+//     orders: 1,
+//     category: 'Games Accessories',
+//     status: false,
+//   },
+//   {
+//     id: 4,
+//     sn: '4',
+//     productTitle: 'Back4Blood',
+//     sku: 'B4B12312490L',
+//     itemsSold: 2,
+//     netSales: 0.0,
+//     orders: 1,
+//     category: 'Games',
+//     status: true,
+//   },
+// ]

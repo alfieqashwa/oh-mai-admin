@@ -1,33 +1,71 @@
-import { useState, Fragment } from 'react'
-import Link from 'next/link';
-import useSWR from 'swr'
+import { useState, useEffect, Fragment } from 'react'
+import Link from 'next/link'
+// import useSWR from 'swr'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 
-import { GlassHeader } from 'components/glassHeader';
-import { Header } from 'components/header';
-import { TitleWithBackButton } from 'components/titleWithBackButton';
-import { ErrorStatus } from 'components/error-status';
-import { LoadingStatus } from 'components/loading-status';
-import { LeaderBoardBorder, PaginationSummary } from 'components/analytics/summary';
+import { GlassHeader } from 'components/glassHeader'
+import { Header } from 'components/header'
+import { TitleWithBackButton } from 'components/titleWithBackButton'
+// import { ErrorStatus } from 'components/error-status'
+// import { LoadingStatus } from 'components/loading-status'
+import {
+  LeaderBoardBorder,
+  PaginationSummary,
+} from 'components/analytics/summary'
+import { moneyFormat } from 'utils/money-format'
 
-const fetcher = url => fetch(url).then(res => res.json())
+import { checkLogin } from 'utils/Auth'
+import { getClient } from 'lib/graphqlclient'
+import { GET_LIST_TOP_SALES_ON_KOL } from 'graphql/order'
+
+// const fetcher = url => fetch(url).then(res => res.json())
 
 export default function TopKOL() {
-  const { error, data } = useSWR('/api/analytics/summary/top-kol', fetcher)
+  const [listTopSalesOnKol, setListTopSalesOnKol] = useState()
+  // const { error, data } = useSWR('/api/analytics/summary/top-kol', fetcher)
 
-  if (error) return <ErrorStatus message={error.message} />
-  if (!data) return <LoadingStatus />
+  // if (error) return <ErrorStatus message={error.message} />
+  // if (!data) return <LoadingStatus />
+
+  useEffect(() => {
+    console.log('check login!')
+    checkLogin()
+  }, [])
+
+  const client = getClient()
+
+  async function loadData() {
+    try {
+      const result = await client.request(GET_LIST_TOP_SALES_ON_KOL)
+      setListTopSalesOnKol(result.getListTopSalesOnKol)
+
+      console.log(JSON.stringify(result.getListTopSalesOnKol, null, 2))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
+  useEffect(() => {
+    if (listTopSalesOnKol) {
+      console.log(`listTopSalesOnKol_ID: ${listTopSalesOnKol?.[0].kol_id}`)
+    }
+  }, [listTopSalesOnKol])
 
   return (
     <div className="pr-12 pl-7">
-
       {/* Header? */}
       <Header title="Summary - Top KOL" />
       <GlassHeader title="top KOL">
         <div className="flex space-x-4">
-          <button className="px-5 py-2 uppercase bg-transparent border w250-m text-N0">export</button>
+          <button className="px-5 py-2 uppercase bg-transparent border w250-m text-N0">
+            export
+          </button>
         </div>
       </GlassHeader>
 
@@ -42,7 +80,10 @@ export default function TopKOL() {
         <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
           <h2 className="w250 text-N900">sort by</h2>
           <div className="px-4">
-            <select name="date-range" className="px-10 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none">
+            <select
+              name="date-range"
+              className="px-10 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none"
+            >
               <option>Ascending</option>
               <option>Descending</option>
             </select>
@@ -60,7 +101,11 @@ export default function TopKOL() {
             <Menu as="div" className="relative">
               {({ open }) => (
                 <>
-                  <Menu.Button className={`bg-transparent focus:outline-none ${open ? "text-P400" : ""}`}>
+                  <Menu.Button
+                    className={`bg-transparent focus:outline-none ${
+                      open ? 'text-P400' : ''
+                    }`}
+                  >
                     <BsThreeDotsVertical className="w-6 h-6" />
                   </Menu.Button>
                   <Transition
@@ -76,7 +121,11 @@ export default function TopKOL() {
                     <Menu.Items
                       static
                       className={`
-                  ${!open ? "motion-safe:animate-bounce transition duration-700 ease-in-out" : ""}
+                  ${
+                    !open
+                      ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
+                      : ''
+                  }
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                   `}
                     >
@@ -100,40 +149,76 @@ export default function TopKOL() {
         <table className="md:min-w-full text-N0">
           <thead className="bg-N200 bg-opacity-30">
             <tr>
-              <th scope="col" className="py-4 text-center capitalize w400 whitespace-nowrap">s/n</th>
-              <th scope="col" className="py-4 pl-4 text-left capitalize w400 whitespace-nowrap">kol</th>
-              <th scope="col" className="py-4 text-right capitalize w400 whitespace-nowrap">items sold</th>
-              <th scope="col" className="py-4 text-right capitalize w400 whitespace-nowrap">net sales</th>
-              <th scope="col" className="py-4 text-right capitalize w400 whitespace-nowrap">orders</th>
-              <th scope="col" className="py-4 pr-10 text-right capitalize w400 whitespace-nowrap">total commissions</th>
+              <th
+                scope="col"
+                className="py-4 text-center capitalize w400 whitespace-nowrap"
+              >
+                s/n
+              </th>
+              <th
+                scope="col"
+                className="py-4 pl-4 text-left capitalize w400 whitespace-nowrap"
+              >
+                kol
+              </th>
+              <th
+                scope="col"
+                className="py-4 text-right capitalize w400 whitespace-nowrap"
+              >
+                items sold
+              </th>
+              <th
+                scope="col"
+                className="py-4 text-right capitalize w400 whitespace-nowrap"
+              >
+                net sales
+              </th>
+              <th
+                scope="col"
+                className="py-4 text-right capitalize w400 whitespace-nowrap"
+              >
+                orders
+              </th>
+              <th
+                scope="col"
+                className="py-4 pr-10 text-right capitalize w400 whitespace-nowrap"
+              >
+                total commissions
+              </th>
             </tr>
           </thead>
 
           {/* Table Content */}
           <tbody className="bg-N700 text-N0">
-            {data.map(t => (
-              <tr key={t.id}>
-                <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">{t.sn}</td>
+            {listTopSalesOnKol?.map((t) => (
+              <tr key={t.kol_id}>
+                <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">
+                  {t.sn}
+                </td>
                 <td className="py-4 pl-4 text-left underline w400">
-                  <Link href={`/analytics/summary/top-kol/${t.kol.toLowerCase().replace(/\s/g, '-')}`}>
-                    <a>
-                      {t.kol}
-                    </a>
+                  <Link href={`/analytics/summary/top-kol/${t.kol_id}`}>
+                    <a>{t.kol_name}</a>
                   </Link>
                 </td>
-                <td className="py-4 text-right w400 whitespace-nowrap">{t.itemsSold}</td>
-                <td className="py-4 text-right w400 whitespace-nowrap">${t.netSales.toFixed(2)}</td>
-                <td className="py-4 text-right underline w400 whitespace-nowrap">{t.orders}</td>
-                <td className="py-4 pr-10 text-right w400 whitespace-nowrap">${t.totalCommission.toFixed(2)}</td>
+                <td className="py-4 text-right w400 whitespace-nowrap">
+                  {t.item_sold}
+                </td>
+                <td className="py-4 text-right w400 whitespace-nowrap">
+                  {moneyFormat.format(t.net_sales)}
+                </td>
+                <td className="py-4 text-right underline w400 whitespace-nowrap">
+                  {t.orders}
+                </td>
+                <td className="py-4 pr-10 text-right w400 whitespace-nowrap">
+                  {moneyFormat.format(t.total_commission)}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-
       <PaginationSummary />
-
     </div>
   )
 }

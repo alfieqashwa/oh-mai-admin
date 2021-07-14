@@ -1,6 +1,5 @@
-import React, { Fragment } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import Link from 'next/link'
-import useSWR from 'swr'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
@@ -8,26 +7,58 @@ import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { GlassHeader } from 'components/glassHeader'
 import { Header } from 'components/header'
 import { TitleWithBackButton } from 'components/titleWithBackButton'
-import { ErrorStatus } from 'components/error-status'
-import { LoadingStatus } from 'components/loading-status'
-import { LeaderBoardBorder, PaginationSummary } from 'components/analytics/summary'
+import {
+  LeaderBoardBorder,
+  PaginationSummary,
+} from 'components/analytics/summary'
+import { moneyFormat } from 'utils/money-format'
 
-const fetcher = url => fetch(url).then(res => res.json())
+import { checkLogin } from 'utils/Auth'
+import { getClient } from 'lib/graphqlclient'
+import { GET_LIST_TOP_SALES_ON_CUSTOMER } from 'graphql/order'
 
 export default function TopCustomer() {
-  const { error, data } = useSWR('/api/analytics/summary/top-customer', fetcher)
+  const [listTopSalesOnCustomer, setListTopSalesOnCustomer] = useState()
 
-  if (error) return <ErrorStatus message={error.message} />
-  if (!data) return <LoadingStatus />
+  useEffect(() => {
+    console.log('Check login!')
+    checkLogin()
+  }, [])
+
+  const client = getClient()
+
+  async function loadData() {
+    try {
+      const result = await client.request(GET_LIST_TOP_SALES_ON_CUSTOMER)
+      setListTopSalesOnCustomer(result.getListTopSalesOnCustomer)
+
+      console.log(JSON.stringify(result.getListTopSalesOnCustomer, null, 2))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
+  useEffect(() => {
+    if (listTopSalesOnCustomer) {
+      console.log(
+        `listTopSalesOnCustomer_ID: ${listTopSalesOnCustomer?.[0].customer_id}`
+      )
+    }
+  }, [listTopSalesOnCustomer])
 
   return (
     <div className="pr-12 pl-7">
-
       {/* Header? */}
       <Header title="Summary - Top Customer" />
       <GlassHeader title="top customer">
         <div className="flex space-x-4">
-          <button className="px-5 py-2 uppercase bg-transparent border w250-m text-N0">export</button>
+          <button className="px-5 py-2 uppercase bg-transparent border w250-m text-N0">
+            export
+          </button>
         </div>
       </GlassHeader>
 
@@ -42,7 +73,10 @@ export default function TopCustomer() {
         <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
           <h2 className="w250 text-N900">sort by</h2>
           <div className="px-4">
-            <select name="date-range" className="px-10 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none">
+            <select
+              name="date-range"
+              className="px-10 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none"
+            >
               <option>Ascending</option>
               <option>Descending</option>
             </select>
@@ -60,7 +94,11 @@ export default function TopCustomer() {
             <Menu as="div" className="relative">
               {({ open }) => (
                 <>
-                  <Menu.Button className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''}`}>
+                  <Menu.Button
+                    className={`bg-transparent focus:outline-none ${
+                      open ? 'text-P400' : ''
+                    }`}
+                  >
                     <BsThreeDotsVertical className="w-6 h-6" />
                   </Menu.Button>
                   <Transition
@@ -76,7 +114,11 @@ export default function TopCustomer() {
                     <Menu.Items
                       static
                       className={`
-                  ${!open ? 'motion-safe:animate-bounce transition duration-700 ease-in-out' : ''}
+                  ${
+                    !open
+                      ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
+                      : ''
+                  }
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                   `}
                     >
@@ -100,31 +142,80 @@ export default function TopCustomer() {
         <table className="md:min-w-full text-N0">
           <thead className="bg-N200 bg-opacity-30">
             <tr>
-              <th scope="col" className="px-2 py-4 text-center capitalize w400 whitespace-nowrap">s/n</th>
-              <th scope="col" className="py-4 pl-4 text-left capitalize w400 whitespace-nowrap">customer</th>
-              <th scope="col" className="py-4 text-right capitalize w400 whitespace-nowrap">orders made</th>
-              <th scope="col" className="py-4 text-right capitalize w400 whitespace-nowrap">average order value</th>
-              <th scope="col" className="py-4 text-right capitalize w400 whitespace-nowrap">items bought</th>
-              <th scope="col" className="py-4 text-right capitalize w400 whitespace-nowrap">gross sales</th>
-              <th scope="col" className="px-6 py-4 text-right capitalize w400 whitespace-nowrap">net sales</th>
+              <th
+                scope="col"
+                className="px-2 py-4 text-center capitalize w400 whitespace-nowrap"
+              >
+                s/n
+              </th>
+              <th
+                scope="col"
+                className="py-4 pl-4 text-left capitalize w400 whitespace-nowrap"
+              >
+                customer
+              </th>
+              <th
+                scope="col"
+                className="py-4 text-right capitalize w400 whitespace-nowrap"
+              >
+                orders made
+              </th>
+              <th
+                scope="col"
+                className="py-4 text-right capitalize w400 whitespace-nowrap"
+              >
+                average order value
+              </th>
+              <th
+                scope="col"
+                className="py-4 text-right capitalize w400 whitespace-nowrap"
+              >
+                items bought
+              </th>
+              <th
+                scope="col"
+                className="py-4 text-right capitalize w400 whitespace-nowrap"
+              >
+                gross sales
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-4 text-right capitalize w400 whitespace-nowrap"
+              >
+                net sales
+              </th>
             </tr>
           </thead>
 
           {/* Table Content */}
           <tbody className="bg-N700 text-N0">
-            {data.map(t => (
-              <tr key={t.id}>
-                <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">{t.sn}</td>
+            {listTopSalesOnCustomer?.map((t) => (
+              <tr key={t.customer_id}>
+                <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">
+                  {t.sn}
+                </td>
                 <td className="py-4 pl-4 text-left underline w400">
-                  <Link href={`/analytics/summary/top-customer/${t.customer.toLowerCase().replace(/\s/g, '-')}`}>
-                    <a>{t.customer}</a>
+                  <Link
+                    href={`/analytics/summary/top-customer/${t.customer_id}`}
+                  >
+                    <a>{t.customer_name}</a>
                   </Link>
                 </td>
-                <td className="py-4 text-right w400 whitespace-nowrap">{t.ordersMade}</td>
-                <td className="py-4 text-right w400 whitespace-nowrap">${t.averageOrderValue.toFixed(2)}</td>
-                <td className="py-4 text-right w400 whitespace-nowrap">{t.itemsBought}</td>
-                <td className="py-4 text-right w400 whitespace-nowrap">${t.grossSales.toFixed(2)}</td>
-                <th className="px-6 py-4 text-right capitalize w400 whitespace-nowrap">${t.netSales.toFixed(2)}</th>
+                <td className="py-4 text-right w400 whitespace-nowrap">
+                  {t.order}
+                </td>
+                <td className="py-4 text-right w400 whitespace-nowrap">
+                  {moneyFormat.format(t.avarege_order_value)}
+                </td>
+                <td className="py-4 text-right w400 whitespace-nowrap">
+                  {t.total_item_bought}
+                </td>
+                <td className="py-4 text-right w400 whitespace-nowrap">
+                  {moneyFormat.format(t.gross_sales)}
+                </td>
+                <th className="px-6 py-4 text-right capitalize w400 whitespace-nowrap">
+                  {moneyFormat.format(t.net_sales)}
+                </th>
               </tr>
             ))}
           </tbody>
@@ -133,7 +224,6 @@ export default function TopCustomer() {
 
       {/* Pagination */}
       <PaginationSummary />
-
     </div>
   )
 }
