@@ -27,7 +27,7 @@ export default function OrderDetail() {
   // eslint-disable-next-line no-unused-vars
   const [totalPage, setTotalPage] = useState(0)
   // eslint-disable-next-line no-unused-vars
-  const [filter, setFilter] = useState({ max_row: 3, keyword: '', page: 1 })
+  const [filter, setFilter] = useState({ max_row: 10, keyword: '', page: 1 })
   const [order, setOrder] = useState(null)
   const [dialogAddressOpen, setDialogAddressOpen] = useState(false)
   const [dialogTrackingNumOpen, setDialogTrackingNumOpen] = useState(false)

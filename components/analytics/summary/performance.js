@@ -169,10 +169,6 @@ export const PerformanceCard = ({ data, setData }) => {
 }
 
 const performanceCards = [
-  { title: 'gross sales', performance: '500.00', precentage_change: '50', performance_last_year: '250.00' },
-  { title: 'net sales', performance: '500.00', precentage_change: '50', performance_last_year: '250.00' },
-  { title: 'orders', performance: '100', precentage_change: '50', performance_last_year: '200' },
-  { title: 'average order value', performance: '5.00', precentage_change: '400', performance_last_year: '250.00' },
   { title: 'refunds', performance: '0.00', precentage_change: '-', performance_last_year: '50.00' },
   { title: 'kol orders', performance: '500.00', precentage_change: '50', performance_last_year: '250.00' },
   { title: 'non kol orders', performance: '300', precentage_change: '50', performance_last_year: '150' },

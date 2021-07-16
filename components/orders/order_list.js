@@ -9,7 +9,7 @@ import { parseAddress } from 'utils/OrderUtils'
 import OrderLookup from 'components/widgets/dialog/OrderLookup'
 import Link from 'next/link'
 
-export function OrderList({ filter, page }) {
+export function OrderList({ filter, setTotalPage }) {
   console.log('/components/widget/pagination:filter', filter)
   const store = useStore()
   const dispatch = useDispatch()
@@ -23,7 +23,6 @@ export function OrderList({ filter, page }) {
   // eslint-disable-next-line no-unused-vars
   const [maxRow, setMaxRow] = useState(10)
   // eslint-disable-next-line no-unused-vars
-  const [totalPage, setTotalPage] = useState(0)
   const [mTotal, setmTotal] = useState(0)
 
   const moneyFormat = new Intl.NumberFormat('en-US', {
@@ -87,8 +86,9 @@ export function OrderList({ filter, page }) {
     const mTotalPage = Math.ceil(mTotal / maxRow)
     setTotalPage(mTotalPage)
     setOrders(orders)
-    console.log('pagination/State change', state)
-    console.log('pagination/totalRow', totalRow)
+    console.log('order_list/State change', state)
+    console.log('order_list/totalRow', totalRow)
+    console.log('order_list/mTotalPage', mTotalPage)
   })
 
   return (
