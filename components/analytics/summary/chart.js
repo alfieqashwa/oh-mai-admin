@@ -9,7 +9,7 @@ import {
   Tooltip,
   CartesianGrid,
   BarChart,
-  Bar,
+  Bar
 } from 'recharts'
 import { format } from 'date-fns'
 import { AiOutlineBarChart, AiOutlineLineChart } from 'react-icons/ai'
@@ -29,9 +29,7 @@ export function ChartView({ data, setData }) {
             className="w-6 h-6 rounded bg-P700 focus:outline-none focus:ring checked:text-P700 focus:ring-P700"
           />
           <div>
-            <p className="text-black w350">
-              Current Year (Jan 1 - Dec 31, 2021)
-            </p>
+            <p className="text-black w350">Current Year (Jan 1 - Dec 31, 2021)</p>
             <h5 className="text-black w250-m">$10.00</h5>
           </div>
         </div>
@@ -65,9 +63,8 @@ export function ChartView({ data, setData }) {
                 {({ checked, active }) => (
                   <button
                     type="button"
-                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 focus:ring focus:ring-P700 ${
-                      checked ? 'shadow-inner' : ''
-                    }`}
+                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
+                      focus:ring focus:ring-P700 ${checked ? 'shadow-inner' : ''}`}
                   >
                     <AiOutlineBarChart className="w-6 h-6 font-primary text-P700" />
                   </button>
@@ -77,9 +74,8 @@ export function ChartView({ data, setData }) {
                 {({ checked, active }) => (
                   <button
                     type="button"
-                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 focus:ring focus:ring-P700 ${
-                      checked ? 'shadow-inner' : ''
-                    }`}
+                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
+                      focus:ring focus:ring-P700 ${checked ? 'shadow-inner' : ''}`}
                   >
                     <AiOutlineLineChart className="w-6 h-6 text-P700" />
                   </button>
@@ -155,7 +151,7 @@ function ChartArea({ data, setData }) {
           axisLine={false}
           tickLine={false}
           tickCount={8}
-          // tickFormatter={(number) => moneyFormat.format(number)}
+        // tickFormatter={(number) => moneyFormat.format(number)}
         />
 
         <Tooltip content={<CustomTooltip />} />
@@ -169,13 +165,11 @@ function ChartArea({ data, setData }) {
 // Bar Chart Testing
 const getPath = (x, y, width, height) =>
   `M${x},${y + height}
-   C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${
-    x + width / 2
+  C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${x + width / 2
   }, ${y}
-   C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${
-    x + width
+   C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${x + width
   }, ${y + height}
-   Z`
+  Z`
 
 const TriangleBar = (props) => {
   const { fill, x, y, width, height } = props
@@ -204,7 +198,7 @@ function ChartBar({ data, setData }) {
           axisLine={false}
           tickLine={false}
           tickCount={8}
-          // tickFormatter={(number) => `$${number.toFixed(2)}`}
+        // tickFormatter={(number) => `$${number.toFixed(2)}`}
         />
 
         <Tooltip content={<CustomTooltip />} />
@@ -215,6 +209,12 @@ function ChartBar({ data, setData }) {
 }
 
 function CustomTooltip({ active, payload, label }) {
+  if (!active || !payload || !label) {
+    return (
+      <> </>
+    )
+  }
+
   if (active) {
     const date = new Date(label)
     return (
@@ -226,5 +226,6 @@ function CustomTooltip({ active, payload, label }) {
       </GlassDefault>
     )
   }
+
   return null
 }
