@@ -12,7 +12,7 @@ import { Pagination } from 'components/widgets/pagination'
 export default function OrdersPage() {
   // eslint-disable-next-line no-undef
   const [totalPage, setTotalPage] = useState(0)
-  const [filter, setFilter] = useState({ max_row: 3, keyword: '', page: 1 })
+  const [filter, setFilter] = useState({ max_row: 10, keyword: '', page: 1 })
   const dispatch = useDispatch()
 
   const handleChange = (e) => {
@@ -38,8 +38,8 @@ export default function OrdersPage() {
         type: 'order/list',
         payload: {
           paging: {
-            limit: 2,
-            offset: 0,
+            limit: filter.max_row,
+            offset: filter.page,
             sort: filter.sort_by
           },
           filter: {
@@ -57,8 +57,8 @@ export default function OrdersPage() {
       type: 'order/list',
       payload: {
         paging: {
-          limit: 2,
-          offset: 0,
+          limit: filter.max_row,
+          offset: filter.page,
           sort: filter.sort_by
         },
         filter: {

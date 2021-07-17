@@ -14,5 +14,5 @@ export {
   PaginationSummary,
   PerformanceBorder,
   PerformanceCard,
-  TableSummary,
+  TableSummary
 }

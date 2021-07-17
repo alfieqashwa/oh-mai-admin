@@ -210,3 +210,15 @@ export const UPDATE_PRODUCT_GQL = gql`
     }
   }
 `
+
+// new schema
+export const GET_ANALYTIC_PRODUCT_PERFORMANCE = gql`
+  query getAnalyticProducPerformance($startDate: String, $endDate: String) {
+    getAnalyticProductPerformance(startDate: $startDate, endDate: $endDate) {
+      title
+      performance
+      precentage_change
+      performance_last_year
+    }
+  }
+`
