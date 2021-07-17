@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-
 import { Header } from 'components/header'
 import {
   ChartView,
@@ -8,9 +7,8 @@ import {
   LeaderboardCardType,
   PerformanceBorder,
   PerformanceCard,
-  TableSummary,
+  TableSummary
 } from 'components/analytics/summary'
-
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
 import {
@@ -19,7 +17,7 @@ import {
   GET_LEADERBOARD_CUSTOMER,
   GET_SUMMARY_PERFORMANCE,
   GET_ORDER_SUMMARY_CHART,
-  GET_ORDER_SUMMARY_TABLE,
+  GET_ORDER_SUMMARY_TABLE
 } from 'graphql/order'
 
 export default function Summary() {
@@ -109,7 +107,7 @@ export default function Summary() {
     leaderboardCustomer,
     getSummaryPerformance,
     getOrderSummaryChart,
-    getOrderSummaryTable,
+    getOrderSummaryTable
   ])
 
   return (
@@ -197,7 +195,7 @@ export default function Summary() {
 
 const dates = [
   { name: 'Current Year (Jan 1 - Dec 31, 2021)' },
-  { name: 'Previous Year (Jan 1 - Dec 31, 2020)' },
+  { name: 'Previous Year (Jan 1 - Dec 31, 2020)' }
 ]
 
 // const leaderBoardCards = [

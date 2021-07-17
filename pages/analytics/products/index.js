@@ -2,7 +2,6 @@ import React, { useState, createContext, Fragment, useEffect } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
-
 import { Header } from 'components/header'
 import {
   DateRangeComparison,
@@ -10,13 +9,13 @@ import {
   ChartView,
   PaginationProducts,
   SwitchOnOff,
-  ProductPerformanceCard,
+  ProductPerformanceCard
 } from 'components/analytics/products'
 import { moneyFormat } from 'utils/money-format'
-
 import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
 import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/order'
+import { GET_ANALYTIC_PRODUCT_PERFORMANCE } from 'graphql/product'
 
 export const DateRangeCtx = createContext(null)
 
@@ -29,15 +28,16 @@ export default function Products() {
     new Date('2020/01/01')
   )
   const [endPreviousDate, setEndPreviousDate] = useState(new Date('2020/12/31'))
-
   const [listTopSalesProduct, setListTopSalesProduct] = useState()
+  // eslint-disable-next-line no-unused-vars
   const [status, setStatus] = useState(false)
+  const [getAnalyticProductPerformance, setGetAnalyticProductPerformance] = useState()
 
   const storeDateRange = {
     startCurrent: [startCurrentDate, setStartCurrentDate],
     endCurrent: [endCurrentDate, setEndCurrentDate],
     startPrevious: [startPreviousDate, setStartPreviousDate],
-    endPrevious: [endPreviousDate, setEndPreviousDate],
+    endPrevious: [endPreviousDate, setEndPreviousDate]
   }
 
   useEffect(() => {
@@ -50,7 +50,13 @@ export default function Products() {
   async function loadData() {
     try {
       const result = await client.request(GET_LIST_TOP_SALES_PRODUCT)
+      const resultGetAnalyticProductPerformance = await client.request(
+        GET_ANALYTIC_PRODUCT_PERFORMANCE
+      )
       setListTopSalesProduct(result.getListTopSalesProduct)
+      setGetAnalyticProductPerformance(
+        resultGetAnalyticProductPerformance.getAnalyticProductPerformance
+      )
 
       // console.log(JSON.stringify(result, null, 4))
     } catch (error) {
@@ -66,7 +72,12 @@ export default function Products() {
     if (listTopSalesProduct) {
       console.log(`listTopSalesProduct_SKU: ${listTopSalesProduct?.[0].sku}`)
     }
-  }, [listTopSalesProduct])
+    if (getAnalyticProductPerformance) {
+      console.log(
+        `getAnalyticProductPerformance_1st_title : ${getAnalyticProductPerformance?.[0].title}`
+      )
+    }
+  }, [listTopSalesProduct, getAnalyticProductPerformance])
 
   return (
     <div className="pb-4">
@@ -113,9 +124,8 @@ export default function Products() {
                 {({ open }) => (
                   <>
                     <Menu.Button
-                      className={`bg-transparent focus:outline-none ${
-                        open ? 'text-P400' : ''
-                      }`}
+                      className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''
+                        }`}
                     >
                       <BsThreeDotsVertical className="w-6 h-6" />
                     </Menu.Button>
@@ -132,11 +142,10 @@ export default function Products() {
                       <Menu.Items
                         static
                         className={`
-                  ${
-                    !open
-                      ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
-                      : ''
-                  }
+                  ${!open
+                            ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
+                            : ''
+                          }
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                   `}
                       >
@@ -250,7 +259,10 @@ export default function Products() {
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
         {/* Performance */}
-        <ProductPerformanceCard />
+        <ProductPerformanceCard
+          data={getAnalyticProductPerformance}
+          setData={setGetAnalyticProductPerformance}
+        />
         {/* Chart View */}
         <ChartView />
       </div>
@@ -259,49 +271,49 @@ export default function Products() {
 }
 
 // Best Selling Product List Dummy Data
-const tableBody = [
-  {
-    id: 1,
-    sn: '1',
-    productTitle: 'Zelta: Breath of the Wild',
-    sku: '128SKXUM-CI',
-    itemsSold: 100,
-    netSales: 1000.0,
-    orders: 10,
-    category: 'Games',
-    status: true,
-  },
-  {
-    id: 2,
-    sn: '2',
-    productTitle: 'Persona 5',
-    sku: 'PERS9290S-XL',
-    itemsSold: 24,
-    netSales: 400.0,
-    orders: 10,
-    category: 'Games',
-    status: false,
-  },
-  {
-    id: 3,
-    sn: '3',
-    productTitle: 'Play Station 5 Cyberpunk: 2077 Skin Wrap Edition',
-    sku: 'PS829-SIMNXO',
-    itemsSold: 2,
-    netSales: 200.0,
-    orders: 1,
-    category: 'Games Accessories',
-    status: false,
-  },
-  {
-    id: 4,
-    sn: '4',
-    productTitle: 'Back4Blood',
-    sku: 'B4B12312490L',
-    itemsSold: 2,
-    netSales: 0.0,
-    orders: 1,
-    category: 'Games',
-    status: true,
-  },
-]
+// const tableBody = [
+//   {
+//     id: 1,
+//     sn: '1',
+//     productTitle: 'Zelta: Breath of the Wild',
+//     sku: '128SKXUM-CI',
+//     itemsSold: 100,
+//     netSales: 1000.0,
+//     orders: 10,
+//     category: 'Games',
+//     status: true,
+//   },
+//   {
+//     id: 2,
+//     sn: '2',
+//     productTitle: 'Persona 5',
+//     sku: 'PERS9290S-XL',
+//     itemsSold: 24,
+//     netSales: 400.0,
+//     orders: 10,
+//     category: 'Games',
+//     status: false,
+//   },
+//   {
+//     id: 3,
+//     sn: '3',
+//     productTitle: 'Play Station 5 Cyberpunk: 2077 Skin Wrap Edition',
+//     sku: 'PS829-SIMNXO',
+//     itemsSold: 2,
+//     netSales: 200.0,
+//     orders: 1,
+//     category: 'Games Accessories',
+//     status: false,
+//   },
+//   {
+//     id: 4,
+//     sn: '4',
+//     productTitle: 'Back4Blood',
+//     sku: 'B4B12312490L',
+//     itemsSold: 2,
+//     netSales: 0.0,
+//     orders: 1,
+//     category: 'Games',
+//     status: true,
+//   },
+// ]
