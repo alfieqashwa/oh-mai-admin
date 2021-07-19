@@ -91,17 +91,13 @@ export function ChartView({ data, setData }) {
           </RadioGroup>
         </div>
       </div>
-      {/* <div className="grid w-full py-32 rounded-b bg-G400 h-1/2 place-items-center">
-        <h1 className="text-N0">
-          Bar / Line Chart
-        </h1>
-      </div> */}
-      {/* <ChartArea /> */}
+      {/* <ChartBar/> */}
       {plan === 'bar' && (
         <section className="px-4">
           <ChartBar data={data} setData={setData} />
         </section>
       )}
+      {/* <ChartArea /> */}
       {plan === 'area' && (
         <section className="px-4">
           <ChartArea data={data} setData={setData} />
@@ -110,15 +106,6 @@ export function ChartView({ data, setData }) {
     </>
   )
 }
-
-// Dummy Data
-// const data = []
-// for (let num = 30; num >= 0; num--) {
-//   data.push({
-//     date: subDays(new Date(), num).toISOString().substr(0, 10),
-//     value: 1 + Math.random(),
-//   })
-// }
 
 function ChartArea({ data, setData }) {
   console.log(`DATAS: ${data?.[0]?.net_sales}`)
@@ -176,23 +163,6 @@ function ChartArea({ data, setData }) {
   )
 }
 
-// Bar Chart Testing
-const getPath = (x, y, width, height) =>
-  `M${x},${y + height}
-  C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${
-    x + width / 2
-  }, ${y}
-   C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${
-    x + width
-  }, ${y + height}
-  Z`
-
-const TriangleBar = (props) => {
-  const { fill, x, y, width, height } = props
-
-  return <path d={getPath(x, y, width, height)} stroke="#8A3EFF" fill={fill} />
-}
-
 function ChartBar({ data, setData }) {
   return (
     <ResponsiveContainer width="100%" height={400}>
@@ -232,6 +202,27 @@ function ChartBar({ data, setData }) {
       </BarChart>
     </ResponsiveContainer>
   )
+}
+
+/*
+ * Customized the shape of bar
+ * source: https://recharts.org/en-US/guide/customize
+ */
+
+const getPath = (x, y, width, height) =>
+  `M${x},${y + height}
+  C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${
+    x + width / 2
+  }, ${y}
+   C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${
+    x + width
+  }, ${y + height}
+  Z`
+
+const TriangleBar = (props) => {
+  const { fill, x, y, width, height } = props
+
+  return <path d={getPath(x, y, width, height)} stroke="#8A3EFF" fill={fill} />
 }
 
 function CustomTooltip({ active, payload, label }) {
