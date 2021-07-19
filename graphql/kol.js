@@ -199,11 +199,12 @@ export const DELETE_KOL = `mutation deleteKol(
 export const GET_ANALYTIC_KOL_LEADERBOARD = gql`
   query GetAnalyticKolLeaderboard($startDate: String, $endDate: String) {
     getAnalyticKolLeaderboard(startDate: $startDate, endDate: $endDate) {
-      order_item_kol_id
+      title
+      kol_id
+      kol_name
+      total_order
       item_sold
       net_sales
-      orders
-      total_commmission
     }
   }
 `
