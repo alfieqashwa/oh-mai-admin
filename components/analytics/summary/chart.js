@@ -9,7 +9,7 @@ import {
   Tooltip,
   CartesianGrid,
   BarChart,
-  Bar,
+  Bar
 } from 'recharts'
 import { format } from 'date-fns'
 import { AiOutlineBarChart, AiOutlineLineChart } from 'react-icons/ai'
@@ -119,7 +119,7 @@ function ChartArea({ data, setData }) {
           top: 10,
           right: 30,
           left: 0,
-          bottom: 0,
+          bottom: 0
         }}
       >
         <defs>
@@ -173,7 +173,7 @@ function ChartBar({ data, setData }) {
           top: 20,
           right: 0,
           left: 0,
-          bottom: 0,
+          bottom: 0
         }}
         data={data}
       >
