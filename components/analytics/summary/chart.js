@@ -9,7 +9,7 @@ import {
   Tooltip,
   CartesianGrid,
   BarChart,
-  Bar
+  Bar,
 } from 'recharts'
 import { format } from 'date-fns'
 import { AiOutlineBarChart, AiOutlineLineChart } from 'react-icons/ai'
@@ -29,7 +29,9 @@ export function ChartView({ data, setData }) {
             className="w-6 h-6 rounded bg-P700 focus:outline-none focus:ring checked:text-P700 focus:ring-P700"
           />
           <div>
-            <p className="text-black w350">Current Year (Jan 1 - Dec 31, 2021)</p>
+            <p className="text-black w350">
+              Current Year (Jan 1 - Dec 31, 2021)
+            </p>
             <h5 className="text-black w250-m">$10.00</h5>
           </div>
         </div>
@@ -64,7 +66,9 @@ export function ChartView({ data, setData }) {
                   <button
                     type="button"
                     className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
-                      focus:ring focus:ring-P700 ${checked ? 'shadow-inner' : ''}`}
+                      focus:ring focus:ring-P700 ${
+                        checked ? 'shadow-inner' : ''
+                      }`}
                   >
                     <AiOutlineBarChart className="w-6 h-6 font-primary text-P700" />
                   </button>
@@ -75,7 +79,9 @@ export function ChartView({ data, setData }) {
                   <button
                     type="button"
                     className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
-                      focus:ring focus:ring-P700 ${checked ? 'shadow-inner' : ''}`}
+                      focus:ring focus:ring-P700 ${
+                        checked ? 'shadow-inner' : ''
+                      }`}
                   >
                     <AiOutlineLineChart className="w-6 h-6 text-P700" />
                   </button>
@@ -120,7 +126,15 @@ function ChartArea({ data, setData }) {
   console.log(`DATA-CHART: ${JSON.stringify(data, null, 2)}`)
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <AreaChart data={data}>
+      <AreaChart
+        data={data}
+        margin={{
+          top: 10,
+          right: 30,
+          left: 0,
+          bottom: 0,
+        }}
+      >
         <defs>
           <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
             {/* <stop offset="0%" stopColor="#2451B7" stopOpacity={0.4} /> */}
@@ -134,7 +148,7 @@ function ChartArea({ data, setData }) {
 
         <XAxis
           dataKey="order_datetime"
-          tickMargin={12}
+          tickMargin={8}
           axisLine={false}
           tickLine={false}
           tickCount={12}
@@ -151,7 +165,7 @@ function ChartArea({ data, setData }) {
           axisLine={false}
           tickLine={false}
           tickCount={8}
-        // tickFormatter={(number) => moneyFormat.format(number)}
+          // tickFormatter={(number) => moneyFormat.format(number)}
         />
 
         <Tooltip content={<CustomTooltip />} />
@@ -165,9 +179,11 @@ function ChartArea({ data, setData }) {
 // Bar Chart Testing
 const getPath = (x, y, width, height) =>
   `M${x},${y + height}
-  C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${x + width / 2
+  C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${
+    x + width / 2
   }, ${y}
-   C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${x + width
+   C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${
+    x + width
   }, ${y + height}
   Z`
 
@@ -180,17 +196,27 @@ const TriangleBar = (props) => {
 function ChartBar({ data, setData }) {
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <BarChart width={600} height={300} data={data}>
+      <BarChart
+        width={600}
+        height={300}
+        margin={{
+          top: 20,
+          right: 0,
+          left: 0,
+          bottom: 0,
+        }}
+        data={data}
+      >
         <XAxis
-          tickMargin={12}
+          tickMargin={8}
           dataKey="order_datetime"
           axisLine={false}
           tickLine={false}
-          interval={15}
+          interval={30}
           reversed={true}
           tickFormatter={(str) => {
             const date = new Date(str)
-            return format(date, 'MMM d')
+            return format(date, 'MMM')
           }}
         />
         <YAxis
@@ -198,7 +224,7 @@ function ChartBar({ data, setData }) {
           axisLine={false}
           tickLine={false}
           tickCount={8}
-        // tickFormatter={(number) => `$${number.toFixed(2)}`}
+          // tickFormatter={(number) => `$${number.toFixed(2)}`}
         />
 
         <Tooltip content={<CustomTooltip />} />
@@ -210,9 +236,7 @@ function ChartBar({ data, setData }) {
 
 function CustomTooltip({ active, payload, label }) {
   if (!active || !payload || !label) {
-    return (
-      <> </>
-    )
+    return <> </>
   }
 
   if (active) {
@@ -221,7 +245,7 @@ function CustomTooltip({ active, payload, label }) {
       <GlassDefault className="p-4 text-center rounded-md border-P700 bg-N800">
         <h5 className="text-G400">{format(date, 'eeee, d MMM, yyyy')}</h5>
         <p className="mt-1 text-N100">
-          {moneyFormat.format(payload?.[0].value)}
+          {payload && moneyFormat.format(payload?.[0].value)}
         </p>
       </GlassDefault>
     )
