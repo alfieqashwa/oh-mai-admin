@@ -4,15 +4,18 @@ import useSWR from 'swr'
 import { Menu, Transition } from '@headlessui/react'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
+import moment from 'moment'
 
 import { SwitchOnOff } from './switch-on-off'
 import { ErrorStatus } from 'components/error-status'
 import { LoadingStatus } from 'components/loading-status'
 
-const fetcher = url => fetch(url).then(res => res.json())
+import { GET_ANALYTIC_CUSTOMER_TABLE } from 'graphql/customer'
+import { moneyFormat } from 'utils/money-format'
 
 export function TableOrders() {
-  const { error, data } = useSWR('/api/analytics/customer', fetcher)
+  const [status, setStatus] = React.useState(false)
+  const { error, data } = useSWR(GET_ANALYTIC_CUSTOMER_TABLE)
 
   if (error) return <ErrorStatus message={error.message} />
   if (!data) return <LoadingStatus />
@@ -23,7 +26,10 @@ export function TableOrders() {
       <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
         <h2 className="w250 text-N900">sort by</h2>
         <div className="px-4">
-          <select name="date-range" className="px-10 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none">
+          <select
+            name="date-range"
+            className="px-10 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none"
+          >
             <option>Ascending</option>
             <option>Descending</option>
           </select>
@@ -41,7 +47,11 @@ export function TableOrders() {
           <Menu as="div" className="relative">
             {({ open }) => (
               <>
-                <Menu.Button className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''}`}>
+                <Menu.Button
+                  className={`bg-transparent focus:outline-none ${
+                    open ? 'text-P400' : ''
+                  }`}
+                >
                   <BsThreeDotsVertical className="w-6 h-6" />
                 </Menu.Button>
                 <Transition
@@ -57,7 +67,11 @@ export function TableOrders() {
                   <Menu.Items
                     static
                     className={`
-                      ${!open ? 'motion-safe:animate-bounce transition duration-700 ease-in-out' : ''}
+                      ${
+                        !open
+                          ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
+                          : ''
+                      }
                       absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                       `}
                   >
@@ -81,33 +95,70 @@ export function TableOrders() {
       <table className="md:min-w-full text-N0">
         <thead className="bg-N200 bg-opacity-30">
           <tr>
-            <th scope="col" className="px-2 py-4 text-center capitalize w400">s/n</th>
-            <th scope="col" className="p-4 text-left capitalize w400 whitespace-nowrap">customer name</th>
-            <th scope="col" className="p-4 text-right capitalize w400 whitespace-nowrap">most recent order</th>
-            <th scope="col" className="p-4 text-right capitalize w400 whitespace-nowrap">orders</th>
-            <th scope="col" className="p-4 text-right capitalize w400 whitespace-nowrap">items sold</th>
-            <th scope="col" className="p-4 text-right capitalize w400 whitespace-nowrap">net sales</th>
-            <th scope="col" className="p-4 text-center capitalize w400 whitespace-nowrap">toggle chart</th>
+            <th scope="col" className="px-2 py-4 text-center capitalize w400">
+              s/n
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-left capitalize w400 whitespace-nowrap"
+            >
+              customer name
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-right capitalize w400 whitespace-nowrap"
+            >
+              most recent order
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-right capitalize w400 whitespace-nowrap"
+            >
+              orders
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-right capitalize w400 whitespace-nowrap"
+            >
+              items sold
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-right capitalize w400 whitespace-nowrap"
+            >
+              net sales
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-center capitalize w400 whitespace-nowrap"
+            >
+              toggle chart
+            </th>
           </tr>
         </thead>
 
         {/* Table Content */}
         <tbody className="bg-N700 text-N0">
-          {data.map(t => (
+          {data.getAnalyticCustomerTable.map((t) => (
             <tr key={t.id} className="">
               <td className="px-2 py-8 text-center bg-N600 w400">{t.sn}</td>
               <td className="px-4 py-8 text-left underline capitalize w400">
-                <Link href={`/analytics/customer/${t.customer.toLowerCase().replace(/\s/g, '-')}`}>
-                  <a>{t.customer}</a>
+                <Link href={`/analytics/customer/${t.customer_id}`}>
+                  <a>{t.customer_name}</a>
                 </Link>
               </td>
-              <td className="px-4 py-8 text-right w400">{t.mostRecentOrder}</td>
-              <td className="px-4 py-8 text-right underline w400">{t.orders}</td>
-              <td className="px-4 py-8 text-right w400">${t.itemsSold}</td>
-              <td className="px-4 py-8 text-right w400">NT${t.netSales.toFixed(2)}</td>
-              <td
-                className="px-4 py-8 text-center w400">
-                <SwitchOnOff isEnabled={t.status} />
+              <td className="px-4 py-8 text-right w400">
+                {moment(t.most_recent_order).format('DD/MM/YYYY HH:mm:ss')}
+              </td>
+              <td className="px-4 py-8 text-right underline w400">
+                {t.orders}
+              </td>
+              <td className="px-4 py-8 text-right w400">{t.item_sold}</td>
+              <td className="px-4 py-8 text-right w400">
+                {moneyFormat.format(t.net_sales)}
+              </td>
+              <td className="px-4 py-8 text-center w400">
+                <SwitchOnOff isEnabled={status} />
               </td>
             </tr>
           ))}
