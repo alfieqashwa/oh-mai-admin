@@ -21,7 +21,7 @@ export function KolLeaderboard() {
     <div className="grid grid-cols-3">
       {getAnalyticKolLeaderboard.map((card, i) => (
         <div
-          // BUGS: kol_id is same
+          // kol_id is same -> kol_id: "60a2652f8b11774d0607acb6", so I use the index as value for the key-tag.
           key={i}
           className="relative px-5 bg-[#E0E0F24D] h-52 bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]"
         >
