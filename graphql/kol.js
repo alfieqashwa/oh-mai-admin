@@ -1,3 +1,5 @@
+import { gql } from 'graphql-request'
+
 export const kols = `{
   kols {
     id,
@@ -34,7 +36,7 @@ export const kols = `{
     }
     user_id,
   }
-}`;
+}`
 
 export const KOL_USER_INFO = `query getKOL($id: ID)
 {
@@ -47,7 +49,7 @@ export const KOL_USER_INFO = `query getKOL($id: ID)
   }
 }
 
-`;
+`
 
 export const FIND_EXIST_USER = `query findExistingUser($email: String)
 {
@@ -57,7 +59,7 @@ export const FIND_EXIST_USER = `query findExistingUser($email: String)
   }
 }
 
-`;
+`
 
 export const GET_KOL_BY_ID = `query kolDetail($id: ID)
 {
@@ -65,7 +67,7 @@ export const GET_KOL_BY_ID = `query kolDetail($id: ID)
     display_name,
     
   }
-}`;
+}`
 
 export const GET_KOL_FROM_SLUG = `query getKOLFromSlug($filter: KOLFilter)
 {
@@ -103,7 +105,7 @@ export const GET_KOL_FROM_SLUG = `query getKOLFromSlug($filter: KOLFilter)
     }
     user_id
   }
-}`;
+}`
 
 export const CREATE_KOL = `mutation createKOL(
   $first_name: String
@@ -144,7 +146,7 @@ export const CREATE_KOL = `mutation createKOL(
       id
     }
   }
-`;
+`
 
 export const UPDATE_KOL = `mutation updateKOL(
   $first_name: String
@@ -184,11 +186,47 @@ export const UPDATE_KOL = `mutation updateKOL(
       id
     }
   }
-`;
+`
 
 export const DELETE_KOL = `mutation deleteKol(
   $id: ID
   ){
     deleteKol(id: $id)
   }
-`;
+`
+
+// new schema: # http://localhost:3004/analytics/kol
+export const GET_ANALYTIC_KOL_LEADERBOARD = gql`
+  query GetAnalyticKolLeaderboard($startDate: String, $endDate: String) {
+    getAnalyticKolLeaderboard(startDate: $startDate, endDate: $endDate) {
+      order_item_kol_id
+      item_sold
+      net_sales
+      orders
+      total_commmission
+    }
+  }
+`
+export const GET_ANALYTIC_KOL_TABLE = gql`
+  query GetAnalyticKolTable($startDate: String, $endDate: String) {
+    getAnalyticKolTable(startDate: $startDate, endDate: $endDate) {
+      sn
+      kol_id
+      kol_name
+      item_sold
+      net_sales
+      orders
+      total_commission
+    }
+  }
+`
+export const GET_ANALYTIC_KOL_PERFORMANCE = gql`
+  query GetAnalyticKolPerformance($startDate: String, $endDate: String) {
+    getAnalyticKolPerformance(startDate: $startDate, endDate: $endDate) {
+      title
+      performance
+      precentage_change
+      performance_last_year
+    }
+  }
+`
