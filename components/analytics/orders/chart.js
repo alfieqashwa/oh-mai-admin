@@ -67,8 +67,10 @@ export function ChartView() {
                   <button
                     type="button"
                     className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
-                      focus:ring focus:ring-P700 ${
-                        checked ? 'shadow-inner' : ''
+                      ${
+                        checked
+                          ? 'shadow-inner border-N250 border-t border-l'
+                          : ''
                       }`}
                   >
                     <AiOutlineBarChart className="w-6 h-6 font-primary text-P700" />
@@ -80,9 +82,11 @@ export function ChartView() {
                   <button
                     type="button"
                     className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
-                      focus:ring focus:ring-P700 ${
-                        checked ? 'shadow-inner' : ''
-                      }`}
+                       ${
+                         checked
+                           ? 'shadow-inner border-N250 border-t border-l'
+                           : ''
+                       }`}
                   >
                     <AiOutlineLineChart className="w-6 h-6 text-P700" />
                   </button>

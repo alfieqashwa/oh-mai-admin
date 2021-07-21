@@ -27,7 +27,9 @@ export function ChartView() {
             className="w-6 h-6 rounded bg-P700 focus:outline-none focus:ring checked:text-P700 focus:ring-P700"
           />
           <div>
-            <p className="text-black w350">Current Year (Jan 1 - Dec 31, 2021)</p>
+            <p className="text-black w350">
+              Current Year (Jan 1 - Dec 31, 2021)
+            </p>
             <h5 className="text-black w250-m">$10.00</h5>
           </div>
         </div>
@@ -38,13 +40,18 @@ export function ChartView() {
             className="w-6 h-6 rounded bg-G400 focus:outline-none focus:ring checked:text-G400 focus:ring-G400"
           />
           <div>
-            <p className="text-black w350">Previous Year (Jan 1 - Dec 31, 2021)</p>
+            <p className="text-black w350">
+              Previous Year (Jan 1 - Dec 31, 2021)
+            </p>
             <h5 className="text-black w250-m">$0.00</h5>
           </div>
         </div>
         <div className="flex items-center justify-between space-x-1">
           <div>
-            <select name="date-range" className="bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-P700 focus:outline-none">
+            <select
+              name="date-range"
+              className="bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-P700 focus:outline-none"
+            >
               <option>By day</option>
               <option>By month</option>
             </select>
@@ -56,7 +63,11 @@ export function ChartView() {
                 {({ checked, active }) => (
                   <button
                     type="button"
-                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 focus:ring focus:ring-P700 ${checked ? 'shadow-inner' : ''}`}
+                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 ${
+                      checked
+                        ? 'shadow-inner border-N250 border-l border-t'
+                        : ''
+                    }`}
                   >
                     <AiOutlineBarChart className="w-6 h-6 font-primary text-P700" />
                   </button>
@@ -66,7 +77,11 @@ export function ChartView() {
                 {({ checked, active }) => (
                   <button
                     type="button"
-                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 focus:ring focus:ring-P700 ${checked ? 'shadow-inner' : ''}`}
+                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 ${
+                      checked
+                        ? 'shadow-inner border-t border-l border-N250'
+                        : ''
+                    }`}
                   >
                     <AiOutlineLineChart className="w-6 h-6 text-P700" />
                   </button>
@@ -74,7 +89,6 @@ export function ChartView() {
               </RadioGroup.Option>
             </div>
           </RadioGroup>
-
         </div>
       </div>
       {/* <ChartArea /> */}
@@ -151,17 +165,18 @@ function CustomTooltip({ active, payload, label }) {
 
 // Bar Chart Testing
 
-const getPath = (x, y, width, height) => (
+const getPath = (x, y, width, height) =>
   `M${x},${y + height}
-C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${x + width / 2}, ${y}
-C${x + width / 2},${y + height / 3} ${x + 2 * width / 3},${y + height} ${x + width}, ${y + height}
+C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${
+    x + width / 2
+  }, ${y}
+C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${
+    x + width
+  }, ${y + height}
 Z`
-)
 
 const TriangleBar = (props) => {
-  const {
-    fill, x, y, width, height
-  } = props
+  const { fill, x, y, width, height } = props
 
   return <path d={getPath(x, y, width, height)} stroke="#8A3EFF" fill={fill} />
 }
@@ -189,8 +204,7 @@ function ChartBar() {
           tickCount={8}
           tickFormatter={(number) => `$${number.toFixed(2)}`}
         />
-        <Bar dataKey="value" fill="#8A3EFF"
-          shape={<TriangleBar />} />
+        <Bar dataKey="value" fill="#8A3EFF" shape={<TriangleBar />} />
       </BarChart>
     </ResponsiveContainer>
   )
