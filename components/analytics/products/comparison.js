@@ -6,7 +6,8 @@ import { getDaysInMonth, getYear } from 'date-fns'
 import { DateRangeCtx } from 'pages/analytics/products'
 
 const YearComparison = () => {
-  const { startCurrent, endCurrent, startPrevious, endPrevious } = useContext(DateRangeCtx)
+  const { startCurrent, endCurrent, startPrevious, endPrevious } =
+    useContext(DateRangeCtx)
   const [compareTo, setCompareTo] = useState()
   const [withOption, setWithOption] = useState()
 
@@ -75,13 +76,19 @@ const YearComparison = () => {
           <Listbox value={compareTo} onChange={setCompareTo}>
             {({ open }) => (
               <>
-                <Listbox.Button className="bg-N100 mt-1.5 h-16 w-full">
+                <Listbox.Button className="bg-N100 mt-1.5 h-12 w-full">
                   <div className="flex items-center justify-between px-4">
-                    <p className={`text-left normal-case w400 ${open ? 'text-P700' : 'text-N450'}`}>
+                    <p
+                      className={`text-left normal-case w400 ${
+                        open ? 'text-P700' : 'text-N450'
+                      }`}
+                    >
                       {compareTo ? compareTo?.name : 'Select a year'}
                     </p>
                     <ChevronDownIcon
-                      className={`w-8 h-8 ${open ? 'transform rotate-180 text-P700' : ''}`}
+                      className={`w-8 h-8 ${
+                        open ? 'transform rotate-180 text-P700' : ''
+                      }`}
                       aria-hidden="true"
                     />
                   </div>
@@ -95,14 +102,21 @@ const YearComparison = () => {
                   leaveFrom="transform scale-100 opacity-100"
                   leaveTo="transform scale-95 opacity-0"
                 >
-                  <Listbox.Options static className="w-full mt-1 text-left shadow-md bg-N100 mr-7">
-                    {yearCompareOptions.map(y => (
+                  <Listbox.Options
+                    static
+                    className="w-full mt-1 text-left shadow-md bg-N100 mr-7"
+                  >
+                    {yearCompareOptions.map((y) => (
                       <Listbox.Option
                         key={y.id}
                         value={y}
                         disabled={y.disabled}
                       >
-                        <p className={`${y.disabled ? 'opacity-50' : ''} py-2 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0`}>
+                        <p
+                          className={`${
+                            y.disabled ? 'opacity-50' : ''
+                          } py-1.5 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0`}
+                        >
                           {y.name}
                         </p>
                       </Listbox.Option>
@@ -119,13 +133,19 @@ const YearComparison = () => {
           <Listbox value={withOption} onChange={setWithOption}>
             {({ open }) => (
               <>
-                <Listbox.Button className="bg-N100 mt-1.5 h-16 w-full">
+                <Listbox.Button className="bg-N100 mt-1.5 h-12 w-full">
                   <div className="flex items-center justify-between px-4">
-                    <p className={`text-left normal-case w400 ${open ? 'text-P700' : 'text-N450'}`}>
+                    <p
+                      className={`text-left normal-case w400 ${
+                        open ? 'text-P700' : 'text-N450'
+                      }`}
+                    >
                       {withOption ? withOption?.name : 'Select a year'}
                     </p>
                     <ChevronDownIcon
-                      className={`w-8 h-8 ${open ? 'transform rotate-180 text-P700' : ''}`}
+                      className={`w-8 h-8 ${
+                        open ? 'transform rotate-180 text-P700' : ''
+                      }`}
                       aria-hidden="true"
                     />
                   </div>
@@ -139,14 +159,21 @@ const YearComparison = () => {
                   leaveFrom="transform scale-100 opacity-100"
                   leaveTo="transform scale-95 opacity-0"
                 >
-                  <Listbox.Options static className="w-full mt-1 text-left shadow-md bg-N100 mr-7">
-                    {yearWithOptions.map(y => (
+                  <Listbox.Options
+                    static
+                    className="w-full mt-1 text-left shadow-md bg-N100 mr-7"
+                  >
+                    {yearWithOptions.map((y) => (
                       <Listbox.Option
                         key={y.id}
                         value={y}
                         disabled={y.disabled}
                       >
-                        <p className={`${y.disabled ? 'opacity-50' : ''} py-2 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0`}>
+                        <p
+                          className={`${
+                            y.disabled ? 'opacity-50' : ''
+                          } py-1.5 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0`}
+                        >
                           {y.name}
                         </p>
                       </Listbox.Option>
@@ -160,17 +187,28 @@ const YearComparison = () => {
       </div>
       {/* Apply & Reset button */}
       <div className="flex items-center justify-center pb-10 space-x-5 mt-11">
-        <button type="button" onClick={onReset} className="px-20 py-4 uppercase bg-N50">
+        <button
+          type="button"
+          onClick={onReset}
+          className="px-20 py-3 uppercase bg-N50"
+        >
           <h4 className="text-N450 w250">reset</h4>
         </button>
-        <button type="submit" disabled={!compareTo || !withOption} className="px-20 py-4 uppercase disabled:opacity-50 disabled:cursor-not-allowed text-N0">apply</button>
+        <button
+          type="submit"
+          disabled={!compareTo || !withOption}
+          className="px-20 py-3 uppercase disabled:opacity-50 disabled:cursor-not-allowed text-N0"
+        >
+          apply
+        </button>
       </div>
     </form>
   )
 }
 
 const MonthComparison = () => {
-  const { startCurrent, endCurrent, startPrevious, endPrevious } = useContext(DateRangeCtx)
+  const { startCurrent, endCurrent, startPrevious, endPrevious } =
+    useContext(DateRangeCtx)
   const [compareTo, setCompareTo] = useState()
   const [withOption, setWithOption] = useState()
 
@@ -181,7 +219,10 @@ const MonthComparison = () => {
   // const februaryDays = getDaysInMonth(new Date(2024, 1)) // testing leap year. it works
 
   const january = [new Date(todaysYear, 0, 1), new Date(todaysYear, 0, 31)]
-  const february = [new Date(todaysYear, 1, 1), new Date(todaysYear, 1, februaryDays)]
+  const february = [
+    new Date(todaysYear, 1, 1),
+    new Date(todaysYear, 1, februaryDays)
+  ]
   // const february = [new Date(todaysYear, 1, 1), new Date(2024, 1, februaryDays)]
   const march = [new Date(todaysYear, 2, 1), new Date(todaysYear, 2, 31)]
   const april = [new Date(todaysYear, 3, 1), new Date(todaysYear, 3, 30)]
@@ -287,7 +328,7 @@ const MonthComparison = () => {
     setWithOption()
   }
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault()
     startCurrent[1](currentDate?.[0])
     endCurrent[1](currentDate?.[1])
@@ -304,13 +345,15 @@ const MonthComparison = () => {
           <Listbox value={compareTo} onChange={setCompareTo}>
             {({ open }) => (
               <>
-                <Listbox.Button className="bg-N100 mt-1.5 h-16 w-full">
+                <Listbox.Button className="bg-N100 mt-1.5 h-12 w-full">
                   <div className="flex items-center justify-between px-4">
                     <p className="text-left normal-case text-N450 w400">
                       {compareTo ? compareTo?.name : 'Select a month'}
                     </p>
                     <ChevronDownIcon
-                      className={`w-8 h-8 ${open ? 'transform rotate-180 text-P700' : ''}`}
+                      className={`w-8 h-8 ${
+                        open ? 'transform rotate-180 text-P700' : ''
+                      }`}
                       aria-hidden="true"
                     />
                   </div>
@@ -325,14 +368,17 @@ const MonthComparison = () => {
                   leaveFrom="transform scale-100 opacity-100"
                   leaveTo="transform scale-95 opacity-0"
                 >
-                  <Listbox.Options static className="w-full mt-1 text-left shadow-md bg-N100 mr-7">
-                    {monthCompareOptions.map(m => (
+                  <Listbox.Options
+                    static
+                    className="w-full mt-1 text-left shadow-md bg-N100 mr-7"
+                  >
+                    {monthCompareOptions.map((m) => (
                       <Listbox.Option
                         key={m.id}
                         value={m}
                         disabled={m.disabled}
                       >
-                        <p className="py-2 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0">
+                        <p className="py-1.5 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0">
                           {m.name}
                         </p>
                       </Listbox.Option>
@@ -349,11 +395,15 @@ const MonthComparison = () => {
           <Listbox value={withOption} onChange={setWithOption}>
             {({ open }) => (
               <>
-                <Listbox.Button className="bg-N100 mt-1.5 h-16 w-full">
+                <Listbox.Button className="bg-N100 mt-1.5 h-12 w-full">
                   <div className="flex items-center justify-between px-4">
-                    <p className="text-left normal-case text-N450 w400">{withOption ? withOption?.name : 'Select a month'}</p>
+                    <p className="text-left normal-case text-N450 w400">
+                      {withOption ? withOption?.name : 'Select a month'}
+                    </p>
                     <ChevronDownIcon
-                      className={`w-8 h-8 ${open ? 'transform rotate-180 text-P700' : ''}`}
+                      className={`w-8 h-8 ${
+                        open ? 'transform rotate-180 text-P700' : ''
+                      }`}
                       aria-hidden="true"
                     />
                   </div>
@@ -367,14 +417,17 @@ const MonthComparison = () => {
                   leaveFrom="transform scale-100 opacity-100"
                   leaveTo="transform scale-95 opacity-0"
                 >
-                  <Listbox.Options static className="w-full mt-1 text-left shadow-md bg-N100 mr-7">
-                    {monthWithOptions.map(m => (
+                  <Listbox.Options
+                    static
+                    className="w-full mt-1 text-left shadow-md bg-N100 mr-7"
+                  >
+                    {monthWithOptions.map((m) => (
                       <Listbox.Option
                         key={m.id}
                         value={m}
                         disabled={m.disabled}
                       >
-                        <p className="py-2 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0">
+                        <p className="py-1.5 pl-5 transition duration-200 ease-in-out text-N800 hover:bg-P700 hover:text-N0">
                           {m.name}
                         </p>
                       </Listbox.Option>
@@ -388,10 +441,20 @@ const MonthComparison = () => {
       </div>
       {/* Apply & Reset button */}
       <div className="flex items-center justify-center pb-10 space-x-5 mt-11">
-        <button type="button" onClick={onReset} className="px-20 py-4 uppercase bg-N50">
+        <button
+          type="button"
+          onClick={onReset}
+          className="px-20 py-3 uppercase bg-N50"
+        >
           <h4 className="text-N450 w250">reset</h4>
         </button>
-        <button type="submit" disabled={!compareTo || !withOption} className="px-20 py-4 uppercase disabled:cursor-not-allowed disabled:opacity-50 text-N0">apply</button>
+        <button
+          type="submit"
+          disabled={!compareTo || !withOption}
+          className="px-20 py-3 uppercase disabled:cursor-not-allowed disabled:opacity-50 text-N0"
+        >
+          apply
+        </button>
       </div>
     </form>
   )
