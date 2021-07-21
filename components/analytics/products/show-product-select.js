@@ -1,6 +1,7 @@
 import React, { useState, Fragment } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/solid'
+import { ChevronDownIcon } from '@heroicons/react/outline'
 
 export function ShowProductSelect() {
   const [show, setShow] = useState(initialState[0])
@@ -11,8 +12,20 @@ export function ShowProductSelect() {
         {({ open }) => (
           <>
             <div className="relative mt-2">
-              <Listbox.Button className="relative w-full py-2 text-left shadow-md h-11 bg-N200 bg-opacity-20 text-N0 focus:outline-none focus:ring-2 focus:ring-opacity-75 focus:ring-P900 focus:ring-offset-P900 focus-visible:ring-offset-2 focus:border-P900 sm:text-sm">
-                <p className={`pl-4 capitalize transition duration-200 ease-in-out hover:text-G400 ${open ? 'text-P700' : 'text-N0'}`}>{show.name}</p>
+              <Listbox.Button className="relative flex items-center justify-between w-full py-2 pr-4 text-left shadow-md h-11 bg-N200 bg-opacity-20 text-N0 focus:outline-none focus:ring-2 focus:ring-opacity-75 focus:ring-P900 focus:ring-offset-P900 focus-visible:ring-offset-2 focus:border-P900 sm:text-sm">
+                <p
+                  className={`pl-4 capitalize transition duration-200 ease-in-out hover:text-G400 ${
+                    open ? 'text-P700' : 'text-N0'
+                  }`}
+                >
+                  {show.name}
+                </p>
+
+                <ChevronDownIcon
+                  className={`w-6 h-6 text-N0 ${
+                    open && 'transform rotate-180 text-P700'
+                  }`}
+                />
               </Listbox.Button>
               <Transition
                 show={open}
@@ -29,10 +42,7 @@ export function ShowProductSelect() {
                     <Listbox.Option
                       key={i}
                       className={({ active }) =>
-                        `${active
-                          ? 'bg-P900'
-                          : ''
-                        }
+                        `${active ? 'bg-P900' : ''}
                           cursor-default select-none relative py-2 pl-8 capitalize`
                       }
                       value={p}
@@ -40,16 +50,15 @@ export function ShowProductSelect() {
                       {({ selected, active }) => (
                         <>
                           <span
-                            className={`${selected ? 'font-medium' : 'font-normal'
-                              } block truncate`}
+                            className={`${
+                              selected ? 'font-medium' : 'font-normal'
+                            } block truncate`}
                           >
                             {p.name}
                           </span>
-                          {selected
-                            ? (
+                          {selected ? (
                             <span
-                              className={`${active ? 'text-N0' : ''
-                                }
+                              className={`${active ? 'text-N0' : ''}
                                 absolute inset-y-0 left-0 flex items-center pl-2`}
                             >
                               <CheckIcon
@@ -57,8 +66,7 @@ export function ShowProductSelect() {
                                 aria-hidden="true"
                               />
                             </span>
-                              )
-                            : null}
+                          ) : null}
                         </>
                       )}
                     </Listbox.Option>
@@ -73,7 +81,4 @@ export function ShowProductSelect() {
   )
 }
 
-const initialState = [
-  { name: 'all products' },
-  { name: 'all products' }
-]
+const initialState = [{ name: 'all products' }, { name: 'all products' }]
