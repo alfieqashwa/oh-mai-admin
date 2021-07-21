@@ -197,7 +197,7 @@ function ChartBar() {
           tickFormatter={(str) => {
             const date = parseISO(str)
             if (date.getDate() % 7 === 0) {
-              return format(date, 'MMM, d')
+              return format(date, 'MMM')
             }
             return ''
           }}
