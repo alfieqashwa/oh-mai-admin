@@ -63,20 +63,30 @@ export function ChartView() {
           <RadioGroup value={plan} onChange={setPlan}>
             <div className="flex items-center justify-between space-x-4">
               <RadioGroup.Option value="bar">
-                <button
-                  type="button"
-                  className="px-2 transition duration-200 ease-in-out bg-transparent shadow-inner focus:outline-none hover:bg-N250 focus:ring focus:ring-P700"
-                >
-                  <AiOutlineBarChart className="w-6 h-6 font-primary text-P700" />
-                </button>
+                {({ checked, active }) => (
+                  <button
+                    type="button"
+                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
+                      focus:ring focus:ring-P700 ${
+                        checked ? 'shadow-inner' : ''
+                      }`}
+                  >
+                    <AiOutlineBarChart className="w-6 h-6 font-primary text-P700" />
+                  </button>
+                )}
               </RadioGroup.Option>
               <RadioGroup.Option value="area">
-                <button
-                  type="button"
-                  className="px-2 transition duration-200 ease-in-out bg-transparent shadow-inner focus:outline-none hover:bg-N250 focus:ring focus:ring-P700"
-                >
-                  <AiOutlineLineChart className="w-6 h-6 text-P700" />
-                </button>
+                {({ checked, active }) => (
+                  <button
+                    type="button"
+                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
+                      focus:ring focus:ring-P700 ${
+                        checked ? 'shadow-inner' : ''
+                      }`}
+                  >
+                    <AiOutlineLineChart className="w-6 h-6 text-P700" />
+                  </button>
+                )}
               </RadioGroup.Option>
             </div>
           </RadioGroup>
