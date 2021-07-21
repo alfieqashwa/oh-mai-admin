@@ -141,7 +141,7 @@ export const PerformanceCard = ({ data, setData }) => {
                 </h5>
                 <div className="mt-3">
                   <h3 className={`w700 ${checked ? 'text-N800' : 'text-N0'}`}>
-                    {moneyFormat.format(c.performance)}
+                    {c.type === 'currency' ? moneyFormat.format(c.performance) : c.performance}
                   </h3>
                   <div className="flex items-center space-x-1">
                     {/* temporary logic */}
@@ -156,7 +156,7 @@ export const PerformanceCard = ({ data, setData }) => {
                     Previous Year
                   </p>
                   <p className={`w400 ${checked ? 'text-N800' : 'text-N0'}`}>
-                    ${c.performance_last_year}
+                    {c.type === 'currency' ? moneyFormat.format(c.performance_last_year) : c.performance_last_year }
                   </p>
                 </div>
               </>
@@ -169,15 +169,4 @@ export const PerformanceCard = ({ data, setData }) => {
 }
 
 const performanceCards = [
-  { title: 'refunds', performance: '0.00', precentage_change: '-', performance_last_year: '50.00' },
-  { title: 'kol orders', performance: '500.00', precentage_change: '50', performance_last_year: '250.00' },
-  { title: 'non kol orders', performance: '300', precentage_change: '50', performance_last_year: '150' },
-  { title: 'discounted orders', performance: '500', precentage_change: '50', performance_last_year: '250' },
-  { title: 'successful orders', performance: '500', precentage_change: '50', performance_last_year: '250' },
-  { title: 'kol commissions', performance: '500.00', precentage_change: '50', performance_last_year: '250.00' },
-  { title: 'item sold', performance: '500', precentage_change: '50', performance_last_year: '250' },
-  { title: 'gross profit', performance: '500.00', precentage_change: '50', performance_last_year: '250.00' },
-  { title: 'gateway fees', performance: '100.00', precentage_change: '50', performance_last_year: '50.00' },
-  { title: 'net discount amount', performance: '100.00', precentage_change: '50', performance_last_year: '50.00' },
-  { title: 'shipping fees', performance: '0.00', precentage_change: 'N/A', performance_last_year: '0.00' }
 ]
