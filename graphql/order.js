@@ -235,6 +235,7 @@ export const GET_SUMMARY_PERFORMANCE = gql`
       performance
       precentage_change
       performance_last_year
+      type
     }
   }
 `
