@@ -4,24 +4,28 @@ import { FiArrowDownRight, FiArrowRight, FiArrowUpRight } from 'react-icons/fi'
 
 import { moneyFormat } from 'utils/money-format'
 
-export const ProductPerformanceCard = ({ data, setData }) => {
+export const ProductPerformanceCard = ({ data }) => {
   const [selected, setSelected] = useState(data?.[2])
 
   const ArrowDirections = ({ item, checked }) => {
     if (item.precentage_change > 0) {
-      return (<ArrowUpRight item={item} checked={checked} />)
+      return <ArrowUpRight item={item} checked={checked} />
     } else if (item.precentage_change < 0) {
-      return (<ArrowDownRight item={item} checked={checked} />)
+      return <ArrowDownRight item={item} checked={checked} />
     } else {
-      return (<ArrowRight item={item} checked={checked} />)
+      return <ArrowRight item={item} checked={checked} />
     }
   }
 
   const ArrowRight = ({ item, checked }) => {
     return (
       <>
-        <FiArrowRight className={`w-5 h-5 ${checked ? 'text-N800' : 'text-N0'}`} />
-        <h5 className={`w250 ${checked ? 'text-N800' : 'text-N0'}`}>{item.precentage_change}</h5>
+        <FiArrowRight
+          className={`w-5 h-5 ${checked ? 'text-N800' : 'text-N0'}`}
+        />
+        <h5 className={`w250 ${checked ? 'text-N800' : 'text-N0'}`}>
+          {item.precentage_change}
+        </h5>
       </>
     )
   }
@@ -30,9 +34,7 @@ export const ProductPerformanceCard = ({ data, setData }) => {
     return (
       <>
         <FiArrowDownRight className="w-5 h-5 text-R600" />
-        <h5 className="w250 text-R600">
-          {item.precentage_change}%
-        </h5>
+        <h5 className="w250 text-R600">{item.precentage_change}%</h5>
       </>
     )
   }
@@ -41,9 +43,7 @@ export const ProductPerformanceCard = ({ data, setData }) => {
     return (
       <>
         <FiArrowUpRight className="w-5 h-5 text-G400" />
-        <h5 className="w250 text-G400">
-          {item.precentage_change}%
-        </h5>
+        <h5 className="w250 text-G400">{item.precentage_change}%</h5>
       </>
     )
   }
@@ -62,9 +62,10 @@ export const ProductPerformanceCard = ({ data, setData }) => {
             value={c}
             className={({ active, checked }) =>
               `${active ? 'ring-1 ring-offset-P900' : ''}
-              ${checked
-                ? 'bg-N0 bg-opacity-80 border-t-4 border-P700'
-                : 'bg-[#E0E0F24D] bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]'
+              ${
+                checked
+                  ? 'bg-N0 bg-opacity-80 border-t-4 border-P700'
+                  : 'bg-[#E0E0F24D] bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]'
               }
               relative px-5 cursor-pointer`
             }
@@ -72,8 +73,9 @@ export const ProductPerformanceCard = ({ data, setData }) => {
             {({ active, checked }) => (
               <>
                 <h5
-                  className={`mt-5 text-opacity-50 w250 ${checked ? 'text-N800' : 'text-N0'
-                    }`}
+                  className={`mt-5 text-opacity-50 w250 ${
+                    checked ? 'text-N800' : 'text-N0'
+                  }`}
                 >
                   {c.title}
                 </h5>
@@ -88,8 +90,9 @@ export const ProductPerformanceCard = ({ data, setData }) => {
                 </div>
                 <div className="my-4">
                   <p
-                    className={`text-opacity-50 w400 ${checked ? 'text-N800' : 'text-N0'
-                      }`}
+                    className={`text-opacity-50 w400 ${
+                      checked ? 'text-N800' : 'text-N0'
+                    }`}
                   >
                     Previous Year
                   </p>

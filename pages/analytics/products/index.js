@@ -13,7 +13,10 @@ import {
 } from 'components/analytics/products'
 import { moneyFormat } from 'utils/money-format'
 import { checkLogin } from 'utils/Auth'
-import { getClient } from 'lib/graphqlclient'
+import useFetch from 'hooks/useFetch'
+import { LoadingStatus } from 'components/loading-status'
+import { ErrorStatus } from 'components/error-status'
+// import { getClient } from 'lib/graphqlclient'
 import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/order'
 import { GET_ANALYTIC_PRODUCT_PERFORMANCE } from 'graphql/product'
 
@@ -28,10 +31,8 @@ export default function Products() {
     new Date('2020/01/01')
   )
   const [endPreviousDate, setEndPreviousDate] = useState(new Date('2020/12/31'))
-  const [listTopSalesProduct, setListTopSalesProduct] = useState()
   // eslint-disable-next-line no-unused-vars
   const [status, setStatus] = useState(false)
-  const [getAnalyticProductPerformance, setGetAnalyticProductPerformance] = useState()
 
   const storeDateRange = {
     startCurrent: [startCurrentDate, setStartCurrentDate],
@@ -45,39 +46,60 @@ export default function Products() {
     checkLogin()
   }, [])
 
-  const client = getClient()
+  const {
+    loading: loadingListTopSalesProduct,
+    error: errorListTopSalesProduct,
+    data: dataListTopSalesProduct
+  } = useFetch(GET_LIST_TOP_SALES_PRODUCT)
+  const {
+    loading: loadingAnalyticProductPerformance,
+    error: errorAnalyticProductPerformance,
+    data: dataAnalyticProductPerformance
+  } = useFetch(GET_ANALYTIC_PRODUCT_PERFORMANCE)
 
-  async function loadData() {
-    try {
-      const result = await client.request(GET_LIST_TOP_SALES_PRODUCT)
-      const resultGetAnalyticProductPerformance = await client.request(
-        GET_ANALYTIC_PRODUCT_PERFORMANCE
-      )
-      setListTopSalesProduct(result.getListTopSalesProduct)
-      setGetAnalyticProductPerformance(
-        resultGetAnalyticProductPerformance.getAnalyticProductPerformance
-      )
+  if (loadingAnalyticProductPerformance || loadingListTopSalesProduct)
+    return <LoadingStatus />
+  if (errorAnalyticProductPerformance || errorListTopSalesProduct)
+    return (
+      <ErrorStatus
+        message={errorAnalyticProductPerformance || errorListTopSalesProduct}
+      />
+    )
 
-      // console.log(JSON.stringify(result, null, 4))
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const { getAnalyticProductPerformance } = dataAnalyticProductPerformance
+  const { getListTopSalesProduct } = dataListTopSalesProduct
 
-  useEffect(() => {
-    loadData()
-  }, [])
+  // async function loadData() {
+  //   try {
+  //     const result = await client.request(GET_LIST_TOP_SALES_PRODUCT)
+  //     const resultGetAnalyticProductPerformance = await client.request(
+  //       GET_ANALYTIC_PRODUCT_PERFORMANCE
+  //     )
+  //     setListTopSalesProduct(result.getListTopSalesProduct)
+  //     setGetAnalyticProductPerformance(
+  //       resultGetAnalyticProductPerformance.getAnalyticProductPerformance
+  //     )
 
-  useEffect(() => {
-    if (listTopSalesProduct) {
-      console.log(`listTopSalesProduct_SKU: ${listTopSalesProduct?.[0].sku}`)
-    }
-    if (getAnalyticProductPerformance) {
-      console.log(
-        `getAnalyticProductPerformance_1st_title : ${getAnalyticProductPerformance?.[0].title}`
-      )
-    }
-  }, [listTopSalesProduct, getAnalyticProductPerformance])
+  //     // console.log(JSON.stringify(result, null, 4))
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   loadData()
+  // }, [])
+
+  // useEffect(() => {
+  //   if (listTopSalesProduct) {
+  //     console.log(`listTopSalesProduct_SKU: ${listTopSalesProduct?.[0].sku}`)
+  //   }
+  //   if (getAnalyticProductPerformance) {
+  //     console.log(
+  //       `getAnalyticProductPerformance_1st_title : ${getAnalyticProductPerformance?.[0].title}`
+  //     )
+  //   }
+  // }, [listTopSalesProduct, getAnalyticProductPerformance])
 
   return (
     <div className="pb-4">
@@ -124,8 +146,9 @@ export default function Products() {
                 {({ open }) => (
                   <>
                     <Menu.Button
-                      className={`bg-transparent focus:outline-none ${open ? 'text-P400' : ''
-                        }`}
+                      className={`bg-transparent focus:outline-none ${
+                        open ? 'text-P400' : ''
+                      }`}
                     >
                       <BsThreeDotsVertical className="w-6 h-6" />
                     </Menu.Button>
@@ -142,10 +165,11 @@ export default function Products() {
                       <Menu.Items
                         static
                         className={`
-                  ${!open
-                            ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
-                            : ''
-                          }
+                  ${
+                    !open
+                      ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
+                      : ''
+                  }
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                   `}
                       >
@@ -222,7 +246,7 @@ export default function Products() {
 
             {/* Table Content */}
             <tbody className="bg-N700 text-N0">
-              {listTopSalesProduct?.map((t, i) => (
+              {getListTopSalesProduct?.map((t, i) => (
                 <tr key={i} className="">
                   <td className="p-4 text-center bg-N600 w400 whitespace-nowrap">
                     {t.sn}
@@ -259,10 +283,7 @@ export default function Products() {
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
         {/* Performance */}
-        <ProductPerformanceCard
-          data={getAnalyticProductPerformance}
-          setData={setGetAnalyticProductPerformance}
-        />
+        <ProductPerformanceCard data={getAnalyticProductPerformance} />
         {/* Chart View */}
         <ChartView />
       </div>
