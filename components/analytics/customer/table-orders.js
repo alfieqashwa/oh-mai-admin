@@ -1,26 +1,17 @@
 import React, { Fragment } from 'react'
 import Link from 'next/link'
-import useSWR from 'swr'
 import { Menu, Transition } from '@headlessui/react'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import moment from 'moment'
 
 import { SwitchOnOff } from './switch-on-off'
-import { ErrorStatus } from 'components/error-status'
-import { LoadingStatus } from 'components/loading-status'
-
-import { GET_ANALYTIC_CUSTOMER_TABLE } from 'graphql/customer'
 import { moneyFormat } from 'utils/money-format'
 
-export function TableOrders() {
+export function TableOrders({ data }) {
   const [status, setStatus] = React.useState(false)
-  const { error, data } = useSWR(GET_ANALYTIC_CUSTOMER_TABLE)
 
-  if (error) return <ErrorStatus message={error.message} />
-  if (!data) return <LoadingStatus />
-
-  console.log(data)
+  // console.log(data)
   return (
     <div className="mt-8">
       <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
@@ -139,8 +130,8 @@ export function TableOrders() {
 
         {/* Table Content */}
         <tbody className="bg-N700 text-N0">
-          {data.getAnalyticCustomerTable.map((t) => (
-            <tr key={t.id} className="">
+          {data.map((t) => (
+            <tr key={t.customer_id} className="">
               <td className="px-2 py-8 text-center bg-N600 w400">{t.sn}</td>
               <td className="px-4 py-8 text-left underline capitalize w400">
                 <Link href={`/analytics/customer/${t.customer_id}`}>
