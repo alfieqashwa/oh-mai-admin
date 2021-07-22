@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import React, { Fragment } from 'react'
 import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
 import { SiGoogleanalytics } from 'react-icons/si'
@@ -12,7 +12,7 @@ export const LeaderboardCardType = ({
   title,
   totalOrder,
   totalNetSales,
-  leaderboardQuery,
+  leaderboardQuery
 }) => (
   <div className="relative px-5 bg-[#E0E0F24D] h-52 bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]">
     <Menu>

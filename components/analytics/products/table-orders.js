@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { BsThreeDotsVertical } from 'react-icons/bs'

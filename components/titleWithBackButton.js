@@ -1,5 +1,6 @@
-import Link from 'next/link';
-import { AiOutlineArrowLeft } from 'react-icons/ai';
+import React from 'react'
+import Link from 'next/link'
+import { AiOutlineArrowLeft } from 'react-icons/ai'
 
 export const TitleWithBackButton = ({ path, title }) => (
   <div className="flex items-center mt-20" >

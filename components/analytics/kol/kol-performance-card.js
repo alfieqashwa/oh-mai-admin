@@ -80,14 +80,14 @@ export const KolPerformanceCard = () => {
   )
 }
 
-const performanceCards = [
-  { category: 'commissions', amount: 500, percentage: 200, previousYear: 250 },
-  {
-    category: 'successful orders',
-    amount: 500,
-    percentage: 200,
-    previousYear: 250
-  },
-  { category: 'gross sales', amount: 1000, percentage: 200, previousYear: 500 },
-  { category: 'net sales', amount: 800, percentage: 200, previousYear: 400 }
-]
+// const performanceCards = [
+//   { category: 'commissions', amount: 500, percentage: 200, previousYear: 250 },
+//   {
+//     category: 'successful orders',
+//     amount: 500,
+//     percentage: 200,
+//     previousYear: 250
+//   },
+//   { category: 'gross sales', amount: 1000, percentage: 200, previousYear: 500 },
+//   { category: 'net sales', amount: 800, percentage: 200, previousYear: 400 }
+// ]
