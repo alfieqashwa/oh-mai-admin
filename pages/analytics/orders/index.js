@@ -51,9 +51,6 @@ export default function Orders() {
   const { getOrderPerformance } = dataOrderPerformance
   const { getOrderListSumaryTable } = dataOrderListSummaryTable
 
-  console.log(getOrderPerformance)
-  console.log(getOrderListSumaryTable)
-
   return (
     <div className="pb-4">
       <Header title="Analytics - Orders" />
