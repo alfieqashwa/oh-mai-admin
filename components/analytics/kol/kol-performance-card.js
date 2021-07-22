@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import useSWR from 'swr'
 import { RadioGroup } from '@headlessui/react'
-import { FiArrowDownRight, FiArrowRight, FiArrowUpRight } from 'react-icons/fi'
 
 import { moneyFormat } from 'utils/money-format'
 import { ErrorStatus } from 'components/error-status'
 import { LoadingStatus } from 'components/loading-status'
 
 import { GET_ANALYTIC_KOL_PERFORMANCE } from 'graphql/kol'
+import { ArrowDirections } from 'components/widgets/PerformanceArrow'
 
 export const KolPerformanceCard = () => {
   const { data, error } = useSWR(GET_ANALYTIC_KOL_PERFORMANCE)
@@ -55,36 +55,7 @@ export const KolPerformanceCard = () => {
                   </h3>
                   <div className="flex items-center space-x-1">
                     {/* temporary logic */}
-                    {c.precentage === '-' ? (
-                      <>
-                        <FiArrowRight
-                          className={`w-5 h-5 ${
-                            checked ? 'text-N800' : 'text-N0'
-                          }`}
-                        />
-                        <h5
-                          className={`w250 ${
-                            checked ? 'text-N800' : 'text-N0'
-                          }`}
-                        >
-                          {c.precentage_change}
-                        </h5>
-                      </>
-                    ) : c.title === 'orders' ? (
-                      <>
-                        <FiArrowDownRight className="w-5 h-5 text-R600" />
-                        <h5 className="w250 text-R600">
-                          {c.precentage_change}%
-                        </h5>
-                      </>
-                    ) : (
-                      <>
-                        <FiArrowUpRight className="w-5 h-5 text-G400" />
-                        <h5 className="w250 text-G400">
-                          {c.precentage_change}%
-                        </h5>
-                      </>
-                    )}
+                    <ArrowDirections item={c} checked={checked} />
                   </div>
                 </div>
                 <div className="my-4">
@@ -96,7 +67,8 @@ export const KolPerformanceCard = () => {
                     Previous Year
                   </p>
                   <p className={`w400 ${checked ? 'text-N800' : 'text-N0'}`}>
-                    ${c.performance_last_year.toFixed(2)}
+                    {c.performance_last_year &&
+                      c.performance_last_year.toFixed(2)}
                   </p>
                 </div>
               </>
@@ -114,8 +86,8 @@ const performanceCards = [
     category: 'successful orders',
     amount: 500,
     percentage: 200,
-    previousYear: 250,
+    previousYear: 250
   },
   { category: 'gross sales', amount: 1000, percentage: 200, previousYear: 500 },
-  { category: 'net sales', amount: 800, percentage: 200, previousYear: 400 },
+  { category: 'net sales', amount: 800, percentage: 200, previousYear: 400 }
 ]
