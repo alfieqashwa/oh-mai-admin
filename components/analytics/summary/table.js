@@ -2,8 +2,7 @@ import React, { useState, Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { FiSearch, FiDownloadCloud } from 'react-icons/fi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-
-import moment from 'moment'
+// import moment from 'moment'
 import { moneyFormat } from 'utils/money-format'
 
 // Table on Summary Main Page
