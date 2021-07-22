@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
-import { FiArrowDownRight, FiArrowRight, FiArrowUpRight } from 'react-icons/fi'
+
+import { ArrowDirections } from 'components/widgets/PerformanceArrow'
 
 export const OrderPerformanceCard = ({ data }) => {
   const [selected, setSelected] = useState(data?.[0])
@@ -42,36 +43,7 @@ export const OrderPerformanceCard = ({ data }) => {
                   </h3>
                   <div className="flex items-center space-x-1">
                     {/* temporary logic */}
-                    {c.precentage_change === '-' ? (
-                      <>
-                        <FiArrowRight
-                          className={`w-5 h-5 ${
-                            checked ? 'text-N800' : 'text-N0'
-                          }`}
-                        />
-                        <h5
-                          className={`w250 ${
-                            checked ? 'text-N800' : 'text-N0'
-                          }`}
-                        >
-                          {c.precentage_change}
-                        </h5>
-                      </>
-                    ) : c.category === 'Orders' ? (
-                      <>
-                        <FiArrowDownRight className="w-5 h-5 text-R600" />
-                        <h5 className="w250 text-R600">
-                          {c.precentage_change}%
-                        </h5>
-                      </>
-                    ) : (
-                      <>
-                        <FiArrowUpRight className="w-5 h-5 text-G400" />
-                        <h5 className="w250 text-G400">
-                          {c.precentage_change}%
-                        </h5>
-                      </>
-                    )}
+                    <ArrowDirections item={c} checked={checked} />
                   </div>
                 </div>
                 <div className="my-4">
