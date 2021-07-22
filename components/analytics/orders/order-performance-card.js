@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { FiArrowDownRight, FiArrowRight, FiArrowUpRight } from 'react-icons/fi'
 
-export const OrderPerformanceCard = ({ data, setData }) => {
+export const OrderPerformanceCard = ({ data }) => {
   const [selected, setSelected] = useState(data?.[0])
 
   return (

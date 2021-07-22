@@ -6,64 +6,53 @@ import {
   DateRangeSelect,
   OrderPerformanceCard,
   ChartView,
-  TableOrders,
+  TableOrders
 } from 'components/analytics/orders'
 import { checkLogin } from 'utils/Auth'
+import useFetch from 'hooks/useFetch'
 
-import { getClient } from 'lib/graphqlclient'
 import {
   GET_ORDER_PERFORMANCE,
-  GET_ORDER_LIST_SUMMARY_TABLE,
+  GET_ORDER_LIST_SUMMARY_TABLE
 } from 'graphql/order'
+import { LoadingStatus } from 'components/loading-status'
+import { ErrorStatus } from 'components/error-status'
 
 export default function Orders() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
-
-  const [getOrderPerformance, setGetOrderPerformance] = useState()
-  const [getOrderListSummaryTable, setGetOrderListSummaryTable] = useState()
 
   useEffect(() => {
     console.log('Check login')
     checkLogin()
   }, [])
 
-  const client = getClient()
+  const {
+    loading: loadingOrderPerformance,
+    error: errorOrderPerformance,
+    data: dataOrderPerformance
+  } = useFetch(GET_ORDER_PERFORMANCE)
 
-  async function loadData() {
-    try {
-      const resultGetOrderPerformance = await client.request(
-        GET_ORDER_PERFORMANCE
-      )
-      const resultGetOrderListSummaryTable = await client.request(
-        GET_ORDER_LIST_SUMMARY_TABLE
-      )
+  const {
+    loading: loadingOrderListSummaryTable,
+    error: errorOrderListSummaryTable,
+    data: dataOrderListSummaryTable
+  } = useFetch(GET_ORDER_LIST_SUMMARY_TABLE)
 
-      setGetOrderPerformance(resultGetOrderPerformance.getOrderPerformance)
-      setGetOrderListSummaryTable(
-        resultGetOrderListSummaryTable.getOrderListSumaryTable
-      )
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  if (loadingOrderPerformance || loadingOrderListSummaryTable)
+    return <LoadingStatus />
+  if (errorOrderPerformance || errorOrderListSummaryTable)
+    return (
+      <ErrorStatus
+        message={errorOrderPerformance || errorOrderListSummaryTable}
+      />
+    )
 
-  useEffect(() => {
-    loadData()
-  }, [])
+  const { getOrderPerformance } = dataOrderPerformance
+  const { getOrderListSumaryTable } = dataOrderListSummaryTable
 
-  useEffect(() => {
-    if (getOrderPerformance) {
-      console.log(
-        `getOrderPerformance_1st_title: ${getOrderPerformance[0]?.title}`
-      )
-    }
-    if (getOrderListSummaryTable) {
-      console.log(
-        `getOrderListSummaryTable_date_time: ${getOrderListSummaryTable[0]?.order_datetime}`
-      )
-    }
-  }, [getOrderPerformance, getOrderListSummaryTable])
+  console.log(getOrderPerformance)
+  console.log(getOrderListSumaryTable)
 
   return (
     <div className="pb-4">
@@ -85,17 +74,11 @@ export default function Orders() {
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
         {/* Performance */}
-        <OrderPerformanceCard
-          data={getOrderPerformance}
-          setData={setGetOrderPerformance}
-        />
+        <OrderPerformanceCard data={getOrderPerformance} />
         {/* Chart */}
         <ChartView />
         {/* Table */}
-        <TableOrders
-          data={getOrderListSummaryTable}
-          setData={setGetOrderListSummaryTable}
-        />
+        <TableOrders data={getOrderListSumaryTable} />
       </div>
     </div>
   )
@@ -103,5 +86,5 @@ export default function Orders() {
 
 const dates = [
   { name: 'Current Year (Jan 1 - Dec 31, 2021)' },
-  { name: 'Previous Year (Jan 1 - Dec 31, 2020)' },
+  { name: 'Previous Year (Jan 1 - Dec 31, 2020)' }
 ]

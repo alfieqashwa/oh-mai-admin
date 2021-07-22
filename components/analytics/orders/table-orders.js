@@ -5,7 +5,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 
 import { moneyFormat } from 'utils/money-format'
 
-export function TableOrders({ data, setData }) {
+export function TableOrders({ data }) {
   return (
     <div className="mt-8">
       {/* Table */}
