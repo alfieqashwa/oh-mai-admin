@@ -136,7 +136,7 @@ export function TableSummary({ data, setData }) {
               <tr key={i}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">
                   {/* TODO */}
-                  {moment(t.order_datetime).format('DD/MM/YYYY HH:mm:ss')}
+                  {t.order_date}
                 </td>
                 <td className="py-4 text-right w400 whitespace-nowrap">
                   {t.total_order}
