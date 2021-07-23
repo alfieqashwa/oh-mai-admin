@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -7,48 +7,56 @@ import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { GlassHeader } from 'components/glassHeader'
 import { Header } from 'components/header'
 import { TitleWithBackButton } from 'components/titleWithBackButton'
+import { LoadingStatus } from 'components/loading-status'
+import { ErrorStatus } from 'components/error-status'
 import {
   LeaderBoardBorder,
-  PaginationSummary,
+  PaginationSummary
 } from 'components/analytics/summary'
 import { moneyFormat } from 'utils/money-format'
 
 import { checkLogin } from 'utils/Auth'
-import { getClient } from 'lib/graphqlclient'
+// import { getClient } from 'lib/graphqlclient'
+import useFetch from 'hooks/useFetch'
 import { GET_LIST_TOP_SALES_ON_CUSTOMER } from 'graphql/order'
 
 export default function TopCustomer() {
-  const [listTopSalesOnCustomer, setListTopSalesOnCustomer] = useState()
+  // const [listTopSalesOnCustomer, setListTopSalesOnCustomer] = useState()
 
   useEffect(() => {
     console.log('Check login!')
     checkLogin()
   }, [])
 
-  const client = getClient()
+  // const client = getClient()
 
-  async function loadData() {
-    try {
-      const result = await client.request(GET_LIST_TOP_SALES_ON_CUSTOMER)
-      setListTopSalesOnCustomer(result.getListTopSalesOnCustomer)
+  // async function loadData() {
+  //   try {
+  //     const result = await client.request(GET_LIST_TOP_SALES_ON_CUSTOMER)
+  //     setListTopSalesOnCustomer(result.getListTopSalesOnCustomer)
 
-      console.log(JSON.stringify(result.getListTopSalesOnCustomer, null, 2))
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  //     console.log(JSON.stringify(result.getListTopSalesOnCustomer, null, 2))
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
-  useEffect(() => {
-    loadData()
-  }, [])
+  // useEffect(() => {
+  //   loadData()
+  // }, [])
 
-  useEffect(() => {
-    if (listTopSalesOnCustomer) {
-      console.log(
-        `listTopSalesOnCustomer_ID: ${listTopSalesOnCustomer?.[0].customer_id}`
-      )
-    }
-  }, [listTopSalesOnCustomer])
+  // useEffect(() => {
+  //   if (listTopSalesOnCustomer) {
+  //     console.log(
+  //       `listTopSalesOnCustomer_ID: ${listTopSalesOnCustomer?.[0].customer_id}`
+  //     )
+  //   }
+  // }, [listTopSalesOnCustomer])
+
+  const { loading, error, data } = useFetch(GET_LIST_TOP_SALES_ON_CUSTOMER)
+
+  if (loading) return <LoadingStatus />
+  if (error) return <ErrorStatus message={error} />
 
   return (
     <div className="pr-12 pl-7">
@@ -189,7 +197,7 @@ export default function TopCustomer() {
 
           {/* Table Content */}
           <tbody className="bg-N700 text-N0">
-            {listTopSalesOnCustomer?.map((t) => (
+            {data?.getListTopSalesOnCustomer?.map((t) => (
               <tr key={t.customer_id}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">
                   {t.sn}
