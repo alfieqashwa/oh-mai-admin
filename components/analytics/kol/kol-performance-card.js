@@ -10,18 +10,16 @@ import { GET_ANALYTIC_KOL_PERFORMANCE } from 'graphql/kol'
 import { ArrowDirections } from 'components/widgets/PerformanceArrow'
 
 export const KolPerformanceCard = () => {
-  const { data, error } = useSWR(GET_ANALYTIC_KOL_PERFORMANCE)
   const [selected, setSelected] = useState()
+  const { data, error } = useSWR(GET_ANALYTIC_KOL_PERFORMANCE)
 
   if (error) return <ErrorStatus message={error.message} />
-  if (!data) return <LoadingStatus />
-
-  // console.log(selected)
+  if (!data && !error) return <LoadingStatus />
 
   return (
     <RadioGroup
       className="grid grid-cols-3"
-      value={selected}
+      value={selected || data.getAnalyticKolPerformance[1]}
       onChange={setSelected}
     >
       <RadioGroup.Label className="sr-only">Performance</RadioGroup.Label>

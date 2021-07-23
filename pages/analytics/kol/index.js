@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import useSWR from 'swr'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 
 import { Header } from 'components/header'
