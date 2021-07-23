@@ -56,7 +56,17 @@ export function ShowProductSelect() {
                           >
                             {p.name}
                           </span>
-                          {selected ? (<CheckIcon />) : null}
+                          {selected ? (
+                            <span
+                              className={`${active ? 'text-N0' : ''}
+                                absolute inset-y-0 left-0 flex items-center pl-2`}
+                            >
+                              <CheckIcon
+                                className="w-4 h-4"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          ) : null}
                         </>
                       )}
                     </Listbox.Option>
