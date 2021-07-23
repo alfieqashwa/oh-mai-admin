@@ -2,7 +2,6 @@ import React, { useState, Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { FiSearch, FiDownloadCloud } from 'react-icons/fi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import moment from 'moment'
 
 import { LoadingStatus } from 'components/loading-status'
 import { ErrorStatus } from 'components/error-status'
@@ -150,7 +149,7 @@ export function TableSummary() {
               <tr key={i}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">
                   {/* TODO */}
-                  {moment(t.order_datetime).format('DD/MM/YYYY HH:mm:ss')}
+                  {t.order_date}
                 </td>
                 <td className="py-4 text-right w400 whitespace-nowrap">
                   {t.total_order}

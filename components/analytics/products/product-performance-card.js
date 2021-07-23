@@ -56,7 +56,7 @@ export const ProductPerformanceCard = ({ data }) => {
                     Previous Year
                   </p>
                   <p className={`w400 ${checked ? 'text-N800' : 'text-N0'}`}>
-                    ${c.performance_last_year.toFixed(2)}
+                    ${c.performance_last_year?.toFixed(2)}
                   </p>
                 </div>
               </>
