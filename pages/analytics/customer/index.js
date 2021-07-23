@@ -6,49 +6,29 @@ import {
   TableOrders,
   Pagination,
   ChartView,
-  OrderPerformanceCard,
+  OrderPerformanceCard
 } from 'components/analytics/customer'
 
 import { checkLogin } from 'utils/Auth'
-import { getClient } from 'lib/graphqlclient'
+import useFetch from 'hooks/useFetch'
 import { GET_ANALYTIC_CUSTOMER_TABLE } from 'graphql/customer'
+import { LoadingStatus } from 'components/loading-status'
+import { ErrorStatus } from 'components/error-status'
 
 export default function Customer() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
 
-  const [getAnalyticCustomerTable, setGetAnalyticCustomerTable] = useState()
-
   useEffect(() => {
     checkLogin()
   }, [])
 
-  const client = getClient()
+  const { loading, error, data } = useFetch(GET_ANALYTIC_CUSTOMER_TABLE)
 
-  async function loadData() {
-    try {
-      const resultGetAnalyticCustomerTable = await client.request(
-        GET_ANALYTIC_CUSTOMER_TABLE
-      )
-      setGetAnalyticCustomerTable(
-        resultGetAnalyticCustomerTable.getAnalyticCustomerTable
-      )
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  if (loading) return <LoadingStatus />
+  if (error) return <ErrorStatus message={error} />
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
-  useEffect(() => {
-    if (getAnalyticCustomerTable) {
-      console.log(
-        `getAnalyticCustomerTable_customerID, ${getAnalyticCustomerTable[0]?.customer_id}`
-      )
-    }
-  }, [getAnalyticCustomerTable])
+  const { getAnalyticCustomerTable } = data
 
   return (
     <div className="pb-4">
@@ -70,7 +50,7 @@ export default function Customer() {
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
         {/* table */}
-        <TableOrders />
+        <TableOrders data={getAnalyticCustomerTable} />
         {/* pagination */}
         <Pagination />
         {/* customer_performance-border */}
@@ -92,5 +72,5 @@ export default function Customer() {
 
 const dates = [
   { name: 'Current Year (Jan 1 - Dec 31, 2021)' },
-  { name: 'Previous Year (Jan 1 - Dec 31, 2020)' },
+  { name: 'Previous Year (Jan 1 - Dec 31, 2020)' }
 ]

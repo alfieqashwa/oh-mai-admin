@@ -13,5 +13,5 @@ export {
   KolLeaderboard,
   KolPerformanceCard,
   ChartView,
-  Pagination,
+  Pagination
 }

@@ -1,18 +1,12 @@
 import React, { Fragment } from 'react'
-import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import moment from 'moment'
 
 import { SwitchOnOff } from './switch-on-off'
 import { moneyFormat } from 'utils/money-format'
 
-export function TableOrders({ data }) {
-  // eslint-disable-next-line no-unused-vars
-  const [status, setStatus] = React.useState(false)
-
-  // console.log(data)
+export function TableOrders({ data, status, setStatus }) {
   return (
     <div className="mt-8">
       <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
@@ -59,13 +53,13 @@ export function TableOrders({ data }) {
                   <Menu.Items
                     static
                     className={`
-                      ${
-                        !open
-                          ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
-                          : ''
-                      }
-                      absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
-                      `}
+                  ${
+                    !open
+                      ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
+                      : ''
+                  }
+                  absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
+                  `}
                   >
                     <Menu.Item
                       as="button"
@@ -87,20 +81,35 @@ export function TableOrders({ data }) {
       <table className="md:min-w-full text-N0">
         <thead className="bg-N200 bg-opacity-30">
           <tr>
-            <th scope="col" className="px-2 py-4 text-center capitalize w400">
+            <th
+              scope="col"
+              className="p-4 text-center capitalize w400 whitespace-nowrap"
+            >
               s/n
             </th>
             <th
               scope="col"
               className="p-4 text-left capitalize w400 whitespace-nowrap"
             >
-              customer name
+              product title
             </th>
             <th
               scope="col"
               className="p-4 text-right capitalize w400 whitespace-nowrap"
             >
-              most recent order
+              SKU
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-right capitalize w400 whitespace-nowrap"
+            >
+              Items Sold
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-right capitalize w400 whitespace-nowrap"
+            >
+              net sales
             </th>
             <th
               scope="col"
@@ -112,13 +121,7 @@ export function TableOrders({ data }) {
               scope="col"
               className="p-4 text-right capitalize w400 whitespace-nowrap"
             >
-              items sold
-            </th>
-            <th
-              scope="col"
-              className="p-4 text-right capitalize w400 whitespace-nowrap"
-            >
-              net sales
+              category
             </th>
             <th
               scope="col"
@@ -131,25 +134,25 @@ export function TableOrders({ data }) {
 
         {/* Table Content */}
         <tbody className="bg-N700 text-N0">
-          {data.map((t) => (
-            <tr key={t.customer_id} className="">
-              <td className="px-2 py-8 text-center bg-N600 w400">{t.sn}</td>
-              <td className="px-4 py-8 text-left underline capitalize w400">
-                <Link href={`/analytics/customer/${t.customer_id}`}>
-                  <a>{t.customer_name}</a>
-                </Link>
+          {data?.map((t, i) => (
+            <tr key={i} className="">
+              <td className="p-4 text-center bg-N600 w400 whitespace-nowrap">
+                {t.sn}
               </td>
-              <td className="px-4 py-8 text-right w400">
-                {moment(t.most_recent_order).format('DD/MM/YYYY HH:mm:ss')}
+              <td className="p-4 text-left underline w400">
+                {t.product_title}
               </td>
-              <td className="px-4 py-8 text-right underline w400">
-                {t.orders}
+              <td className="p-4 text-right w400 whitespace-nowrap">{t.sku}</td>
+              <td className="p-4 text-right w400 whitespace-nowrap">
+                {t.item_sold}
               </td>
-              <td className="px-4 py-8 text-right w400">{t.item_sold}</td>
-              <td className="px-4 py-8 text-right w400">
+              <td className="p-4 text-right w400 whitespace-nowrap">
                 {moneyFormat.format(t.net_sales)}
               </td>
-              <td className="px-4 py-8 text-center w400">
+              <td className="p-4 text-right underline w400">{t.order}</td>
+              <td className="p-4 text-right w400">{t.category}</td>
+              <td className="py-4 text-center x-4 w400 whitespace-nowrap">
+                {/*  TODO: because this components is reusable, i leave it as it is for now until needed to avoid crashing in the other pages */}
                 <SwitchOnOff isEnabled={status} />
               </td>
             </tr>

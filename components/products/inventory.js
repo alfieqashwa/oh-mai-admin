@@ -1,3 +1,4 @@
+import React from 'react'
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/react/solid'
 
@@ -11,7 +12,7 @@ const products = [
     category: 'Games',
     quantity: '1290',
     image:
-      '/monster_hunter_rise_cover.jpg',
+      '/monster_hunter_rise_cover.jpg'
   },
   {
     product: 'Monster Hunter: Rise',
@@ -22,7 +23,7 @@ const products = [
     category: 'Games',
     quantity: '1290',
     image:
-      '/monster_hunter_rise_cover.jpg',
+      '/monster_hunter_rise_cover.jpg'
   },
   {
     product: 'Monster Hunter: Rise',
@@ -33,7 +34,7 @@ const products = [
     category: 'Games',
     quantity: '1290',
     image:
-      '/monster_hunter_rise_cover.jpg',
+      '/monster_hunter_rise_cover.jpg'
   },
   {
     product: 'Monster Hunter: Rise',
@@ -44,7 +45,7 @@ const products = [
     category: 'Games',
     quantity: '1290',
     image:
-      '/monster_hunter_rise_cover.jpg',
+      '/monster_hunter_rise_cover.jpg'
   },
   {
     product: 'Monster Hunter: Rise',
@@ -55,8 +56,8 @@ const products = [
     category: 'Games',
     quantity: '1290',
     image:
-      '/monster_hunter_rise_cover.jpg',
-  },
+      '/monster_hunter_rise_cover.jpg'
+  }
 ]
 
 export function ProductListTable() {

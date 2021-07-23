@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import SunEditor from 'suneditor-react'
+import React, { useEffect, useState } from 'react'
+// import SunEditor from 'suneditor-react'
 import 'suneditor/dist/css/suneditor.min.css'
 // Import the Slate editor factory.
-import { createEditor } from 'slate'
+// import { createEditor } from 'slate'
 // Import the Slate components and React plugin.
-import { Slate, Editable, withReact } from 'slate-react'
-import RichEditor from './defunct/editproducthelper/richeditor'
-import { DefaultEditor } from 'react-simple-wysiwyg';
+// import { withReact } from 'slate-react'
+// import RichEditor from './defunct/editproducthelper/richeditor'
+import { DefaultEditor } from 'react-simple-wysiwyg'
 
 // import { SlateEditor, SlateToolbar, SlateContent } from 'slate-editor'
 // import { BoldPlugin, BoldButton } from '@slate-editor/bold-plugin'
@@ -25,52 +25,55 @@ import { DefaultEditor } from 'react-simple-wysiwyg';
 
 const TextEditor = props => {
   const { defaultValue, onChange } = props
-  const [description, setDescription] = useState("abc")
-  const editor = useMemo(() => withReact(createEditor()), [])
+  const [description, setDescription] = useState('abc')
+  // const editor = useMemo(() => withReact(createEditor()), [])
+  // eslint-disable-next-line no-unused-vars
   const [value, setValue] = useState([])
-  const [html, setHtml] = React.useState('');
-
+  const [html, setHtml] = React.useState('')
 
   useEffect(() => {
-    console.log("Edit Product/ TextEditor", props)
+    console.log('Edit Product/ TextEditor', props)
 
     if (defaultValue) {
-      const domDesc = new DOMParser().parseFromString(defaultValue, "text/html")
-      console.log("Isi dom desc", domDesc)
+      const domDesc = new DOMParser().parseFromString(defaultValue, 'text/html')
+      console.log('Isi dom desc', domDesc)
 
       setDescription(domDesc)
       setValue([
         {
           type: 'paragraph',
-          children: [{ text: defaultValue }],
-        },
+          children: [{ text: defaultValue }]
+        }
       ])
       setHtml(defaultValue)
     }
   }, [defaultValue])
 
   useEffect(() => {
-    console.log("Edit Product/ TextEditor description", description)
+    console.log('Edit Product/ TextEditor description', description)
   }, [description])
 
-  const updateDesc = (value) => {
-    console.log("update desc")
-    setDescription(value)
-    onChange({target: {
-      id: "description",
-      value: value
-    }})
-  };
+  // const updateDesc = (value) => {
+  //   console.log('update desc')
+  //   setDescription(value)
+  //   onChange({
+  //     target: {
+  //       id: 'description',
+  //       value: value
+  //     }
+  //   })
+  // }
 
   function _onChange(e) {
-    console.log("description e", e)
-    setHtml(e.target.value);
-    onChange({target: {
-      id: "description",
-      value: e.target.value
-    }})
+    console.log('description e', e)
+    setHtml(e.target.value)
+    onChange({
+      target: {
+        id: 'description',
+        value: e.target.value
+      }
+    })
   }
-
 
   return (
     <div className="p-2 resize-x">

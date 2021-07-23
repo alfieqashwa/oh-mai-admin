@@ -1,24 +1,24 @@
-import React, { useState, useRef } from "react";
-import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
+import React, { useState, useRef } from 'react'
+import { Button } from 'primereact/button'
+import { Dialog } from 'primereact/dialog'
 
-import { DataTable } from "primereact/datatable";
-import { InputText } from "primereact/inputtext";
+import { DataTable } from 'primereact/datatable'
+import { InputText } from 'primereact/inputtext'
 
-import { Toolbar } from "primereact/toolbar";
-import { Column } from "primereact/column";
-import useSWR from "swr";
-import { products, DELETE_PRODUCT } from "graphql/product";
-import { client } from "lib/graphqlclient";
-import { InputNumber } from "primereact/inputnumber";
+// import { Toolbar } from 'primereact/toolbar'
+import { Column } from 'primereact/column'
+import useSWR from 'swr'
+import { products } from 'graphql/product'
+// import { client } from 'lib/graphqlclient'
+import { InputNumber } from 'primereact/inputnumber'
 
 export const DeleteProductDialog = (props) => {
   const {
     deleteProductDialog,
     setDeleteProductDialog,
     toDelete,
-    removeProduct,
-  } = props;
+    removeProduct
+  } = props
 
   const deleteProductDialogFooter = (
     <React.Fragment>
@@ -33,43 +33,43 @@ export const DeleteProductDialog = (props) => {
         icon="pi pi-check"
         className="p-button-text"
         onClick={() => {
-          removeProduct();
-          setDeleteProductDialog(false);
+          removeProduct()
+          setDeleteProductDialog(false)
         }}
       />
     </React.Fragment>
-  );
+  )
 
   return (
     <Dialog
       visible={deleteProductDialog}
-      style={{ width: "450px" }}
+      style={{ width: '450px' }}
       header="Confirm"
       modal
       footer={deleteProductDialogFooter}
       onHide={() => setDeleteProductDialog(false)}
     >
-      <div className="confirmation-content" style={{ padding: "20px 0px" }}>
+      <div className="confirmation-content" style={{ padding: '20px 0px' }}>
         <i
           className="pi pi-exclamation-triangle p-mr-3"
-          style={{ fontSize: "2rem" }}
+          style={{ fontSize: '2rem' }}
         />
         <span>
           Are you sure you want to delete <b>{toDelete?.product_name}</b>?
         </span>
       </div>
     </Dialog>
-  );
-};
+  )
+}
 
 export const AddProductDialog = (props) => {
-  const { data: prod, error: prodErr } = useSWR(products);
+  const { data: prod } = useSWR(products)
 
-  const { addProductDialog, setAddProductDialog, addProduct } = props;
+  const { addProductDialog, setAddProductDialog, addProduct } = props
 
-  const [selectedProducts, setSelectedProducts] = useState(null);
-  const [globalFilter, setGlobalFilter] = useState(null);
-  const dt = useRef(null);
+  const [selectedProducts, setSelectedProducts] = useState(null)
+  const [globalFilter, setGlobalFilter] = useState(null)
+  const dt = useRef(null)
 
   const header = (
     <div className="table-header">
@@ -82,7 +82,7 @@ export const AddProductDialog = (props) => {
         />
       </span>
     </div>
-  );
+  )
 
   const addProductDialogFooter = (
     <React.Fragment>
@@ -91,8 +91,8 @@ export const AddProductDialog = (props) => {
         icon="pi pi-times"
         className="p-button-text"
         onClick={() => {
-          setAddProductDialog(false);
-          setSelectedProducts(null);
+          setAddProductDialog(false)
+          setSelectedProducts(null)
         }}
       />
       <Button
@@ -100,32 +100,32 @@ export const AddProductDialog = (props) => {
         icon="pi pi-check"
         className="p-button-text"
         onClick={() => {
-          addProduct(selectedProducts);
-          setAddProductDialog(false);
-          setSelectedProducts(null);
+          addProduct(selectedProducts)
+          setAddProductDialog(false)
+          setSelectedProducts(null)
         }}
       />
     </React.Fragment>
-  );
+  )
 
   const priceBodyTemplate = (rowData) => {
-    var formatter = new Intl.NumberFormat("en-SG", {
-      style: "currency",
-      currency: "SGD",
-    });
-    return formatter.format(rowData.current_price);
-  };
+    const formatter = new Intl.NumberFormat('en-SG', {
+      style: 'currency',
+      currency: 'SGD'
+    })
+    return formatter.format(rowData.current_price)
+  }
 
   return (
     <Dialog
       visible={addProductDialog}
-      style={{ width: "850px" }}
+      style={{ width: '850px' }}
       header="Add Products"
       modal
       footer={addProductDialogFooter}
       onHide={() => {
-        setAddProductDialog(false);
-        setSelectedProducts(null);
+        setAddProductDialog(false)
+        setSelectedProducts(null)
       }}
     >
       <DataTable
@@ -144,42 +144,42 @@ export const AddProductDialog = (props) => {
       >
         <Column
           selectionMode="multiple"
-          headerStyle={{ width: "3rem" }}
+          headerStyle={{ width: '3rem' }}
         ></Column>
         <Column
           field="product_name"
           header="Name"
           sortable
-          headerStyle={{ width: "150px" }}
+          headerStyle={{ width: '150px' }}
         ></Column>
         <Column
           field="current_price"
           header="Current Price"
           body={priceBodyTemplate}
           sortable
-          headerStyle={{ width: "150px" }}
+          headerStyle={{ width: '150px' }}
         ></Column>
         <Column
           field="stock_status"
           header="Stock Status"
           sortable
-          headerStyle={{ width: "150px" }}
+          headerStyle={{ width: '150px' }}
         ></Column>
       </DataTable>
     </Dialog>
-  );
-};
+  )
+}
 
 export const EditProductDialog = (props) => {
-  const { editProfitDialog, setEditProfitDialog, toEdit, editProfit } = props;
+  const { editProfitDialog, setEditProfitDialog, toEdit, editProfit } = props
 
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0)
 
   React.useEffect(() => {
     if (toEdit) {
-      setValue(toEdit.kol_profit);
+      setValue(toEdit.kol_profit)
     }
-  }, [toEdit]);
+  }, [toEdit])
 
   const editProductDialogFooter = (
     <React.Fragment>
@@ -194,26 +194,26 @@ export const EditProductDialog = (props) => {
         icon="pi pi-check"
         className="p-button-text"
         onClick={() => {
-          editProfit(value);
-          setEditProfitDialog(false);
+          editProfit(value)
+          setEditProfitDialog(false)
         }}
       />
     </React.Fragment>
-  );
+  )
 
   return (
     <Dialog
       visible={editProfitDialog}
-      style={{ width: "450px" }}
+      style={{ width: '450px' }}
       header="Confirm"
       modal
       footer={editProductDialogFooter}
       onHide={() => setEditProfitDialog(false)}
     >
-      <div className="confirmation-content" style={{ padding: "20px 0px" }}>
+      <div className="confirmation-content" style={{ padding: '20px 0px' }}>
         <i
           className="pi pi-exclamation-triangle p-mr-3"
-          style={{ fontSize: "2rem" }}
+          style={{ fontSize: '2rem' }}
         />
         <span>
           <InputNumber
@@ -226,5 +226,5 @@ export const EditProductDialog = (props) => {
         </span>
       </div>
     </Dialog>
-  );
-};
+  )
+}

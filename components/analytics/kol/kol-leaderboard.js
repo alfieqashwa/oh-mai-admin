@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import React, { Fragment } from 'react'
 import Link from 'next/link'
 import useSWR from 'swr'
 import { Menu, Transition } from '@headlessui/react'
@@ -17,6 +17,24 @@ export function KolLeaderboard() {
   if (!data) return <LoadingStatus />
 
   const { getAnalyticKolLeaderboard } = data
+
+  const ItemSold = ({ card }) => {
+    return (
+      <div className="w-40">
+        <p className="text-opacity-50 w400 text-N0">Item Sold</p>
+        <p className="w400 text-N0">{card.item_sold}</p>
+      </div>
+    )
+  }
+
+  const TotalOrder = ({ card }) => {
+    return (
+      <div className="w-40">
+        <p className="text-opacity-50 w400 text-N0">Total Orders</p>
+        <p className="w400 text-N0">{card.total_order}</p>
+      </div>
+    )
+  }
   return (
     <div className="grid grid-cols-3">
       {getAnalyticKolLeaderboard.map((card, i) => (
@@ -29,9 +47,8 @@ export function KolLeaderboard() {
             {({ open }) => (
               <>
                 <Menu.Button
-                  className={`absolute bg-transparent top-4 right-3 focus:outline-none ${
-                    open ? 'text-P400' : 'text-N0'
-                  }`}
+                  className={`absolute bg-transparent top-4 right-3 focus:outline-none ${open ? 'text-P400' : 'text-N0'
+                    }`}
                 >
                   <BsThreeDotsVertical className="w-6 h-6" />
                 </Menu.Button>
@@ -77,17 +94,7 @@ export function KolLeaderboard() {
           <h5 className="mt-5 text-opacity-50 w250 text-N0">{card.title}</h5>
           <h4 className="mt-3 capitalize w600 text-N0">{card.kol_name}</h4>
           <div className="flex justify-start mt-3 space-x-3">
-            {card.item_sold ? (
-              <div className="w-40">
-                <p className="text-opacity-50 w400 text-N0">Item Sold</p>
-                <p className="w400 text-N0">{card.item_sold}</p>
-              </div>
-            ) : (
-              <div className="w-40">
-                <p className="text-opacity-50 w400 text-N0">Total Orders</p>
-                <p className="w400 text-N0">{card.total_order}</p>
-              </div>
-            )}
+            {card.item_sold ? (<ItemSold card={card} />) : (<TotalOrder card={card} />)}
             <div className="w-40">
               <p className="text-opacity-50 w400 text-N0">Net Sales</p>
               <p className="w400 text-N0">${card.net_sales}</p>
