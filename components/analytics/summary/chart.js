@@ -15,9 +15,28 @@ import { format } from 'date-fns'
 import { AiOutlineBarChart, AiOutlineLineChart } from 'react-icons/ai'
 import { moneyFormat } from 'utils/money-format'
 import { GlassDefault } from 'components/glassDefault'
+import { GET_ORDER_SUMMARY_CHART } from 'graphql/order'
+import useFetch from 'hooks/useFetch'
+import { LoadingStatus } from 'components/loading-status'
+import { ErrorStatus } from 'components/error-status'
 
-export function ChartView({ data, setData }) {
+export function ChartView() {
   const [plan, setPlan] = useState('area')
+  const {
+    loading,
+    error,
+    data: dataOrderSummaryChart
+  } = useFetch(GET_ORDER_SUMMARY_CHART)
+
+  if (loading) {
+    return <LoadingStatus />
+  }
+  if (error) {
+    return <ErrorStatus message={error.message} />
+  }
+
+  const { getOrderSumaryChart: data } = dataOrderSummaryChart
+
   return (
     <>
       <div className="flex items-center justify-between px-6 py-4 mb-12 bg-N200">
@@ -98,20 +117,20 @@ export function ChartView({ data, setData }) {
       {/* <ChartBar/> */}
       {plan === 'bar' && (
         <section className="px-4">
-          <ChartBar data={data} setData={setData} />
+          <ChartBar data={data} />
         </section>
       )}
       {/* <ChartArea /> */}
       {plan === 'area' && (
         <section className="px-4">
-          <ChartArea data={data} setData={setData} />
+          <ChartArea data={data} />
         </section>
       )}
     </>
   )
 }
 
-function ChartArea({ data, setData }) {
+function ChartArea({ data }) {
   console.log(`DATAS: ${data?.[0]?.net_sales}`)
 
   console.log(`DATA-CHART: ${JSON.stringify(data, null, 2)}`)
@@ -167,7 +186,7 @@ function ChartArea({ data, setData }) {
   )
 }
 
-function ChartBar({ data, setData }) {
+function ChartBar({ data }) {
   return (
     <ResponsiveContainer width="100%" height={400}>
       <BarChart
