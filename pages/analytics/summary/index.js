@@ -13,7 +13,6 @@ import {
 } from 'components/analytics/summary'
 import { checkLogin } from 'utils/Auth'
 import useFetch from 'hooks/useFetch'
-// import { getClient } from 'lib/graphqlclient'
 import {
   GET_LEADERBOARD_PRODUCT,
   GET_LEADERBOARD_KOL,
@@ -25,91 +24,10 @@ export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
 
-  // const [leaderboardProduct, setLeaderboardProduct] = useState()
-  // const [leaderboardKol, setLeaderboardKol] = useState()
-  // const [leaderboardCustomer, setLeaderboardCustomer] = useState()
-
-  // const [getSummaryPerformance, setGetSummaryPerformance] = useState()
-  // const [getOrderSummaryChart, setGetOrderSummaryChart] = useState()
-  // const [getOrderSummaryTable, setGetOrderSummaryTable] = useState()
-
   useEffect(() => {
     console.log('Check login')
     checkLogin()
   }, [])
-
-  // const client = getClient()
-
-  // async function loadData() {
-  //   try {
-  //     // const resultProduct = await client.request(GET_LEADERBOARD_PRODUCT)
-  //     const resultKol = await client.request(GET_LEADERBOARD_KOL)
-  //     const resultCustomer = await client.request(GET_LEADERBOARD_CUSTOMER)
-
-  //     const resultGetSummaryPerformance = await client.request(
-  //       GET_SUMMARY_PERFORMANCE
-  //     )
-  //     const resultGetOrderSummaryChart = await client.request(
-  //       GET_ORDER_SUMMARY_CHART
-  //     )
-  //     const resultGetOrderSummaryTable = await client.request(
-  //       GET_ORDER_SUMMARY_TABLE
-  //     )
-
-  //     // setLeaderboardProduct(resultProduct.getLeaderBoardProduct)
-  //     setLeaderboardKol(resultKol.getLeaderBoardKol)
-  //     setLeaderboardCustomer(resultCustomer.getLeaderBoardCustomer)
-
-  //     setGetSummaryPerformance(resultGetSummaryPerformance.getSumaryPerformance)
-  //     setGetOrderSummaryChart(resultGetOrderSummaryChart.getOrderSumaryChart)
-  //     setGetOrderSummaryTable(resultGetOrderSummaryTable.getOrderSumaryTable)
-
-  //     // console.log(JSON.stringify(resultProduct, null, 2))
-  //     // console.log(JSON.stringify(resultKol, null, 2))
-  //     // console.log(JSON.stringify(resultCustomer, null, 2))
-  //     // console.log(JSON.stringify(resultGetSummaryPerformance, null, 2))
-  //   } catch (error) {
-  //     console.log(error.message)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   loadData()
-  // }, [])
-
-  // useEffect(() => {
-  //   // if (leaderboardProduct) {
-  //   //   console.log(`leaderboardProduct_title: ${leaderboardProduct?.title}`)
-  //   // }
-  //   if (leaderboardKol) {
-  //     console.log(`leaderboardKol_title: ${leaderboardKol?.title}`)
-  //   }
-  //   if (leaderboardCustomer) {
-  //     console.log(`leaderboardCustomer_title: ${leaderboardCustomer?.title}`)
-  //   }
-  //   if (getSummaryPerformance) {
-  //     console.log(
-  //       `getSummaryPerformance_first_title: ${getSummaryPerformance[0]?.title}`
-  //     )
-  //   }
-  //   if (getOrderSummaryChart) {
-  //     console.log(
-  //       `getOrderSummaryChart_datetime: ${getOrderSummaryChart[0]?.order_datetime}`
-  //     )
-  //   }
-  //   if (getOrderSummaryTable) {
-  //     console.log(
-  //       `getOrderSummaryTable_net_sales: ${getOrderSummaryTable[0]?.net_sales}`
-  //     )
-  //   }
-  // }, [
-  //   // leaderboardProduct,
-  //   leaderboardKol,
-  //   leaderboardCustomer,
-  //   getSummaryPerformance,
-  //   getOrderSummaryChart,
-  //   getOrderSummaryTable
-  // ])
 
   const {
     loading: loadingLeaderboardProduct,
@@ -163,7 +81,6 @@ export default function Summary() {
   const { getLeaderBoardKol } = dataLeaderboardKol
   const { getLeaderBoardCustomer } = dataLeaderboardCustomer
   const { getSumaryPerformance } = dataSummaryPerformance
-  console.log(getSumaryPerformance)
 
   return (
     <div className="pb-4">
@@ -243,27 +160,3 @@ const dates = [
   { name: 'Current Year (Jan 1 - Dec 31, 2021)' },
   { name: 'Previous Year (Jan 1 - Dec 31, 2020)' }
 ]
-
-// const leaderBoardCards = [
-//   {
-//     url: '/analytics/summary/best-selling-product',
-//     category: 'best selling product',
-//     product: 'Zelda: Breath of the Wild',
-//     totalOrdersValue: '291',
-//     netSalesValue: '18,000.00',
-//   },
-//   {
-//     url: '/analytics/summary/top-kol',
-//     category: 'top kol',
-//     product: 'Lice Wang',
-//     totalOrdersValue: '135',
-//     netSalesValue: '10,000.00',
-//   },
-//   {
-//     url: '/analytics/summary/top-customer',
-//     category: 'top customer',
-//     product: 'Fan Leng Leng',
-//     totalOrdersValue: '5',
-//     netSalesValue: '1,800.00',
-//   },
-// ]

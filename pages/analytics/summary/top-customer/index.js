@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -16,42 +16,14 @@ import {
 import { moneyFormat } from 'utils/money-format'
 
 import { checkLogin } from 'utils/Auth'
-// import { getClient } from 'lib/graphqlclient'
 import useFetch from 'hooks/useFetch'
 import { GET_LIST_TOP_SALES_ON_CUSTOMER } from 'graphql/order'
 
 export default function TopCustomer() {
-  // const [listTopSalesOnCustomer, setListTopSalesOnCustomer] = useState()
-
   useEffect(() => {
     console.log('Check login!')
     checkLogin()
   }, [])
-
-  // const client = getClient()
-
-  // async function loadData() {
-  //   try {
-  //     const result = await client.request(GET_LIST_TOP_SALES_ON_CUSTOMER)
-  //     setListTopSalesOnCustomer(result.getListTopSalesOnCustomer)
-
-  //     console.log(JSON.stringify(result.getListTopSalesOnCustomer, null, 2))
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   loadData()
-  // }, [])
-
-  // useEffect(() => {
-  //   if (listTopSalesOnCustomer) {
-  //     console.log(
-  //       `listTopSalesOnCustomer_ID: ${listTopSalesOnCustomer?.[0].customer_id}`
-  //     )
-  //   }
-  // }, [listTopSalesOnCustomer])
 
   const { loading, error, data } = useFetch(GET_LIST_TOP_SALES_ON_CUSTOMER)
 
@@ -69,13 +41,10 @@ export default function TopCustomer() {
           </button>
         </div>
       </GlassHeader>
-
       {/* Title */}
       <TitleWithBackButton path="/analytics/summary" title="top customer" />
-
       {/* Leaderboard Border */}
       <LeaderBoardBorder />
-
       {/* Table */}
       <div className="mt-8">
         <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
@@ -145,7 +114,6 @@ export default function TopCustomer() {
             </Menu>
           </div>
         </header>
-
         {/* Table Header */}
         <table className="md:min-w-full text-N0">
           <thead className="bg-N200 bg-opacity-30">
@@ -194,7 +162,6 @@ export default function TopCustomer() {
               </th>
             </tr>
           </thead>
-
           {/* Table Content */}
           <tbody className="bg-N700 text-N0">
             {data?.getListTopSalesOnCustomer?.map((t) => (
@@ -229,7 +196,6 @@ export default function TopCustomer() {
           </tbody>
         </table>
       </div>
-
       {/* Pagination */}
       <PaginationSummary />
     </div>

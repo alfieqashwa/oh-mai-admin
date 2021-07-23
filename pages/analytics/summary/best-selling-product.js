@@ -15,41 +15,16 @@ import {
 import { moneyFormat } from 'utils/money-format'
 
 import { checkLogin } from 'utils/Auth'
-// import { getClient } from 'lib/graphqlclient'
 import useFetch from 'hooks/useFetch'
 import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/order'
 
 export default function BestSellingProduct() {
-  // const [listTopSalesProduct, setListTopSalesProduct] = useState()
   const [status, _setStatus] = useState('inactive')
 
   useEffect(() => {
     console.log('Check login')
     checkLogin()
   }, [])
-
-  // const client = getClient()
-
-  // async function loadData() {
-  //   try {
-  //     const result = await client.request(GET_LIST_TOP_SALES_PRODUCT)
-  //     setListTopSalesProduct(result.getListTopSalesProduct)
-
-  //     console.log(JSON.stringify(result.getListTopSalesProduct, null, 2))
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   loadData()
-  // }, [])
-
-  // useEffect(() => {
-  //   if (listTopSalesProduct) {
-  //     console.log(`listTopSalesProduct_SKU: ${listTopSalesProduct?.[0].sku}`)
-  //   }
-  // }, [listTopSalesProduct])
 
   const { loading, error, data } = useFetch(GET_LIST_TOP_SALES_PRODUCT)
 
