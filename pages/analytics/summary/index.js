@@ -23,6 +23,7 @@ import {
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
+  const [selectedCard, setSelectedCard] = useState()
 
   useEffect(() => {
     console.log('Check login')
@@ -144,10 +145,14 @@ export default function Summary() {
         <PerformanceBorder />
 
         {/* Performance's Cards */}
-        <PerformanceCard data={getSumaryPerformance} />
+        <PerformanceCard
+          data={getSumaryPerformance}
+          selected={selectedCard}
+          setSelected={setSelectedCard}
+        />
 
         {/* Chart View */}
-        <ChartView />
+        <ChartView selected={selectedCard} />
 
         {/* Table View */}
         <TableSummary />

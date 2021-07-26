@@ -82,8 +82,8 @@ export const PerformanceBorder = () => {
   )
 }
 
-export const PerformanceCard = ({ data: cards }) => {
-  const [selected, setSelected] = useState()
+export const PerformanceCard = ({ data: cards, selected, setSelected }) => {
+  // const [selected, setSelected] = useState()
   // const [cards, setCards] = useState([])
 
   async function loadData() {
@@ -137,7 +137,7 @@ export const PerformanceCard = ({ data: cards }) => {
                     checked ? 'text-N800' : 'text-N0'
                   }`}
                 >
-                  {console.log(c)} {c.title}
+                  {c.title}
                 </h5>
                 <div className="mt-3">
                   <h3 className={`w700 ${checked ? 'text-N800' : 'text-N0'}`}>

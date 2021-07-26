@@ -20,7 +20,7 @@ import useFetch from 'hooks/useFetch'
 import { LoadingStatus } from 'components/loading-status'
 import { ErrorStatus } from 'components/error-status'
 
-export function ChartView() {
+export function ChartView({ selected }) {
   const [plan, setPlan] = useState('area')
   const {
     loading,
@@ -51,7 +51,11 @@ export function ChartView() {
             <p className="text-black w350">
               Current Year (Jan 1 - Dec 31, 2021)
             </p>
-            <h5 className="text-black w250-m">$10.00</h5>
+            <h5 className="text-black w250-m">
+              {selected?.type === 'currency'
+                ? moneyFormat.format(selected?.performance)
+                : selected?.performance}
+            </h5>
           </div>
         </div>
         <div className="flex items-center justify-start space-x-3">
@@ -64,7 +68,11 @@ export function ChartView() {
             <p className="text-black w350">
               Previous Year (Jan 1 - Dec 31, 2021)
             </p>
-            <h5 className="text-black w250-m">$0.00</h5>
+            <h5 className="text-black w250-m">
+              {selected?.type === 'currency'
+                ? moneyFormat.format(selected?.performance_last_year)
+                : selected?.performance_last_year}
+            </h5>
           </div>
         </div>
         <div className="flex items-center justify-between space-x-1">
@@ -131,9 +139,9 @@ export function ChartView() {
 }
 
 function ChartArea({ data }) {
-  console.log(`DATAS: ${data?.[0]?.net_sales}`)
+  // console.log(`DATAS: ${data?.[0]?.net_sales}`)
 
-  console.log(`DATA-CHART: ${JSON.stringify(data, null, 2)}`)
+  // console.log(`DATA-CHART: ${JSON.stringify(data, null, 2)}`)
   return (
     <ResponsiveContainer width="100%" height={400}>
       <AreaChart
