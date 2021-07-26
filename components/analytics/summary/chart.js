@@ -305,12 +305,17 @@ function Select({ dateRange, setDateRange }) {
       {({ open }) => (
         <div className="relative px-4">
           <Listbox.Button className="flex items-center justify-between w-full h-10 text-left capitalize bg-transparent border-transparent rounded shadow-md w400 focus:ring-2 focus:ring-P900 focus:ring-offset-p900 focus:outline-none focus-visible:ring-offset-2 sm:text-sm">
-            <p className="block pl-2 pr-4 text-base truncate text-N600">
+            <span className="block pl-2 pr-4 text-base truncate text-N600">
               {dateRange.name}
-            </p>
-            <ChevronDownIcon
-              className={`w-5 h-5  ${open && 'transform rotate-180 text-P700'}`}
-            />
+            </span>
+            <span className="pr-2">
+              <ChevronDownIcon
+                className={`w-5 h-5  ${
+                  open && 'transform rotate-180 text-P700'
+                }`}
+                aria-hidden="true"
+              />
+            </span>
           </Listbox.Button>
           <Transition
             show={open}

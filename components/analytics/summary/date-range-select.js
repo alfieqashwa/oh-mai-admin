@@ -20,7 +20,9 @@ export function DateRangeSelect({
                   <span className="block truncate">{selectedCurrent.name}</span>
                   <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                     <ChevronDownIcon
-                      className="w-6 h-6 text-gray-400"
+                      className={`w-6 h-6 text-gray-400 ${
+                        open && 'transform rotate-180 text-P700'
+                      }`}
                       aria-hidden="true"
                     />
                   </span>
@@ -88,7 +90,9 @@ export function DateRangeSelect({
                   </span>
                   <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                     <ChevronDownIcon
-                      className="w-6 h-6 text-gray-400"
+                      className={`w-6 h-6 text-gray-400 ${
+                        open && 'transform rotate-180 text-P700'
+                      }`}
                       aria-hidden="true"
                     />
                   </span>
