@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { RadioGroup } from '@headlessui/react'
+import React, { useState, Fragment } from 'react'
+import { Listbox, RadioGroup, Transition } from '@headlessui/react'
 import {
   ResponsiveContainer,
   AreaChart,
@@ -13,11 +13,12 @@ import {
 } from 'recharts'
 import { format, parseISO, subDays } from 'date-fns'
 import { AiOutlineBarChart, AiOutlineLineChart } from 'react-icons/ai'
-
+import { ChevronDownIcon } from '@heroicons/react/outline'
 import { moneyFormat } from 'utils/money-format'
 import { GlassDefault } from 'components/glassDefault'
 
 export function ChartView() {
+  const [dateRange, setDateRange] = useState(rangeDate[1])
   const [plan, setPlan] = useState('area')
   return (
     <>
@@ -50,23 +51,14 @@ export function ChartView() {
           </div>
         </div>
         <div className="flex items-center justify-between space-x-1">
-          <div>
-            <select
-              name="date-range"
-              className="bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-P700 focus:outline-none"
-            >
-              <option>By day</option>
-              <option>By month</option>
-            </select>
-          </div>
-
+          <Select dateRange={dateRange} setDateRange={setDateRange} />
           <RadioGroup value={plan} onChange={setPlan}>
             <div className="flex items-center justify-between space-x-4">
               <RadioGroup.Option value="bar">
                 {({ checked, active }) => (
                   <button
                     type="button"
-                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
+                    className={`px-2 transition shadow-lg duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
                       ${
                         checked
                           ? 'shadow-inner border-N250 border-t border-l'
@@ -81,7 +73,7 @@ export function ChartView() {
                 {({ checked, active }) => (
                   <button
                     type="button"
-                    className={`px-2 transition duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
+                    className={`px-2 transition shadow-lg duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
                        ${
                          checked
                            ? 'shadow-inner border-N250 border-t border-l'
@@ -251,4 +243,57 @@ function CustomTooltip({ active, payload, label }) {
     )
   }
   return null
+}
+
+const rangeDate = [
+  { id: 1, name: 'By Day' },
+  { id: 2, name: 'By Month' }
+]
+function Select({ dateRange, setDateRange }) {
+  return (
+    <Listbox value={dateRange} onChange={setDateRange}>
+      {({ open }) => (
+        <div className="relative px-4">
+          <Listbox.Button className="flex items-center justify-between w-full h-10 text-left capitalize bg-transparent border-transparent rounded shadow-md w400 focus:ring-2 focus:ring-P900 focus:ring-offset-p900 focus:outline-none focus-visible:ring-offset-2 sm:text-sm">
+            <span className="block pl-2 pr-4 text-base truncate text-N600">
+              {dateRange.name}
+            </span>
+            <span className="pr-2">
+              <ChevronDownIcon
+                className={`w-5 h-5  ${
+                  open && 'transform rotate-180 text-P700'
+                }`}
+                aria-hidden="true"
+              />
+            </span>
+          </Listbox.Button>
+          <Transition
+            show={open}
+            as={Fragment}
+            leave="transition ease-in duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <Listbox.Options
+              static
+              className="absolute z-10 w-full py-2 mt-1 space-y-1 overflow-auto rounded-md shadow-lg whitespace-nowrap text-N0 max-h-60 bg-N600 ring-1 ring-P900 ring-opacity-5 focus:outline-none sm:text-sm"
+            >
+              {rangeDate.map((range) => (
+                <Listbox.Option
+                  key={range.id}
+                  value={range}
+                  className={({ active }) =>
+                    `${active ? 'bg-P900' : ''}
+                    cursor-default select-none relative pl-2.5`
+                  }
+                >
+                  {range.name}
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </Transition>
+        </div>
+      )}
+    </Listbox>
+  )
 }
