@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
@@ -6,47 +6,30 @@ import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { Header } from 'components/header'
 import { GlassHeader } from 'components/glassHeader'
 import { TitleWithBackButton } from 'components/titleWithBackButton'
+import { LoadingStatus } from 'components/loading-status'
+import { ErrorStatus } from 'components/error-status'
 import {
   LeaderBoardBorder,
-  PaginationSummary,
+  PaginationSummary
 } from 'components/analytics/summary'
 import { moneyFormat } from 'utils/money-format'
 
 import { checkLogin } from 'utils/Auth'
-import { getClient } from 'lib/graphqlclient'
+import useFetch from 'hooks/useFetch'
 import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/order'
 
 export default function BestSellingProduct() {
-  const [listTopSalesProduct, setListTopSalesProduct] = useState()
-  const [status, setStatus] = useState('inactive')
+  const [status, _setStatus] = useState('inactive')
 
   useEffect(() => {
     console.log('Check login')
     checkLogin()
   }, [])
 
-  const client = getClient()
+  const { loading, error, data } = useFetch(GET_LIST_TOP_SALES_PRODUCT)
 
-  async function loadData() {
-    try {
-      const result = await client.request(GET_LIST_TOP_SALES_PRODUCT)
-      setListTopSalesProduct(result.getListTopSalesProduct)
-
-      console.log(JSON.stringify(result.getListTopSalesProduct, null, 2))
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    loadData()
-  }, [])
-
-  useEffect(() => {
-    if (listTopSalesProduct) {
-      console.log(`listTopSalesProduct_SKU: ${listTopSalesProduct?.[0].sku}`)
-    }
-  }, [listTopSalesProduct])
+  if (loading) return <LoadingStatus />
+  if (error) return <ErrorStatus message={error} />
 
   return (
     <div className="pr-12 pl-7">
@@ -196,7 +179,7 @@ export default function BestSellingProduct() {
 
           {/* Table Content */}
           <tbody className="bg-N700 text-N0">
-            {listTopSalesProduct?.map((t, i) => (
+            {data?.getListTopSalesProduct?.map((t, i) => (
               <tr key={i}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">
                   {t.sn}
@@ -248,7 +231,7 @@ const tableBody = [
     netSales: 1000.0,
     orders: 10,
     category: 'Games',
-    status: 'Active',
+    status: 'Active'
   },
   {
     id: 2,
@@ -259,7 +242,7 @@ const tableBody = [
     netSales: 400.0,
     orders: 10,
     category: 'Games',
-    status: 'Active',
+    status: 'Active'
   },
   {
     id: 3,
@@ -270,7 +253,7 @@ const tableBody = [
     netSales: 200.0,
     orders: 1,
     category: 'Games Accessories',
-    status: 'Active',
+    status: 'Active'
   },
   {
     id: 4,
@@ -281,6 +264,6 @@ const tableBody = [
     netSales: 0.0,
     orders: 1,
     category: 'Games',
-    status: 'Inactive',
-  },
+    status: 'Inactive'
+  }
 ]

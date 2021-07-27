@@ -1,6 +1,5 @@
-import { useState, useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import Link from 'next/link'
-// import useSWR from 'swr'
 import { Menu, Transition } from '@headlessui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
@@ -8,54 +7,32 @@ import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { GlassHeader } from 'components/glassHeader'
 import { Header } from 'components/header'
 import { TitleWithBackButton } from 'components/titleWithBackButton'
-// import { ErrorStatus } from 'components/error-status'
-// import { LoadingStatus } from 'components/loading-status'
+import { LoadingStatus } from 'components/loading-status'
+import { ErrorStatus } from 'components/error-status'
 import {
   LeaderBoardBorder,
-  PaginationSummary,
+  PaginationSummary
 } from 'components/analytics/summary'
 import { moneyFormat } from 'utils/money-format'
 
 import { checkLogin } from 'utils/Auth'
-import { getClient } from 'lib/graphqlclient'
+import useFetch from 'hooks/useFetch'
 import { GET_LIST_TOP_SALES_ON_KOL } from 'graphql/order'
 
-// const fetcher = url => fetch(url).then(res => res.json())
-
 export default function TopKOL() {
-  const [listTopSalesOnKol, setListTopSalesOnKol] = useState()
-  // const { error, data } = useSWR('/api/analytics/summary/top-kol', fetcher)
-
-  // if (error) return <ErrorStatus message={error.message} />
-  // if (!data) return <LoadingStatus />
-
   useEffect(() => {
     console.log('check login!')
     checkLogin()
   }, [])
 
-  const client = getClient()
+  const { loading, error, data } = useFetch(GET_LIST_TOP_SALES_ON_KOL)
 
-  async function loadData() {
-    try {
-      const result = await client.request(GET_LIST_TOP_SALES_ON_KOL)
-      setListTopSalesOnKol(result.getListTopSalesOnKol)
-
-      console.log(JSON.stringify(result.getListTopSalesOnKol, null, 2))
-    } catch (error) {
-      console.log(error)
-    }
+  if (loading) {
+    return <LoadingStatus />
   }
-
-  useEffect(() => {
-    loadData()
-  }, [])
-
-  useEffect(() => {
-    if (listTopSalesOnKol) {
-      console.log(`listTopSalesOnKol_ID: ${listTopSalesOnKol?.[0].kol_id}`)
-    }
-  }, [listTopSalesOnKol])
+  if (error) {
+    return <ErrorStatus message={error.message} />
+  }
 
   return (
     <div className="pr-12 pl-7">
@@ -190,7 +167,7 @@ export default function TopKOL() {
 
           {/* Table Content */}
           <tbody className="bg-N700 text-N0">
-            {listTopSalesOnKol?.map((t) => (
+            {data?.getListTopSalesOnKol?.map((t) => (
               <tr key={t.kol_id}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">
                   {t.sn}

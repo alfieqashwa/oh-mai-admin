@@ -2,10 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { RadioGroup, Menu, Transition } from '@headlessui/react'
 import { PlusCircleIcon } from '@heroicons/react/solid'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import {
-  FiDollarSign,
-  FiDownloadCloud
-} from 'react-icons/fi'
+import { FiDollarSign, FiDownloadCloud } from 'react-icons/fi'
 
 import { AddCategoryModal } from './modal'
 import { moneyFormat } from 'utils/money-format'
@@ -23,8 +20,9 @@ export const PerformanceBorder = () => {
         {({ open }) => (
           <>
             <Menu.Button
-              className={`bg-transparent focus:outline-none ${open ? 'text-P400' : 'text-N0'
-                }`}
+              className={`bg-transparent focus:outline-none ${
+                open ? 'text-P400' : 'text-N0'
+              }`}
             >
               <BsThreeDotsVertical className="w-6 h-6" />
             </Menu.Button>
@@ -41,9 +39,10 @@ export const PerformanceBorder = () => {
               <Menu.Items
                 static
                 className={`
-                  ${!open
-                    ? 'motion-safe:animate-bounce transition duration-200 ease-in-out'
-                    : ''
+                  ${
+                    !open
+                      ? 'motion-safe:animate-bounce transition duration-200 ease-in-out'
+                      : ''
                   }
                   absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
                 `}
@@ -83,14 +82,13 @@ export const PerformanceBorder = () => {
   )
 }
 
-export const PerformanceCard = ({ data, setData }) => {
-  const [selected, setSelected] = useState()
-  const [cards, setCards] = useState([])
-  // console.log(`DATA: ${data?.[0]?.title}`)
+export const PerformanceCard = ({ data: cards, selected, setSelected }) => {
+  // const [selected, setSelected] = useState()
+  // const [cards, setCards] = useState([])
 
   async function loadData() {
     try {
-      const result = await data[0]
+      const result = await cards[0]
       setSelected(result)
       // console.log(`RESULT: ${JSON.stringify(result, null, 2)}`)
       // console.log(`SELECTED: ${JSON.stringify(selected, null, 2)}`)
@@ -103,12 +101,12 @@ export const PerformanceCard = ({ data, setData }) => {
     loadData()
   }, [])
 
-  useEffect(() => {
-    if (Array.isArray(data)) {
-      const arr = data.concat(performanceCards)
-      setCards(arr)
-    }
-  }, [data])
+  // useEffect(() => {
+  //   if (Array.isArray(data)) {
+  //     const arr = data.concat(performanceCards)
+  //     setCards(arr)
+  //   }
+  // }, [data])
 
   return (
     <RadioGroup
@@ -124,24 +122,28 @@ export const PerformanceCard = ({ data, setData }) => {
             value={c}
             className={({ active, checked }) =>
               `${active ? 'ring-1 ring-offset-P900' : ''}
-              ${checked
-                ? 'bg-N0 bg-opacity-80 border-t-4 border-P700'
-                : 'bg-[#E0E0F24D] bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]'
+              ${
+                checked
+                  ? 'bg-N0 bg-opacity-80 border-t-4 border-P700'
+                  : 'bg-[#E0E0F24D] bg-opacity-30 border-[1px] border-opacity-60 border-[#A0A0AD99]'
               }
               relative px-5 cursor-pointer`
             }
           >
-            {({ active, checked }) => (
+            {({ checked }) => (
               <>
                 <h5
-                  className={`mt-5 text-opacity-50 w250 ${checked ? 'text-N800' : 'text-N0'
-                    }`}
+                  className={`mt-5 text-opacity-50 w250 ${
+                    checked ? 'text-N800' : 'text-N0'
+                  }`}
                 >
-                  {console.log(c)} {c.title}
+                  {c.title}
                 </h5>
                 <div className="mt-3">
                   <h3 className={`w700 ${checked ? 'text-N800' : 'text-N0'}`}>
-                    {c.type === 'currency' ? moneyFormat.format(c.performance) : c.performance}
+                    {c.type === 'currency'
+                      ? moneyFormat.format(c.performance)
+                      : c.performance}
                   </h3>
                   <div className="flex items-center space-x-1">
                     {/* temporary logic */}
@@ -150,13 +152,16 @@ export const PerformanceCard = ({ data, setData }) => {
                 </div>
                 <div className="my-4">
                   <p
-                    className={`text-opacity-50 w400 ${checked ? 'text-N800' : 'text-N0'
-                      }`}
+                    className={`text-opacity-50 w400 ${
+                      checked ? 'text-N800' : 'text-N0'
+                    }`}
                   >
                     Previous Year
                   </p>
                   <p className={`w400 ${checked ? 'text-N800' : 'text-N0'}`}>
-                    {c.type === 'currency' ? moneyFormat.format(c.performance_last_year) : c.performance_last_year }
+                    {c.type === 'currency'
+                      ? moneyFormat.format(c.performance_last_year)
+                      : c.performance_last_year}
                   </p>
                 </div>
               </>
@@ -168,5 +173,4 @@ export const PerformanceCard = ({ data, setData }) => {
   )
 }
 
-const performanceCards = [
-]
+// const performanceCards = []
