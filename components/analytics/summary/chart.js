@@ -157,25 +157,28 @@ function ChartArea({ data, dateRange }) {
         {dateRange?.id === 1 ? (
           <XAxis
             dataKey="order_datetime"
-            tickMargin={10}
+            tickMargin={15}
             axisLine={false}
             tickLine={false}
             tickCount={12}
             reversed={true}
+            tick={{ fontSize: 14 }}
+            stroke="#FFFFFF"
             tickFormatter={(str) => {
               const date = new Date(str)
-              return format(date, 'd MMM')
+              return format(date, 'd MMM yyyy')
             }}
           />
         ) : (
           <XAxis
             dataKey="order_datetime"
-            tickMargin={10}
+            tickMargin={15}
             axisLine={false}
             tickLine={false}
             tickCount={12}
             reversed={true}
             interval={30}
+            stroke="#FFFFFF"
             tickFormatter={(str) => {
               const date = new Date(str)
               return format(date, 'MMM')
@@ -188,7 +191,7 @@ function ChartArea({ data, dateRange }) {
           axisLine={false}
           tickLine={false}
           tickCount={8}
-          // tickFormatter={(number) => moneyFormat.format(number)}
+          stroke="#FFFFFF"
         />
 
         <Tooltip content={<CustomTooltip />} />
@@ -215,24 +218,27 @@ function ChartBar({ data, dateRange }) {
       >
         {dateRange?.id === 1 ? (
           <XAxis
-            tickMargin={10}
+            tickMargin={15}
             dataKey="order_datetime"
             axisLine={false}
             tickLine={false}
             reversed={true}
+            tick={{ fontSize: 14 }}
+            stroke="#FFFFFF"
             tickFormatter={(str) => {
               const date = new Date(str)
-              return format(date, 'MMM d')
+              return format(date, 'd MMM yyyy')
             }}
           />
         ) : (
           <XAxis
-            tickMargin={10}
+            tickMargin={15}
             dataKey="order_datetime"
             axisLine={false}
             tickLine={false}
-            interval={30}
             reversed={true}
+            interval={30}
+            stroke="#FFFFFF"
             tickFormatter={(str) => {
               const date = new Date(str)
               return format(date, 'MMM')
@@ -244,7 +250,7 @@ function ChartBar({ data, dateRange }) {
           axisLine={false}
           tickLine={false}
           tickCount={8}
-          // tickFormatter={(number) => `$${number.toFixed(2)}`}
+          stroke="#FFFFFF"
         />
 
         <Tooltip content={<CustomTooltip />} />
