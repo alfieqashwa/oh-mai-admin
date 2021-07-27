@@ -143,6 +143,7 @@ function ChartArea() {
           tickLine={false}
           tickCount={12}
           interval={30}
+          stroke="#FFFFFF"
           // reversed={true}
           tickFormatter={(str) => {
             const date = parseISO(str)
@@ -158,6 +159,7 @@ function ChartArea() {
           axisLine={false}
           tickLine={false}
           tickCount={8}
+          stroke="#FFFFFF"
           // tickFormatter={(number) => `$${number.toFixed(2)}`}
         />
 
@@ -189,6 +191,7 @@ function ChartBar() {
           axisLine={false}
           tickLine={false}
           interval={30}
+          stroke="#FFFFFF"
           // reversed={true}
           tickFormatter={(str) => {
             const date = parseISO(str)
@@ -203,6 +206,7 @@ function ChartBar() {
           axisLine={false}
           tickLine={false}
           tickCount={8}
+          stroke="#FFFFFF"
           // tickFormatter={(number) => `$${number.toFixed(2)}`}
         />
         <Tooltip content={<CustomTooltip />} />
