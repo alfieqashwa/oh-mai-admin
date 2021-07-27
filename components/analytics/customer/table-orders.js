@@ -1,18 +1,55 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import moment from 'moment'
-
 import { SwitchOnOff } from './switch-on-off'
 import { moneyFormat } from 'utils/money-format'
 
-export function TableOrders({ data }) {
-  // eslint-disable-next-line no-unused-vars
-  const [status, setStatus] = React.useState(false)
+export function TableOrders({ data, setSelectedCustomer }) {
+  const [dataTable, setDataTable] = React.useState([])
 
-  // console.log(data)
+  useEffect(() => {
+    if (Array.isArray(data)) {
+      const tmpArr = []
+
+      data.forEach((item, index) => {
+        if (index === 0) {
+          item.status = true
+        } else {
+          item.status = false
+        }
+
+        tmpArr.push(item)
+      })
+
+      setDataTable(tmpArr)
+    }
+  }, [])
+
+  const updateArray = (customerId, status) => {
+    const updatedArr = dataTable.map((item, index) => {
+      if (item.customer_id === customerId) {
+        item.status = status
+      } else {
+        item.status = false
+      }
+
+      return item
+    })
+
+    setDataTable(updatedArr)
+  }
+
+  useEffect(() => {
+    dataTable?.forEach(item => {
+      if (item.status === true) {
+        setSelectedCustomer(item)
+      }
+    })
+  }, [dataTable])
+
   return (
     <div className="mt-8">
       <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
@@ -131,7 +168,7 @@ export function TableOrders({ data }) {
 
         {/* Table Content */}
         <tbody className="bg-N700 text-N0">
-          {data.map((t) => (
+          {dataTable.map((t) => (
             <tr key={t.customer_id} className="">
               <td className="px-2 py-8 text-center bg-N600 w400">{t.sn}</td>
               <td className="px-4 py-8 text-left underline capitalize w400">
@@ -150,7 +187,7 @@ export function TableOrders({ data }) {
                 {moneyFormat.format(t.net_sales)}
               </td>
               <td className="px-4 py-8 text-center w400">
-                <SwitchOnOff isEnabled={status} />
+                <SwitchOnOff isEnabled={t.status} updateArray={updateArray} customerId={t.customer_id} />
               </td>
             </tr>
           ))}
