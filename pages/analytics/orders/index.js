@@ -39,14 +39,17 @@ export default function Orders() {
     data: dataOrderListSummaryTable
   } = useFetch(GET_ORDER_LIST_SUMMARY_TABLE)
 
-  if (loadingOrderPerformance || loadingOrderListSummaryTable)
+  if (loadingOrderPerformance || loadingOrderListSummaryTable) {
     return <LoadingStatus />
-  if (errorOrderPerformance || errorOrderListSummaryTable)
+  }
+
+  if (errorOrderPerformance || errorOrderListSummaryTable) {
     return (
       <ErrorStatus
         message={errorOrderPerformance || errorOrderListSummaryTable}
       />
     )
+  }
 
   const { getOrderPerformance } = dataOrderPerformance
   const { getOrderListSumaryTable } = dataOrderListSummaryTable
