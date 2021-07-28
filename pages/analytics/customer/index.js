@@ -18,10 +18,15 @@ import { ErrorStatus } from 'components/error-status'
 export default function Customer() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
+  const [selectedCustomer, setSelectedCustomer] = useState()
 
   useEffect(() => {
     checkLogin()
   }, [])
+
+  useEffect(() => {
+    console.log('selectedCustomer', selectedCustomer)
+  }, [selectedCustomer])
 
   const { loading, error, data } = useFetch(GET_ANALYTIC_CUSTOMER_TABLE)
 
@@ -50,7 +55,7 @@ export default function Customer() {
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
         {/* table */}
-        <TableOrders data={getAnalyticCustomerTable} />
+        <TableOrders data={getAnalyticCustomerTable} setSelectedCustomer={setSelectedCustomer} />
         {/* pagination */}
         <Pagination />
         {/* customer_performance-border */}
@@ -62,7 +67,7 @@ export default function Customer() {
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
         {/* performance-cards */}
-        <OrderPerformanceCard />
+        <OrderPerformanceCard selectedCustomer={selectedCustomer}/>
         {/* chart */}
         <ChartView />
       </div>
