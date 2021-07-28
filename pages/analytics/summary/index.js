@@ -4,7 +4,7 @@ import { Header } from 'components/header'
 import { LoadingStatus } from 'components/loading-status'
 import { ErrorStatus } from 'components/error-status'
 import {
-  ChartView,
+  Chart,
   DateRangeSelect,
   LeaderboardCardType,
   PerformanceBorder,
@@ -152,7 +152,7 @@ export default function Summary() {
         />
 
         {/* Chart View */}
-        <ChartView selected={selectedCard} />
+        <Chart selected={selectedCard} />
 
         {/* Table View */}
         <TableSummary />
