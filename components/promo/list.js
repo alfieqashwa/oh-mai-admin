@@ -53,7 +53,7 @@ export function PromoList({ filter, page }) {
 
   const doDeleteData = async () => {
     // put loader dialog while waiting
-    const { strResult, isSuccess } = await deleteOrders({ order_number: selectedDeleteOrder })
+    const { strResult, isSuccess } = await deleteOrders({ orderNumber: selectedDeleteOrder })
     alert(strResult)
 
     if (isSuccess) {

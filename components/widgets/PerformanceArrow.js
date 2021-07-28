@@ -25,7 +25,7 @@ export const ArrowDownRight = ({ item }) => {
     <>
       <FiArrowDownRight className="w-5 h-5 text-R600" />
       <h5 className="w250 text-R600">
-        {item.precentage_change}%
+        {item.precentage_change !== 'N/A' ? Number.parseFloat(item.precentage_change).toFixed(2) + '%' : item.precentage_change}
       </h5>
     </>
   )
@@ -36,7 +36,7 @@ export const ArrowUpRight = ({ item }) => {
     <>
       <FiArrowUpRight className="w-5 h-5 text-G400" />
       <h5 className="w250 text-G400">
-        {item.precentage_change}%
+        {item.precentage_change !== 'N/A' ? Number.parseFloat(item.precentage_change).toFixed(2) + '%' : item.precentage_change}
       </h5>
     </>
   )
