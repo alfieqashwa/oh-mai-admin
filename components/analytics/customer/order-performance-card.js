@@ -40,15 +40,26 @@ export const OrderPerformanceCard = (props) => {
   }, [])
 
   useEffect(async () => {
-    console.log('>OrderPerformanceCard/[props.selectedCustomer]/props.customerId', props?.selectedCustomer?.customer_id)
+    console.log('>OrderPerformanceCard/[props.selectedCustomer]/props', props)
     if (props.selectedCustomer) {
       const customerId = props.selectedCustomer.customer_id
 
-      const result = await loadPerformanceAnalyticCustomer({ startDate: null, endDate: null, customerId: customerId })
+      const result = await loadPerformanceAnalyticCustomer({ startDate: props.startDate, endDate: props.endDate, customerId: customerId })
       console.log('OrderPerformanceCard', result.data)
       setPerformances(result.data)
     }
-  }, [props.selectedCustomer])
+  }, [props])
+
+  // useEffect(async () => {
+  //   console.log('>OrderPerformanceCard/[props.selectedCustomer]/props.customerId', props?.selectedCustomer?.customer_id)
+  //   if (props.selectedCustomer) {
+  //     const customerId = props.selectedCustomer.customer_id
+
+  //     const result = await loadPerformanceAnalyticCustomer({ startDate: props.startDate || null, endDate: props.endDate || null, customerId: customerId })
+  //     console.log('OrderPerformanceCard', result.data)
+  //     setPerformances(result.data)
+  //   }
+  // }, [props.selectedCustomer])
 
   return (
     <RadioGroup className="grid grid-cols-3" value={selected} onChange={setSelected}>
