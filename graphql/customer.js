@@ -3,8 +3,8 @@ import { gql } from 'graphql-request'
 // new schema # http://localhost:3004/analytics/customer
 
 export const GET_ANALYTIC_CUSTOMER_TABLE = gql`
-  query GetAnalyticCustomerTable($startDate: String, $endDate: String) {
-    getAnalyticCustomerTable(startDate: $startDate, endDate: $endDate) {
+  query GetAnalyticCustomerTable($startDate: String, $endDate: String, $mode: String) {
+    getAnalyticCustomerTable(startDate: $startDate, endDate: $endDate, mode: $mode) {
       sn
       customer_id
       customer_name

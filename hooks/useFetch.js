@@ -28,3 +28,31 @@ export default function useFetch(query) {
 
   return { loading, error, data }
 }
+
+export function useFetchWithParams(query, params) {
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  const client = getClient()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true)
+
+      try {
+        const res = await client.request(query, params)
+
+        setData(res)
+        setLoading(false)
+      } catch (error) {
+        setError(error)
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [query])
+
+  return { loading, error, data }
+}
