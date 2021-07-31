@@ -43,11 +43,26 @@ export function TableOrders({ data, setSelectedCustomer, keywordChange, sortingC
   }
 
   useEffect(() => {
+    let i = 0
+    let isHaseSelection = false
+
     dataTable?.forEach(item => {
+      i++
+
       if (item.status === true) {
         setSelectedCustomer(item)
+        isHaseSelection = true
+        console.log('selected customer: true - ' + i)
+      } else {
+        console.log('selected customer: false - ' + i)
       }
     })
+
+    console.log('selected customer: is isHaseSelection - ' + isHaseSelection)
+
+    if (isHaseSelection === false) {
+      setSelectedCustomer(null)
+    }
   }, [dataTable])
 
   const _keywordChange = (e) => {

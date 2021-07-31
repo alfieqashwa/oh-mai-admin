@@ -48,6 +48,7 @@ export default function Customer() {
 
   useEffect(() => {
     console.log('selectedCustomer', selectedCustomer)
+    console.log('selected customer: current - ' + JSON.stringify(selectedCustomer))
   }, [selectedCustomer])
 
   useEffect(async () => {

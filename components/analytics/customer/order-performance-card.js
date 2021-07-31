@@ -47,6 +47,8 @@ export const OrderPerformanceCard = (props) => {
       const result = await loadPerformanceAnalyticCustomer({ startDate: props.startDate, endDate: props.endDate, customerId: customerId })
       console.log('OrderPerformanceCard', result.data)
       setPerformances(result.data)
+    } else {
+      setPerformances([])
     }
   }, [props])
 
