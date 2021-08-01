@@ -2,8 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 
 import { Header } from 'components/header'
-import { DateRangeSelect, OrderPerformanceCard, ChartView, TableOrders } from 'components/analytics/orders'
+import {
+  DateRangeSelect,
+  OrderPerformanceCard,
+  ChartView,
+  TableOrders
+} from 'components/analytics/orders'
 import { checkLogin } from 'utils/Auth'
+import useFetch from 'hooks/useFetch'
+
+import {
+  GET_ORDER_PERFORMANCE,
+  GET_ORDER_LIST_SUMMARY_TABLE
+} from 'graphql/order'
+import { LoadingStatus } from 'components/loading-status'
+import { ErrorStatus } from 'components/error-status'
 
 export default function Orders() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
@@ -13,6 +26,33 @@ export default function Orders() {
     console.log('Check login')
     checkLogin()
   }, [])
+
+  const {
+    loading: loadingOrderPerformance,
+    error: errorOrderPerformance,
+    data: dataOrderPerformance
+  } = useFetch(GET_ORDER_PERFORMANCE)
+
+  const {
+    loading: loadingOrderListSummaryTable,
+    error: errorOrderListSummaryTable,
+    data: dataOrderListSummaryTable
+  } = useFetch(GET_ORDER_LIST_SUMMARY_TABLE)
+
+  if (loadingOrderPerformance || loadingOrderListSummaryTable) {
+    return <LoadingStatus />
+  }
+
+  if (errorOrderPerformance || errorOrderListSummaryTable) {
+    return (
+      <ErrorStatus
+        message={errorOrderPerformance || errorOrderListSummaryTable}
+      />
+    )
+  }
+
+  const { getOrderPerformance } = dataOrderPerformance
+  const { getOrderListSumaryTable } = dataOrderListSummaryTable
 
   return (
     <div className="pb-4">
@@ -34,11 +74,11 @@ export default function Orders() {
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
         {/* Performance */}
-        <OrderPerformanceCard />
+        <OrderPerformanceCard data={getOrderPerformance} />
         {/* Chart */}
         <ChartView />
         {/* Table */}
-        <TableOrders />
+        <TableOrders data={getOrderListSumaryTable} />
       </div>
     </div>
   )

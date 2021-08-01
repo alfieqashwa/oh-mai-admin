@@ -3,15 +3,28 @@ import { Menu, Transition } from '@headlessui/react'
 import { FiSearch, FiDownloadCloud } from 'react-icons/fi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 
-import moment from 'moment'
+import { LoadingStatus } from 'components/loading-status'
+import { ErrorStatus } from 'components/error-status'
 import { moneyFormat } from 'utils/money-format'
+import useFetch from 'hooks/useFetch'
+import { GET_ORDER_SUMMARY_TABLE } from 'graphql/order'
 
-// Table on Summary Main Page
-export function TableSummary({ data, setData }) {
+export function TableSummary() {
   // eslint-disable-next-line no-unused-vars
   const [_isOpen, _setIsOpen] = useState(false)
+  const {
+    loading,
+    error,
+    data: dataOrderSummaryTable
+  } = useFetch(GET_ORDER_SUMMARY_TABLE)
 
-  // console.log(`DATA: ${data?.[0]?.net_sales}`)
+  if (loading) {
+    return <LoadingStatus />
+  }
+  if (error) {
+    return <ErrorStatus message={error.message} />
+  }
+  const { getOrderSumaryTable: data } = dataOrderSummaryTable
 
   return (
     <div className="my-10">
@@ -136,7 +149,7 @@ export function TableSummary({ data, setData }) {
               <tr key={i}>
                 <td className="py-4 text-center bg-N600 w400 whitespace-nowrap">
                   {/* TODO */}
-                  {moment(t.order_datetime).format('DD/MM/YYYY HH:mm:ss')}
+                  {t.order_date}
                 </td>
                 <td className="py-4 text-right w400 whitespace-nowrap">
                   {t.total_order}

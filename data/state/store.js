@@ -1,16 +1,14 @@
 import { createStore } from 'redux'
 import { loadOrders } from 'services/api/order_services'
 
-const initial_val = { 
-  value: [] 
+const initialVal = {
+  value: []
 }
 
-async function ordersReducer(state = initial_val, action) {
+async function ordersReducer(state = initialVal, action) {
   switch (action.type) {
     case 'order/list':
-      console.log("dispatching order list:payload", action.payload)
-      const orders = await loadOrders(action.payload)
-      return { value: orders }
+      return { value: await loadOrders(action.payload) }
     case 'counter/decremented':
       return { value: state.value - 1 }
     default:
@@ -21,7 +19,7 @@ async function ordersReducer(state = initial_val, action) {
 async function filterReducer(state = {}, action) {
   switch (action.type) {
     case 'filter/set':
-      console.log("dispatching filter:set", action.payload)
+      console.log('dispatching filter:set', action.payload)
       return { filter: action.payload }
     default:
       return state

@@ -1,80 +1,12 @@
-import React, { Fragment, useEffect } from 'react'
-import Link from 'next/link'
+import React, { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { FiDownloadCloud, FiSearch } from 'react-icons/fi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import moment from 'moment'
+
 import { SwitchOnOff } from './switch-on-off'
 import { moneyFormat } from 'utils/money-format'
 
-export function TableOrders({ data, setSelectedCustomer, keywordChange, sortingChange }) {
-  const [dataTable, setDataTable] = React.useState([])
-
-  useEffect(() => {
-    if (Array.isArray(data)) {
-      const tmpArr = []
-
-      if (data.length > 0) {
-        data.forEach((item, index) => {
-          if (index === 0) {
-            item.status = true
-          } else {
-            item.status = false
-          }
-          tmpArr.push(item)
-        })
-        setDataTable(tmpArr)
-      } else {
-        setDataTable([])
-        setSelectedCustomer(null)
-      }
-    }
-    console.log('....data', data)
-  }, [data])
-
-  const updateArray = (customerId, status) => {
-    const updatedArr = dataTable.map((item, index) => {
-      if (item.customer_id === customerId) {
-        item.status = status
-      } else {
-        item.status = false
-      }
-
-      return item
-    })
-
-    setDataTable(updatedArr)
-  }
-
-  useEffect(() => {
-    let isHaseSelection = false
-
-    dataTable?.forEach(item => {
-      if (item.status === true) {
-        setSelectedCustomer(item)
-        console.log('setSelectedCustomer(item)')
-        isHaseSelection = true
-      }
-    })
-
-    console.log('selected customer: is isHaseSelection - ' + isHaseSelection)
-
-    if (isHaseSelection === false || dataTable.length === 0) {
-      console.log('setSelectedCustomer(null)')
-      setSelectedCustomer(null)
-    }
-
-    console.log('....data table', dataTable)
-  }, [dataTable])
-
-  const _keywordChange = (e) => {
-    keywordChange(e.target.value)
-  }
-
-  const _sortingChange = (e) => {
-    sortingChange(e.target.value)
-  }
-
+export function TableOrders({ data, status, setStatus }) {
   return (
     <div className="mt-8">
       <header className="flex items-center justify-between px-6 py-4 rounded-t bg-N200">
@@ -83,10 +15,9 @@ export function TableOrders({ data, setSelectedCustomer, keywordChange, sortingC
           <select
             name="date-range"
             className="px-10 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none"
-            onChange={_sortingChange}
           >
-            <option value="ASC">Ascending</option>
-            <option value="DESC">Descending</option>
+            <option>Ascending</option>
+            <option>Descending</option>
           </select>
         </div>
         <div className="relative flex-1 w-full px-4">
@@ -96,7 +27,6 @@ export function TableOrders({ data, setSelectedCustomer, keywordChange, sortingC
             name="search"
             placeholder="Search for a title or SKU"
             className="w-full px-12 py-3 bg-transparent border rounded border-N900"
-            onChange={_keywordChange}
           />
         </div>
         <div>
@@ -123,13 +53,13 @@ export function TableOrders({ data, setSelectedCustomer, keywordChange, sortingC
                   <Menu.Items
                     static
                     className={`
-                      ${
-                        !open
-                          ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
-                          : ''
-                      }
-                      absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
-                      `}
+                  ${
+                    !open
+                      ? 'motion-safe:animate-bounce transition duration-700 ease-in-out'
+                      : ''
+                  }
+                  absolute z-20 rounded shadow-xl bg-N0 right-2 top-10 focus:outline-none
+                  `}
                   >
                     <Menu.Item
                       as="button"
@@ -151,20 +81,35 @@ export function TableOrders({ data, setSelectedCustomer, keywordChange, sortingC
       <table className="md:min-w-full text-N0">
         <thead className="bg-N200 bg-opacity-30">
           <tr>
-            <th scope="col" className="px-2 py-4 text-center capitalize w400">
+            <th
+              scope="col"
+              className="p-4 text-center capitalize w400 whitespace-nowrap"
+            >
               s/n
             </th>
             <th
               scope="col"
               className="p-4 text-left capitalize w400 whitespace-nowrap"
             >
-              customer name
+              product title
             </th>
             <th
               scope="col"
               className="p-4 text-right capitalize w400 whitespace-nowrap"
             >
-              most recent order
+              SKU
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-right capitalize w400 whitespace-nowrap"
+            >
+              Items Sold
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-right capitalize w400 whitespace-nowrap"
+            >
+              net sales
             </th>
             <th
               scope="col"
@@ -176,13 +121,7 @@ export function TableOrders({ data, setSelectedCustomer, keywordChange, sortingC
               scope="col"
               className="p-4 text-right capitalize w400 whitespace-nowrap"
             >
-              items bought
-            </th>
-            <th
-              scope="col"
-              className="p-4 text-right capitalize w400 whitespace-nowrap"
-            >
-              net sales
+              category
             </th>
             <th
               scope="col"
@@ -195,26 +134,26 @@ export function TableOrders({ data, setSelectedCustomer, keywordChange, sortingC
 
         {/* Table Content */}
         <tbody className="bg-N700 text-N0">
-          {dataTable.map((t) => (
-            <tr key={t.customer_id} className="">
-              <td className="px-2 py-8 text-center bg-N600 w400">{t.sn}</td>
-              <td className="px-4 py-8 text-left underline capitalize w400">
-                <Link href={`/analytics/customer/${t.customer_id}`}>
-                  <a>{t.customer_name}</a>
-                </Link>
+          {data?.map((t, i) => (
+            <tr key={i} className="">
+              <td className="p-4 text-center bg-N600 w400 whitespace-nowrap">
+                {t.sn}
               </td>
-              <td className="px-4 py-8 text-right w400">
-                {moment(t.most_recent_order).format('DD/MM/YYYY HH:mm:ss')}
+              <td className="p-4 text-left underline w400">
+                {t.product_title}
               </td>
-              <td className="px-4 py-8 text-right underline w400">
-                {t.orders}
+              <td className="p-4 text-right w400 whitespace-nowrap">{t.sku}</td>
+              <td className="p-4 text-right w400 whitespace-nowrap">
+                {t.item_sold}
               </td>
-              <td className="px-4 py-8 text-right w400">{t.item_sold}</td>
-              <td className="px-4 py-8 text-right w400">
+              <td className="p-4 text-right w400 whitespace-nowrap">
                 {moneyFormat.format(t.net_sales)}
               </td>
-              <td className="px-4 py-8 text-center w400">
-                <SwitchOnOff isEnabled={t.status} updateArray={updateArray} customerId={t.customer_id} />
+              <td className="p-4 text-right underline w400">{t.order}</td>
+              <td className="p-4 text-right w400">{t.category}</td>
+              <td className="py-4 text-center x-4 w400 whitespace-nowrap">
+                {/*  TODO: because this components is reusable, i leave it as it is for now until needed to avoid crashing in the other pages */}
+                <SwitchOnOff isEnabled={status} />
               </td>
             </tr>
           ))}

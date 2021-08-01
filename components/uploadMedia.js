@@ -1,19 +1,19 @@
-import { useCallback, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { FiUpload } from 'react-icons/fi'
 
 export function UploadMedia() {
   const [files, setFiles] = useState([])
-  const onDrop = useCallback(acceptedFiles => {
-    console.log(acceptedFiles)
-  }, [])
+  // const onDrop = useCallback(acceptedFiles => {
+  //   console.log(acceptedFiles)
+  // }, [])
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: acceptedFiles => {
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
       })))
     },
-    accept: "image/*",
+    accept: 'image/*',
     multiple: false
   })
 
@@ -24,7 +24,7 @@ export function UploadMedia() {
   return (
     <div
       {...getRootProps()}
-      className={`relative flex flex-col items-center justify-center h-64 my-2 border-2 border-opacity-50 border-dashed cursor-pointer rounded-md ${isDragActive ? "border-P700" : "border-N0"}`}
+      className={`relative flex flex-col items-center justify-center h-64 my-2 border-2 border-opacity-50 border-dashed cursor-pointer rounded-md ${isDragActive ? 'border-P700' : 'border-N0'}`}
     >
       <input {...getInputProps()} />
       <FiUpload className="w-12 h-12 text-N200" />

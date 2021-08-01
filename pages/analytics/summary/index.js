@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { Header } from 'components/header'
+import { LoadingStatus } from 'components/loading-status'
+import { ErrorStatus } from 'components/error-status'
 import {
   ChartView,
   DateRangeSelect,
@@ -10,105 +12,76 @@ import {
   TableSummary
 } from 'components/analytics/summary'
 import { checkLogin } from 'utils/Auth'
-import { getClient } from 'lib/graphqlclient'
+import useFetch from 'hooks/useFetch'
 import {
   GET_LEADERBOARD_PRODUCT,
   GET_LEADERBOARD_KOL,
   GET_LEADERBOARD_CUSTOMER,
-  GET_SUMMARY_PERFORMANCE,
-  GET_ORDER_SUMMARY_CHART,
-  GET_ORDER_SUMMARY_TABLE
+  GET_SUMMARY_PERFORMANCE
 } from 'graphql/order'
 
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
   const [selectedPrevious, setSelectedPrevious] = useState(dates[1])
-
-  const [leaderboardProduct, setLeaderboardProduct] = useState()
-  const [leaderboardKol, setLeaderboardKol] = useState()
-  const [leaderboardCustomer, setLeaderboardCustomer] = useState()
-
-  const [getSummaryPerformance, setGetSummaryPerformance] = useState()
-  const [getOrderSummaryChart, setGetOrderSummaryChart] = useState()
-  const [getOrderSummaryTable, setGetOrderSummaryTable] = useState()
+  const [selectedCard, setSelectedCard] = useState()
 
   useEffect(() => {
     console.log('Check login')
     checkLogin()
   }, [])
 
-  const client = getClient()
+  const {
+    loading: loadingLeaderboardProduct,
+    error: errorLeaderboardProduct,
+    data: dataLeaderboardProduct
+  } = useFetch(GET_LEADERBOARD_PRODUCT)
+  const {
+    loading: loadingLeaderboardKol,
+    error: errorLeaderboardKol,
+    data: dataLeaderboardKol
+  } = useFetch(GET_LEADERBOARD_KOL)
+  const {
+    loading: loadingLeaderboardCustomer,
+    error: errorLeaderboardCustomer,
+    data: dataLeaderboardCustomer
+  } = useFetch(GET_LEADERBOARD_CUSTOMER)
 
-  async function loadData() {
-    try {
-      const resultProduct = await client.request(GET_LEADERBOARD_PRODUCT)
-      const resultKol = await client.request(GET_LEADERBOARD_KOL)
-      const resultCustomer = await client.request(GET_LEADERBOARD_CUSTOMER)
+  const {
+    loading: loadingSummaryPerformance,
+    error: errorSummaryPerformance,
+    data: dataSummaryPerformance
+  } = useFetch(GET_SUMMARY_PERFORMANCE)
 
-      const resultGetSummaryPerformance = await client.request(
-        GET_SUMMARY_PERFORMANCE
-      )
-      const resultGetOrderSummaryChart = await client.request(
-        GET_ORDER_SUMMARY_CHART
-      )
-      const resultGetOrderSummaryTable = await client.request(
-        GET_ORDER_SUMMARY_TABLE
-      )
-
-      setLeaderboardProduct(resultProduct.getLeaderBoardProduct)
-      setLeaderboardKol(resultKol.getLeaderBoardKol)
-      setLeaderboardCustomer(resultCustomer.getLeaderBoardCustomer)
-
-      setGetSummaryPerformance(resultGetSummaryPerformance.getSumaryPerformance)
-      setGetOrderSummaryChart(resultGetOrderSummaryChart.getOrderSumaryChart)
-      setGetOrderSummaryTable(resultGetOrderSummaryTable.getOrderSumaryTable)
-
-      // console.log(JSON.stringify(resultProduct, null, 2))
-      // console.log(JSON.stringify(resultKol, null, 2))
-      // console.log(JSON.stringify(resultCustomer, null, 2))
-      // console.log(JSON.stringify(resultGetSummaryPerformance, null, 2))
-    } catch (error) {
-      console.log(error.message)
-    }
+  if (
+    loadingLeaderboardProduct ||
+    loadingLeaderboardKol ||
+    loadingLeaderboardCustomer ||
+    loadingSummaryPerformance
+  ) {
+    return <LoadingStatus />
+  }
+  if (
+    errorLeaderboardProduct ||
+    errorLeaderboardKol ||
+    errorLeaderboardCustomer ||
+    errorSummaryPerformance
+  ) {
+    return (
+      <ErrorStatus
+        message={
+          errorLeaderboardProduct.message ||
+          errorLeaderboardKol.message ||
+          errorLeaderboardCustomer.message ||
+          errorSummaryPerformance.message
+        }
+      />
+    )
   }
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
-  useEffect(() => {
-    if (leaderboardProduct) {
-      console.log(`leaderboardProduct_title: ${leaderboardProduct?.title}`)
-    }
-    if (leaderboardKol) {
-      console.log(`leaderboardKol_title: ${leaderboardKol?.title}`)
-    }
-    if (leaderboardCustomer) {
-      console.log(`leaderboardCustomer_title: ${leaderboardCustomer?.title}`)
-    }
-    if (getSummaryPerformance) {
-      console.log(
-        `getSummaryPerformance_first_title: ${getSummaryPerformance[0]?.title}`
-      )
-    }
-    if (getOrderSummaryChart) {
-      console.log(
-        `getOrderSummaryChart_datetime: ${getOrderSummaryChart[0]?.order_datetime}`
-      )
-    }
-    if (getOrderSummaryTable) {
-      console.log(
-        `getOrderSummaryTable_net_sales: ${getOrderSummaryTable[0]?.net_sales}`
-      )
-    }
-  }, [
-    leaderboardProduct,
-    leaderboardKol,
-    leaderboardCustomer,
-    getSummaryPerformance,
-    getOrderSummaryChart,
-    getOrderSummaryTable
-  ])
+  const { getLeaderBoardProduct } = dataLeaderboardProduct
+  const { getLeaderBoardKol } = dataLeaderboardKol
+  const { getLeaderBoardCustomer } = dataLeaderboardCustomer
+  const { getSumaryPerformance } = dataSummaryPerformance
 
   return (
     <div className="pb-4">
@@ -138,10 +111,10 @@ export default function Summary() {
           <LeaderboardCardType
             path="/analytics/summary/best-selling-product"
             cardName="best selling product"
-            title={leaderboardProduct?.title}
-            totalOrder={leaderboardProduct?.total_order}
-            totalNetSales={leaderboardProduct?.total_net_sales}
-            leaderboardQuery={leaderboardProduct}
+            title={getLeaderBoardProduct?.title}
+            totalOrder={getLeaderBoardProduct?.total_order}
+            totalNetSales={getLeaderBoardProduct?.total_net_sales}
+            leaderboardQuery={getLeaderBoardProduct}
           />
           {/* Ends LeaderBoard Best Selling Product */}
 
@@ -149,10 +122,10 @@ export default function Summary() {
           <LeaderboardCardType
             path="/analytics/summary/top-kol"
             cardName="top kol"
-            title={leaderboardKol?.title}
-            totalOrder={leaderboardKol?.total_order}
-            totalNetSales={leaderboardKol?.total_net_sales}
-            leaderboardQuery={leaderboardKol}
+            title={getLeaderBoardKol?.title}
+            totalOrder={getLeaderBoardKol?.total_order}
+            totalNetSales={getLeaderBoardKol?.total_net_sales}
+            leaderboardQuery={getLeaderBoardKol}
           />
           {/* Ends LeaderBoard Top KOL */}
 
@@ -160,10 +133,10 @@ export default function Summary() {
           <LeaderboardCardType
             path="/analytics/summary/top-customer"
             cardName="top customer"
-            title={leaderboardCustomer?.title}
-            totalOrder={leaderboardCustomer?.total_order}
-            totalNetSales={leaderboardCustomer?.total_net_sales}
-            leaderboardQuery={leaderboardCustomer}
+            title={getLeaderBoardCustomer?.title}
+            totalOrder={getLeaderBoardCustomer?.total_order}
+            totalNetSales={getLeaderBoardCustomer?.total_net_sales}
+            leaderboardQuery={getLeaderBoardCustomer}
           />
           {/* Ends LeaderBoard Top Customer */}
         </div>
@@ -173,21 +146,16 @@ export default function Summary() {
 
         {/* Performance's Cards */}
         <PerformanceCard
-          data={getSummaryPerformance}
-          setData={setGetSummaryPerformance}
+          data={getSumaryPerformance}
+          selected={selectedCard}
+          setSelected={setSelectedCard}
         />
 
         {/* Chart View */}
-        <ChartView
-          data={getOrderSummaryChart}
-          setData={setGetOrderSummaryChart}
-        />
+        <ChartView selected={selectedCard} />
 
         {/* Table View */}
-        <TableSummary
-          data={getOrderSummaryTable}
-          setData={setGetOrderSummaryTable}
-        />
+        <TableSummary />
       </div>
     </div>
   )
@@ -197,27 +165,3 @@ const dates = [
   { name: 'Current Year (Jan 1 - Dec 31, 2021)' },
   { name: 'Previous Year (Jan 1 - Dec 31, 2020)' }
 ]
-
-// const leaderBoardCards = [
-//   {
-//     url: '/analytics/summary/best-selling-product',
-//     category: 'best selling product',
-//     product: 'Zelda: Breath of the Wild',
-//     totalOrdersValue: '291',
-//     netSalesValue: '18,000.00',
-//   },
-//   {
-//     url: '/analytics/summary/top-kol',
-//     category: 'top kol',
-//     product: 'Lice Wang',
-//     totalOrdersValue: '135',
-//     netSalesValue: '10,000.00',
-//   },
-//   {
-//     url: '/analytics/summary/top-customer',
-//     category: 'top customer',
-//     product: 'Fan Leng Leng',
-//     totalOrdersValue: '5',
-//     netSalesValue: '1,800.00',
-//   },
-// ]

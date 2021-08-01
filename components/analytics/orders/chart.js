@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { RadioGroup } from '@headlessui/react'
+import React, { useState, Fragment } from 'react'
+import { Listbox, RadioGroup, Transition } from '@headlessui/react'
 import {
   ResponsiveContainer,
   AreaChart,
@@ -13,8 +13,12 @@ import {
 } from 'recharts'
 import { format, parseISO, subDays } from 'date-fns'
 import { AiOutlineBarChart, AiOutlineLineChart } from 'react-icons/ai'
+import { ChevronDownIcon } from '@heroicons/react/outline'
+import { moneyFormat } from 'utils/money-format'
+import { GlassDefault } from 'components/glassDefault'
 
 export function ChartView() {
+  const [dateRange, setDateRange] = useState(rangeDate[1])
   const [plan, setPlan] = useState('area')
   return (
     <>
@@ -27,7 +31,9 @@ export function ChartView() {
             className="w-6 h-6 rounded bg-P700 focus:outline-none focus:ring checked:text-P700 focus:ring-P700"
           />
           <div>
-            <p className="text-black w350">Current Year (Jan 1 - Dec 31, 2021)</p>
+            <p className="text-black w350">
+              Current Year (Jan 1 - Dec 31, 2021)
+            </p>
             <h5 className="text-black w250-m">$10.00</h5>
           </div>
         </div>
@@ -38,49 +44,62 @@ export function ChartView() {
             className="w-6 h-6 rounded bg-G400 focus:outline-none focus:ring checked:text-G400 focus:ring-G400"
           />
           <div>
-            <p className="text-black w350">Previous Year (Jan 1 - Dec 31, 2021)</p>
+            <p className="text-black w350">
+              Previous Year (Jan 1 - Dec 31, 2021)
+            </p>
             <h5 className="text-black w250-m">$0.00</h5>
           </div>
         </div>
         <div className="flex items-center justify-between space-x-1">
-          <div>
-            <select name="date-range" className="bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-P700 focus:outline-none">
-              <option>By day</option>
-              <option>By month</option>
-            </select>
-          </div>
-
+          <Select dateRange={dateRange} setDateRange={setDateRange} />
           <RadioGroup value={plan} onChange={setPlan}>
             <div className="flex items-center justify-between space-x-4">
               <RadioGroup.Option value="bar">
-                <button
-                  type="button"
-                  className="px-2 transition duration-200 ease-in-out bg-transparent shadow-inner focus:outline-none hover:bg-N250 focus:ring focus:ring-P700"
-                >
-                  <AiOutlineBarChart className="w-6 h-6 font-primary text-P700" />
-                </button>
+                {({ checked, active }) => (
+                  <button
+                    type="button"
+                    className={`px-2 transition shadow-lg duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
+                      ${
+                        checked
+                          ? 'shadow-inner border-N250 border-t border-l'
+                          : ''
+                      }`}
+                  >
+                    <AiOutlineBarChart className="w-6 h-6 font-primary text-P700" />
+                  </button>
+                )}
               </RadioGroup.Option>
               <RadioGroup.Option value="area">
-                <button
-                  type="button"
-                  className="px-2 transition duration-200 ease-in-out bg-transparent shadow-inner focus:outline-none hover:bg-N250 focus:ring focus:ring-P700"
-                >
-                  <AiOutlineLineChart className="w-6 h-6 text-P700" />
-                </button>
+                {({ checked, active }) => (
+                  <button
+                    type="button"
+                    className={`px-2 transition shadow-lg duration-200 ease-in-out bg-transparent focus:outline-none hover:bg-N250 
+                       ${
+                         checked
+                           ? 'shadow-inner border-N250 border-t border-l'
+                           : ''
+                       }`}
+                  >
+                    <AiOutlineLineChart className="w-6 h-6 text-P700" />
+                  </button>
+                )}
               </RadioGroup.Option>
             </div>
           </RadioGroup>
-
         </div>
       </div>
-      {/* <div className="grid w-full py-32 rounded-b bg-G400 h-1/2 place-items-center">
-        <h1 className="text-N0">
-          Bar / Line Chart
-        </h1>
-      </div> */}
+      {/* <ChartBar /> */}
+      {plan === 'bar' && (
+        <section className="px-4">
+          <ChartBar />
+        </section>
+      )}
       {/* <ChartArea /> */}
-      {plan === 'bar' && <ChartBar />}
-      {plan === 'area' && <ChartArea />}
+      {plan === 'area' && (
+        <section className="px-4">
+          <ChartArea />
+        </section>
+      )}
     </>
   )
 }
@@ -97,7 +116,15 @@ for (let num = 30; num >= 0; num--) {
 function ChartArea() {
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <AreaChart data={data}>
+      <AreaChart
+        data={data}
+        margin={{
+          top: 10,
+          right: 30,
+          left: 0,
+          bottom: 0
+        }}
+      >
         <defs>
           <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
             {/* <stop offset="0%" stopColor="#2451B7" stopOpacity={0.4} /> */}
@@ -111,12 +138,17 @@ function ChartArea() {
 
         <XAxis
           dataKey="date"
+          tickMargin={8}
           axisLine={false}
           tickLine={false}
+          tickCount={12}
+          interval={30}
+          stroke="#FFFFFF"
+          // reversed={true}
           tickFormatter={(str) => {
             const date = parseISO(str)
             if (date.getDate() % 7 === 0) {
-              return format(date, 'MMM, d')
+              return format(date, 'MMM')
             }
             return ''
           }}
@@ -127,7 +159,8 @@ function ChartArea() {
           axisLine={false}
           tickLine={false}
           tickCount={8}
-          tickFormatter={(number) => `$${number.toFixed(2)}`}
+          stroke="#FFFFFF"
+          // tickFormatter={(number) => `$${number.toFixed(2)}`}
         />
 
         <Tooltip content={<CustomTooltip />} />
@@ -138,47 +171,32 @@ function ChartArea() {
   )
 }
 
-function CustomTooltip({ active, payload, label }) {
-  if (active) {
-    return (
-      <div className="tooltip">
-        <h5>{format(parseISO(label), 'eeee, d MMM, yyyy')}</h5>
-        <p>${payload[0].value.toFixed(2)}</p>
-      </div>
-    )
-  }
-  return null
-}
-
-// Bar Chart Testing
-
-const getPath = (x, y, width, height) => (
-  `M${x},${y + height}
-   C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${x + width / 2}, ${y}
-   C${x + width / 2},${y + height / 3} ${x + 2 * width / 3},${y + height} ${x + width}, ${y + height}
-   Z`
-)
-
-const TriangleBar = (props) => {
-  const {
-    fill, x, y, width, height
-  } = props
-
-  return <path d={getPath(x, y, width, height)} stroke="#8A3EFF" fill={fill} />
-}
-
 function ChartBar() {
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <BarChart width={600} height={300} data={data}>
+      <BarChart
+        width={600}
+        height={300}
+        margin={{
+          top: 20,
+          right: 0,
+          left: 0,
+          bottom: 0
+        }}
+        data={data}
+      >
         <XAxis
           dataKey="date"
+          tickMargin={8}
           axisLine={false}
           tickLine={false}
+          interval={30}
+          stroke="#FFFFFF"
+          // reversed={true}
           tickFormatter={(str) => {
             const date = parseISO(str)
             if (date.getDate() % 7 === 0) {
-              return format(date, 'MMM, d')
+              return format(date, 'MMM')
             }
             return ''
           }}
@@ -188,11 +206,98 @@ function ChartBar() {
           axisLine={false}
           tickLine={false}
           tickCount={8}
-          tickFormatter={(number) => `$${number.toFixed(2)}`}
+          stroke="#FFFFFF"
+          // tickFormatter={(number) => `$${number.toFixed(2)}`}
         />
-        <Bar dataKey="value" fill="#8A3EFF"
-          shape={<TriangleBar />} />
+        <Tooltip content={<CustomTooltip />} />
+        <Bar dataKey="value" fill="#8A3EFF" shape={<TriangleBar />} />
       </BarChart>
     </ResponsiveContainer>
+  )
+}
+
+const getPath = (x, y, width, height) =>
+  `M${x},${y + height}
+   C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${
+    x + width / 2
+  }, ${y}
+   C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${
+    x + width
+  }, ${y + height}
+   Z`
+
+const TriangleBar = (props) => {
+  const { fill, x, y, width, height } = props
+
+  return <path d={getPath(x, y, width, height)} stroke="#8A3EFF" fill={fill} />
+}
+
+function CustomTooltip({ active, payload, label }) {
+  if (active) {
+    return (
+      <GlassDefault className="p-4 text-center rounded-md border-P700 bg-N800">
+        <h5 className="text-G400">
+          {format(parseISO(label), 'eeee, d MMM, yyyy')}
+        </h5>
+        <p className="mt-1 text-N100">
+          {payload && moneyFormat.format(payload[0].value)}
+        </p>
+        <p className="text-xs text-Y400">dummy-data</p>
+      </GlassDefault>
+    )
+  }
+  return null
+}
+
+const rangeDate = [
+  { id: 1, name: 'By Day' },
+  { id: 2, name: 'By Month' }
+]
+function Select({ dateRange, setDateRange }) {
+  return (
+    <Listbox value={dateRange} onChange={setDateRange}>
+      {({ open }) => (
+        <div className="relative px-4">
+          <Listbox.Button className="flex items-center justify-between w-full h-10 text-left capitalize bg-transparent border-transparent rounded shadow-md w400 focus:ring-2 focus:ring-P900 focus:ring-offset-p900 focus:outline-none focus-visible:ring-offset-2 sm:text-sm">
+            <span className="block pl-2 pr-4 text-base truncate text-N600">
+              {dateRange.name}
+            </span>
+            <span className="pr-2">
+              <ChevronDownIcon
+                className={`w-5 h-5  ${
+                  open && 'transform rotate-180 text-P700'
+                }`}
+                aria-hidden="true"
+              />
+            </span>
+          </Listbox.Button>
+          <Transition
+            show={open}
+            as={Fragment}
+            leave="transition ease-in duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <Listbox.Options
+              static
+              className="absolute z-10 w-full py-2 mt-1 space-y-1 overflow-auto rounded-md shadow-lg whitespace-nowrap text-N0 max-h-60 bg-N600 ring-1 ring-P900 ring-opacity-5 focus:outline-none sm:text-sm"
+            >
+              {rangeDate.map((range) => (
+                <Listbox.Option
+                  key={range.id}
+                  value={range}
+                  className={({ active }) =>
+                    `${active ? 'bg-P900' : ''}
+                    cursor-default select-none relative pl-2.5`
+                  }
+                >
+                  {range.name}
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </Transition>
+        </div>
+      )}
+    </Listbox>
   )
 }

@@ -235,6 +235,7 @@ export const GET_SUMMARY_PERFORMANCE = gql`
       performance
       precentage_change
       performance_last_year
+      type
     }
   }
 `
@@ -242,7 +243,7 @@ export const GET_SUMMARY_PERFORMANCE = gql`
 export const GET_ORDER_SUMMARY_TABLE = gql`
   query getOrderSumaryTable($startDate: String, $endDate: String) {
     getOrderSumaryTable(startDate: $startDate, endDate: $endDate) {
-      order_datetime
+      order_date
       total_order
       net_sales
       order_item_tax

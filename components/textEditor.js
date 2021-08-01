@@ -1,9 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+// import SunEditor from 'suneditor-react'
 import 'suneditor/dist/css/suneditor.min.css'
 // Import the Slate editor factory.
-import { createEditor } from 'slate'
+// import { createEditor } from 'slate'
 // Import the Slate components and React plugin.
-import { withReact } from 'slate-react'
+// import { withReact } from 'slate-react'
+// import RichEditor from './defunct/editproducthelper/richeditor'
 import { DefaultEditor } from 'react-simple-wysiwyg'
 
 // import { SlateEditor, SlateToolbar, SlateContent } from 'slate-editor'
@@ -24,7 +26,8 @@ import { DefaultEditor } from 'react-simple-wysiwyg'
 const TextEditor = props => {
   const { defaultValue, onChange } = props
   const [description, setDescription] = useState('abc')
-  const editor = useMemo(() => withReact(createEditor()), [])
+  // const editor = useMemo(() => withReact(createEditor()), [])
+  // eslint-disable-next-line no-unused-vars
   const [value, setValue] = useState([])
   const [html, setHtml] = React.useState('')
 
@@ -50,16 +53,16 @@ const TextEditor = props => {
     console.log('Edit Product/ TextEditor description', description)
   }, [description])
 
-  const updateDesc = (value) => {
-    console.log('update desc')
-    setDescription(value)
-    onChange({
-      target: {
-        id: 'description',
-        value: value
-      }
-    })
-  }
+  // const updateDesc = (value) => {
+  //   console.log('update desc')
+  //   setDescription(value)
+  //   onChange({
+  //     target: {
+  //       id: 'description',
+  //       value: value
+  //     }
+  //   })
+  // }
 
   function _onChange(e) {
     console.log('description e', e)
