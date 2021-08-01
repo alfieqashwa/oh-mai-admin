@@ -22,7 +22,7 @@ const moneyFormat = new Intl.NumberFormat('en-US', {
   currency: 'TWD'
 })
 
-export default function OrderDetail() {
+export default function OrderDetail({ orderNumber }) {
   const route = useRouter()
   // eslint-disable-next-line no-unused-vars
   const [totalPage, setTotalPage] = useState(0)
@@ -192,8 +192,8 @@ export default function OrderDetail() {
 
   useEffect(() => {
     console.log('// orderdate', orderDate)
-    console.log('route.query', route.query.num)
-    loadData(route.query.num)
+    console.log('route.query', route.query)
+    loadData(route.query.num || orderNumber)
   }, [])
 
   useEffect(() => {
@@ -643,4 +643,10 @@ export default function OrderDetail() {
       />
     </>
   )
+}
+
+OrderDetail.getInitialProps = async ({ query }) => {
+  const { orderNumber } = query
+
+  return { orderNumber }
 }
