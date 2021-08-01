@@ -14,18 +14,22 @@ export function TableOrders({ data, setSelectedCustomer, keywordChange, sortingC
     if (Array.isArray(data)) {
       const tmpArr = []
 
-      data.forEach((item, index) => {
-        if (index === 0) {
-          item.status = true
-        } else {
-          item.status = false
-        }
-
-        tmpArr.push(item)
-      })
-
-      setDataTable(tmpArr)
+      if (data.length > 0) {
+        data.forEach((item, index) => {
+          if (index === 0) {
+            item.status = true
+          } else {
+            item.status = false
+          }
+          tmpArr.push(item)
+        })
+        setDataTable(tmpArr)
+      } else {
+        setDataTable([])
+        setSelectedCustomer(null)
+      }
     }
+    console.log('....data', data)
   }, [data])
 
   const updateArray = (customerId, status) => {
@@ -43,26 +47,24 @@ export function TableOrders({ data, setSelectedCustomer, keywordChange, sortingC
   }
 
   useEffect(() => {
-    let i = 0
     let isHaseSelection = false
 
     dataTable?.forEach(item => {
-      i++
-
       if (item.status === true) {
         setSelectedCustomer(item)
+        console.log('setSelectedCustomer(item)')
         isHaseSelection = true
-        console.log('selected customer: true - ' + i)
-      } else {
-        console.log('selected customer: false - ' + i)
       }
     })
 
     console.log('selected customer: is isHaseSelection - ' + isHaseSelection)
 
-    if (isHaseSelection === false) {
+    if (isHaseSelection === false || dataTable.length === 0) {
+      console.log('setSelectedCustomer(null)')
       setSelectedCustomer(null)
     }
+
+    console.log('....data table', dataTable)
   }, [dataTable])
 
   const _keywordChange = (e) => {

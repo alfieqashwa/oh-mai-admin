@@ -5,7 +5,7 @@ export const timeFilterFormatter = (filter) => {
 
   let startDate, endDate
 
-  switch (filter.mode) {
+  switch (filter.timeMode) {
     case '24h':
       startDate = null
       endDate = null
@@ -31,7 +31,7 @@ export const timeFilterFormatter = (filter) => {
       endDate = filter.yearEnd
       break
     default:
-      console.log('Invalid mode: ' + filter.mode)
+      console.log('Invalid mode: ' + filter.timeMode)
       break
   }
 

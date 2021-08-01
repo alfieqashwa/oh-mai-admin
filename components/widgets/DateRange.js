@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import 'rc-datepicker/lib/style.css'
 
 export function DateRange({ onChange }) {
-  const [mode, setMode] = useState('24h')
+  const [timeMode, setTimeMode] = useState('24h')
   const [dayStart, setDayStart] = useState()
   const [dayEnd, setDayEnd] = useState()
   const [weekStart, setWeekStart] = useState()
@@ -24,7 +24,7 @@ export function DateRange({ onChange }) {
 
   useEffect(() => {
     const timeFilter = {
-      mode: mode,
+      timeMode: timeMode,
       dayStart: dayStart,
       dayEnd: dayEnd,
       weekStart: weekStart,
@@ -36,7 +36,7 @@ export function DateRange({ onChange }) {
     }
 
     onChange(timeFilter)
-  }, [mode, dayStart, dayEnd, weekStart, weekEnd, monthStart, monthEnd, yearStart, yearEnd])
+  }, [timeMode, dayStart, dayEnd, weekStart, weekEnd, monthStart, monthEnd, yearStart, yearEnd])
 
   const DaysRangePicker = () => {
     return (
@@ -164,8 +164,8 @@ export function DateRange({ onChange }) {
       <div className="flex flex-col w-1/4">
         <div className="flex text-xl text-N100 mt-6 mb-2">Select period of time</div>
         <select className="appearance-none rounded-md text-N0 bg-opacity-20 bg-N200 my-2"
-          onChange={e => setMode(e.target.value)}
-          value={mode}>
+          onChange={e => setTimeMode(e.target.value)}
+          value={timeMode}>
           <option value="24h">Last 24 hours</option>
           <option value="7d">Last 7 days</option>
           <option value="days">Select by days</option>
@@ -175,7 +175,7 @@ export function DateRange({ onChange }) {
         </select>
       </div>
       <div className="flex w-1/2 mb-2 mt-9 ml-8">
-        <ShowInput mode={mode} />
+        <ShowInput mode={timeMode} />
       </div>
     </div>
   )

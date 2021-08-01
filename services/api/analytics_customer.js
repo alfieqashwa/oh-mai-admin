@@ -4,13 +4,16 @@ import { GET_ORDER_CUSTOMER_YEARLY, GET_NET_SALES_CUSTOMER_YEARLY, GET_TOTAL_ITE
 import { mode } from 'tailwind.config'
 import { timeFilterFormatter } from 'utils/Others'
 
-export const loadPerformanceAnalyticCustomer = async ({ startDate, endDate, customerId }) => {
+export const loadPerformanceAnalyticCustomer = async ({ timeMode, startDate, endDate, customerId }) => {
   console.log('loadPerformanceAnalyticCustomer')
-  // console.log("startDate", startDate)
-  // console.log("endDate", endDate)
+  console.log('loadPerformanceAnalyticCustomer/customerId', customerId)
+  console.log('loadPerformanceAnalyticCustomer/timeMode', timeMode)
+  console.log('loadPerformanceAnalyticCustomer/startDate', startDate)
+  console.log('loadPerformanceAnalyticCustomer/endDate', endDate)
 
   const client = getClient()
   const vars = {
+    timeMode: timeMode,
     customerId: customerId,
     startDate: startDate || null,
     endDate: endDate || null
@@ -102,7 +105,7 @@ export const getAnalyticCustomerTable = async (filter) => {
   // }
 
   const vars = {
-    mode: filter.mode
+    timeMode: filter.timeMode
   }
 
   const dateFilter = timeFilterFormatter(filter)
@@ -112,11 +115,11 @@ export const getAnalyticCustomerTable = async (filter) => {
     vars.endDate = dateFilter.endDate
   }
 
-  console.log("lewat filter", filter)
+  console.log('lewat filter', filter)
 
   if ((filter.mode === 'days') || (filter.mode === 'weeks') || (filter.mode === 'months') || (filter.mode === 'years')) {
     if (!dateFilter.startDate || !dateFilter.endDate) {
-      console.log("lewat")
+      console.log('lewat')
       return {
         data: [],
         isSuccess: false
