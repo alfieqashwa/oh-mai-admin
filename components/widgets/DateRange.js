@@ -2,7 +2,6 @@ import DatePicker from 'react-datepicker'
 import React, { Fragment, useEffect, useState } from 'react'
 import 'react-datepicker/dist/react-datepicker.css'
 // import { DatePicker, DatePickerInput } from 'rc-datepicker'
-import 'rc-datepicker/lib/style.css'
 
 export function DateRange({ onChange }) {
   const [timeMode, setTimeMode] = useState('24h')
