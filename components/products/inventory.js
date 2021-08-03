@@ -1,6 +1,5 @@
 import React from 'react'
 import { HiOutlinePencilAlt } from 'react-icons/hi'
-import { ChevronLeftIcon, ChevronRightIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/react/solid'
 
 export function ProductListTable({ data }) {
   return (
@@ -11,11 +10,6 @@ export function ProductListTable({ data }) {
             scope="col"
             className="hidden py-3 pr-4 text-left md:table-cell text-N0"
           >
-            {/* checkbox */}
-            <input
-              type="checkbox"
-              className="w-5 h-5 ml-1 rounded bg-opacity-20 bg-N200 focus:ring-P700 focus:outline-none checked:text-P700"
-            />
           </th>
           <th
             scope="col"
@@ -78,12 +72,6 @@ export function ProductListTable({ data }) {
       <tbody className="">
         {data.map((p, i) => (
           <tr key={i}>
-            <td className="hidden py-4 pr-4 whitespace-nowrap md:table-cell">
-              <input
-                type="checkbox"
-                className="w-5 h-5 ml-1 rounded bg-opacity-20 bg-N200 focus:outline-none focus:ring-P700 checked:text-P700"
-              />
-            </td>
             <td className="p-4 whitespace-nowrap">
               <div className="flex-shrink-0 w-10 h-10">
                 <img className="w-10 h-10 border rounded border-N0 object-cover" src={p.images[0]} alt="" />

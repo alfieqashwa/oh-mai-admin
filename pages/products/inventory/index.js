@@ -1,10 +1,4 @@
-import { Menu, Transition } from '@headlessui/react'
-import { BiTrash } from 'react-icons/bi'
-import { MdAddCircleOutline } from 'react-icons/md'
-import { FiFilter } from 'react-icons/fi'
-import { BsThreeDotsVertical } from 'react-icons/bs'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
-
 import { GlassDefault } from 'components/glassDefault'
 import { Header } from 'components/header'
 import { ProductListTable } from 'components/products/inventory'
@@ -13,34 +7,41 @@ import { checkLogin } from 'utils/Auth'
 import { getClient } from 'lib/graphqlclient'
 import { GET_LIST_PRODUCT_VARIANT } from 'graphql/product'
 import Link from 'next/link'
-import { Pagination } from 'components/widgets/pagination'
+import { PassivePagination } from 'components/widgets/PassivePagination'
 
 export default function Inventory() {
   const [productStatus, setProductstatus] = useState('')
   const [keyword, setKeyword] = useState('')
   const [limit, setLimit] = useState(10)
-  const [page, setPage] = useState(1) // page is ONE BASED
+  const [total, setTotal] = useState(0)
   const [dataTable, setDataTable] = useState([])
   const [filter, setFilter] = useState({ })
 
   const client = getClient()
   const vars = {
-    limit: 10
+    limit: limit
   }
 
   useEffect(async () => {
     checkLogin()
-    // const result = await client.request(GET_LIST_PRODUCT_VARIANT, filter)
-    // setDataTable(result.getProductInventory)
-    // console.log('result:', result.getProductInventory)
     setFilter(vars)
   }, [])
 
   useEffect(async () => {
     checkLogin()
-    const result = await client.request(GET_LIST_PRODUCT_VARIANT, filter)
-    setDataTable(result.getProductInventory)
-    console.log('result:', result.getProductInventory)
+    console.log('filter:', filter)
+
+    try {
+      const result = await client.request(GET_LIST_PRODUCT_VARIANT, filter)
+      console.log('result:', result)
+
+      const resultData = result.getProductInventory
+      setDataTable(resultData.data)
+      setTotal(resultData.total)
+      console.log('result:', resultData.total)
+    } catch (error) {
+      console.log('error:', error)
+    }
   }, [filter])
 
   useEffect(async () => {
@@ -63,6 +64,21 @@ export default function Inventory() {
     setKeyword(e.target.value)
   }
 
+  const _onPageChange = (page) => {
+    console.log('current page now:', page)
+    setFilter(prevState => ({
+      ...prevState,
+      page: page + 1 // convert to one based
+    }))
+  }
+
+  const _onMaxRowChange = (maxRow) => {
+    setLimit(maxRow)
+    setFilter(prevState => ({
+      ...prevState,
+      limit: maxRow
+    }))
+  }
   return (
     <>
       <Header title="Products - Inventory" />
@@ -124,11 +140,11 @@ export default function Inventory() {
                   {/* Starts first row Desktop */}
                   <div className="items-center justify-start hidden space-x-2 md:flex">
                     <p className="mr-2 text-sm capitalize">view products</p>
-                    <button className="px-6 py-2 text-xs uppercase shadow-2xl text-N0 bg-P700" onClick={setProductstatus.bind(null, '')}>all</button>
-                    <button className="px-6 py-2 text-xs uppercase shadow-2xl text-N800 bg-N100" onClick={setProductstatus.bind(null, 'active')}>active</button>
-                    <button className="px-6 py-2 text-xs uppercase shadow-2xl text-N800 bg-N100" onClick={setProductstatus.bind(null, 'in_stock')}>in stock</button>
-                    <button className="px-6 py-2 text-xs uppercase shadow-2xl text-N800 bg-N100" onClick={setProductstatus.bind(null, 'pre_order')}>pre order</button>
-                    <button className="px-6 py-2 text-xs uppercase shadow-2xl text-N800 bg-N100" onClick={setProductstatus.bind(null, 'coming_soon')}>coming soon</button>
+                    <button className="px-6 py-2 text-xs uppercase shadow-2xl focus:text-N0 focus:bg-P700 bg-N100 text-N800" onClick={setProductstatus.bind(null, '')}>all</button>
+                    <button className="px-6 py-2 text-xs uppercase shadow-2xl focus:text-N0 focus:bg-P700 bg-N100 text-N800" onClick={setProductstatus.bind(null, 'active')}>active</button>
+                    <button className="px-6 py-2 text-xs uppercase shadow-2xl focus:text-N0 focus:bg-P700 bg-N100 text-N800" onClick={setProductstatus.bind(null, 'in_stock')}>in stock</button>
+                    <button className="px-6 py-2 text-xs uppercase shadow-2xl focus:text-N0 focus:bg-P700 bg-N100 text-N800" onClick={setProductstatus.bind(null, 'pre_order')}>pre order</button>
+                    <button className="px-6 py-2 text-xs uppercase shadow-2xl focus:text-N0 focus:bg-P700 bg-N100 text-N800" onClick={setProductstatus.bind(null, 'coming_soon')}>coming soon</button>
                   </div>
                   {/* Ends first row Desktop */}
 
@@ -223,7 +239,7 @@ export default function Inventory() {
         {/* Ends Tabel (GlassDiv) */}
 
         {/* Pagination */}
-        <Pagination />
+        <PassivePagination total={total} onPageChange={_onPageChange} onMaxRowChange={_onMaxRowChange} maxRow={limit} totalRowOnPage={dataTable.length}/>
 
       </div>
       {/* Ends ROOT */}

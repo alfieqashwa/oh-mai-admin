@@ -226,17 +226,22 @@ export const GET_ANALYTIC_PRODUCT_PERFORMANCE = gql`
 export const GET_LIST_PRODUCT_VARIANT = gql`
   query getProductInventory($productStatus: String, $keyword: String, $page: Int, $limit: Int){
     getProductInventory(productStatus: $productStatus, keyword: $keyword, page: $page, limit: $limit) {
-      id
-      images
-      sku
-      main_product{
-        product_name
+      total
+      page
+      pageSize
+      data{
+        id
+        images
+        sku
+        main_product{
+          product_name
+        }
+        active_status
+        base_price
+        sale_price
+        categories
+        stock_quantity
       }
-      active_status
-      base_price
-      sale_price
-      categories
-      stock_quantity
     }
   }
 `

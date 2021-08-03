@@ -39,8 +39,10 @@ export const Pagination = ({ offset, total, onChangeInput }) => {
   }, [maxRow])
 
   const handleClick = (props) => {
+    console.log('handle click page', props)
+
     const _currentPage = props.selected
-    console.log('handle click page', _currentPage)
+    // console.log('handle click page', _currentPage)
     setCurrentPage(_currentPage)
 
     dispatch({

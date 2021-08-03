@@ -6,7 +6,7 @@ import { Disclosure, Transition } from '@headlessui/react'
 import { ActiveLink } from 'components/activeLink'
 import { GlassDefault } from 'components/glassDefault'
 import { SiGoogleanalytics } from 'react-icons/si'
-import { FiBox, FiTruck, FiSettings, FiLogOut, FiPower } from 'react-icons/fi'
+import { FiBox, FiTruck, FiPower } from 'react-icons/fi'
 
 export const SideBar = () => {
   const router = useRouter()
