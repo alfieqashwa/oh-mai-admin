@@ -19,6 +19,7 @@ import {
   GET_LEADERBOARD_CUSTOMER,
   GET_SUMMARY_PERFORMANCE
 } from 'graphql/order'
+import { DateRange } from 'components/widgets/DateRange'
 
 export default function Summary() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
@@ -78,6 +79,9 @@ export default function Summary() {
     )
   }
 
+  const dateRageChange = (dateRange) => {
+  }
+
   const { getLeaderBoardProduct } = dataLeaderboardProduct
   const { getLeaderBoardKol } = dataLeaderboardKol
   const { getLeaderBoardCustomer } = dataLeaderboardCustomer
@@ -91,13 +95,13 @@ export default function Summary() {
         <h2 className="w800">Analytics - Summary</h2>
 
         {/* second row */}
-        <DateRangeSelect
+        {/* <DateRangeSelect
           selectedCurrent={selectedCurrent}
           setSelectedCurrent={setSelectedCurrent}
           selectedPrevious={selectedPrevious}
           setSelectedPrevious={setSelectedPrevious}
-        />
-
+        /> */}
+        <DateRange onChange={dateRageChange}/>
         {/* Leaderboard */}
         <div className="flex items-center justify-between mt-10 mb-4">
           <h4 className="w600">Leaderboard</h4>

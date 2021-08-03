@@ -131,7 +131,7 @@ export const Pagination = ({ offset, total, onChangeInput }) => {
       <div className="block pt-4 pb-8 md:items-center md:justify-end md:flex">
         <div className="mt-2 text-center lg:mt-0 lg:text-none lg:mx-6">
           <p className="w350 text-N300 whitespace-nowrap">
-            Showing <span className="font-medium text-N0">{totalDisplayedOrder}</span> of <span className="font-medium text-N0">{mTotal}</span> products</p>
+            Showing <span className="font-medium text-N0 mx-1">{totalDisplayedOrder}</span> of <span className="font-medium text-N0 mx-1">{mTotal}</span> products</p>
         </div>
         <div className="items-center hidden lg:flex whitespace-nowrap">
           <p className="w350 text-N200">Show</p>

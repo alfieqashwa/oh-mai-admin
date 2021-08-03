@@ -6,7 +6,7 @@ import { Disclosure, Transition } from '@headlessui/react'
 import { ActiveLink } from 'components/activeLink'
 import { GlassDefault } from 'components/glassDefault'
 import { SiGoogleanalytics } from 'react-icons/si'
-import { FiBox, FiTruck, FiSettings } from 'react-icons/fi'
+import { FiBox, FiTruck, FiSettings, FiLogOut, FiPower } from 'react-icons/fi'
 
 export const SideBar = () => {
   const router = useRouter()
@@ -97,7 +97,7 @@ export const SideBar = () => {
                       </a>
                     </ActiveLink>
                   </div>
-                  <div>
+                  {/* <div>
                     <ActiveLink href="/analytics/promo">
                       <a className={
                         `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === '/analytics/promo' ? 'bg-P900' : ''}`
@@ -105,7 +105,7 @@ export const SideBar = () => {
                         Promo
                       </a>
                     </ActiveLink>
-                  </div>
+                  </div> */}
                 </Disclosure.Panel>
               </Transition>
             </>
@@ -158,7 +158,7 @@ export const SideBar = () => {
                       </a>
                     </ActiveLink>
                   </div>
-                  <div>
+                  {/* <div>
                     <ActiveLink href="/products/promo-code">
                       <a className={
                         `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === '/products/promo-code' ? 'bg-P900' : ''}`
@@ -166,8 +166,8 @@ export const SideBar = () => {
                         Promo Codes
                       </a>
                     </ActiveLink>
-                  </div>
-                  <div>
+                  </div> */}
+                  {/* <div>
                     <ActiveLink href="/products/attributes">
                       <a className={
                         `block w-full py-2 pl-28 transition duration-200 ease-in-out rounded-r-md w350 ${router.pathname === '/products/attributes' ? 'bg-P900' : ''}`
@@ -175,7 +175,7 @@ export const SideBar = () => {
                         Attributes
                       </a>
                     </ActiveLink>
-                  </div>
+                  </div> */}
                 </Disclosure.Panel>
               </Transition>
             </>
@@ -191,9 +191,9 @@ export const SideBar = () => {
         </ActiveLink>
 
         {/* Settings */}
-        <div className="flex items-center justify-start pl-16 space-x-6 pt-72">
-          <FiSettings className="w-6 h-6" />
-          <p className="w400">Settings</p>
+        <div className="flex items-center justify-start pl-16 space-x-6 pt-8">
+          <FiPower className="w-6 h-6" />
+          <p className="w400">Logout</p>
         </div>
       </div>
     </GlassDefault>

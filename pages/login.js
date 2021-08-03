@@ -14,13 +14,13 @@ export default function Login() {
   // const router = useRouter();
 
   async function loginMutation(email, password) {
-    console.log('email', email)
-    console.log('password', password)
+    // console.log('email', email)
+    // console.log('password', password)
 
     try {
       setLoading(true)
       const result = await login(email, password)
-      console.log('login response', result)
+      // console.log('login response', result)
       Cookies.set('token', result.login.token)
 
       if (result.login.token) {
@@ -57,7 +57,7 @@ export default function Login() {
   }, [])
 
   useEffect(() => {
-    console.log('isi data', data)
+    // console.log('isi data', data)
   }, [data])
 
   return (

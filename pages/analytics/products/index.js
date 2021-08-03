@@ -16,6 +16,7 @@ import { ErrorStatus } from 'components/error-status'
 import { GET_LIST_TOP_SALES_PRODUCT } from 'graphql/order'
 import { GET_ANALYTIC_PRODUCT_PERFORMANCE } from 'graphql/product'
 import { TableOrders } from 'components/analytics/products/table-orders'
+import { DateRange } from 'components/widgets/DateRange'
 
 export const DateRangeCtx = createContext(null)
 
@@ -63,6 +64,8 @@ export default function Products() {
       />
     )
 
+  const dateRageChange = (dateRange) => {
+  }
   const { getAnalyticProductPerformance } = dataAnalyticProductPerformance
   const { getListTopSalesProduct } = dataListTopSalesProduct
 
@@ -72,12 +75,13 @@ export default function Products() {
       <div className="my-8 ml-6 mr-12">
         {/* header */}
         <h2 className="w800">Analytics - Product</h2>
-        <div className="flex items-start justify-between w-full mt-5 space-x-0">
+        <DateRange onChange={dateRageChange} />
+        {/* <div className="flex items-start justify-between w-full mt-5 space-x-0">
           <DateRangeCtx.Provider value={storeDateRange}>
             <DateRangeComparison />
           </DateRangeCtx.Provider>
           <ShowProductSelect />
-        </div>
+        </div> */}
         {/* Leaderboard */}
         <div className="flex items-center justify-between mt-6 mb-4">
           <h4 className="w600">Leaderboard</h4>
