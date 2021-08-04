@@ -6,62 +6,30 @@ export function ProductListTable({ data }) {
     <table className="md:min-w-full">
       <thead>
         <tr>
-          <th
-            scope="col"
-            className="hidden py-3 pr-4 text-left md:table-cell text-N0"
-          >
-          </th>
-          <th
-            scope="col"
-            className="hidden px-4 py-3 font-normal text-left sr-only md:table-cell text-N0"
-          >
+          <th scope="col" className="hidden px-4 py-3 font-normal text-left sr-only md:table-cell text-N0">
             Image
           </th>
-          <th
-            scope="col"
-            className="px-4 py-3 font-normal text-left text-N0"
-          >
+          <th scope="col" className="px-4 py-3 font-normal text-left text-N0">
             Product
           </th>
-          <th
-            scope="col"
-            className="px-4 py-3 font-normal text-left md:hidden text-N0"
-          >
+          <th scope="col" className="px-4 py-3 font-normal text-left md:hidden text-N0">
           </th>
-          <th
-            scope="col"
-            className="px-4 py-3 font-normal text-left text-N0"
-          >
+          <th scope="col" className="px-4 py-3 font-normal text-left text-N0">
             Status
           </th>
-          <th
-            scope="col"
-            className="hidden px-4 py-3 font-normal text-left text-N0 md:table-cell"
-          >
+          <th scope="col" className="hidden px-4 py-3 font-normal text-left text-N0 md:table-cell">
             SKU
           </th>
-          <th
-            scope="col"
-            className="hidden px-4 py-3 font-normal text-left md:table-cell text-N0"
-          >
+          <th scope="col" className="hidden px-4 py-3 font-normal text-left md:table-cell text-N0">
             Price
           </th>
-          <th
-            scope="col"
-            className="hidden px-4 py-3 font-normal text-left md:table-cell text-N0"
-          >
+          <th scope="col" className="hidden px-4 py-3 font-normal text-left md:table-cell text-N0">
             Sale Price
           </th>
-          <th
-            scope="col"
-            className="hidden px-4 py-3 font-normal text-left md:table-cell text-N0"
-          >
+          <th scope="col" className="hidden px-4 py-3 font-normal text-left md:table-cell text-N0">
             Category
           </th>
-          <th
-            scope="col"
-            className="hidden px-4 py-3 font-normal text-left md:table-cell text-N0"
-          >
+          <th scope="col" className="hidden px-4 py-3 font-normal text-left md:table-cell text-N0">
             Quantity
           </th>
           <th scope="col" className="relative hidden py-3 md:table-cell">
