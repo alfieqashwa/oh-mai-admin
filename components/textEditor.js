@@ -92,7 +92,6 @@ const TextEditor = props => {
       >
         <Editable />
       </Slate> */}
-      {/* <RichEditor existingValue={description} updateDesc={updateDesc}/> */}
       <DefaultEditor value={html} onChange={_onChange} id="description" />
       {/* <SlateRichTextEditor /> */}
     </div>

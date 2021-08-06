@@ -7,26 +7,30 @@ import moment from 'moment'
 import { SwitchOnOff } from './switch-on-off'
 import { moneyFormat } from 'utils/money-format'
 
-export function TableOrders({ data, setSelectedCustomer }) {
+export function TableOrders({ data, setSelectedCustomer, keywordChange, sortingChange }) {
   const [dataTable, setDataTable] = React.useState([])
 
   useEffect(() => {
     if (Array.isArray(data)) {
       const tmpArr = []
 
-      data.forEach((item, index) => {
-        if (index === 0) {
-          item.status = true
-        } else {
-          item.status = false
-        }
-
-        tmpArr.push(item)
-      })
-
-      setDataTable(tmpArr)
+      if (data.length > 0) {
+        data.forEach((item, index) => {
+          if (index === 0) {
+            item.status = true
+          } else {
+            item.status = false
+          }
+          tmpArr.push(item)
+        })
+        setDataTable(tmpArr)
+      } else {
+        setDataTable([])
+        setSelectedCustomer(null)
+      }
     }
-  }, [])
+    console.log('....data', data)
+  }, [data])
 
   const updateArray = (customerId, status) => {
     const updatedArr = dataTable.map((item, index) => {
@@ -43,12 +47,33 @@ export function TableOrders({ data, setSelectedCustomer }) {
   }
 
   useEffect(() => {
+    let isHaseSelection = false
+
     dataTable?.forEach(item => {
       if (item.status === true) {
         setSelectedCustomer(item)
+        console.log('setSelectedCustomer(item)')
+        isHaseSelection = true
       }
     })
+
+    console.log('selected customer: is isHaseSelection - ' + isHaseSelection)
+
+    if (isHaseSelection === false || dataTable.length === 0) {
+      console.log('setSelectedCustomer(null)')
+      setSelectedCustomer(null)
+    }
+
+    console.log('....data table', dataTable)
   }, [dataTable])
+
+  const _keywordChange = (e) => {
+    keywordChange(e.target.value)
+  }
+
+  const _sortingChange = (e) => {
+    sortingChange(e.target.value)
+  }
 
   return (
     <div className="mt-8">
@@ -58,9 +83,10 @@ export function TableOrders({ data, setSelectedCustomer }) {
           <select
             name="date-range"
             className="px-10 bg-transparent border-transparent rounded w400 focus:ring-1 focus:ring-N700 focus:outline-none"
+            onChange={_sortingChange}
           >
-            <option>Ascending</option>
-            <option>Descending</option>
+            <option value="ASC">Ascending</option>
+            <option value="DESC">Descending</option>
           </select>
         </div>
         <div className="relative flex-1 w-full px-4">
@@ -70,6 +96,7 @@ export function TableOrders({ data, setSelectedCustomer }) {
             name="search"
             placeholder="Search for a title or SKU"
             className="w-full px-12 py-3 bg-transparent border rounded border-N900"
+            onChange={_keywordChange}
           />
         </div>
         <div>
@@ -149,7 +176,7 @@ export function TableOrders({ data, setSelectedCustomer }) {
               scope="col"
               className="p-4 text-right capitalize w400 whitespace-nowrap"
             >
-              items sold
+              items bought
             </th>
             <th
               scope="col"

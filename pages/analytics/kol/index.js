@@ -10,6 +10,7 @@ import {
   ChartView
 } from 'components/analytics/kol'
 import { checkLogin } from 'utils/Auth'
+import { DateRange } from 'components/widgets/DateRange'
 
 export default function Kol() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
@@ -19,6 +20,9 @@ export default function Kol() {
     checkLogin()
   }, [])
 
+  const dateRageChange = (dateRange) => {
+  }
+
   return (
     <div className="pb-4">
       <Header title="Analytics - KOL" />
@@ -26,6 +30,7 @@ export default function Kol() {
         {/* header */}
         <h2 className="w800">KOL Analytics</h2>
         {/* second row */}
+        <DateRange onChange={dateRageChange} />
 
         {/* Leaderboard */}
         <div className="flex items-center justify-between mt-6 mb-4">
@@ -46,12 +51,6 @@ export default function Kol() {
           <div className="w-full mx-5 border border-N0 border-opacity-30"></div>
           <BsThreeDotsVertical className="w-6 h-6 mr-2 text-N0" />
         </div>
-        <DateRangeSelect
-          selectedCurrent={selectedCurrent}
-          setSelectedCurrent={setSelectedCurrent}
-          selectedPrevious={selectedPrevious}
-          setSelectedPrevious={setSelectedPrevious}
-        />
         <div className="mt-7">
           <KolPerformanceCard />
           <ChartView />

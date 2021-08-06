@@ -12,47 +12,73 @@ export const OrderPerformanceCard = (props) => {
   const [selected, setSelected] = useState()
   const [performances, setPerformances] = useState([])
   const [dataArr, setDataArr] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const arr = []
+  const taskQueues = [] // to make loadData() running serial, to prevent data race
 
-  // const {
-  //   loading: loadgOrderCust,
-  //   error: errOrderCust,
-  //   data: performanceOrderCust
-  // } = useFetch(GET_ORDER_CUSTOMER_YEARLY)
+  const loadData = async () => {
+    console.log('>OrderPerformanceCard/[props.selectedCustomer]/loadData/props=' + JSON.stringify(props))
 
-  // useEffect(() => {
-  //   console.log('OrderPerformanceCard/performanceOrderCust', 'init')
+    if (props.selectedCustomer) {
+      console.log('>OrderPerformanceCard/[props.selectedCustomer]/props/A')
+      const customerId = props.selectedCustomer.customer_id
+      const timeMode = props.timeMode ? props.timeMode : '24h'
+      setIsLoading(true)
+      const result = await loadPerformanceAnalyticCustomer({ startDate: props.startDate, endDate: props.endDate, customerId: customerId, timeMode: timeMode })
+      setIsLoading(false)
+      console.log('OrderPerformanceCard', result.data)
+      console.log('OrderPerformanceCard/props.selectedCustomer', props.selectedCustomer)
+      setPerformances(result.data)
 
-  //   if (performanceOrderCust) {
-  //     console.log('OrderPerformanceCard/performanceOrderCust', performanceOrderCust)
-  //     arr.push(performanceCards)
-  //     const tmpArr = dataArr.concat(arr)
-  //     setDataArr(tmpArr)
-  //   }
-  // }, [])
+      if (taskQueues.length > 0) {
+        taskQueues.shift()
+        loadData()
+      }
+      // setTimeout(() => {
+      //   setPerformances([])
+      // }, 3000)
+    } else {
+      console.log('>OrderPerformanceCard/[props.selectedCustomer]/props/B')
+      console.log('>OrderPerformanceCard/[props.selectedCustomer]/props/B/tasq=' + JSON.stringify(taskQueues))
+      if (taskQueues.length > 0) {
+        taskQueues.shift()
+      }
+      setPerformances([])
+    }
+  }
 
   useEffect(async () => {
     console.log('OrderPerformanceCard/init/props.customerId', props)
-    // const customerId = props.selectedCustomer?.customer_id
-    // const result = await loadPerformanceAnalyticCustomer({ startDate: null, endDate: null, customerId: customerId })
-    // console.log('OrderPerformanceCard', result.data)
-    // setPerformances(result.data)
   }, [])
 
   useEffect(async () => {
-    console.log('>OrderPerformanceCard/[props.selectedCustomer]/props.customerId', props?.selectedCustomer?.customer_id)
-    if (props.selectedCustomer) {
-      const customerId = props.selectedCustomer.customer_id
-
-      const result = await loadPerformanceAnalyticCustomer({ startDate: null, endDate: null, customerId: customerId })
-      console.log('OrderPerformanceCard', result.data)
-      setPerformances(result.data)
+    if (isLoading) {
+      taskQueues.push('-')
+    } else {
+      await loadData()
     }
   }, [props.selectedCustomer])
+
+  useEffect(async () => {
+    if (isLoading) {
+      taskQueues.push('-')
+    } else {
+      await loadData()
+    }
+  }, [props.startDate])
+
+  useEffect(async () => {
+    if (isLoading) {
+      taskQueues.push('-')
+    } else {
+      await loadData()
+    }
+  }, [props.endDate])
 
   return (
     <RadioGroup className="grid grid-cols-3" value={selected} onChange={setSelected}>
       <RadioGroup.Label className="sr-only">Performance</RadioGroup.Label>
+      {/* <div className="text-N200">performances.length = {performances.length}</div> */}
       {performances.map((c, i) => {
         return (
           <RadioGroup.Option

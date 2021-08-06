@@ -1,21 +1,84 @@
-import { Menu, Transition } from '@headlessui/react'
-import { BiTrash } from 'react-icons/bi'
-import { MdAddCircleOutline } from 'react-icons/md'
-import { FiFilter } from 'react-icons/fi'
-import { BsThreeDotsVertical } from 'react-icons/bs'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
-
 import { GlassDefault } from 'components/glassDefault'
 import { Header } from 'components/header'
-import { Pagination, ProductListTable } from 'components/products/inventory'
-import React, { useEffect } from 'react'
+import { ProductListTable } from 'components/products/inventory'
+import React, { useEffect, useState } from 'react'
 import { checkLogin } from 'utils/Auth'
+import { getClient } from 'lib/graphqlclient'
+import { GET_LIST_PRODUCT_VARIANT } from 'graphql/product'
+import Link from 'next/link'
+import { PassivePagination } from 'components/widgets/PassivePagination'
 
 export default function Inventory() {
-  useEffect(() => {
+  const [productStatus, setProductstatus] = useState('')
+  const [keyword, setKeyword] = useState('')
+  const [limit, setLimit] = useState(10)
+  const [total, setTotal] = useState(0)
+  const [dataTable, setDataTable] = useState([])
+  const [filter, setFilter] = useState({ })
+
+  const client = getClient()
+  const vars = {
+    limit: limit
+  }
+
+  useEffect(async () => {
     checkLogin()
+    setFilter(vars)
   }, [])
 
+  useEffect(async () => {
+    checkLogin()
+    console.log('filter:', filter)
+
+    try {
+      const result = await client.request(GET_LIST_PRODUCT_VARIANT, filter)
+      console.log('result:', result)
+
+      const resultData = result.getProductInventory
+      setDataTable(resultData.data)
+      setTotal(resultData.total)
+      console.log('result:', resultData.total)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }, [filter])
+
+  useEffect(async () => {
+    setFilter(prevState => ({
+      ...prevState,
+      productStatus: productStatus
+    }))
+  }, [productStatus])
+
+  useEffect(() => {
+    if (keyword.length > 4 || keyword.length === 0) {
+      setFilter(prevState => ({
+        ...prevState,
+        keyword: keyword
+      }))
+    }
+  }, [keyword])
+
+  const _onKeywordChange = (e) => {
+    setKeyword(e.target.value)
+  }
+
+  const _onPageChange = (page) => {
+    console.log('current page now:', page)
+    setFilter(prevState => ({
+      ...prevState,
+      page: page + 1 // convert to one based
+    }))
+  }
+
+  const _onMaxRowChange = (maxRow) => {
+    setLimit(maxRow)
+    setFilter(prevState => ({
+      ...prevState,
+      limit: maxRow
+    }))
+  }
   return (
     <>
       <Header title="Products - Inventory" />
@@ -31,8 +94,9 @@ export default function Inventory() {
             </div>
 
             <div className="space-x-8">
-              <button className="text-sm bg-transparent text-N0">export</button>
+            <Link href="/products/add-product">
               <button className="px-6 py-2 text-sm uppercase shadow-2xl bg-G400 text-N0">add product</button>
+            </Link>
             </div>
           </div>
         </div>
@@ -47,7 +111,6 @@ export default function Inventory() {
                 <h5>Inventory</h5>
               </div>
               <div className="flex flex-row space-x-4">
-                <button className="text-sm bg-transparent text-N0">export</button>
                 <button className="px-6 py-2 text-sm uppercase shadow-2xl bg-G400 text-N0">add product</button>
               </div>
             </div>
@@ -59,10 +122,10 @@ export default function Inventory() {
         <div className="md:hidden">
           <div className="flex items-center justify-between mt-4">
             <h3>Inventory</h3>
-            <button className="flex items-center justify-between px-4 py-2 space-x-2 uppercase shadow-2xl text-N800 bg-N100">
+            {/* <button className="flex items-center justify-between px-4 py-2 space-x-2 uppercase shadow-2xl text-N800 bg-N100">
               <FiFilter className="w-5 h-5" />
               <p className="text-xs text-N800">filter</p>
-            </button>
+            </button> */}
           </div>
         </div>
         {/* Ends first row Mobile */}
@@ -77,10 +140,11 @@ export default function Inventory() {
                   {/* Starts first row Desktop */}
                   <div className="items-center justify-start hidden space-x-2 md:flex">
                     <p className="mr-2 text-sm capitalize">view products</p>
-                    <button className="px-6 py-2 text-xs uppercase shadow-2xl text-N0 bg-P700">all</button>
-                    <button className="px-6 py-2 text-xs uppercase shadow-2xl text-N800 bg-N100">active</button>
-                    <button className="px-6 py-2 text-xs uppercase shadow-2xl text-N800 bg-N100">draft</button>
-                    <button className="px-6 py-2 text-xs uppercase shadow-2xl text-N800 bg-N100">archived</button>
+                    <button className="px-6 py-2 text-xs uppercase shadow-2xl focus:text-N0 focus:bg-P700 bg-N100 text-N800" onClick={setProductstatus.bind(null, '')}>all</button>
+                    <button className="px-6 py-2 text-xs uppercase shadow-2xl focus:text-N0 focus:bg-P700 bg-N100 text-N800" onClick={setProductstatus.bind(null, 'active')}>active</button>
+                    <button className="px-6 py-2 text-xs uppercase shadow-2xl focus:text-N0 focus:bg-P700 bg-N100 text-N800" onClick={setProductstatus.bind(null, 'in_stock')}>in stock</button>
+                    <button className="px-6 py-2 text-xs uppercase shadow-2xl focus:text-N0 focus:bg-P700 bg-N100 text-N800" onClick={setProductstatus.bind(null, 'pre_order')}>pre order</button>
+                    <button className="px-6 py-2 text-xs uppercase shadow-2xl focus:text-N0 focus:bg-P700 bg-N100 text-N800" onClick={setProductstatus.bind(null, 'coming_soon')}>coming soon</button>
                   </div>
                   {/* Ends first row Desktop */}
 
@@ -91,28 +155,29 @@ export default function Inventory() {
                       </svg>
                       <input
                         className="flex-auto w-full pl-10 text-sm placeholder-opacity-50 rounded-md text-N0 bg-opacity-20 bg-N200 placeholder-N0"
-                        type="text" name="search" placeholder="Search for a product" />
+                        type="text" name="search" placeholder="Search for a product (min 5 characters)"
+                        onChange={_onKeywordChange} />
                     </div>
 
                     <div className="items-center hidden space-x-3 md:flex justify start">
-                      <button className="flex items-center justify-between px-4 py-2 space-x-2 uppercase shadow-2xl text-N800 bg-N100">
+                      {/* <button className="flex items-center justify-between px-4 py-2 space-x-2 uppercase shadow-2xl text-N800 bg-N100">
                         <BiTrash className="w-5 h-5" />
                         <p className="text-xs text-N800">delete</p>
-                      </button>
-                      <button className="flex items-center justify-between px-4 py-2 space-x-2 uppercase shadow-2xl text-N800 bg-N100">
+                      </button> */}
+                      {/* <button className="flex items-center justify-between px-4 py-2 space-x-2 uppercase shadow-2xl text-N800 bg-N100">
                         <MdAddCircleOutline className="w-5 h-5" />
                         <p className="text-xs text-N800 whitespace-nowrap">add category</p>
                       </button>
                       <button className="flex items-center justify-between px-4 py-2 space-x-2 uppercase shadow-2xl text-N800 bg-N100">
                         <FiFilter className="w-5 h-5" />
                         <p className="text-xs text-N800">filter</p>
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                   {/* Ends of second row: Desktop */}
 
                   {/* Starts second row: Mobile */}
-                  <div className="md:hidden">
+                  {/* <div className="md:hidden">
                     <div className="flex items-center justify-between space-x-4">
 
                       <div className="w-1/2 py-4">
@@ -158,12 +223,12 @@ export default function Inventory() {
                         )}
                       </Menu>
                     </div>
-                  </div>
+                  </div> */}
                   {/* Ends of second row: Mobile */}
 
                   {/* // PRODUCTS LIST */}
                   <div className="mt-4">
-                    <ProductListTable />
+                    <ProductListTable data={dataTable} />
                   </div>
                 </div>
               </div>
@@ -174,7 +239,7 @@ export default function Inventory() {
         {/* Ends Tabel (GlassDiv) */}
 
         {/* Pagination */}
-        <Pagination />
+        <PassivePagination total={total} onPageChange={_onPageChange} onMaxRowChange={_onMaxRowChange} maxRow={limit} totalRowOnPage={dataTable.length}/>
 
       </div>
       {/* Ends ROOT */}

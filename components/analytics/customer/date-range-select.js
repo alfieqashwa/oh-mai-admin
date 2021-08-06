@@ -56,7 +56,8 @@ cursor-default select-none relative py-2 pl-10 pr-4`
                             >
                               {date.name}
                             </span>
-                            {selected ? (
+                            {selected
+                              ? (
                               <span
                                 className={`${active ? 'text-N0' : ''}
 absolute inset-y-0 left-0 flex items-center pl-3`}
@@ -66,7 +67,8 @@ absolute inset-y-0 left-0 flex items-center pl-3`}
                                   aria-hidden="true"
                                 />
                               </span>
-                            ) : null}
+                                )
+                              : null}
                           </>
                         )}
                       </Listbox.Option>
@@ -126,7 +128,8 @@ cursor-default select-none relative py-2 pl-10 pr-4`
                             >
                               {date.name}
                             </span>
-                            {selected ? (
+                            {selected
+                              ? (
                               <span
                                 className={`${active ? 'text-N0' : ''}
 absolute inset-y-0 left-0 flex items-center pl-3`}
@@ -136,7 +139,8 @@ absolute inset-y-0 left-0 flex items-center pl-3`}
                                   aria-hidden="true"
                                 />
                               </span>
-                            ) : null}
+                                )
+                              : null}
                           </>
                         )}
                       </Listbox.Option>

@@ -1,13 +1,22 @@
 import { getClient } from 'lib/graphqlclient'
 import { checkErrorAuth } from 'utils/Auth'
-import { GET_ORDER_CUSTOMER_YEARLY, GET_NET_SALES_CUSTOMER_YEARLY, GET_TOTAL_ITEM_BOUGHT_CUSTOMER_YEARLY, GET_SUCCESS_ORDER_CUSTOMER_YEARLY, GET_ORDER_CUSTOMER_KOL_YEARLY, GET_ORDER_CUSTOMER_WITHOUT_KOL_YEARLY } from 'graphql/customer'
+import { GET_ORDER_CUSTOMER_YEARLY, GET_NET_SALES_CUSTOMER_YEARLY, GET_TOTAL_ITEM_BOUGHT_CUSTOMER_YEARLY, GET_SUCCESS_ORDER_CUSTOMER_YEARLY, GET_ORDER_CUSTOMER_KOL_YEARLY, GET_ORDER_CUSTOMER_WITHOUT_KOL_YEARLY, GET_ANALYTIC_CUSTOMER_TABLE } from 'graphql/customer'
+import { mode } from 'tailwind.config'
+import { timeFilterFormatter } from 'utils/Others'
 
-export const loadPerformanceAnalyticCustomer = async ({ startDate, endDate, customerId }) => {
+export const loadPerformanceAnalyticCustomer = async ({ timeMode, startDate, endDate, customerId }) => {
+  console.log('loadPerformanceAnalyticCustomer')
+  console.log('loadPerformanceAnalyticCustomer/customerId', customerId)
+  console.log('loadPerformanceAnalyticCustomer/timeMode', timeMode)
+  console.log('loadPerformanceAnalyticCustomer/startDate', startDate)
+  console.log('loadPerformanceAnalyticCustomer/endDate', endDate)
+
   const client = getClient()
   const vars = {
+    timeMode: timeMode,
     customerId: customerId,
-    startDate: null,
-    endDate: null
+    startDate: startDate || null,
+    endDate: endDate || null
   }
   const listPerformance = []
 
@@ -62,6 +71,70 @@ export const loadPerformanceAnalyticCustomer = async ({ startDate, endDate, cust
   } catch (error) {
     checkErrorAuth(error)
     console.log('loadPerformanceAnalyticCustomer order item error', error)
+    return {
+      data: [],
+      isSuccess: false
+    }
+  }
+}
+
+export const getAnalyticCustomerTable = async (filter) => {
+  if (!filter) {
+    return {
+      data: [],
+      isSuccess: false
+    }
+  }
+
+  const client = getClient()
+
+  // if (!filter) {
+  //   try {
+  //     const response = await client.request(GET_ANALYTIC_CUSTOMER_TABLE)
+  //     return {
+  //       data: response.getAnalyticCustomerTable,
+  //       isSuccess: true
+  //     }
+  //   } catch (error) {
+  //     console.log('Get customer table error', error)
+  //     return {
+  //       data: [],
+  //       isSuccess: false
+  //     }
+  //   }
+  // }
+
+  const vars = {
+    timeMode: filter.timeMode
+  }
+
+  const dateFilter = timeFilterFormatter(filter)
+
+  if (dateFilter) {
+    vars.startDate = dateFilter.startDate
+    vars.endDate = dateFilter.endDate
+  }
+
+  console.log('lewat filter', filter)
+
+  if ((filter.mode === 'days') || (filter.mode === 'weeks') || (filter.mode === 'months') || (filter.mode === 'years')) {
+    if (!dateFilter.startDate || !dateFilter.endDate) {
+      console.log('lewat')
+      return {
+        data: [],
+        isSuccess: false
+      }
+    }
+  }
+
+  try {
+    const response = await client.request(GET_ANALYTIC_CUSTOMER_TABLE, vars)
+    return {
+      data: response.getAnalyticCustomerTable,
+      isSuccess: true
+    }
+  } catch (error) {
+    console.log('Get customer table error', error)
     return {
       data: [],
       isSuccess: false

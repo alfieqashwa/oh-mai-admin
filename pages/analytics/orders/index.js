@@ -17,6 +17,7 @@ import {
 } from 'graphql/order'
 import { LoadingStatus } from 'components/loading-status'
 import { ErrorStatus } from 'components/error-status'
+import { DateRange } from 'components/widgets/DateRange'
 
 export default function Orders() {
   const [selectedCurrent, setSelectedCurrent] = useState(dates[0])
@@ -51,6 +52,9 @@ export default function Orders() {
     )
   }
 
+  const dateRageChange = (data) => {
+  }
+
   const { getOrderPerformance } = dataOrderPerformance
   const { getOrderListSumaryTable } = dataOrderListSummaryTable
 
@@ -61,12 +65,13 @@ export default function Orders() {
         {/* header */}
         <h2 className="w800">Analytics</h2>
         {/* second row */}
-        <DateRangeSelect
+        {/* <DateRangeSelect
           selectedCurrent={selectedCurrent}
           setSelectedCurrent={setSelectedCurrent}
           selectedPrevious={selectedPrevious}
           setSelectedPrevious={setSelectedPrevious}
-        />
+        /> */}
+        <DateRange onChange={dateRageChange} />
         {/* Performance-border */}
         <div className="flex items-center justify-between mt-10 mb-4">
           <h4 className="w600">Performance</h4>
